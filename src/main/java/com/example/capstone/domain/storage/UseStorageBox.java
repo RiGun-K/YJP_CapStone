@@ -1,5 +1,7 @@
 package com.example.capstone.domain.storage;
 
+import com.example.capstone.domain.order.Orders;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -26,24 +28,24 @@ public class UseStorageBox {
 
     @ManyToOne
     @JoinColumn(name = "orderCode")
-    private OrderList orderCode;
+    private Orders orderCode;
 
     public UseStorageBox() {
     }
 
-    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, StorageBox storageBoxCode, OrderList orderCode) {
+    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, StorageBox storageBoxCode, Orders orderCode) {
         this.useStorageStartTime = useStorageStartTime;
         this.useStorageEndTime = useStorageEndTime;
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;
     }
 
-    public UseStorageBox(StorageBox storageBoxCode, OrderList orderCode) {
+    public UseStorageBox(StorageBox storageBoxCode, Orders orderCode) {
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;
     }
 
-    public UseStorageBox(long useStorageBoxCode, StorageBox storageBoxCode, OrderList orderCode) {
+    public UseStorageBox(long useStorageBoxCode, StorageBox storageBoxCode, Orders orderCode) {
         this.useStorageBoxCode = useStorageBoxCode;
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;
@@ -89,11 +91,11 @@ public class UseStorageBox {
         this.storageBoxCode = storageBoxCode;
     }
 
-    public OrderList getOrderCode() {
+    public Orders getOrderCode() {
         return orderCode;
     }
 
-    public void setOrderCode(OrderList orderCode) {
+    public void setOrderCode(Orders orderCode) {
         this.orderCode = orderCode;
     }
 }

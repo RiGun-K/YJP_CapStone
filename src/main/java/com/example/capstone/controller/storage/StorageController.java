@@ -1,10 +1,12 @@
 package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.*;
 import com.example.capstone.dto.storage.*;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Storage.*;
+import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,7 @@ public class StorageController {
     private MemberRepository memberRepository;
 
     @Autowired
-    private OrderListRepository orderListRepository;
+    private OrdersRepository ordersRepository;
 
     @Autowired
     private UseStorageBoxRepository useStorageBoxRepository;
@@ -196,8 +198,8 @@ public class StorageController {
         LocalDateTime start = renewalBox.getStartTime();
         LocalDateTime end = renewalBox.getEndTime();
 
-        OrderList orderList = new OrderList(user.get());
-        orderListRepository.save(orderList);
+        Orders orderList = new Orders(user.get());
+        ordersRepository.save(orderList);
 
         UseStorageBox useStorageBox = new UseStorageBox(start,end,storageBox.get(), orderList);
         useStorageBoxRepository.save(useStorageBox);
@@ -232,11 +234,11 @@ public class StorageController {
 
         LocalDateTime end = payStorageBox.getUseStorageEndTime();
 
-        OrderList orderList = new OrderList(user.get(), payStorageBox.getPrice());
-        orderListRepository.save(orderList);
+        Orders orders = new Orders(user.get(), payStorageBox.getPrice());
+        ordersRepository.save(orders);
 
 
-        UseStorageBox useStorageBox = new UseStorageBox(start,end,storageBox.get(), orderList);
+        UseStorageBox useStorageBox = new UseStorageBox(start,end,storageBox.get(), orders);
         useStorageBoxRepository.save(useStorageBox);
 
         // 박스 상태 변화
@@ -267,7 +269,7 @@ public class StorageController {
     @GetMapping("checkMember/{memberId}")
     public Object[] checkMember(@PathVariable("memberId")String memberId)  throws NoSuchElementException{
         try{
-            Object[] useStorageBoxes = orderListRepository.findByMember(memberId);
+            Object[] useStorageBoxes = storageRepository.findByMember(memberId);
 
             return useStorageBoxes;
 
@@ -345,8 +347,8 @@ public class StorageController {
 
             Optional<Member> member = memberRepository.findByMID(roundMove.getUserId());
 
-            OrderList orderList = new OrderList(member.get());
-            orderListRepository.save(orderList);
+            Orders orderList = new Orders(member.get());
+            ordersRepository.save(orderList);
 
             return new Result("ok");
         }else{
