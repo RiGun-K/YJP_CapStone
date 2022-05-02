@@ -1,20 +1,19 @@
 <template>
   <div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <br>
-    <h1 style="font-weight: bold">게시글 작성</h1>
+    <h1 style="font-weight: bold">팀 공지사항 작성</h1>
     <button type="button" class="btn btn-outline-primary" @click="list" style="float: left;" >목록</button>
 
     <form>
       <table class="tbAdd">
 
         <tr>
-          <th>제목</th>
-          <td><input type="text" v-model="title" ref="subject" placeholder="제목"/></td>
+          <th>공지 제목</th>
+          <td><input type="text" v-model="noticetitle" ref="subject" placeholder="제목"/></td>
         </tr>
         <tr>
-          <th>내용</th>
-          <td><textarea v-model="content" placeholder="내용을 입력하세요."/></td>
+          <th>공지 내용</th>
+          <td><textarea v-model="noticecontent" placeholder="내용을 입력하세요."/></td>
         </tr>
 
       </table>
@@ -24,27 +23,25 @@
   <div class="btnWrap">
     <button @click="main" class="btn" style="float: left;">취소</button>
     <button type="submit" @click="write" class="btnAdd btn">작성</button>
-
   </div>
-
 </template>
 <script>
-import axios from "axios"
 import store from "@/store";
+import axios from "axios";
 
 export default {
-  name: 'Create',
+  name: 'TBCreate',
   data() {
     return {
 
-      title: '',
-      content: ''
+      noticetitle: '',
+      noticecontent: ''
     }
   },
   methods: {
     write() {
       const data = {
-        mid: store.getters.getLoginState.loginState,
+        teamMaster: store.getters.getLoginState.loginState,
         title: this.title,
         content: this.content
       }
@@ -59,30 +56,20 @@ export default {
       this.$router.push({
         path: '/Read'
       })
-
-      if(!this.title) {
-        alert("제목을 입력해 주세요");
-        this.$refs.title.focus();
-        return;
-      }
-      this.$router.go(-1)
     },
-
-    list(){
+    list() {
       this.$router.push({
-        path: 'Read'
+        path: 'TeamBoard'
       })
     },
     main(){
       this.$router.push({
-        path: '/'
+        path: '/TeamBoard'
       })
     }
-
   }
 }
 </script>
-
 
 <style scoped>
 .tbAdd{border-top:1px solid #888;}
