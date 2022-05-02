@@ -60,7 +60,7 @@ export default {
     return {
       check: {
         check1: false,
-        check2: false
+        check2: false,
       }
     }
   },
