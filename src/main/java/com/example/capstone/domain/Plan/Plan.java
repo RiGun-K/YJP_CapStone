@@ -44,4 +44,8 @@ public class Plan {
     private int planNumber;
     @Column
     private int planTotalDate;
+    @Column
+    private Integer planViews=0;
+    @Column
+    private Integer planUsedCount=0;
 }

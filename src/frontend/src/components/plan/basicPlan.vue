@@ -113,6 +113,18 @@ export default {
 		addTags: function (value) {
 			this.TagContentList.push(value);
 			this.tag = '';
+			const url = 'api/test';
+			const hihi = JSON.stringify(this.TagContentList);
+			console.log(hihi);
+			console.log(this.TagContentList);
+			axios
+				.post(url, { planTagContent: hihi })
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		},
 		deleteTag: function (index) {
 			console.log(index);

@@ -26,6 +26,11 @@ public class PlannerApiController {
 
         return selectedPlan;
     }
+    @PostMapping("api/test")
+    public String test(@RequestBody String planTags){
+        System.out.println(planTags);
+        return "hi";
+    }
 
     @PostMapping("/api/checkPlanName")
     public String checkPlanName(@RequestBody Plan plan) {

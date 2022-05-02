@@ -1,7 +1,6 @@
 package com.example.capstone.service;
 
 
-
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
@@ -44,26 +43,26 @@ public class PlanService {
         } else {
             return "y";
         }
-
-
-    }
-    public Optional<Plan> selectPlan(String planName){
-       Optional<Plan> selectPlan =planRepository.findByPlanName(planName);
-
-  return selectPlan;
     }
 
-    public void insertDetailPlan(PlanDetail plan_detail){
+    public Optional<Plan> selectPlan(String planName) {
+        Optional<Plan> selectPlan = planRepository.findByPlanName(planName);
+        return selectPlan;
+    }
+
+    public void insertDetailPlan(PlanDetail plan_detail) {
         plan_detailRepository.save(plan_detail);
 
 
     }
 
-    public List<PlanDetail> loadDetailPlan(PlanDetail plan_detail){
-        System.out.println("서비스받음");
-        List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDay(plan_detail.getPlanCode(),plan_detail.getDetailDay());
-        System.out.println("서비스받음");
+    public List<PlanDetail> loadDetailPlan(PlanDetail plan_detail) {
+        List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDay(plan_detail.getPlanCode(), plan_detail.getDetailDay());
         return planDetails;
+    }
+
+    public List<Plan> loadAllPlans(){
+        return planRepository.findAll();
     }
 
 }
