@@ -10,30 +10,30 @@ import javax.persistence.Table;
 public class Infoter {
 
     @Id
-    private int infoterid;
+    private int infoterId;
 
     @Column()
-    private String infotername;
+    private String infoterName;
 
     public Infoter() {}
-    public Infoter(int infoterid, String infotername) {
-        this.infoterid = infoterid;
-        this.infotername = infotername;
+    public Infoter(int infoterId, String infoterName) {
+        this.infoterId = infoterId;
+        this.infoterName = infoterName;
     }
 
-    public int getInfoterid() {
-        return infoterid;
+    public int getInfoterId() {
+        return infoterId;
     }
 
-    public void setInfoterid(int infoterid) {
-        this.infoterid = infoterid;
+    public void setInfoterId(int infoterId) {
+        this.infoterId = infoterId;
     }
 
-    public String getInfotername() {
-        return infotername;
+    public String getInfoterName() {
+        return infoterName;
     }
 
-    public void setInfotername(String infotername) {
-        this.infotername = infotername;
+    public void setInfoterName(String infoterName) {
+        this.infoterName = infoterName;
     }
 }

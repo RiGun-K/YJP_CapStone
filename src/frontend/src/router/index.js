@@ -98,21 +98,34 @@ const routes = [
   },
 
     ///////////////////////////////상품관리///////////////////////////////////
-  {
-    path: '/sellerSignup',
-    name: 'SellerSignup',
-    component: () => import('@/components/product/SellerSignup.vue')
-  },
-  {
-    path: '/userList',
-    name: 'UserList',
-    component: () => import('@/components/product/UserList.vue')
-  },
+
   {
     path: '/ProductMain',
     name: 'ProductMain',
     component: () => import('@/components/product/ProductMain.vue')
   },
+  {
+    path: '/ProductPage',
+    name: 'ProductPage',
+    component: () => import('@/components/product/ProductPage.vue')
+  },
+    ////////////////////////////////////////////////////
+  {
+    path: '/ProductBuy',
+    name: 'ProductBuy',
+    component: () => import('@/components/product/RegistrationBuy.vue')
+  },
+  {
+    path: '/ProductRental',
+    name: 'ProductRental',
+    component: () => import('@/components/product/RegistrationRental.vue')
+  },
+  {
+    path: '/ProductCamping',
+    name: 'ProductCamping',
+    component: () => import('@/components/product/RegistrationCamping.vue')
+  },
+    /////////////////////////////////////////////////////////
   {
     path: '/MyProductList',
     name: 'MyProductList',

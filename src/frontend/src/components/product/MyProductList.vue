@@ -1,7 +1,6 @@
 <template>
-  <h1>내가 등록한 상품 리스트, 여기서 수정 및 삭제 </h1>
+  <ProductPage></ProductPage>
   <div>
-    <ProductMain></ProductMain>
     <br>
     <table class="table table-striped">
       <thead>
@@ -25,16 +24,32 @@
       </tbody>
     </table>
   </div>
+
+  <nav aria-label="page">
+    <ul class="pagination pagination-lg">
+      <li class="page-item disabled">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
 import axios from 'axios'
-import ProductMain from "@/components/product/ProductMain";
 import store from "@/store";
+import ProductPage from "@/components/product/ProductPage";
 
 export default {
   name: "MyProductList",
-  components: { ProductMain },
+  components: { ProductPage },
 
   created() {
     this.goMyData()
@@ -72,4 +87,10 @@ export default {
 
 <style scoped>
 
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  justify-content: center
+}
 </style>

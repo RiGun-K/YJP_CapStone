@@ -20,6 +20,7 @@
     </div>
     <button class="cart-back"><router-link class="nav-link" to="/">Back</router-link></button>
   </div>
+
 </template>
 
 <script>
