@@ -42,19 +42,19 @@ export default {
     write() {
       const data = {
         teamMaster: store.getters.getLoginState.loginState,
-        title: this.title,
-        content: this.content
+        noticetitle: this.noticetitle,
+        noticecontent: this.noticecontent
       }
       console.log(data);
-      axios.post('/api/Writing', data)
+      axios.post('/api/Teamwriting', data)
           .then((res) => {
             console.log("성공" + res.data)
           })
           .catch((ex) => {
-            console.log("fail", ex)
+            console.log("실패", ex)
           })
       this.$router.push({
-        path: '/Read'
+        path: '/teamboard'
       })
     },
     list() {
