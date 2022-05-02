@@ -47,19 +47,17 @@ public class StorageController {
             // 보관소 추가
             storageRepository.save(storage);
 
-            Optional<Storage> strgName = storageRepository.findByStorageName(box.getStorageName());
-            Storage strg = strgName.get();
             //보관함 추가
             String storageBoxName;
             String storageBoxType;
             String storageBoxState;
-
+            Optional<Storage> storage1 = storageRepository.findByStorageName(storage.getStorageName());
             for (int i = 0; i < box.getSmall(); i++) {
                 storageBoxName = "S"+(i+1);
                 storageBoxType = "0";
                 storageBoxState = "0";
 
-                StorageBox storageBoxSmall = new StorageBox(strg,storageBoxName,storageBoxType,33000,storageBoxState);
+                StorageBox storageBoxSmall = new StorageBox(storage1.get(),storageBoxName,storageBoxType,33000,storageBoxState);
                 storageBoxRepository.save(storageBoxSmall);
 
                 storageBoxName = "0";
@@ -70,7 +68,7 @@ public class StorageController {
                 storageBoxName = "M"+(i+1);
                 storageBoxType = "0";
                 storageBoxState = "0";
-                StorageBox storageBoxSmall = new StorageBox(strg,storageBoxName,storageBoxType,45000,storageBoxState);
+                StorageBox storageBoxSmall = new StorageBox(storage1.get(),storageBoxName,storageBoxType,45000,storageBoxState);
                 storageBoxRepository.save(storageBoxSmall);
 
                 storageBoxName = "0";
@@ -81,7 +79,7 @@ public class StorageController {
                 storageBoxName = "L"+(i+1);
                 storageBoxType = "0";
                 storageBoxState = "0";
-                StorageBox storageBoxSmall = new StorageBox(strg,storageBoxName,storageBoxType,60000,storageBoxState);
+                StorageBox storageBoxSmall = new StorageBox(storage1.get(),storageBoxName,storageBoxType,60000,storageBoxState);
                 storageBoxRepository.save(storageBoxSmall);
 
                 storageBoxName = "0";
@@ -339,9 +337,10 @@ public class StorageController {
     // 보관함 장소 이동
     @PostMapping("roundMoveBox")
     private Result roundmovePay(@RequestBody RoundMove roundMove){
-
+        System.out.println(roundMove.getUseBoxCode());
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(roundMove.getUseBoxCode());
-        if(useStorageBox.get().getUseStorageState() == "2"){
+        System.out.println(useStorageBox.get().getUseStorageState());
+        if(useStorageBox.get().getUseStorageState().equals("2")){
             useStorageBox.get().setUseStorageState("4");
             useStorageBoxRepository.save(useStorageBox.get());
 
@@ -351,6 +350,8 @@ public class StorageController {
             ordersRepository.save(orderList);
 
             return new Result("ok");
+        }else if(useStorageBox.get().getUseStorageState() == "1"){
+            return new Result("umm");
         }else{
             return new Result("no");
         }

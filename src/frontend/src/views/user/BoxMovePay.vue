@@ -58,12 +58,15 @@ export default {
         address:this.data.address,
         detailAddress:this.data.detailAddress
       }
+      console.log(form)
       axios.post('/api/roundMoveBox',form)
       .then(res=>{
         console.log(res)
         if(res.data.result == 'ok'){
           alert('결제되었습니다')
           this.$router.push({name:"myBox"})
+        }else if(res.data.result == 'umm'){
+          alert('장비가 보관중이 아닙니다')
         }else{
           alert('보관중이 아니거나 보관함에 장비가 없습니다.')
         }

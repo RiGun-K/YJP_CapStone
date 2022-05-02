@@ -78,6 +78,9 @@ export default {
       document.head.appendChild(script);
     }
   },
+  props:{
+    form: {}
+  },
   data() {
     return {
       map: null,

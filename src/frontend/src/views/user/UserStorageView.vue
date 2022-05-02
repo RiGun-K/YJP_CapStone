@@ -13,7 +13,7 @@
           </div>
         </div>
       </div>
-      <div style="float: right;">
+      <div>
         <div id="map"></div>
       </div>
 
@@ -62,8 +62,6 @@ export default {
         .catch((error) => {
           console.log(error)
         })
-
-
   },
   mounted() {
     //  카카오맵
@@ -81,8 +79,6 @@ export default {
   data() {
     return {
       map: null,
-      markers: [],
-      markPositions1: [],
       storageList: [],
       check: false,
       boxList: [],
@@ -95,45 +91,53 @@ export default {
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
-        level: 8,
+        level: 5,
       };
-      console.log(options)
       this.map = new kakao.maps.Map(container, options);
 
+      var bounds = new kakao.maps.LatLngBounds();
       // 마커 만들기
-
-      let position = []
       for (let i = 0; i < this.storageList.length; i++) {
-        position = [this.storageList[i].longitude, this.storageList[i].latitude]
-        this.markPositions1.push(position)
+        // 마커를 생성하고 지도에 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: this.map,
+          position: new kakao.maps.LatLng(this.storageList[i].longitude, this.storageList[i].latitude)
+        })
+
+        // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+        let infowindow = new kakao.maps.InfoWindow({zIndex: 1})
+
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'click', () => {
+          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+          infowindow.open(this.map, marker)
+        })
+        bounds.extend(new kakao.maps.LatLng(this.storageList[i].longitude, this.storageList[i].latitude));
+
       }
-      this.displayMarker(this.markPositions1)
+
+      // this.map.setBounds(bounds);
     },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
+    displayMarker(place) {
+      console.log(place)
+      var bounds = new kakao.maps.LatLngBounds();
 
-      const positions = markerPositions.map(
-          (position) => new kakao.maps.LatLng(...position)
-      );
+      bounds.extend(new kakao.maps.LatLng(place[0], place[1]));
 
-      if (positions.length > 0) {
-        this.markers = positions.map(
-            (position) =>
-                new kakao.maps.Marker({
-                  map: this.map,
-                  position,
-                })
-        );
+      // 마커를 생성하고 지도에 표시합니다
+      var marker = new kakao.maps.Marker({
+        map: this.map,
+        position: new kakao.maps.LatLng(place[0], place[1])
+      })
+      // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+      let infowindow = new kakao.maps.InfoWindow({zIndex: 1})
 
-        const bounds = positions.reduce(
-            (bounds, position) => bounds.extend(position.latlng),
-            new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
+      // 마커에 클릭이벤트를 등록합니다
+      kakao.maps.event.addListener(marker, 'click', function () {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        infowindow.open(this.map, marker)
+      })
+      // this.map.setBounds(bounds);
     },
 
     GetStorageDetail(storageCode) {
