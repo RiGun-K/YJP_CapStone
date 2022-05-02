@@ -1,8 +1,7 @@
 <template>
-  <ProductMain></ProductMain>
+  <ProductPage></ProductPage>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <br>
-  <h1>상품 수정 페이지 입니다.</h1>
   <br>
   <div class="products-info">
     <div class="product-input-form">
@@ -77,12 +76,12 @@
 
 <script>
 import axios from "axios";
-import ProductMain from "@/components/product/ProductMain";
 import store from "@/store";
+import ProductPage from "@/components/product/ProductPage";
 
 export default {
   name: "MyProductDetail",
-  components: { ProductMain },
+  components: { ProductPage },
 
   data() {
     return {

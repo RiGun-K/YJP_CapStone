@@ -70,119 +70,27 @@
   <button variant="outline-primary" type="submit" @click="ProductSubmit">등록하기</button>
 </template>
 
-
 <script>
-import axios from 'axios'
 import ProductPage from "@/components/product/ProductPage";
+import axios from 'axios'
 import store from "@/store";
 
-// let changeFile;
+
 export default {
-  name: "Registration",
+  name: "RegistrationBuy",
   components: { ProductPage },
+  created() {
+
+  },
   data() {
-    return {
-      kindid: '',
-      menuname: '',
-      stock: '',
-      price: '',
-      ex: '',
-      file: '',
-      mid: store.getters.getLoginState.loginState,
 
-      id: '',
-      myContent: [],
-
-
-      options: [
-        { value: null, text: '판매하실 상품의 유형을 선택해주세요'},
-        { value: '1', text: '캠핑'},
-        { value: '2', text: '구매'},
-        { value: '3', text: '렌탈'},
-      ],
-
-    }
   },
-
   methods: {
-    handleImage(e) {
-      this.file = e.target.files[0];
-      let self = this;
-      if(e.target.files[0]) {
-        // 파일 읽는 라이브러리
-        const reader = new FileReader();
-
-        // 파일 읽기가 완료되는 시점
-        reader.addEventListener('load', function(e1){
-          // 완료되는 시점!!!!!!!!!!!!!!!
-          self.imgsrc = e1.target.result;
-          // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
-        });
-
-        // 파일 읽기 시작
-        reader.readAsDataURL(e.target.files[0]);
-      }
-      else {
-        return false
-      }
-
-    },
-    ProductSubmit: function () {
-      const formData = new FormData();
-
-      // const photoFile = document.getElementById("file_load");
-
-      formData.append('kindid', this.kindid.value);
-      formData.append('menuname', this.menuname);
-      formData.append('stock', this.stock);
-      formData.append('price', this.price);
-      formData.append('ex', this.ex);
-      formData.append('file', this.file);
-      formData.append('mid', this.mid);
-
-
-
-      console.log(this.kindid.value, this.menuname, this.stock, this.price, this.ex, this.file, this.mid);
-      const baseURI = 'http://localhost:9002';
-
-      axios.post(`${baseURI}/api/product_signup`, formData, { headers: { 'Content-Type': 'multipart/form-data'}} )
-        .then(res => {
-          console.log("성공" + res);
-          alert("상품이 등록되었습니다.");
-          this.$router.push({
-            name: "MyProductList"
-          });
-        })
-        .catch(function (error) {
-          console.log("에러" + error);
-          alert("상품이 등록되지않았습니다.");
-        })
-
-
-    },
-
-  },
-  computed: {
 
   }
 }
 </script>
 
 <style scoped>
-h1{
-  text-align: center;
-}
-.products-info{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.product-input-form{
-  width: 30%;
-  text-align: center;
-}
-button{
-  margin-left: 49%;
-  margin-top: 3%;
-}
+
 </style>
