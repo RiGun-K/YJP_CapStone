@@ -1,6 +1,7 @@
 package com.example.capstone.controller.Board;
 
 import com.example.capstone.domain.Board.TeamWriter;
+import com.example.capstone.domain.Board.Writer;
 import com.example.capstone.repository.Board.TeamWriterRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +18,5 @@ public class TeamBoardController {
     private TeamWriterRepository teamWriterRepository;
 
     @PostMapping("/Teamwriting")
-    public 
+    public Writer
 }
