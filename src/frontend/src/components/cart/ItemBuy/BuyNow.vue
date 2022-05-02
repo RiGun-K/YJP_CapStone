@@ -203,7 +203,8 @@ export default {
               orderPrice: this.price,
               orderType: rsp.pay_method,
               paymentCode: rsp.merchant_uid,
-              orderState: '2'
+              orderState: '2',
+              menuId: this.Content.menuId,
             })
                 .then((res)=>{
                   console.log(res.data);

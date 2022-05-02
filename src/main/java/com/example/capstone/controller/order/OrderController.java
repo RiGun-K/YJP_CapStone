@@ -1,16 +1,16 @@
-package com.example.capstone.controller.Cart;
+package com.example.capstone.controller.order;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.repository.Member.MemberRepository;
+import com.example.capstone.repository.orders.OrderMenuRepository;
 import com.example.capstone.repository.orders.OrdersRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -19,13 +19,16 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @NoArgsConstructor
 @RequestMapping("/api")
-public class CartController {
+public class OrderController {
 
     @Autowired
     private OrdersRepository ordersRepository;
 
     @Autowired
     private MemberRepository memberRepository;
+
+//    @Autowired
+//    private OrderMenuRepository orderMenuRepository;
 
     @PostMapping("/buyData")
     public String postBuyData(@RequestBody HashMap<String, String> buyData){
@@ -51,10 +54,16 @@ public class CartController {
 
             ordersRepository.save(order);
 
+//            OrderMenu orderMenu = new OrderMenu();
+//
+//            Optional<OrderMenu> searchMenu = orderMenuRepository(시발)
+
+
         } else {
             System.out.println("buyData Error");
         }
         return "test";
     }
+
 
 }
