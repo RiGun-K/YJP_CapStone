@@ -39,7 +39,7 @@ public class Plan {
     @Column
     private String planEnd;
     @Column
-    private String planUpdate;
+    private String planOpen;
     @Column
     private int planNumber;
     @Column

@@ -3,6 +3,7 @@ package com.example.capstone.controller.Plan;
 
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
+import com.example.capstone.domain.Plan.PlanTag;
 import com.example.capstone.service.PlanService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class PlannerApiController {
     public Optional<Plan> createPlan(@RequestBody Plan plan) {
         planService.createPlan(plan);
         Optional<Plan> selectedPlan = planService.selectPlan(plan.getPlanName());
+
         return selectedPlan;
     }
 
@@ -40,4 +42,5 @@ public class PlannerApiController {
     public List<PlanDetail> loadDetailPlanOfDay(@RequestBody PlanDetail plan_detail) {
         return planService.loadDetailPlan(plan_detail);
     }
+
 }
