@@ -96,6 +96,18 @@ const routes = [
     name: 'Update',
     component: () => import('@/components/board/Update.vue')
   },
+  {
+    path: '/tbcreate',
+    name: 'TBCreate',
+    component: () => import('@/components/board/TBCreate.vue')
+
+  },
+  {
+    path: '/teamboard',
+    name: 'TeamBoard',
+    component: () => import('@/components/board/TeamBoard.vue')
+
+  },
 
     ///////////////////////////////상품관리///////////////////////////////////
   {
