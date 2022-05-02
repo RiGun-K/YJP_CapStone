@@ -66,6 +66,7 @@ public class MemberController {
         member.setMPH(signUp.get("MPH"));
         member.setMMail(signUp.get("MEmail"));
         member.setMSC(signUp.get("MSC"));
+        member.setMname(signUp.get("Mname"));
         member.setMSD(LocalDate.now().toString());
 
         memberRepository.save(member);
@@ -160,8 +161,18 @@ public class MemberController {
         }
     }
 
-    ///판매자 신청///
+    ///회원 아이디의 전화번호 확인///
+    @PostMapping("phequalCheck")
+    public Boolean phequalCheck(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMID(body.get("MID"));
+        if(member.get().getMPH().equals(body.get("MPH"))){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    ///판매자 신청///
     @PostMapping("signCompany")
     public Boolean signCompany(@RequestBody HashMap<String, String> signUp){
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -258,5 +269,27 @@ public class MemberController {
         PhCheck phCheck = new PhCheck();
         phCheck.setFromClient(pNumber.get("MPH"));
         return phCheck.sendAuth();
+    }
+
+    ///아이디찾기///
+    @PostMapping("checkID")
+    public String checkID(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMPH(body.get("MPH"));
+        if(member.isEmpty()){
+            return "아이디가 존재하지 않습니다";
+        }else{
+            return "사용자의 아이디는 " + member.get().getMID() + "입니다";
+        }
+    }
+
+    ///비밀번호찾기///
+    @PostMapping("checkPass")
+    public String checkPass(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMID(body.get("MID"));
+        mailCheck.setAddress(member.get().getMMail());
+        mailCheck.passSend();
+        member.get().setMPass(Integer.toString(mailCheck.getAutoInt()));
+        memberRepository.save(member.get());
+        return "사용자 이메일로 임시비밀번호를 전송했습니다";
     }
 }
