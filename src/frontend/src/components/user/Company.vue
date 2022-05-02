@@ -165,7 +165,7 @@ export default {
         return false
       }else if(this.CZadd == ''){
         return false
-      }else if(this.CRadd == ''){
+      }else if(this.CAdd == ''){
         return false
       }else if(this.Chp == ''){
         return false

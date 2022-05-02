@@ -28,17 +28,6 @@ public class MailCheck {
         mailSender.send(message);
     }
 
-    public void passSend(){
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(this.address);
-        message.setFrom(MailCheck.FROM_ADDRESS);
-        message.setSubject("임시비밀번호입니다");
-        autoInt = ran.nextInt(10000000);
-        this.message = Integer.toString(autoInt);
-        message.setText(this.message);
-        mailSender.send(message);
-    }
-
     public MailCheck() {
     }
 
