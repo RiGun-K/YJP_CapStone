@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td class="buy-now-td">이름</td>
-        <td>{{ this.Content.mid.mid }}</td>
+        <td>{{ this.Content.mid.mnick }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">이메일</td>
@@ -21,7 +21,7 @@
     <table>
       <tr>
         <td class="buy-now-td">이름</td>
-        <td><input type="text" v-model="Content.mid.mid"></td>
+        <td><input type="text" v-model="getterName"></td>
       </tr>
       <tr>
         <td class="buy-now-td">우편번호</td>
@@ -192,27 +192,26 @@ export default {
             let msg = '결제에 실패하였습니다.'
             msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-            // let data = {
-            //   MID: this.Content.mid.mcode,
-            //   deliveryZipcode: this.zip,
-            //   deliveryAddress: this.detailAddress,
-            //   deliveryGetter: this.getterName,
-            //   deliveryGetterTel: this.getterPhoneNumber,
-            //   deliveryRequest: this.deliveryMessage,
-            //   orderPrice: this.price,
-            //   orderType: rsp.pay_method,
-            //   paymentCode: rsp.merchant_uid,
-            //   orderState: '2'
-            // }
-            //
-            // this.axios.post('/api/buyData', data)
-            //     .then((res)=>{
-            //       console.log(res);
-            //     })
-            //     .catch((err)=>{
-            //       console.log(err)
-            //     });
-            window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
+
+            this.axios.post('http://localhost:9002/api/buyData', {
+              MID: this.Content.mid.mid,
+              deliveryZipcode: this.zip,
+              deliveryAddress: this.detailAddress,
+              deliveryGetter: this.getterName,
+              deliveryGetterTel: this.getterPhoneNumber,
+              deliveryRequest: this.deliveryMessage,
+              orderPrice: this.price,
+              orderType: rsp.pay_method,
+              paymentCode: rsp.merchant_uid,
+              orderState: '2'
+            })
+                .then((res)=>{
+                  console.log(res.data);
+                })
+                .catch((err)=>{
+                  console.log(err)
+                });
+            // window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
           }
         })
       }
