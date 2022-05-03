@@ -49,7 +49,18 @@ public class MenuBuy {
     private Member MID;
 
     public MenuBuy() {}
-
+    public MenuBuy(String buyName, int buyPrice, String buyEx, LocalDate savedTime, int buyStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
+        this.buyName = buyName;
+        this.buyPrice = buyPrice;
+        this.buyEx = buyEx;
+        this.savedTime = savedTime;
+        this.buyStock = buyStock;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.kindid = kindid;
+        this.MID = MID;
+    }
 
     public int getBuyId() {
         return buyId;

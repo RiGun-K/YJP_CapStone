@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
 
-//    List<MenuBuy> findByMID(Member member);
-//    List<MenuBuy> findByMIDMID(String mid);
+    List<MenuBuy> findByMID(Member member);
+    List<MenuBuy> findByMIDMID(String mid);
 }

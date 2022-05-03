@@ -9,7 +9,7 @@
       <label for="text-select">상품분류</label>
 
       <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
-        <select v-model="kindid" class="form-select" aria-label="Default select example">
+        <select v-model="kindid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
           <option v-for="(option, index) in options" :key="index" :value="option">
             {{option.text}}
           </option>
@@ -19,14 +19,14 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">메뉴명</label>
-            <textarea v-model="menuname" :state="menuname" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
+            <textarea v-model="buyName" :state="buyName" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
           </div>
         </form>
         <br>
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">수량</label>
-            <textarea v-model="stock" id="feedback-user" class="form-control is-invalid" placeholder="수량을 입력하세요." :state="stock" required></textarea>
+            <textarea v-model="buyStock" id="feedback-user" class="form-control is-invalid" placeholder="수량을 입력하세요." :state="buyStock" required></textarea>
           </div>
         </form>
 
@@ -35,7 +35,7 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">가격</label>
-            <textarea v-model="price" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="stock" required></textarea>
+            <textarea v-model="buyPrice" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="buyPrice" required></textarea>
           </div>
         </form>
 
@@ -44,7 +44,7 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">설명</label>
-            <textarea v-model="ex" class="form-control is-invalid" placeholder="설명을 입력하세요." :state="ex" id="feedback-user" required></textarea>
+            <textarea v-model="buyEx" class="form-control is-invalid" placeholder="설명을 입력하세요." :state="buyEx" id="feedback-user" required></textarea>
           </div>
         </form>
 
@@ -58,7 +58,10 @@
                    aria-describedby="inputGroupFileAddon04"
                    aria-label="Upload"
                    placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+                   multiple
+                   accept="image/*"
                    drop-placeholder="Drop file here..." >
+            <div id="image_container"/>
           </form>
         </div>
 
@@ -85,10 +88,10 @@ export default {
   data() {
     return {
       kindid: '',
-      menuname: '',
-      stock: '',
-      price: '',
-      ex: '',
+      buyName: '',
+      buyStock: '',
+      buyPrice: '',
+      buyEx: '',
       file: '',
       mid: store.getters.getLoginState.loginState,
 
@@ -97,7 +100,6 @@ export default {
 
 
       options: [
-        { value: null, text: '판매하실 상품의 유형을 선택해주세요' },
         { value: '1', text: '캠핑패키지'},
         { value: '2', text: '캠핑용품'},
         { value: '3', text: '등산용품'},
@@ -120,7 +122,13 @@ export default {
           // 완료되는 시점!!!!!!!!!!!!!!!
           self.imgsrc = e1.target.result;
           // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
         });
+
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
@@ -136,31 +144,32 @@ export default {
       // const photoFile = document.getElementById("file_load");
 
       formData.append('kindid', this.kindid.value);
-      formData.append('menuname', this.menuname);
-      formData.append('stock', this.stock);
-      formData.append('price', this.price);
-      formData.append('ex', this.ex);
+      formData.append('buyName', this.buyName);
+      formData.append('buyPrice', this.buyPrice);
+      formData.append('buyStock', this.buyStock);
+      formData.append('buyEx', this.buyEx);
       formData.append('file', this.file);
       formData.append('mid', this.mid);
 
 
 
-      console.log(this.kindid.value, this.menuname, this.stock, this.price, this.ex, this.file, this.mid);
+      console.log(this.kindid.value, this.buyName, this.buyStock, this.buyPrice, this.buyEx, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
-      axios.post(`${baseURI}/api/product_signup`, formData, { headers: { 'Content-Type': 'multipart/form-data'}} )
-          .then(res => {
-            console.log("성공" + res);
-            alert("상품이 등록되었습니다.");
-            this.$router.push({
-              name: "MyProductList"
-            });
-          })
-          .catch(function (error) {
-            console.log("에러" + error);
-            alert("상품이 등록되지않았습니다.");
-          })
-
+      if (confirm("상품을 등록하시겠습니까?")) {
+        axios.post(`${baseURI}/api/Buy_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            .then(res => {
+              console.log("성공" + res);
+              alert("상품이 등록되었습니다.");
+              this.$router.push({
+                name: "ProductMain"
+              });
+            })
+            .catch(function (error) {
+              console.log("에러" + error);
+              alert("상품이 등록되지않았습니다.");
+            })
+      }
 
     },
   }
