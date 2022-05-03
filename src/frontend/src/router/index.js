@@ -149,12 +149,6 @@ const routes = [
     component: () => import('@/components/product/ProductList.vue')
   },
   {
-    path: '/registration',
-    name: 'Registration',
-    component: () => import('@/components/product/Registration.vue'),
-    props: true
-  },
-  {
     path: '/ProductDetail/:menuid',
     name: 'productDetail',
     component: () => import('@/components/product/ProductDetail.vue'),

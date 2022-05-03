@@ -38,7 +38,7 @@ public class RegistrationController {
 
     /* 구매상품 등록 페이지 */
     @PostMapping("/Buy_Signup")
-    public MenuBuy addMenu(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
+    public MenuBuy addMenuBuy(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
         System.out.println("파일 크기" + uploadFile.getSize());
 
@@ -92,7 +92,7 @@ public class RegistrationController {
 
     /* 렌탈상품 등록 페이지 */
     @PostMapping("/Rental_Signup")
-    public MenuRental addMenu(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
+    public MenuRental addMenuRental(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
         System.out.println("파일 크기" + uploadFile.getSize());
 
@@ -144,9 +144,9 @@ public class RegistrationController {
         return MenuRental;
     }
 
-    /* 캠핑장예약 등록 페이지 */
+    /* 캠핑장 등록 페이지 */
     @PostMapping("/Camping_Signup")
-    public Camping addMenu(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
+    public Camping addMenuCamping(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
         System.out.println("파일 크기" + uploadFile.getSize());
 
