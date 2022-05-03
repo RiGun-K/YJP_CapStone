@@ -2,7 +2,7 @@
   <ProductPage></ProductPage>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <br>
-  <h1>구매 등록 페이지 입니다.</h1>
+  <h1>렌탈 등록 페이지 입니다.</h1>
   <br>
   <div id="wrapper">
     <div id="content">
@@ -12,12 +12,23 @@
           <h3 class="join_title">
             <label for="id">상품분류</label>
           </h3>
-          <select v-model="kindid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
-            <option v-for="(option, index) in options" :key="index" :value="option">
-              {{option.text}}
-            </option>
+          <select v-model="kindid" class="form-select form-select-sm" aria-label=".form-select-sm example">
+            <option selected disabled>등록하실 상품을 분류해주세요.</option>
+            <optgroup label="캠핑용품">
+              <option value="3">캠핑패키지</option>
+              <option value="4">텐트</option>
+              <option value="5">타프</option>
+              <option value="6">테이블</option>
+              <option value="7">체어</option>
+              <option value="8">침낭</option>
+              <option value="9">매트</option>
+              <option value="10">식기</option>
+              <option value="11">버너</option>
+              <option value="12">화로</option>
+              <option value="13">캠핑소품</option>
+              <option value="14">등산용품</option>
+            </optgroup>
           </select>
-          <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
 
           <br>
           <span class="error_next_box"></span>
@@ -121,12 +132,6 @@ export default {
       myContent: [],
 
 
-      options: [
-        { value: '1', text: '캠핑패키지'},
-        { value: '2', text: '캠핑용품'},
-        { value: '3', text: '등산용품'},
-
-      ],
     }
   },
   methods: {
@@ -163,7 +168,7 @@ export default {
 
       // const photoFile = document.getElementById("file_load");
 
-      formData.append('kindid', this.kindid.value);
+      formData.append('kindid', this.kindid);
       formData.append('rentalName', this.rentalName);
       formData.append('rentalPrice', this.rentalPrice);
       formData.append('rentalStock', this.rentalStock);
@@ -173,7 +178,7 @@ export default {
 
 
 
-      console.log(this.kindid.value, this.rentalName, this.rentalStock, this.rentalPrice, this.rentalEx, this.file, this.mid);
+      console.log(this.kindid, this.rentalName, this.rentalStock, this.rentalPrice, this.rentalEx, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
       if (confirm("상품을 등록하시겠습니까?")) {
