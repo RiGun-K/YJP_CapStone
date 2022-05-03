@@ -10,14 +10,15 @@ import javax.persistence.*;
 @Data
 @Table(name="teamwriter")
 public class TeamWriter {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int teamwriter_code;
 
-    @ManyToOne (fetch = FetchType.LAZY)
 //    @JoinColumn(name = "TEAMCODE")
 //    private Team teamCode;
 
+    @ManyToOne()
     @JoinColumn(name = "TEAMMASTER")
     private  Team teamMaster;
 
@@ -25,6 +26,7 @@ public class TeamWriter {
     private String noticetitle;
     private String noticecontent;
 
+    public TeamWriter() {}
     public TeamWriter(String noticetitle, String noticecontent, Team teamMaster){
         this.noticetitle = noticetitle;
         this.noticecontent = noticecontent;

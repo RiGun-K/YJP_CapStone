@@ -23,6 +23,7 @@
   <div class="btnWrap">
     <button @click="main" class="btn" style="float: left;">취소</button>
     <button type="submit" @click="write" class="btnAdd btn">작성</button>
+    <button type="submit" @click="list" class="btnAdd btn">조회</button>
   </div>
 </template>
 <script>
@@ -35,18 +36,22 @@ export default {
     return {
 
       noticetitle: '',
-      noticecontent: ''
+      noticecontent: '',
+      teamMaster: '예진'
     }
   },
   methods: {
     write() {
+      // 1. DB에 저장할  data를 담는다.
       const data = {
-        teamMaster: store.getters.getLoginState.loginState,
+        teamMaster: this.teamMaster,
         noticetitle: this.noticetitle,
         noticecontent: this.noticecontent
       }
       console.log(data);
-      axios.post('/api/Teamwriting', data)
+
+      // 2. 담은 data를 post 방식으로 '/api/teamwriting 주소로 보낸다
+      axios.post('/api/teamwriting', data)
           .then((res) => {
             console.log("성공" + res.data)
           })
