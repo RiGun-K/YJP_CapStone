@@ -269,9 +269,20 @@ const routes = [
     component:()=>import('@/components/storageService/user/MoveBox.vue')
   },
   {
-    path: "/myBox/moveBox/pay",
-    name: "BoxMovePay",
-    component:()=>import('@/views/user/BoxMovePay.vue'),
+    path: "/myBox/moveBox/boxToBox",
+    name: "StorageMoveBoxDetail",
+    component:()=>import('@/components/storageService/user/StorageMoveBoxDetail.vue')
+  },
+  {
+    path: "/myBox/moveBox/storagePay",
+    name: "BoxToBoxMovePay",
+    component:()=>import('@/views/user/BoxToBoxMovePay.vue'),
+    props: true
+  },
+  {
+    path: "/myBox/moveBox/roundPay",
+    name: "roundToBoxMovePay",
+    component:()=>import('@/views/user/roundToBoxMovePay.vue'),
     props: true
   },
   {

@@ -12,7 +12,7 @@ public interface StorageRepository extends JpaRepository<Storage, Long> {
     Optional<Storage> findByStorageName(String storageName);
 
     @Query(
-            value = "select u.USE_STORAGE_START_TIME, u.USE_STORAGE_END_TIME, b.STORAGE_BOX_NAME,b.STORAGE_BOX_STATE, s.STORAGE_NAME, u.USE_STORAGE_BOX_CODE  \n" +
+            value = "select u.USE_STORAGE_START_TIME, u.USE_STORAGE_END_TIME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME,b.STORAGE_BOX_STATE, s.STORAGE_NAME, u.USE_STORAGE_BOX_CODE, u.USE_STORAGE_STATE  \n" +
                     "from STORAGE s \n" +
                     "join STORAGEBOX b on s.STORAGE_CODE = b.STORAGE_CODE \n" +
                     "join USESTORAGEBOX u on  u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +

@@ -5,14 +5,12 @@
   <br>
   <input type="radio" name="move-option" v-model="moveOption" value="round">장소 <br>
   <input type="radio" name="move-option" v-model="moveOption" value="storage">보관함
-  {{ moveOption }}
   <hr>
   <div v-if="moveOption=='round'"><!--장소 검색-->
     <RoundMoveBox :form="form"/>
   </div>
   <div v-if="moveOption=='storage'"><!--보관함-->
-
-    <storage-move-box :form="form"/>
+    <StorageMoveBox :form="form"/>
   </div>
 </template>
 
@@ -29,12 +27,7 @@ export default {
   data() {
     return {
       moveOption: '',
-      form:{
-        userId:'',
-        storageName:'',
-        boxName:'',
-        useBoxCode:''
-      }
+      form:undefined||{}
     }
   },
   mounted() {
@@ -46,6 +39,7 @@ export default {
     console.log(this.$route.params.boxName)
     this.form.useBoxCode = this.$route.params.useBoxCode
     console.log(this.$route.params.useBoxCode)
+    this.form.boxCode = this.$route.params.boxCode
   }
 }
 </script>
