@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 public class MenuRentalDTO {
 
+    // 실제 DB에 저장할 값들 ( 일치해야함 , NOT NULL )
     private int rentalId;
     private String rentalName;
     private int rentalPrice;

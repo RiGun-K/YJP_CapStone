@@ -25,7 +25,7 @@ import java.util.UUID;
 //@Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @NoArgsConstructor
-//@AllArgsConstructor  // @Autowired 대신사용
+//@AllArgsConstructor  // @Autowired 대신사용 , But 쓰면 DB 저장안됨 ( Null )
 @RequestMapping("/api")
 public class ProductController {
     @Autowired

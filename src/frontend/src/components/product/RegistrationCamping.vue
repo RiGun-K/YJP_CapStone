@@ -4,11 +4,14 @@
   <br>
   <h1>캠핑장 등록 페이지 입니다.</h1>
   <br>
-  <div class="products-info">
-    <div class="product-input-form">
-      <label for="text-select">상품분류</label>
-
+  <div id="wrapper">
+    <div id="content">
       <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
+
+      <div>
+        <h3 class="join_title">
+          <label for="id">상품분류</label>
+        </h3>
         <select v-model="infoterid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
           <option v-for="(option, index) in options" :key="index" :value="option">
             {{option.text}}
@@ -17,47 +20,66 @@
         <div class="mt-3">선택유형 : <strong>{{ infoterid.text }}</strong></div>
 
         <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">메뉴명</label>
-            <textarea v-model="campingName" :state="campingName" id="feedback-user" class="form-control is-invalid" placeholder="캠핑장 이름을 입력하세요." required></textarea>
-          </div>
-        </form>
-        <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">객실 수</label>
-            <textarea v-model="campingDetailState" id="feedback-user" class="form-control is-invalid" placeholder="운영할 객실 수를 입력하세요." :state="campingDetailState" required></textarea>
-          </div>
-        </form>
-
+        <span class="error_next_box"></span>
+        <h3 class="join_title">
+          <label for="id">캠핑장 명</label>
+        </h3>
+        <span class="box int_id">
+                        <input type="text" v-model="campingName" id="id" placeholder="캠핑장 명을 입력하세요" class="int" maxlength="20">
+                    </span>
+        <span class="error_next_box"></span>
+      </div>
 
         <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">설명</label>
-            <textarea v-model="campingInfo" class="form-control is-invalid" placeholder="캠핑장 설명을 입력하세요." :state="campingInfo" id="feedback-user" required></textarea>
-          </div>
-        </form>
+      <div>
+        <h3 class="join_title">
+          <label for="pswd1" >캠핑장 정보</label>
+        </h3>
+
+        <span class="box int_id">
+          <textarea type="text" v-model="campingInfo" id="id" placeholder="캠핑장 정보를 입력하세요" class="int" maxlength="100"></textarea>
+                    </span>
+        <span class="error_next_box"></span>
+
+      </div>
 
         <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">주소 등록하기</label>
-            <textarea v-model="address" class="form-control is-invalid" placeholder="주소를 입력하세요." :state="address" id="feedback-user" required></textarea>
-          </div>
-        </form>
-
-
-        <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">상세주소 등록하기</label>
-            <textarea v-model="detailAddress" class="form-control is-invalid" placeholder="상세주소를 입력하세요." :state="detailAddress" id="feedback-user" required></textarea>
-          </div>
-        </form>
+        <div>
+          <h3 class="join_title">
+            <label for="email">객실 수 </label>
+          </h3>
+          <span class="box int_email">
+            <input type="text" v-model="campingDetailState" id="email" class="int" maxlength="100" placeholder="객실 수를 입력하세요">
+          </span>
+        </div>
 
         <br>
+      <div>
+        <h3 class="join_title">
+          <label for="pswd2">주소</label>
+        </h3>
+        <span class="input-group mb-3">
+        <input type="text" v-model="postalAddress" class="form-control" placeholder="우편주소 입력" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="zcGet">우편주소검색</button>
+        </span>
+
+      </div>
+      <div>
+        <span class="input-group mb-3">
+                        <input type="text" v-model="address" id="email" class="form-control" maxlength="100" placeholder="도로명입력" readonly>
+        </span>
+      </div>
+      <div>
+        <span class="input-group mb-3">
+                        <input type="text" v-model="detailAddress" id="email" class="form-control" maxlength="100" placeholder="상세주소">
+        </span>
+        <span class="error_next_box">상세주소를 다시 확인해주세요.</span>
+      </div>
+
+        <br>
+        <h3 class="join_title">
+          <label for="pswd2">이미지 등록</label>
+        </h3>
         <div class="input-group">
           <form>
             <input type="file"
@@ -74,12 +96,16 @@
           </form>
         </div>
 
+      <br>
+      <div class="btn_area">
+        <button type="submit" class="btn btn-outline-primary" @click="BuySubmit" id="btnJoin">
+          <span>등록하기</span>
+        </button>
 
+      </div>
       </form>
     </div>
-    <br>
   </div>
-  <button variant="outline-primary" type="submit" @click="BuySubmit">등록하기</button>
 </template>
 
 <script>
@@ -101,7 +127,9 @@ export default {
       campingInfo: '',
       campingDetailState: '',
       file: '',
+      postalAddress: '',
       address: '',
+      // 직접치는 상세주소
       detailAddress: '',
 
       mid: store.getters.getLoginState.loginState,
@@ -149,7 +177,16 @@ export default {
       }
 
     },
+    zcGet() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          this.postalAddress = data.zonecode;
+          this.address = data.roadAddress;
+        }
+      }).open({popupKey: '주소검색'})
+    },
     BuySubmit: function () {
+
       const formData = new FormData();
 
       // const photoFile = document.getElementById("file_load");
@@ -158,6 +195,7 @@ export default {
       formData.append('campingName', this.campingName);
       formData.append('campingInfo', this.campingInfo);
       formData.append('campingDetailState', this.campingDetailState);
+      formData.append('postalAddress', this.postalAddress);
       formData.append('address', this.address);
       formData.append('detailAddress', this.detailAddress);
       formData.append('file', this.file);
@@ -165,21 +203,20 @@ export default {
 
 
 
-      console.log(this.infoterid.value, this.campingName, this.campingInfo, this.campingDetailState, this.address, this.detailAddress, this.file, this.mid);
+      console.log(this.infoterid.value, this.campingName, this.campingInfo, this.campingDetailState, this.postalAddress, this.address, this.detailAddress, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
-      if (confirm("상품을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/Buy_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      if (confirm("캠핑장을 등록하시겠습니까?")) {
+        axios.post(`${baseURI}/api/Camping_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
-              alert("상품이 등록되었습니다.");
               this.$router.push({
-                name: "ProductMain"
+                path: `/RegistrationCampingDetail/${this.campingName}`
               });
             })
             .catch(function (error) {
               console.log("에러" + error);
-              alert("상품이 등록되지않았습니다.");
+              alert("캠핑장이 등록되지않았습니다.");
             })
       }
 
@@ -192,17 +229,79 @@ export default {
 h1{
   text-align: center;
 }
-.products-info{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+textarea {
+  width: 100%;
+  height: 6.25em;
+  border: none;
+  resize: none;
 }
-.product-input-form{
-  width: 30%;
-  text-align: center;
+body {
+  margin: 0;
+  height: 100%;
+  background-color: #E6E6FA;
 }
-button{
-  margin-left: 49%;
-  margin-top: 3%;
+#wrapper {
+  position: relative;
+  height: 100%;
+}
+#content {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  width: 460px;
+}
+/* 입력폼 */
+h3 {
+  margin: 19px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.box {
+  display: block;
+  width: 100%;
+  height: 51px;
+  border: solid 1px #dadada;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  background: #fff;
+  position: relative;
+}
+.int {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 29px;
+  border: none;
+  background: #fff;
+  font-size: 15px;
+}
+
+.box.int_pass {
+  padding-right: 40px;
+}
+.box.int_pass_check {
+  padding-right: 40px;
+}
+select {
+  width: 100%;
+  height: 29px;
+  font-size: 15px;
+  background-size: 20px 8px;
+  -webkit-appearance: none;
+  display: inline-block;
+  text-align: start;
+  border: none;
+  cursor: default;
+}
+.error_next_box {
+  margin-top: 9px;
+  font-size: 12px;
+  color: red;
+  display: none;
+}
+
+#btnJoin {
+  margin: auto;
+  display: block;
 }
 </style>

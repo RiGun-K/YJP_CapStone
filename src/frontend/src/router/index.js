@@ -125,6 +125,11 @@ const routes = [
     name: 'ProductCamping',
     component: () => import('@/components/product/RegistrationCamping.vue')
   },
+  {
+    path: '/RegistrationCampingDetail/:campingName',
+    name: 'RegistrationCampingDetail',
+    component: () => import('@/components/product/RegistrationCampingDetail.vue')
+  },
     /////////////////////////////////////////////////////////
   {
     path: '/MyProductList',

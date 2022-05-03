@@ -1,6 +1,9 @@
 package com.example.capstone.domain.Product;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="campingdetail")
@@ -31,19 +34,42 @@ public class CampingDetail {
     @Column
     private Integer maximumNumber;
 
+    // 파일
+    @Column()
+    private String origFilename;
+    @Column()
+    private String filename;
+    @Column()
+    private String filePath;
+
+    @CreatedDate
+    private LocalDate savedTime;
+
     // 캠핑장아이디
     @ManyToOne()
     @JoinColumn(name = "campingId")
     private Camping campingId;
 
     public CampingDetail() {}
-    public CampingDetail(int detailId, String detailName, String detailEx, Integer baseNumber, Integer maximumNumber, Camping campingId) {
-        this.detailId = detailId;
+    public CampingDetail(String detailName, String detailEx, Integer baseNumber, Integer maximumNumber, LocalDate savedTime, String origFilename, String filename, String filePath, Camping campingId) {
         this.detailName = detailName;
         this.detailEx = detailEx;
         this.baseNumber = baseNumber;
         this.maximumNumber = maximumNumber;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.savedTime = savedTime;
         this.campingId = campingId;
+    }
+
+
+    public LocalDate getSavedTime() {
+        return savedTime;
+    }
+
+    public void setSavedTime(LocalDate savedTime) {
+        this.savedTime = savedTime;
     }
 
     public int getDetailId() {
@@ -100,5 +126,37 @@ public class CampingDetail {
 
     public void setCampingId(Camping campingId) {
         this.campingId = campingId;
+    }
+
+    public int getDetailPrice() {
+        return detailPrice;
+    }
+
+    public void setDetailPrice(int detailPrice) {
+        this.detailPrice = detailPrice;
+    }
+
+    public String getOrigFilename() {
+        return origFilename;
+    }
+
+    public void setOrigFilename(String origFilename) {
+        this.origFilename = origFilename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

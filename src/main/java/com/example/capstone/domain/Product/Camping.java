@@ -33,8 +33,12 @@ public class Camping {
     @Column(length = 2)
     private String campingDetailState;
 
+    // 우편주소
+    @Column
+    private String postalAddress;
     @Column
     private String address;
+    // 상세주소
     @Column
     private String detailAddress;
 
@@ -54,7 +58,7 @@ public class Camping {
 
     // 캠핑장 종류
     @ManyToOne()
-    @JoinColumn(name = "infoterId")
+    @JoinColumn(name = "infoterid")
     private Infoter infoterId;
 
     // 판매자 정보
@@ -63,10 +67,11 @@ public class Camping {
     private Member MID;
 
     public Camping() {}
-    public Camping(String campingName, String campingInfo, String campingDetailState, String address, String detailAddress, LocalDate savedTime, String origFilename, String filename, String filePath, Infoter infoterId, Member MID) {
+    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, LocalDate savedTime, String origFilename, String filename, String filePath, Infoter infoterId, Member MID) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
         this.campingDetailState = campingDetailState;
+        this.postalAddress = postalAddress;
         this.address = address;
         this.detailAddress = detailAddress;
         this.savedTime = savedTime;
@@ -156,5 +161,45 @@ public class Camping {
 
     public void setCampingDetailState(String campingDetailState) {
         this.campingDetailState = campingDetailState;
+    }
+
+    public String getPostalAddress() {
+        return postalAddress;
+    }
+
+    public void setPostalAddress(String postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+
+    public String getOrigFilename() {
+        return origFilename;
+    }
+
+    public void setOrigFilename(String origFilename) {
+        this.origFilename = origFilename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public Member getMID() {
+        return MID;
+    }
+
+    public void setMID(Member MID) {
+        this.MID = MID;
     }
 }
