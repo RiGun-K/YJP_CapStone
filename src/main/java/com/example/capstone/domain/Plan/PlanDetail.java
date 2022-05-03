@@ -1,6 +1,7 @@
 package com.example.capstone.domain.Plan;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,4 +44,15 @@ public class PlanDetail {
     @Column
     private int detailDay;
 
+    @Builder
+    public PlanDetail(Long detailCode, List<Checklist> checklists, Plan planCode, String detailName, String detailMemo, String detailStart, String detailEnd, int detailDay) {
+        this.detailCode = detailCode;
+        this.checklists = checklists;
+        this.planCode = planCode;
+        this.detailName = detailName;
+        this.detailMemo = detailMemo;
+        this.detailStart = detailStart;
+        this.detailEnd = detailEnd;
+        this.detailDay = detailDay;
+    }
 }

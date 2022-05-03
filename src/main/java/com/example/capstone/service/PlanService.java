@@ -3,18 +3,24 @@ package com.example.capstone.service;
 
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
+import com.example.capstone.dto.plan.PlanDetailDto;
+import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
 @Transactional
+@RequiredArgsConstructor
+
 public class PlanService {
 
     public final TeamRepository teamRepository;
@@ -29,11 +35,6 @@ public class PlanService {
         return plan;
     }
 
-    public PlanService(TeamRepository teamRepository, PlanRepository planRepository, PlanDetailRepository plan_detailRepository) {
-        this.teamRepository = teamRepository;
-        this.planRepository = planRepository;
-        this.plan_detailRepository = plan_detailRepository;
-    }
 
     public String checkPlanName(Plan plan) {
 
@@ -50,18 +51,56 @@ public class PlanService {
         return selectPlan;
     }
 
-    public void insertDetailPlan(PlanDetail plan_detail) {
-        plan_detailRepository.save(plan_detail);
+    public void insertDetailPlan(PlanDetailDto plan_detaildto) {
+        //planDetailDto에서 PlanDto를 꺼낸다.
+        PlanDto planDto = plan_detaildto.getPlanCode();
+        // PlanDto를 DB에서 조회하여 찾는다.
+        Optional<Plan> findPlan = planRepository.findById(planDto.getPlanCode());
+        Plan planEntity = findPlan.orElse(null);
+        // DB에서 조회되지 않으면 끝
+        if (planEntity == null) return;
 
-
+        // PlanDetail를 저장하기위해 엔티티를 생성
+        PlanDetail planDetail = PlanDetail.builder()
+                .detailCode(plan_detaildto.getDetailCode())
+                .checklists(plan_detaildto.getChecklists())
+                .planCode(planEntity)
+                .detailName(plan_detaildto.getDetailName())
+                .detailMemo(plan_detaildto.getDetailMemo())
+                .detailStart(plan_detaildto.getDetailStart())
+                .detailEnd(plan_detaildto.getDetailEnd())
+                .detailDay(plan_detaildto.getDetailDay()).build();
+        // PlanDtail 저장
+        plan_detailRepository.save(planDetail);
     }
 
-    public List<PlanDetail> loadDetailPlan(PlanDetail plan_detail) {
-        List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDay(plan_detail.getPlanCode(), plan_detail.getDetailDay());
-        return planDetails;
+    public List<PlanDetailDto> loadDetailPlan(PlanDetailDto plan_detail) {
+        //planCode 검증됐고, detailDay 검증해서 가져왔으므로 여기서 따로 검사할 필요x
+        //PlanDetailDto에서 Plan 엔티티를 가져와야함. PlanDetailDto -> PlanDto -> PlanDto의 PK값
+        Optional<Plan> findPlan = planRepository.findById(plan_detail.getPlanCode().getPlanCode());
+        Plan planEntity = findPlan.orElse(null);
+        if (planEntity == null) return null;
+
+        List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDay(planEntity, plan_detail.getDetailDay());
+        List<PlanDetailDto> planDetailDtos = new ArrayList<>();
+
+        for (PlanDetail pd : planDetails) {
+            PlanDetailDto planDetailDto = PlanDetailDto.builder()
+                    .detailDay(pd.getDetailDay())
+                    .detailEnd(pd.getDetailEnd())
+                    .detailCode(pd.getDetailCode())
+                    .detailMemo(pd.getDetailMemo())
+                    .detailName(pd.getDetailName())
+                    .detailStart(pd.getDetailStart())
+                    .checklists(pd.getChecklists())
+                    .planCode(new PlanDto(pd.getPlanCode()))
+                    .build();
+            planDetailDtos.add(planDetailDto);
+        }
+        return planDetailDtos;
     }
 
-    public List<Plan> loadAllPlans(){
+    public List<Plan> loadAllPlans() {
         return planRepository.findAll();
     }
 

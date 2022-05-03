@@ -1,6 +1,6 @@
 <template>
 	<input type="text" v-model="searchPlan" placeholder="키워드를 입력하세요" />
-	<button>검색</button>
+	<button @click="tagFilter(this.searchPlan)">검색</button>
 	<h2>지역설정</h2>
 	<select v-model="planDestination">
 		<option>전체</option>
@@ -45,6 +45,14 @@ export default {
 		};
 	},
 	methods: {
+		tagFilter: function (tag) {
+			const url = 'api/tagFilter';
+			console.log(tag);
+			axios
+				.get(url, { params: { TagContent: tag } })
+				.then((response) => {})
+				.catch((error) => {});
+		},
 		orderBy: function (orderBy) {
 			if (orderBy == 'planViews') {
 				this.planList.sort(function (a, b) {

@@ -2,10 +2,7 @@ package com.example.capstone.domain.Plan;
 
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 //@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 @Entity
+ @ToString
 public class Plan {
 
     @Id
@@ -22,7 +20,7 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long planCode;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name= "TEAMCODE")
     private Team teamCode;
 

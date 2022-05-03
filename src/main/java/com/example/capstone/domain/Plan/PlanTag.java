@@ -2,16 +2,15 @@ package com.example.capstone.domain.Plan;
 
 
 import com.example.capstone.domain.Member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@ToString
+@NoArgsConstructor
 public class PlanTag {
 
 
@@ -25,6 +24,6 @@ public class PlanTag {
     private Plan plan;
 
     @Column
-    private String TagContent;
+    private String tagContent;
 
 }

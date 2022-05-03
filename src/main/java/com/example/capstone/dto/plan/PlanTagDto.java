@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PlanTagDTO {
+public class PlanTagDto {
 
     private Plan plan;
     private List<String> tagContentList;
