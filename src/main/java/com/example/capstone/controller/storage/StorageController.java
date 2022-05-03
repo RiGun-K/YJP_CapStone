@@ -359,5 +359,28 @@ public class StorageController {
     }
 
     // 보관함 보관소 이동
+    @PostMapping("boxToBoxPay")
+    private Result boxToBoxPay(@RequestBody StorageMove move){
+        Optional<Member> member = memberRepository.findByMID(move.getUserId());
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(move.getUse());
+        useStorageBox.get().setUseStorageState("4");
+        useStorageBoxRepository.save(useStorageBox.get());
+        Optional<StorageBox> beforeBox = storageBoxRepository.findById(move.getBefore());
+        beforeBox.get().setStorageBoxState("3");
+        storageBoxRepository.save(beforeBox.get());
+        Optional<StorageBox> afterBox = storageBoxRepository.findById(move.getAfter());
+        afterBox.get().setStorageBoxState("4");
+        storageBoxRepository.save(afterBox.get());
 
+        Orders orders = new Orders(member.get());
+
+        ordersRepository.save(orders);
+//        UseStorageBox(useStorageStartTime,useStorageEndTime, StorageBox, Orders)
+        UseStorageBox newUseStorageBox = new UseStorageBox(useStorageBox.get().getUseStorageStartTime(),
+                                                            useStorageBox.get().getUseStorageEndTime(),
+                                                            "4",
+                                                            afterBox.get(), orders );
+        useStorageBoxRepository.save(newUseStorageBox);
+        return new Result("ok");
+    }
 }

@@ -40,6 +40,14 @@ public class UseStorageBox {
         this.orderCode = orderCode;
     }
 
+    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, String useStorageState, StorageBox storageBoxCode, Orders orderCode) {
+        this.useStorageStartTime = useStorageStartTime;
+        this.useStorageEndTime = useStorageEndTime;
+        this.useStorageState = useStorageState;
+        this.storageBoxCode = storageBoxCode;
+        this.orderCode = orderCode;
+    }
+
     public UseStorageBox(StorageBox storageBoxCode, Orders orderCode) {
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;

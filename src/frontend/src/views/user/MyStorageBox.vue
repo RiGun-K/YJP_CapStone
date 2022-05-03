@@ -18,8 +18,8 @@
               <td>{{ useBox.startTime }}</td>
               <td>{{ useBox.endTime }}</td>
               <td v-if="useBox.none">
-                <button @click="moveBox(useBox)">장비 이동</button><button @click="repairBox(useBox)">장비 수리</button>
-                <button class="mystoragebox-re" @click="renewalPay(useBox)">보관함 연장 / 해지</button>
+                <button v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button><button v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
+                <button class="mystoragebox-re" v-if="useBox.BoxState == '3'" @click="renewalPay(useBox)">보관함 연장 / 해지</button>
               </td>
             </tr>
             </tbody>
@@ -62,6 +62,7 @@ export default {
                 boxState: '',
                 storageName: '',
                 useBoxCode:'',
+                useBoxState:'',
                 start: '',
                 end: '',
                 none: true
@@ -70,10 +71,12 @@ export default {
               const end = new Date(boxes[i][1])
               box.startTime = start.getFullYear() + '년' + (start.getMonth() + 1) + '월' + start.getDate() + '일 (' + arrDayStr[start.getDay()] + ')'
               box.endTime = end.getFullYear() + '년' + (end.getMonth() + 1) + '월' + end.getDate() + '일 (' + arrDayStr[end.getDay()] + ')'
-              box.boxName = boxes[i][2]
-              box.boxState = boxes[i][3]
-              box.storageName = boxes[i][4]
-              box.useBoxCode = boxes[i][5]
+              box.boxCode = boxes[i][2]
+              box.boxName = boxes[i][3]
+              box.boxState = boxes[i][4]
+              box.storageName = boxes[i][5]
+              box.useBoxCode = boxes[i][6]
+              box.useBoxState = boxes[i][7]
               box.start = start
               box.end = end
               // box.boxState 가 1 이면 연장 버튼 on 0이면 연장 버튼 off
@@ -134,6 +137,7 @@ export default {
           userId: this.memberId,  // 사용자 아이디
           storageName: useBox.storageName,    // 보관소 이름
           boxName: useBox.boxName,       // 보관함 이름
+          boxCode: useBox.boxCode,        // 보관함 코드
           useBoxCode : useBox.useBoxCode // 사용 보관함 코드
         }
       })

@@ -167,7 +167,16 @@ export default {
     askBox(storageCode) {
       console.log('보관소 코드')
       console.log(storageCode)
-      this.$router.push({name: 'userStorageDetail', params: {storageCode: storageCode}})
+      console.log(this.form)
+      this.$router.push({name: 'StorageMoveBoxDetail',
+                         params: {
+                           storageCode: storageCode,
+                           storageName:this.form.storageName,
+                           boxName:this.form.boxName,
+                           boxCode: this.form.boxCode,
+                           useBoxCode:this.form.useBoxCode
+                         }
+      })
     }
   }
 }

@@ -33,7 +33,7 @@
 import axios from "axios";
 
 export default {
-  name: "BoxMovePay",
+  name: "roundToBoxMovePay",
   mounted() {
   },
   data(){
