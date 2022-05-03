@@ -1,10 +1,12 @@
 package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.*;
 import com.example.capstone.dto.storage.*;
 import com.example.capstone.repository.Member.MemberRepository;
+import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Storage.*;
 import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -359,5 +361,60 @@ public class StorageController {
     }
 
     // 보관함 보관소 이동
+    @PostMapping("boxToBoxPay")
+    private Result boxToBoxPay(@RequestBody StorageMove move){
+        Optional<Member> member = memberRepository.findByMID(move.getUserId());
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(move.getUse());
+        useStorageBox.get().setUseStorageState("4");
+        useStorageBoxRepository.save(useStorageBox.get());
+        Optional<StorageBox> beforeBox = storageBoxRepository.findById(move.getBefore());
+        beforeBox.get().setStorageBoxState("3");
+        storageBoxRepository.save(beforeBox.get());
+        Optional<StorageBox> afterBox = storageBoxRepository.findById(move.getAfter());
+        afterBox.get().setStorageBoxState("4");
+        storageBoxRepository.save(afterBox.get());
+<<<<<<< HEAD
 
+        Orders orders = new Orders(member.get());
+
+        ordersRepository.save(orders);
+        UseStorageBox newUseStorageBox = new UseStorageBox(useStorageBox.get().getUseStorageStartTime(),
+                                                            useStorageBox.get().getUseStorageEndTime(),
+                                                            "4",
+                                                            afterBox.get(), orders );
+        useStorageBoxRepository.save(newUseStorageBox);
+        return new Result("ok");
+    }
+
+
+    ////////////////////////// 상품분류  //////////////////////////
+
+    @Autowired
+    KindRepository kindRepository;
+
+    @PostMapping("postKind")
+    private Result postKind(@RequestBody String name){
+        Kind kind = new Kind(name);
+        kindRepository.save(kind);
+        return new Result("ok");
+    }
+
+//    @GetMapping("getKindList/{name}")
+//    private Kind getKindList(@PathVariable(value = "id")int name){
+////        Optional
+//    }
+=======
+>>>>>>> d4c3baa753c9e6b99da2a43438f2cb71e330817e
+
+        Orders orders = new Orders(member.get());
+
+        ordersRepository.save(orders);
+//        UseStorageBox(useStorageStartTime,useStorageEndTime, StorageBox, Orders)
+        UseStorageBox newUseStorageBox = new UseStorageBox(useStorageBox.get().getUseStorageStartTime(),
+                                                            useStorageBox.get().getUseStorageEndTime(),
+                                                            "4",
+                                                            afterBox.get(), orders );
+        useStorageBoxRepository.save(newUseStorageBox);
+        return new Result("ok");
+    }
 }
