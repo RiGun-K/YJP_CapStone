@@ -3,7 +3,8 @@ package com.example.capstone.controller.Plan;
 
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
-import com.example.capstone.domain.Plan.PlanTag;
+import com.example.capstone.dto.plan.PlanTagDTO;
+import com.example.capstone.service.PlanTagService;
 import com.example.capstone.service.PlanService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,22 +16,22 @@ import java.util.Optional;
 public class PlannerApiController {
 
     private final PlanService planService;
-    public PlannerApiController(PlanService planService) {
+    private final PlanTagService planTagService;
+
+    public PlannerApiController(PlanService planService, PlanTagService planTagService) {
         this.planService = planService;
+        this.planTagService = planTagService;
     }
+
 
     @PostMapping("/api/createPlan")
-    public Optional<Plan> createPlan(@RequestBody Plan plan) {
-        planService.createPlan(plan);
-        Optional<Plan> selectedPlan = planService.selectPlan(plan.getPlanName());
-
+    public Optional<Plan> createPlan(@RequestBody PlanTagDTO plan) {
+    Plan newPlan= planService.createPlan(plan.getPlan());
+        Optional<Plan> selectedPlan = planService.selectPlan(plan.getPlan().getPlanName());
+        planTagService.insertTags(plan.getTagContentList(),newPlan);
         return selectedPlan;
     }
-    @PostMapping("api/test")
-    public String test(@RequestBody String planTags){
-        System.out.println(planTags);
-        return "hi";
-    }
+
 
     @PostMapping("/api/checkPlanName")
     public String checkPlanName(@RequestBody Plan plan) {

@@ -113,18 +113,6 @@ export default {
 		addTags: function (value) {
 			this.TagContentList.push(value);
 			this.tag = '';
-			const url = 'api/test';
-			const hihi = JSON.stringify(this.TagContentList);
-			console.log(hihi);
-			console.log(this.TagContentList);
-			axios
-				.post(url, { planTagContent: hihi })
-				.then((response) => {
-					console.log(response);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
 		},
 		deleteTag: function (index) {
 			console.log(index);
@@ -163,6 +151,19 @@ export default {
 		// 	const url = '/api/addTags';
 		// },
 		createPlan: function () {
+			const data = {
+				planName: this.planName,
+				teamCode: this.$store.state.teamCode.teamCode,
+				planStart: this.planStart,
+				planEnd: this.planEnd,
+				planDestination: this.planDestination,
+				planType: this.planType,
+				planNumber: this.planNumber,
+				planBudget: this.planBudget,
+				planTotalDate: this.diff,
+				planOpen: this.planOpen,
+			};
+			const form = { plan: data, tagContentList: this.TagContentList };
 			if (
 				this.planName !== '' &&
 				this.planBudget !== '' &&
@@ -179,18 +180,7 @@ export default {
 					console.log(this.$store.state.teamCode.teamCode);
 					const url = '/api/createPlan';
 					axios
-						.post(url, {
-							planName: this.planName,
-							teamCode: this.$store.state.teamCode.teamCode,
-							planStart: this.planStart,
-							planEnd: this.planEnd,
-							planDestination: this.planDestination,
-							planType: this.planType,
-							planNumber: this.planNumber,
-							planBudget: this.planBudget,
-							planTotalDate: this.diff,
-							planOpen: this.planOpen,
-						})
+						.post(url, form)
 						.then((response) => {
 							this.planCode = response.data;
 							this.$store.commit('updatePlanCode', response.data);

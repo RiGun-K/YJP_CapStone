@@ -1,6 +1,6 @@
 <template>
-	<h2>검색</h2>
 	<input type="text" v-model="searchPlan" placeholder="키워드를 입력하세요" />
+	<button>검색</button>
 	<h2>지역설정</h2>
 	<select v-model="planDestination">
 		<option>전체</option>
@@ -20,8 +20,13 @@
 		<option>충북</option>
 	</select>
 
+	<button @click="orderBy('planViews')">조회순</button>
+	<button @click="orderBy('planUsedCount')">카피순</button>
+
 	<div id="plans" v-for="(value, index) in planList" :key="index">
-		플랜이름: {{ value.planName }} 조회수: {{ value.planViews }} 카피수:
+		플랜이름: {{ value.planName }} <br />조회수: {{ value.planViews }}
+		<br />
+		카피수:
 		{{ value.planUsedCount }}
 	</div>
 </template>
@@ -40,6 +45,17 @@ export default {
 		};
 	},
 	methods: {
+		orderBy: function (orderBy) {
+			if (orderBy == 'planViews') {
+				this.planList.sort(function (a, b) {
+					return b.planViews - a.planViews;
+				});
+			} else if (orderBy == 'planUsedCount') {
+				this.planList.sort(function (a, b) {
+					return b.planUsedCount - a.planUsedCount;
+				});
+			}
+		},
 		loadAllPlans: function () {
 			const url = '/api/loadAllPlans';
 
@@ -47,8 +63,8 @@ export default {
 				.get(url)
 				.then((response) => {
 					response.data.map((item) => {
-						console.log(item);
 						this.planList.push(item);
+
 						return console.log(item);
 					});
 				})
