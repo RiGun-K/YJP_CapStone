@@ -35,10 +35,10 @@ export default {
       window.location.href = 'http://localhost:8081/ProductBuy'
     },
     PRental() {
-      window.location.href = 'http://localhost:8081/cart/buy'
+      window.location.href = 'http://localhost:8081/ProductRental'
     },
     PCamping() {
-      window.location.href = 'http://localhost:8081/cart/buy'
+      window.location.href = 'http://localhost:8081/ProductCamping'
     }
   }
 }

@@ -4,51 +4,69 @@
   <br>
   <h1>구매 등록 페이지 입니다.</h1>
   <br>
-  <div class="products-info">
-    <div class="product-input-form">
-      <label for="text-select">상품분류</label>
-
+  <div id="wrapper">
+    <div id="content">
       <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
-        <select v-model="kindid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
-          <option v-for="(option, index) in options" :key="index" :value="option">
-            {{option.text}}
-          </option>
-        </select>
-        <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
 
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">메뉴명</label>
-            <textarea v-model="buyName" :state="buyName" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
-          </div>
-        </form>
-        <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">수량</label>
-            <textarea v-model="buyStock" id="feedback-user" class="form-control is-invalid" placeholder="수량을 입력하세요." :state="buyStock" required></textarea>
-          </div>
-        </form>
+        <div>
+          <h3 class="join_title">
+            <label for="id">상품분류</label>
+          </h3>
+          <select v-model="kindid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
+            <option v-for="(option, index) in options" :key="index" :value="option">
+              {{option.text}}
+            </option>
+          </select>
+          <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
 
-
-        <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">가격</label>
-            <textarea v-model="buyPrice" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="buyPrice" required></textarea>
-          </div>
-        </form>
-
+          <br>
+          <span class="error_next_box"></span>
+          <h3 class="join_title">
+            <label for="id">상품명</label>
+          </h3>
+          <span class="box int_id">
+                        <input type="text" v-model="buyName" id="id" placeholder="상품명을 입력하세요" class="int" maxlength="20">
+                    </span>
+          <span class="error_next_box"></span>
+        </div>
 
         <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">설명</label>
-            <textarea v-model="buyEx" class="form-control is-invalid" placeholder="설명을 입력하세요." :state="buyEx" id="feedback-user" required></textarea>
-          </div>
-        </form>
+        <div>
+          <h3 class="join_title">
+            <label for="pswd1" >상품수량</label>
+          </h3>
+
+          <span class="box int_id">
+          <input type="text" v-model="buyStock" id="id" placeholder="상품 수량을 입력하세요" class="int" maxlength="100">
+                    </span>
+          <span class="error_next_box"></span>
+
+        </div>
 
         <br>
+        <div>
+          <h3 class="join_title">
+            <label for="email">상품가격</label>
+          </h3>
+          <span class="box int_email">
+            <input type="text" v-model="buyPrice" id="email" class="int" maxlength="100" placeholder="상품 가격을 입력하세요">
+          </span>
+        </div>
+
+        <br>
+        <div>
+          <h3 class="join_title">
+            <label for="email">상품설명</label>
+          </h3>
+          <span class="box int_email">
+            <input type="text" v-model="buyEx" id="email" class="int" maxlength="100" placeholder="상품 설명을 입력하세요">
+          </span>
+        </div>
+
+        <br>
+        <h3 class="join_title">
+          <label for="pswd2">이미지 등록</label>
+        </h3>
         <div class="input-group">
           <form>
             <input type="file"
@@ -65,12 +83,16 @@
           </form>
         </div>
 
+        <br>
+        <div class="btn_area">
+          <button type="submit" class="btn btn-outline-primary" @click="BuySubmit" id="btnJoin">
+            <span>등록하기</span>
+          </button>
 
+        </div>
       </form>
     </div>
-    <br>
   </div>
-  <button variant="outline-primary" type="submit" @click="BuySubmit">등록하기</button>
 </template>
 
 <script>
@@ -180,17 +202,79 @@ export default {
 h1{
   text-align: center;
 }
-.products-info{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+textarea {
+  width: 100%;
+  height: 6.25em;
+  border: none;
+  resize: none;
 }
-.product-input-form{
-  width: 30%;
-  text-align: center;
+body {
+  margin: 0;
+  height: 100%;
+  background-color: #E6E6FA;
 }
-button{
-  margin-left: 49%;
-  margin-top: 3%;
+#wrapper {
+  position: relative;
+  height: 100%;
+}
+#content {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  width: 460px;
+}
+/* 입력폼 */
+h3 {
+  margin: 19px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.box {
+  display: block;
+  width: 100%;
+  height: 51px;
+  border: solid 1px #dadada;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  background: #fff;
+  position: relative;
+}
+.int {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 29px;
+  border: none;
+  background: #fff;
+  font-size: 15px;
+}
+
+.box.int_pass {
+  padding-right: 40px;
+}
+.box.int_pass_check {
+  padding-right: 40px;
+}
+select {
+  width: 100%;
+  height: 29px;
+  font-size: 15px;
+  background-size: 20px 8px;
+  -webkit-appearance: none;
+  display: inline-block;
+  text-align: start;
+  border: none;
+  cursor: default;
+}
+.error_next_box {
+  margin-top: 9px;
+  font-size: 12px;
+  color: red;
+  display: none;
+}
+
+#btnJoin {
+  margin: auto;
+  display: block;
 }
 </style>

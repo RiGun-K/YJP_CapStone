@@ -1,15 +1,11 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Kind;
-import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
-import com.example.capstone.dto.Product.MenuBuyDTO;
 import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
-import com.example.capstone.repository.Product.MenuRepository;
 import com.example.capstone.service.ProductService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +25,7 @@ import java.util.UUID;
 //@Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @NoArgsConstructor
-//@AllArgsConstructor  // @Autowired 대신사용
+//@AllArgsConstructor  // @Autowired 대신사용 , But 쓰면 DB 저장안됨 ( Null )
 @RequestMapping("/api")
 public class ProductController {
     @Autowired

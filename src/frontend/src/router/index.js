@@ -137,6 +137,11 @@ const routes = [
     name: 'ProductCamping',
     component: () => import('@/components/product/RegistrationCamping.vue')
   },
+  {
+    path: '/RegistrationCampingDetail/:campingName',
+    name: 'RegistrationCampingDetail',
+    component: () => import('@/components/product/RegistrationCampingDetail.vue')
+  },
     /////////////////////////////////////////////////////////
   {
     path: '/MyProductList',
@@ -159,12 +164,6 @@ const routes = [
     path: '/ProductList',
     name: 'ProductList',
     component: () => import('@/components/product/ProductList.vue')
-  },
-  {
-    path: '/registration',
-    name: 'Registration',
-    component: () => import('@/components/product/Registration.vue'),
-    props: true
   },
   {
     path: '/ProductDetail/:menuid',
