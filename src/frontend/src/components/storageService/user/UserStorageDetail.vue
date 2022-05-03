@@ -9,7 +9,7 @@
         <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
           <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
-            <p v-else-if="box.storageBoxState == '1' ">사용불가능</p>
+            <p v-else>사용불가능</p>
           </li>
         </ul>
       </div>

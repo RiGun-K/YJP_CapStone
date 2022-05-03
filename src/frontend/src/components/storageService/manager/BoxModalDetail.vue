@@ -89,9 +89,9 @@ export default {
               data.userName = datak[0]
               data.boxCode = datak[1]
               data.boxName = datak[2]
-              data.boxState = datak[3]
-              data.boxType = datak[4]
-              data.storageCode = datak[5]
+              data.boxState = datak[4]
+              data.boxType = datak[5]
+              data.storageCode = datak[6]
               data.useStorageCode = datak[7]
               data.useStorageState = datak[8]
               this.box = data
