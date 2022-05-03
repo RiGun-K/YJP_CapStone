@@ -8,19 +8,18 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class MenuDTO {
+public class MenuBuyDTO {
 
-    private int menuid;
-    private String menuname;
-    private int price;
-    private String ex;
+    private int buyid;
+    private String buyName;
+    private int buyPrice;
+    private String buyEx;
     private LocalDate savedTime;
-    private int stock;
+    private int buyStock;
     private String origFilename;
     private String filename;
     private String filePath;
 
     private int kindid;
     private String mid;
-
 }

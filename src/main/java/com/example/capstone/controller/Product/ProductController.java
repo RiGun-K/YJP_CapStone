@@ -3,9 +3,12 @@ package com.example.capstone.controller.Product;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.Menu;
+import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.dto.Product.MenuBuyDTO;
 import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.KindRepository;
+import com.example.capstone.repository.Product.MenuBuyRepository;
 import com.example.capstone.repository.Product.MenuRepository;
 import com.example.capstone.service.ProductService;
 import lombok.NoArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +37,7 @@ public class ProductController {
     MemberRepository memberRepository;
 
     @Autowired
-    MenuRepository menuRepository;
+    MenuBuyRepository menuBuyRepository;
 
     @Autowired
     KindRepository kindRepository;
@@ -45,8 +49,8 @@ public class ProductController {
     /* 전체상품 리스트 */
     @GetMapping("/product_list")
 //    @JsonProperty("menu")
-    public List<Menu> menuList() {
-        List<Menu> menus = menuRepository.findAll();
+    public List<MenuBuy> menuList() {
+        List<MenuBuy> menus = menuBuyRepository.findAll();
         System.out.println(menus);
 //        List<Menu> menuList = menuRepository.findAllByMemberList();
 
@@ -64,10 +68,10 @@ public class ProductController {
 
     /* 판매상품 상세 페이지 */
     @GetMapping("/product_detail/{menuid}")
-    public Optional<Menu> getProduct_Detail(@PathVariable("menuid") int menuid) {
+    public Optional<MenuBuy> getProduct_Detail(@PathVariable("menuid") int menuid) {
         System.out.println("메뉴번호 는" + menuid + "입니다.");
 
-        Optional<Menu> menuDetailList = menuRepository.findById(menuid);
+        Optional<MenuBuy> menuDetailList = menuBuyRepository.findById(menuid);
         return menuDetailList;
 
     }
@@ -88,8 +92,8 @@ public class ProductController {
 //        return menuMyList;
 //    }
     @GetMapping("/myProduct_list/{user}")
-    public List<Menu> myMenuList(@PathVariable("user") String user) {
-        List<Menu> myMenus = menuRepository.findByMIDMID(user);
+    public List<MenuBuy> myMenuList(@PathVariable("user") String user) {
+        List<MenuBuy> myMenus = menuBuyRepository.findByMIDMID(user);
 
 //        List<Menu> myMenus = menuRepository.findAll();
 //        List<Menu> menuList = menuRepository.findAllByMemberList();
@@ -109,10 +113,10 @@ public class ProductController {
 
     /* 나의상품 상세페이지 */
     @GetMapping("/myProduct_detail/{menuid}")
-    public Optional<Menu> getMyProduct_Detail(@PathVariable("menuid") int menuid) {
+    public Optional<MenuBuy> getMyProduct_Detail(@PathVariable("menuid") int menuid) {
         System.out.println("메뉴번호 는" + menuid + "입니다.");
 
-        Optional<Menu> myMenuDetailList = menuRepository.findById(menuid);
+        Optional<MenuBuy> myMenuDetailList = menuBuyRepository.findById(menuid);
         return myMenuDetailList;
 
     }
@@ -121,9 +125,9 @@ public class ProductController {
     @DeleteMapping("/myProduct_Delete/{menuid}")
     public String DeleteMyProduct_Detail(@PathVariable("menuid") int menuid) {
         System.out.println("삭제하실 메뉴번호는" + menuid + " 입니다.");
-        Optional<Menu> menu = menuRepository.findById(menuid);
+        Optional<MenuBuy> menuBuy = menuBuyRepository.findById(menuid);
 
-        menuRepository.deleteById(menuid);
+        menuBuyRepository.deleteById(menuid);
         // menuService.deleteById(menuid);
         return "메뉴가 삭제되었습니다.";
     }
@@ -137,7 +141,7 @@ public class ProductController {
 //    }
 
     @PutMapping("/myProduct_Update")
-    public Menu UpdateMyProduct_Detail(@RequestParam(value = "file", required = false) MultipartFile uploadFile, Menu menu, MenuDTO menuDTO) throws IllegalStateException, IOException {
+    public MenuBuy UpdateMyProduct_Detail(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuy menuBuy, MenuDTO menuDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
         System.out.println("파일 크기" + uploadFile.getSize());
 
@@ -168,17 +172,17 @@ public class ProductController {
             String filePath = savePath + "\\" + filename;
             uploadFile.transferTo(new File(filePath));
 
-            menu.setOrigFilename(origFilename);
-            menu.setFilename(filename);
-            menu.setFilePath(filePath);
+            menuBuy.setOrigFilename(origFilename);
+            menuBuy.setFilename(filename);
+            menuBuy.setFilePath(filePath);
 
 
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("123");
         }
-        System.out.println(menu.getKindid());
-        System.out.println(menu.getMenuid());
+        System.out.println(menuBuy.getKindid());
+        System.out.println(menuBuy.getBuyId());
 
         /* menu.getMID() 하면 반환값이 String인데 타입은 Menu라서 Null로 뜸
            따라서 menuDTO.getMid() <- String 타입으로 넘겨서 member 테이블에서 'rigun'을 찾아줌
@@ -193,87 +197,22 @@ public class ProductController {
 
 
 
-            menu.setSavedTime(LocalDateTime.now());
+        menuBuy.setSavedTime(LocalDate.now());
 
         Optional<Member> member = memberRepository.findByMID(menuDTO.getMid());
 
         System.out.println(member.get());
-            menu.setMID(member.get());
+        menuBuy.setMID(member.get());
         //            menu.setMID(memberRepository.findByMID("rigun").get());
 
-        System.out.println(menu);
+        System.out.println(menuBuy);
 //
 
-        menuRepository.save(menu);
+        menuBuyRepository.save(menuBuy);
 
-        return menu;
+        return menuBuy;
     }
 
 
-    /* 상품등록 페이지 */
-    @PostMapping("/product_signup")
-    public Menu addMenu(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuDTO menuDTO) throws IllegalStateException, IOException {
-        System.out.println("파일 이름" + uploadFile.getOriginalFilename());
-        System.out.println("파일 크기" + uploadFile.getSize());
 
-        // 경로지정
-//        String path = "C:\\Vue-Spring\\src\\main\\resources\\static\\images";
-
-        // 파일명 충돌방지(랜덤함수) 설정후 파일저장
-//        UUID uuid = UUID.randomUUID();
-//        String uuidFilename = uuid + "_" + uploadFile.getOriginalFilename();
-//        File file = new File(path + uuidFilename);
-//        uploadFile.transferTo(file);
-
-//        String path = request.getSession().getServletContext().getRealPath("/").concat("resources");
-//        System.out.println("path"+path);
-
-        try {
-            String origFilename = uploadFile.getOriginalFilename();
-//            String filename = new MD5Generator(origFilename).toString();
-
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
-
-            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
-            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
-            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdir();
-                }
-                catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String filePath = savePath + "\\" + filename;
-            uploadFile.transferTo(new File(filePath));
-
-            menuDTO.setOrigFilename(origFilename);
-            menuDTO.setFilename(filename);
-            menuDTO.setFilePath(filePath);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(menuDTO.getMid());
-        Optional<Member> member = memberRepository.findByMID(menuDTO.getMid());
-
-
-        Optional<Kind> kind = kindRepository.findById(menuDTO.getKindid());
-
-
-        if(menuDTO.getSavedTime()==null)
-            menuDTO.setSavedTime(LocalDateTime.now());
-
-
-        Menu menu = new Menu(menuDTO.getMenuname(), menuDTO.getPrice(), menuDTO.getEx(), menuDTO.getSavedTime(), menuDTO.getStock(), menuDTO.getOrigFilename(), menuDTO.getFilename(), menuDTO.getFilePath(), kind.get(), member.get());
-        System.out.println(menu);
-
-        menuRepository.save(menu);
-
-        return menu;
-    }
 }
