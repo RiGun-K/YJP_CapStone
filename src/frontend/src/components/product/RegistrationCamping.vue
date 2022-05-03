@@ -9,33 +9,25 @@
       <label for="text-select">상품분류</label>
 
       <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
-        <select v-model="kindid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
+        <select v-model="infoterid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
           <option v-for="(option, index) in options" :key="index" :value="option">
             {{option.text}}
           </option>
         </select>
-        <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
+        <div class="mt-3">선택유형 : <strong>{{ infoterid.text }}</strong></div>
 
+        <br>
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">메뉴명</label>
-            <textarea v-model="buyName" :state="buyName" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
+            <textarea v-model="campingName" :state="campingName" id="feedback-user" class="form-control is-invalid" placeholder="캠핑장 이름을 입력하세요." required></textarea>
           </div>
         </form>
         <br>
         <form class="was-validated">
           <div class="mb-1">
-            <label for="validationTextarea" class="form-label">수량</label>
-            <textarea v-model="buyStock" id="feedback-user" class="form-control is-invalid" placeholder="수량을 입력하세요." :state="buyStock" required></textarea>
-          </div>
-        </form>
-
-
-        <br>
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">가격</label>
-            <textarea v-model="buyPrice" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="buyPrice" required></textarea>
+            <label for="validationTextarea" class="form-label">객실 수</label>
+            <textarea v-model="campingDetailState" id="feedback-user" class="form-control is-invalid" placeholder="운영할 객실 수를 입력하세요." :state="campingDetailState" required></textarea>
           </div>
         </form>
 
@@ -44,7 +36,24 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">설명</label>
-            <textarea v-model="buyEx" class="form-control is-invalid" placeholder="설명을 입력하세요." :state="buyEx" id="feedback-user" required></textarea>
+            <textarea v-model="campingInfo" class="form-control is-invalid" placeholder="캠핑장 설명을 입력하세요." :state="campingInfo" id="feedback-user" required></textarea>
+          </div>
+        </form>
+
+        <br>
+        <form class="was-validated">
+          <div class="mb-1">
+            <label for="validationTextarea" class="form-label">주소 등록하기</label>
+            <textarea v-model="address" class="form-control is-invalid" placeholder="주소를 입력하세요." :state="address" id="feedback-user" required></textarea>
+          </div>
+        </form>
+
+
+        <br>
+        <form class="was-validated">
+          <div class="mb-1">
+            <label for="validationTextarea" class="form-label">상세주소 등록하기</label>
+            <textarea v-model="detailAddress" class="form-control is-invalid" placeholder="상세주소를 입력하세요." :state="detailAddress" id="feedback-user" required></textarea>
           </div>
         </form>
 
@@ -87,12 +96,14 @@ export default {
   },
   data() {
     return {
-      kindid: '',
-      buyName: '',
-      buyStock: '',
-      buyPrice: '',
-      buyEx: '',
+      infoterid: '',
+      campingName: '',
+      campingInfo: '',
+      campingDetailState: '',
       file: '',
+      address: '',
+      detailAddress: '',
+
       mid: store.getters.getLoginState.loginState,
 
       id: '',
@@ -100,12 +111,12 @@ export default {
 
 
       options: [
-        { value: '1', text: '캠핑패키지'},
-        { value: '2', text: '캠핑용품'},
-        { value: '3', text: '등산용품'},
-        { value: '4', text: '식품패키지'},
-        { value: '5', text: '육류'},
-        { value: '6', text: '과일'},
+        { value: '1', text: '오토캠핑'},
+        { value: '2', text: '글램핑'},
+        { value: '3', text: '카라반'},
+        { value: '4', text: '자전거캠핑'},
+        { value: '5', text: '차박'},
+        { value: '6', text: '기타'},
       ],
     }
   },
@@ -143,17 +154,18 @@ export default {
 
       // const photoFile = document.getElementById("file_load");
 
-      formData.append('kindid', this.kindid.value);
-      formData.append('buyName', this.buyName);
-      formData.append('buyPrice', this.buyPrice);
-      formData.append('buyStock', this.buyStock);
-      formData.append('buyEx', this.buyEx);
+      formData.append('infoterId', this.infoterid.value);
+      formData.append('campingName', this.campingName);
+      formData.append('campingInfo', this.campingInfo);
+      formData.append('campingDetailState', this.campingDetailState);
+      formData.append('address', this.address);
+      formData.append('detailAddress', this.detailAddress);
       formData.append('file', this.file);
       formData.append('mid', this.mid);
 
 
 
-      console.log(this.kindid.value, this.buyName, this.buyStock, this.buyPrice, this.buyEx, this.file, this.mid);
+      console.log(this.infoterid.value, this.campingName, this.campingInfo, this.campingDetailState, this.address, this.detailAddress, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
       if (confirm("상품을 등록하시겠습니까?")) {

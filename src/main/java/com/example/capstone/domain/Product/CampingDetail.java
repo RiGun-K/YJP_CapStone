@@ -19,6 +19,10 @@ public class CampingDetail {
     // 객실설명 ( 상세설명 , 차후 PDF 로 변경예정 )
     @Column
     private String detailEx;
+    // 객실마다 가격설정
+    @Column
+    private int detailPrice;
+
 
     // 기준인원
     @Column

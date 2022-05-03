@@ -65,6 +65,18 @@ public class MenuRental {
     private Member MID;
 
     public MenuRental() {}
+    public MenuRental(String rentalName, int rentalPrice, String rentalEx, LocalDate savedTime, int rentalStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
+        this.rentalName = rentalName;
+        this.rentalPrice = rentalPrice;
+        this.rentalEx = rentalEx;
+        this.savedTime = savedTime;
+        this.rentalStock = rentalStock;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.kindid = kindid;
+        this.MID = MID;
+    }
 
     public int getRentalId() {
         return rentalId;

@@ -1,6 +1,8 @@
 package com.example.capstone.domain.Product;
 
 import com.example.capstone.domain.Member.Member;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "camping")
 public class Camping {
 
@@ -16,8 +20,6 @@ public class Camping {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int campingId;
 
-    @Column
-    private int price;
     @Column
     private String campingName;
     // 캠핑장 정보 ( 한옥펜션과 수영장이 있는 카라반캠핑장 )
@@ -41,6 +43,14 @@ public class Camping {
     @LastModifiedDate
     private LocalDate modifiedDate;
 
+    // 파일
+    @Column()
+    private String origFilename;
+    @Column()
+    private String filename;
+    @Column()
+    private String filePath;
+
 
     // 캠핑장 종류
     @ManyToOne()
@@ -53,19 +63,20 @@ public class Camping {
     private Member MID;
 
     public Camping() {}
-    public Camping(int campingId, int price, String campingName, String campingInfo, String campingState, String campingDetailState, String address, String detailAddress, LocalDate savedTime, LocalDate modifiedDate, Infoter infoterId) {
-        this.campingId = campingId;
-        this.price = price;
+    public Camping(String campingName, String campingInfo, String campingDetailState, String address, String detailAddress, LocalDate savedTime, String origFilename, String filename, String filePath, Infoter infoterId, Member MID) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
-        this.campingState = campingState;
         this.campingDetailState = campingDetailState;
         this.address = address;
         this.detailAddress = detailAddress;
         this.savedTime = savedTime;
-        this.modifiedDate = modifiedDate;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
         this.infoterId = infoterId;
+        this.MID = MID;
     }
+
 
     public int getCampingId() {
         return campingId;
@@ -73,14 +84,6 @@ public class Camping {
 
     public void setCampingId(int campingId) {
         this.campingId = campingId;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getCampingName() {

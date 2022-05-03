@@ -16,6 +16,7 @@
         </select>
         <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
 
+        <br>
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">메뉴명</label>

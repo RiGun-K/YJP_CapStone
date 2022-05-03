@@ -1,14 +1,12 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Camping;
-import com.example.capstone.domain.Product.Kind;
-import com.example.capstone.domain.Product.MenuBuy;
-import com.example.capstone.domain.Product.MenuRental;
+import com.example.capstone.domain.Product.*;
+import com.example.capstone.dto.Product.CampingDTO;
 import com.example.capstone.dto.Product.MenuBuyDTO;
+import com.example.capstone.dto.Product.MenuRentalDTO;
 import com.example.capstone.repository.Member.MemberRepository;
-import com.example.capstone.repository.Product.KindRepository;
-import com.example.capstone.repository.Product.MenuBuyRepository;
+import com.example.capstone.repository.Product.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,13 @@ public class RegistrationController {
 
     MenuBuyRepository menuBuyRepository;
 
+    MenuRentalRepository menuRentalRepository;
+
+    CampingRepository campingRepository;
+
     KindRepository kindRepository;
+
+    InfoterRepository infoterRepository;
 
 
     /* 구매상품 등록 페이지 */
@@ -92,7 +96,7 @@ public class RegistrationController {
 
     /* 렌탈상품 등록 페이지 */
     @PostMapping("/Rental_Signup")
-    public MenuRental addMenuRental(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
+    public MenuRental addMenuRental(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuRentalDTO menuRentalDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
         System.out.println("파일 크기" + uploadFile.getSize());
 
@@ -116,37 +120,37 @@ public class RegistrationController {
             String filePath = savePath + "\\" + filename;
             uploadFile.transferTo(new File(filePath));
 
-            MenuBuyDTO.setOrigFilename(origFilename);
-            MenuBuyDTO.setFilename(filename);
-            MenuBuyDTO.setFilePath(filePath);
+            menuRentalDTO.setOrigFilename(origFilename);
+            menuRentalDTO.setFilename(filename);
+            menuRentalDTO.setFilePath(filePath);
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println(MenuBuyDTO.getMid());
-        Optional<Member> member = memberRepository.findByMID(MenuBuyDTO.getMid());
+        System.out.println(menuRentalDTO.getMid());
+        Optional<Member> member = memberRepository.findByMID(menuRentalDTO.getMid());
 
 
-        Optional<Kind> kind = kindRepository.findById(MenuBuyDTO.getKindid());
+        Optional<Kind> kind = kindRepository.findById(menuRentalDTO.getKindid());
 
 
-        if(MenuBuyDTO.getSavedTime()==null)
-            MenuBuyDTO.setSavedTime(LocalDate.now());
+        if(menuRentalDTO.getSavedTime()==null)
+            menuRentalDTO.setSavedTime(LocalDate.now());
 
 
-        MenuBuy menuBuy = new MenuBuy(MenuBuyDTO.getBuyName(), MenuBuyDTO.getBuyPrice(), MenuBuyDTO.getBuyEx(), MenuBuyDTO.getSavedTime(), MenuBuyDTO.getBuyStock(), MenuBuyDTO.getOrigFilename(), MenuBuyDTO.getFilename(), MenuBuyDTO.getFilePath(), kind.get(), member.get());
-        System.out.println(menuBuy);
+        MenuRental menuRental = new MenuRental(menuRentalDTO.getRentalName(), menuRentalDTO.getRentalPrice(), menuRentalDTO.getRentalEx(), menuRentalDTO.getSavedTime(), menuRentalDTO.getRentalStock(), menuRentalDTO.getOrigFilename(), menuRentalDTO.getFilename(), menuRentalDTO.getFilePath(), kind.get(), member.get());
+        System.out.println(menuRental);
 
-        menuBuyRepository.save(menuBuy);
+        menuRentalRepository.save(menuRental);
 
-        return MenuRental;
+        return menuRental;
     }
 
     /* 캠핑장 등록 페이지 */
     @PostMapping("/Camping_Signup")
-    public Camping addMenuCamping(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
+    public Camping addMenuCamping(@RequestParam(value = "file", required = false) MultipartFile uploadFile, CampingDTO campingDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
         System.out.println("파일 크기" + uploadFile.getSize());
 
@@ -170,31 +174,31 @@ public class RegistrationController {
             String filePath = savePath + "\\" + filename;
             uploadFile.transferTo(new File(filePath));
 
-            MenuBuyDTO.setOrigFilename(origFilename);
-            MenuBuyDTO.setFilename(filename);
-            MenuBuyDTO.setFilePath(filePath);
+            campingDTO.setOrigFilename(origFilename);
+            campingDTO.setFilename(filename);
+            campingDTO.setFilePath(filePath);
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println(MenuBuyDTO.getMid());
-        Optional<Member> member = memberRepository.findByMID(MenuBuyDTO.getMid());
+        System.out.println(campingDTO.getMid());
+        Optional<Member> member = memberRepository.findByMID(campingDTO.getMid());
 
 
-        Optional<Kind> kind = kindRepository.findById(MenuBuyDTO.getKindid());
+        Optional<Infoter> infoter = infoterRepository.findById(campingDTO.getInfoterId());
 
 
-        if(MenuBuyDTO.getSavedTime()==null)
-            MenuBuyDTO.setSavedTime(LocalDate.now());
+        if(campingDTO.getSavedTime()==null)
+            campingDTO.setSavedTime(LocalDate.now());
 
 
-        MenuBuy menuBuy = new MenuBuy(MenuBuyDTO.getBuyName(), MenuBuyDTO.getBuyPrice(), MenuBuyDTO.getBuyEx(), MenuBuyDTO.getSavedTime(), MenuBuyDTO.getBuyStock(), MenuBuyDTO.getOrigFilename(), MenuBuyDTO.getFilename(), MenuBuyDTO.getFilePath(), kind.get(), member.get());
-        System.out.println(menuBuy);
+        Camping camping = new Camping(campingDTO.getCampingName(), campingDTO.getCampingInfo(), campingDTO.getCampingDetailState(), campingDTO.getAddress(), campingDTO.getDetailAddress(), campingDTO.getSavedTime(), campingDTO.getOrigFilename(), campingDTO.getFilename(), campingDTO.getFilePath(), infoter.get(), member.get());
+        System.out.println(camping);
 
-        menuBuyRepository.save(menuBuy);
+        campingRepository.save(camping);
 
-        return menuBuy;
+        return camping;
     }
 }

@@ -7,19 +7,18 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class MenuDTO {
+public class MenuRentalDTO {
 
-    private int menuid;
-    private String menuname;
-    private int price;
-    private String ex;
+    private int rentalId;
+    private String rentalName;
+    private int rentalPrice;
+    private String rentalEx;
     private LocalDate savedTime;
-    private int stock;
+    private int rentalStock;
     private String origFilename;
     private String filename;
     private String filePath;
 
     private int kindid;
     private String mid;
-
 }

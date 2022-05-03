@@ -48,6 +48,12 @@ public class MenuBuy {
     @JoinColumn(name = "MID")
     private Member MID;
 
+
+    // fetch = FetchType.LAZY 쓰면 외래키 조회 불가 !
+//    @JsonBackReference
+    // cascade = CascadeType.ALL ( 삭제되면 같이삭제 )
+
+
     public MenuBuy() {}
     public MenuBuy(String buyName, int buyPrice, String buyEx, LocalDate savedTime, int buyStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
         this.buyName = buyName;

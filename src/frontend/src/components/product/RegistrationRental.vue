@@ -16,17 +16,18 @@
         </select>
         <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
 
+        <br>
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">메뉴명</label>
-            <textarea v-model="buyName" :state="buyName" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
+            <textarea v-model="rentalName" :state="rentalName" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
           </div>
         </form>
         <br>
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">수량</label>
-            <textarea v-model="buyStock" id="feedback-user" class="form-control is-invalid" placeholder="수량을 입력하세요." :state="buyStock" required></textarea>
+            <textarea v-model="rentalStock" id="feedback-user" class="form-control is-invalid" placeholder="수량을 입력하세요." :state="rentalStock" required></textarea>
           </div>
         </form>
 
@@ -35,7 +36,7 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">가격</label>
-            <textarea v-model="buyPrice" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="buyPrice" required></textarea>
+            <textarea v-model="rentalPrice" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="rentalPrice" required></textarea>
           </div>
         </form>
 
@@ -44,10 +45,15 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">설명</label>
-            <textarea v-model="buyEx" class="form-control is-invalid" placeholder="설명을 입력하세요." :state="buyEx" id="feedback-user" required></textarea>
+            <textarea v-model="rentalEx" class="form-control is-invalid" placeholder="설명을 입력하세요." :state="rentalEx" id="feedback-user" required></textarea>
           </div>
         </form>
 
+        <br>
+        <br>
+        <label for="validationTextarea" class="form-label">상품이미지</label>
+
+        <br>
         <br>
         <div class="input-group">
           <form>
@@ -88,10 +94,10 @@ export default {
   data() {
     return {
       kindid: '',
-      buyName: '',
-      buyStock: '',
-      buyPrice: '',
-      buyEx: '',
+      rentalName: '',
+      rentalStock: '',
+      rentalPrice: '',
+      rentalEx: '',
       file: '',
       mid: store.getters.getLoginState.loginState,
 
@@ -103,9 +109,7 @@ export default {
         { value: '1', text: '캠핑패키지'},
         { value: '2', text: '캠핑용품'},
         { value: '3', text: '등산용품'},
-        { value: '4', text: '식품패키지'},
-        { value: '5', text: '육류'},
-        { value: '6', text: '과일'},
+
       ],
     }
   },
@@ -144,20 +148,20 @@ export default {
       // const photoFile = document.getElementById("file_load");
 
       formData.append('kindid', this.kindid.value);
-      formData.append('buyName', this.buyName);
-      formData.append('buyPrice', this.buyPrice);
-      formData.append('buyStock', this.buyStock);
-      formData.append('buyEx', this.buyEx);
+      formData.append('rentalName', this.rentalName);
+      formData.append('rentalPrice', this.rentalPrice);
+      formData.append('rentalStock', this.rentalStock);
+      formData.append('rentalEx', this.rentalEx);
       formData.append('file', this.file);
       formData.append('mid', this.mid);
 
 
 
-      console.log(this.kindid.value, this.buyName, this.buyStock, this.buyPrice, this.buyEx, this.file, this.mid);
+      console.log(this.kindid.value, this.rentalName, this.rentalStock, this.rentalPrice, this.rentalEx, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
       if (confirm("상품을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/Buy_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        axios.post(`${baseURI}/api/Rental_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
               alert("상품이 등록되었습니다.");
