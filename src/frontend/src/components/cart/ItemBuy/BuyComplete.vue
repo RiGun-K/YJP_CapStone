@@ -6,14 +6,14 @@
       <h5>결제내역<button >바로가기</button></h5>
       <table class="pay-now-info">
         <tr>
-          <td>주문 금액 {{price}}</td>
-          <td>배송비 {{price}}</td>
-          <td>결제 금액 {{price}}</td>
+          <td>주문 금액 {{orderPrice}}</td>
+          <td>배송비</td>
+          <td>결제 금액 {{orderPrice}}</td>
         </tr>
         <tr>
-          <td>구매상품 총 {{n}}개</td>
-          <td> </td>
-          <td>결제수단</td>
+          <td>구매상품 총 {{orderMenuCount}}개</td>
+          <td>1000</td>
+          <td>{{orderType }}</td>
         </tr>
       </table>
 
@@ -34,47 +34,19 @@
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title">상품 이름</h5>
+                    <h5 class="card-title">{{menuName }}</h5>
                     <p class="card-text">옵션</p>
                   </div>
                 </div>
               </div>
             </div>
           </td>
-          <td>{{n}}</td>
-          <td>{{price}}</td>
-          <td>{{price}}</td>
+          <td>{{orderMenuCount}}</td>
+          <td>{{orderPrice}}</td>
+          <td>1000</td>
         </tr>
       </table>
 
-      <table class="pay-now-item-info">
-        <tr>
-          <td>상품/옵션 정보</td>
-          <td>수량</td>
-          <td>상품 금액</td>
-          <td>배송비</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="card mb-3" style="max-width: 540px;">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">상품 이름</h5>
-                    <p class="card-text">옵션</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td>{{n}}</td>
-          <td>{{price}}</td>
-          <td>{{price}}</td>
-        </tr>
-      </table>
     </div>
     <button class="pay-info-back-btn"><router-link class="nav-link" to="/itemBuy">돌아가기</router-link></button>
   </div>
@@ -84,10 +56,16 @@
 export default {
   name: 'BuyComplete',
   data () {
-    return {
-      price: 1000,
-      n: 5
-    }
+
+  },
+  props:
+    ['orderMenuCount', 'orderPrice', 'menuName', 'orderType']
+  ,
+  created() {
+    console.log(this.$route.params.orderMenuCount)
+    console.log(this.$route.params.orderPrice)
+    console.log(this.$route.params.menuName)
+
   }
 }
 </script>

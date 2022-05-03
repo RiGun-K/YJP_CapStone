@@ -7,20 +7,31 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="orderMenu")
-@IdClass(OrderMenuPK.class)
 public class OrderMenu {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int orderMenuId;
+
     @ManyToOne
     @JoinColumn(name = "orderCode")
     private Orders orders;
 
-    @Id
+
     @ManyToOne
     @JoinColumn(name = "menuid")
     private Menu menu;
 
     @Column
     private int orderMenuCount;
+
+    public int getOrderMenuId() {
+        return orderMenuId;
+    }
+
+    public void setOrderMenuId(int orderMenuId) {
+        this.orderMenuId = orderMenuId;
+    }
 
     public Orders getOrders() {
         return orders;

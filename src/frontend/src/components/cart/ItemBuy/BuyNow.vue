@@ -180,19 +180,12 @@ export default {
           confirm_url: ''
         }, (rsp) => {
           if (rsp.success) {
-            // let msg = '결제가 완료되었습니다.'
+            const msg = '결제가 완료되었습니다.'
             // msg += '고유ID : ' + rsp.imp_uid
             // msg += '상점 거래 ID : ' + rsp.merchant_uid
             // msg += '결제 금액 : ' + rsp.paid_amount
             // msg += '카드 승인번호 : ' + rsp.apply_num
-            // alert(msg)
-
-            window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
-          } else {
-            let msg = '결제에 실패하였습니다.'
-            msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-
             this.axios.post('http://localhost:9002/api/buyData', {
               MID: this.Content.mid.mid,
               deliveryZipcode: this.zip,
@@ -204,7 +197,8 @@ export default {
               orderType: rsp.pay_method,
               paymentCode: rsp.merchant_uid,
               orderState: '2',
-              menuId: this.Content.menuId,
+              orderMenuCount: 1,
+              menuId: this.Content.menuid,
             })
                 .then((res)=>{
                   console.log(res.data);
@@ -212,7 +206,21 @@ export default {
                 .catch((err)=>{
                   console.log(err)
                 });
-            // window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
+
+          } else {
+            let msg = '결제에 실패하였습니다.'
+            msg += '에러 내용 : ' + rsp.error_msg
+            alert(msg)
+            this.$router.push({
+              name: "BuyComplete",
+              params:{
+                // menuName: this.Content.menuname,
+                // orderPrice: this.price,
+                // orderType: rsp.pay_method,
+                orderMenuCount: 1,
+              }
+            })
+            window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
           }
         })
       }

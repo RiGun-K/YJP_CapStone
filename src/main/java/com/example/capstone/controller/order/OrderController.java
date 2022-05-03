@@ -1,9 +1,11 @@
 package com.example.capstone.controller.order;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.repository.Member.MemberRepository;
+import com.example.capstone.repository.Product.MenuRepository;
 import com.example.capstone.repository.orders.OrderMenuRepository;
 import com.example.capstone.repository.orders.OrdersRepository;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,11 @@ public class OrderController {
     @Autowired
     private MemberRepository memberRepository;
 
-//    @Autowired
-//    private OrderMenuRepository orderMenuRepository;
+    @Autowired
+    private MenuRepository menuRepository;
+
+    @Autowired
+    private OrderMenuRepository orderMenuRepository;
 
     @PostMapping("/buyData")
     public String postBuyData(@RequestBody HashMap<String, String> buyData){
@@ -54,13 +59,27 @@ public class OrderController {
 
             ordersRepository.save(order);
 
-//            OrderMenu orderMenu = new OrderMenu();
-//
-//            Optional<OrderMenu> searchMenu = orderMenuRepository(시발)
 
 
         } else {
-            System.out.println("buyData Error");
+            System.out.println("buyData Order Error");
+        }
+
+        Optional<Menu> searchMenu = menuRepository.findById(Integer.parseInt(buyData.get("menuId")));
+
+        if(searchMenu.isPresent()) {
+
+            Menu menu = searchMenu.get();
+            OrderMenu orderMenu = new OrderMenu();
+
+            orderMenu.setOrders(order);
+            orderMenu.setMenu(menu);
+            orderMenu.setOrderMenuCount(Integer.parseInt(buyData.get("orderMenuCount")));;
+
+            orderMenuRepository.save(orderMenu);
+
+        }else{
+            System.out.println("buyData Menu Error");
         }
         return "test";
     }
