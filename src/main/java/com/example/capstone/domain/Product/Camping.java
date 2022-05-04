@@ -43,9 +43,9 @@ public class Camping {
     private String detailAddress;
 
     @CreatedDate
-    private LocalDate savedTime;
+    private String savedTime;
     @LastModifiedDate
-    private LocalDate modifiedDate;
+    private String modifiedDate;
 
     // 파일
     @Column()
@@ -67,7 +67,7 @@ public class Camping {
     private Member MID;
 
     public Camping() {}
-    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, LocalDate savedTime, String origFilename, String filename, String filePath, Infoter infoterId, Member MID) {
+    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, Member MID) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
         this.campingDetailState = campingDetailState;
@@ -123,19 +123,19 @@ public class Camping {
         this.detailAddress = detailAddress;
     }
 
-    public LocalDate getSavedTime() {
+    public String getSavedTime() {
         return savedTime;
     }
 
-    public void setSavedTime(LocalDate savedTime) {
+    public void setSavedTime(String savedTime) {
         this.savedTime = savedTime;
     }
 
-    public LocalDate getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(LocalDate modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 

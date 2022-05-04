@@ -80,7 +80,7 @@ import ProductPage from "@/components/product/ProductPage";
 
 
 export default {
-  name: "MyProductEdit",
+  name: "BuyProductEdit",
   components: { ProductPage },
 
   data() {
@@ -166,7 +166,7 @@ export default {
             console.log(this.mid);
             alert("상품이 수정되었습니다.")
             this.$router.push({
-              name: "MyProductList"
+              name: "BuyProductList"
             })
           })
           .catch(error => {
@@ -177,7 +177,7 @@ export default {
     },
     cancel() {
       this.$router.push({
-        name: "MyProductList"
+        name: "BuyProductList"
       })
     }
 

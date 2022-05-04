@@ -19,7 +19,7 @@ public class CampingDTO {
     private String detailAddress;
 
 
-    private LocalDate savedTime;
+    private String savedTime;
 
     private String origFilename;
     private String filename;

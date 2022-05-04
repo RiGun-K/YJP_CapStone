@@ -43,7 +43,7 @@ public class CampingDetail {
     private String filePath;
 
     @CreatedDate
-    private LocalDate savedTime;
+    private String savedTime;
 
     // 캠핑장아이디
     @ManyToOne()
@@ -51,7 +51,7 @@ public class CampingDetail {
     private Camping campingId;
 
     public CampingDetail() {}
-    public CampingDetail(String detailName, int detailPrice, Integer baseNumber, Integer maximumNumber, String detailFunction, LocalDate savedTime, String origFilename, String filename, String filePath, Camping campingId) {
+    public CampingDetail(String detailName, int detailPrice, Integer baseNumber, Integer maximumNumber, String detailFunction, String savedTime, String origFilename, String filename, String filePath, Camping campingId) {
         this.detailName = detailName;
         this.detailPrice = detailPrice;
         this.baseNumber = baseNumber;
@@ -64,12 +64,11 @@ public class CampingDetail {
         this.campingId = campingId;
     }
 
-
-    public LocalDate getSavedTime() {
+    public String getSavedTime() {
         return savedTime;
     }
 
-    public void setSavedTime(LocalDate savedTime) {
+    public void setSavedTime(String savedTime) {
         this.savedTime = savedTime;
     }
 
