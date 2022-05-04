@@ -1,5 +1,7 @@
 package com.example.capstone.domain.storage;
 
+import com.example.capstone.domain.order.Orders;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,15 +18,9 @@ public class StorageEquipment {
 
     @ManyToOne
     @JoinColumn(name = "orderCode")
-    private OrderList orderCode;
+    private Orders orderCode;
 
     public StorageEquipment() {
-    }
-
-    public StorageEquipment(long storageEquipment, MemberEquipment memEquipmentCode, OrderList orderCode) {
-        this.storageEquipment = storageEquipment;
-        this.memEquipmentCode = memEquipmentCode;
-        this.orderCode = orderCode;
     }
 
     public long getStorageEquipment() {
@@ -43,11 +39,11 @@ public class StorageEquipment {
         this.memEquipmentCode = memEquipmentCode;
     }
 
-    public OrderList getOrderCode() {
+    public Orders getOrderCode() {
         return orderCode;
     }
 
-    public void setOrderCode(OrderList orderCode) {
+    public void setOrderCode(Orders orderCode) {
         this.orderCode = orderCode;
     }
 }
