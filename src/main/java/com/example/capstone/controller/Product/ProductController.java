@@ -87,26 +87,8 @@ public class ProductController {
 //        return menuMyList;
 //    }
 
-    /* 나의상품 상세페이지 */
-    @GetMapping("/myProduct_detail/{menuid}")
-    public Optional<MenuBuy> getMyProduct_Detail(@PathVariable("menuid") int menuid) {
-        System.out.println("메뉴번호 는" + menuid + "입니다.");
 
-        Optional<MenuBuy> myMenuDetailList = menuBuyRepository.findById(menuid);
-        return myMenuDetailList;
 
-    }
-
-    /* 나의상품 삭제 */
-    @DeleteMapping("/myProduct_Delete/{menuid}")
-    public String DeleteMyProduct_Detail(@PathVariable("menuid") int menuid) {
-        System.out.println("삭제하실 메뉴번호는" + menuid + " 입니다.");
-        Optional<MenuBuy> menuBuy = menuBuyRepository.findById(menuid);
-
-        menuBuyRepository.deleteById(menuid);
-        // menuService.deleteById(menuid);
-        return "메뉴가 삭제되었습니다.";
-    }
 
 
     /* 나의상품 수정 */
@@ -116,78 +98,6 @@ public class ProductController {
 //        return "게시글이 수정되었습니다";
 //    }
 
-    @PutMapping("/myProduct_Update")
-    public MenuBuy UpdateMyProduct_Detail(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuy menuBuy, MenuDTO menuDTO) throws IllegalStateException, IOException {
-        System.out.println("파일 이름" + uploadFile.getOriginalFilename());
-        System.out.println("파일 크기" + uploadFile.getSize());
-
-//        Optional<Menu> updateMyMenu = menuRepository.findById(menu.getMenuid());
-//        updateMyMenu.get().setMID(menu.getMID());
-//        updateMyMenu.get().setEx(menu.getEx());
-//        updateMyMenu.get().setMenuname(menu.getMenuname());
-//        updateMyMenu.get().setPrice(menu.getPrice());
-//        updateMyMenu.get().setStock(menu.getStock());
-//        updateMyMenu.get().setKindid(menu.getKindid());
-
-//        menuRepository.save(updateMyMenu.get());
-        try {
-            String origFilename = uploadFile.getOriginalFilename();
-
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
-            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
-            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
-            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdir();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String filePath = savePath + "\\" + filename;
-            uploadFile.transferTo(new File(filePath));
-
-            menuBuy.setOrigFilename(origFilename);
-            menuBuy.setFilename(filename);
-            menuBuy.setFilePath(filePath);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("123");
-        }
-        System.out.println(menuBuy.getKindid());
-        System.out.println(menuBuy.getBuyId());
-
-        /* menu.getMID() 하면 반환값이 String인데 타입은 Menu라서 Null로 뜸
-           따라서 menuDTO.getMid() <- String 타입으로 넘겨서 member 테이블에서 'rigun'을 찾아줌
-         */
-        System.out.println(menuDTO.getMid());
-
-
-//        List<Member> member = memberRepository.findByMID(menuDTO.getMid());
-//
-//        Optional<Kind> kind = kindRepository.findById(menuDTO.getKindid());
-//
-
-
-
-        menuBuy.setSavedTime(LocalDate.now().toString());
-
-        Optional<Member> member = memberRepository.findByMID(menuDTO.getMid());
-
-        System.out.println(member.get());
-        menuBuy.setMID(member.get());
-        //            menu.setMID(memberRepository.findByMID("rigun").get());
-
-        System.out.println(menuBuy);
-//
-
-        menuBuyRepository.save(menuBuy);
-
-        return menuBuy;
-    }
 
 
 

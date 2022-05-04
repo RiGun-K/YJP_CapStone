@@ -16,28 +16,27 @@
     </li>
   </ul>
   <br>
-  <h1>렌탈 상품조회</h1>
+  <h1>캠핑장 조회</h1>
   <div>
     <br>
     <table class="table table-striped">
       <thead>
       <tr>
         <th>분류</th>
-        <th>메뉴명</th>
-        <th>수량</th>
+        <th>캠핑장명</th>
+        <th>객실 수</th>
         <th>등록일자</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="BuyList in list"
-          :key="BuyList.id"
-          :item="BuyList" @click="showInfo(BuyList)" style="cursor:pointer;">
-        <th scope="row">{{ BuyList.kindid.kindname }}</th>
-        <td>{{ BuyList.buyName }}</td>
-        <td>{{ BuyList.buyStock }}</td>
-        <td>{{ BuyList.savedTime }}</td>
+      <tr v-for="CampingList in list"
+          :key="CampingList.id"
+          :item="CampingList" @click="showInfo(CampingList)" style="cursor:pointer;">
+        <th scope="row">{{ CampingList.infoterId.infoterName }}</th>
+        <td>{{ CampingList.campingName }}</td>
+        <td>{{ CampingList.campingDetailState }}</td>
+        <td>{{ CampingList.savedTime }}</td>
       </tr>
-      <!--      <router-link :to="{name: 'MyProductDetail', params: { menuid:myProduct.menuid }}"></router-link>-->
       </tbody>
     </table>
   </div>
@@ -93,9 +92,9 @@ export default {
             console.log(e)
           })
     },
-    showInfo(BuyList) {
+    showInfo(CampingList) {
       this.$router.push({
-        path: `/BuyProductDetail/${BuyList.buyId}`
+        path: `/BuyProductDetail/${CampingList.campingId}`
       })
     }
 

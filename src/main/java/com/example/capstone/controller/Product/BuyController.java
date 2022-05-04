@@ -4,6 +4,7 @@ import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.dto.Product.MenuBuyDTO;
+import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
 import lombok.NoArgsConstructor;
@@ -112,5 +113,105 @@ public class BuyController {
 //        return menus;
         return myMenus;
         // 한 행만 출력시 Optional , 전체 행은 List
+    }
+
+
+    /* 나의상품 상세페이지 */
+    @GetMapping("/Buy_detail/{buyId}")
+    public Optional<MenuBuy> getMyProduct_Detail(@PathVariable("buyId") int buyId) {
+        System.out.println("메뉴번호 는" + buyId + "입니다.");
+
+        Optional<MenuBuy> myMenuDetailList = menuBuyRepository.findById(buyId);
+        return myMenuDetailList;
+
+    }
+
+    /* 구매상품 수정 */
+    @PutMapping("/Buy_Update")
+    public MenuBuy UpdateMyProduct_Detail(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuy menuBuy, MenuBuyDTO menuBuyDTO) throws IllegalStateException, IOException {
+        System.out.println("파일 이름" + uploadFile.getOriginalFilename());
+        System.out.println("파일 크기" + uploadFile.getSize());
+
+//        Optional<Menu> updateMyMenu = menuRepository.findById(menu.getMenuid());
+//        updateMyMenu.get().setMID(menu.getMID());
+//        updateMyMenu.get().setEx(menu.getEx());
+//        updateMyMenu.get().setMenuname(menu.getMenuname());
+//        updateMyMenu.get().setPrice(menu.getPrice());
+//        updateMyMenu.get().setStock(menu.getStock());
+//        updateMyMenu.get().setKindid(menu.getKindid());
+
+//        menuRepository.save(updateMyMenu.get());
+        try {
+            String origFilename = uploadFile.getOriginalFilename();
+
+            UUID uuid = UUID.randomUUID();
+            String filename = uuid + "_" + origFilename;
+            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+            if (!new File(savePath).exists()) {
+                try {
+                    new File(savePath).mkdir();
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            String filePath = savePath + "\\" + filename;
+            uploadFile.transferTo(new File(filePath));
+
+            menuBuy.setOrigFilename(origFilename);
+            menuBuy.setFilename(filename);
+            menuBuy.setFilePath(filePath);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("123");
+        }
+        System.out.println(menuBuy.getKindid());
+        System.out.println(menuBuy.getBuyId());
+
+        /* menu.getMID() 하면 반환값이 String인데 타입은 Menu라서 Null로 뜸
+           따라서 menuDTO.getMid() <- String 타입으로 넘겨서 member 테이블에서 'rigun'을 찾아줌
+         */
+        System.out.println(menuBuyDTO.getMid());
+
+
+//        List<Member> member = memberRepository.findByMID(menuDTO.getMid());
+//
+//        Optional<Kind> kind = kindRepository.findById(menuDTO.getKindid());
+//
+
+
+
+        menuBuy.setSavedTime(LocalDate.now().toString());
+
+        Optional<Member> member = memberRepository.findByMID(menuBuyDTO.getMid());
+
+
+
+        System.out.println(member.get());
+        menuBuy.setMID(member.get());
+        //            menu.setMID(memberRepository.findByMID("rigun").get());
+
+        System.out.println(menuBuy);
+//
+
+        menuBuyRepository.save(menuBuy);
+
+        return menuBuy;
+    }
+
+    /* 구매상품 삭제 */
+    @DeleteMapping("/Buy_Delete/{buyId}")
+    public String DeleteMyProduct_Detail(@PathVariable("buyId") int buyId) {
+        System.out.println("삭제하실 뷰에서 가져온 메뉴번호는" + buyId + " 입니다.");
+        Optional<MenuBuy> menuBuy = menuBuyRepository.findById(buyId);
+        System.out.println("삭제하실 DB 에서 가져온 메뉴번호는" + menuBuy.get().getBuyId() + " 입니다.");
+
+
+        menuBuyRepository.deleteById(buyId);
+//         menuService.deleteById(menuid);
+        return "메뉴가 삭제되었습니다.";
     }
 }

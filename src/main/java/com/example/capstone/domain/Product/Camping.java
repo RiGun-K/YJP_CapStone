@@ -128,7 +128,9 @@ public class Camping {
     }
 
     public void setSavedTime(String savedTime) {
-        this.savedTime = savedTime;
+        this.savedTime =
+
+                savedTime;
     }
 
     public String getModifiedDate() {
