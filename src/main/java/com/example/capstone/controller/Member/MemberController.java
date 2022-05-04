@@ -1,11 +1,11 @@
 package com.example.capstone.controller.Member;
 
 import com.example.capstone.domain.Member.Company;
+import com.example.capstone.domain.Member.MailCheck;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Member.PhCheck;
 import com.example.capstone.repository.Member.CompanyRepository;
 import com.example.capstone.repository.Member.MemberRepository;
-import com.example.capstone.domain.Member.MailCheck;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

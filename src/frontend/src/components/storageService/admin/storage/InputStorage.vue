@@ -1,21 +1,21 @@
 <template>
   <div class="storages-add">
-<!--    <div class="storage-add">-->
+    <!--    <div class="storage-add">-->
 
-<!--      <div class="form-floating mb-3">-->
-<!--        <input type="text" v-model="form.storageName" placeholder="보관소명" class="form-control" id="floatingName">-->
-<!--        <label for="floatingName">보관소명</label>-->
-<!--      </div>-->
-<!--      <div class="form-floating mb-3">-->
-<!--        <input type="text" v-model="form.storageZipcode" placeholder="우편번호" class="form-control" id="floatingZipcode">-->
-<!--        <label for="floatingZipcode">우편번호</label>-->
-<!--      </div>-->
-<!--      <div class="form-floating">-->
-<!--        <input type="text" v-model="form.storageAddress" placeholder="주소" class="form-control" id="floatingAddress">-->
-<!--        <label for="floatingAddress">주소</label>-->
-<!--      </div>-->
-<!--      <button class="storage-add-btn" @click="postStorage()">ADD</button>-->
-<!--    </div>-->
+    <!--      <div class="form-floating mb-3">-->
+    <!--        <input type="text" v-model="form.storageName" placeholder="보관소명" class="form-control" id="floatingName">-->
+    <!--        <label for="floatingName">보관소명</label>-->
+    <!--      </div>-->
+    <!--      <div class="form-floating mb-3">-->
+    <!--        <input type="text" v-model="form.storageZipcode" placeholder="우편번호" class="form-control" id="floatingZipcode">-->
+    <!--        <label for="floatingZipcode">우편번호</label>-->
+    <!--      </div>-->
+    <!--      <div class="form-floating">-->
+    <!--        <input type="text" v-model="form.storageAddress" placeholder="주소" class="form-control" id="floatingAddress">-->
+    <!--        <label for="floatingAddress">주소</label>-->
+    <!--      </div>-->
+    <!--      <button class="storage-add-btn" @click="postStorage()">ADD</button>-->
+    <!--    </div>-->
 
     <table>
       <tr>
@@ -53,11 +53,9 @@
         </td>
       </tr>
     </table>
-    <button class="storage-add-btn" @click="postStorage()">ADD</button>
-
-    <div class="storage-box">
+    <button class="storage-add-btn" @click="next()">NEXT</button>
+    <div class="storage-box" v-if="boxC">
       <p>보관함 추가</p>
-      <p class="storage-box-p">{{ name }}</p>
       <div class="storage-box-add">
         <table>
           <tbody>
@@ -86,8 +84,10 @@
           </tbody>
         </table>
       </div>
+      <button class="storage-add-btn" @click="postStorage()">ADD</button>
     </div>
   </div>
+  <div id="map" ></div>
 </template>
 
 <script>
@@ -97,33 +97,76 @@ export default {
   name: "StorageAdd",
   data() {
     return {
+      boxC:false,
       box: {
         small: 0,
         medium: 0,
-        large: 0,
-        storageName: ''
+        large: 0
       },
       form: {
         storageName: '',
         storageZipcode: '',
         storageAddress: '',
-        storageDetailAddress: ''
+        storageDetailAddress: '',
+        latitude:'',
+        longitude:'',
       },
-      name: '',
+      a : {},
       errorCheck: false,
       addStorage: false,
-      file: ''
+      file: '',
+      map: null
+    }
+  },
+  mounted() {
+    this.a = undefined || {}
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
+      document.head.appendChild(script);
     }
   },
   methods: {
+    next(){
+      this.geo(this.form.storageAddress)
+      this.boxC = true
+    },
+    geo(index){
+      // 주소-좌표 변환 객체를 생성합니다
+      var geocoder = new kakao.maps.services.Geocoder();
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(index,
+          (result, status) => {
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK){
+              this.a.latitude = result[0].y
+              this.a.longitude = result[0].x
+            }
+          }
+      );
+      console.log(this.a)
+    },
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
+        level: 1,
+      };
+      this.map = new kakao.maps.Map(container, options);
+    },
     showApi() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-
           this.form.storageZipcode = data.zonecode
           this.form.storageAddress = data.roadAddress
         }
       }).open({popupKey: '주소검색'})
+      this.geo(this.form.storageAddress)
     },
     handleImage(e) {
       this.file = e.target.files[0];
@@ -178,16 +221,20 @@ export default {
       this.box.large++
     },
     inputCheck() {
-      if (this.box.small == 0 && this.box.medium == 0&& this.box.large== 0) {
+
+      if (this.box.small == 0 && this.box.medium == 0 && this.box.large == 0) {
         alert('보관함 추가하세요')
         return
       }
       if (!this.form.storageName) {
         alert('보관소 명을 입력하세요')
+        return
       } else if (!this.form.storageZipcode) {
         alert('보관소 우편주소을 입력하세요')
+        return
       } else if (!this.form.storageAddress) {
         alert('보관소 주소을 입력하세요')
+        return
       } else {
         this.errorCheck = true
       }
@@ -206,14 +253,15 @@ export default {
     },
     postStorage() {
       this.inputCheck()
-      console.log(this.box)
+      this.form.latitude = this.a.latitude
+      this.form.longitude = this.a.longitude
       this.box.storageName = this.form.storageName
       const data = {
-        box:this.box,
-        storage:this.form
+        box: this.box,
+        storage: this.form
       }
       if (this.errorCheck) {
-        axios.post('/api/postStorage',data)
+        axios.post('/api/postStorage', data)
             .then((res) => {
               console.log(this.form)
               console.log(res.data.result)
