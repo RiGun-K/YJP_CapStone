@@ -268,7 +268,7 @@ public class RegistrationController {
             campingDetailDTO.setSavedTime(LocalDate.now());
 
 
-        CampingDetail campingDetail = new CampingDetail(campingDetailDTO.getDetailName(), campingDetailDTO.getDetailEx(), campingDetailDTO.getBaseNumber(), campingDetailDTO.getMaximumNumber(), campingDetailDTO.getSavedTime(), campingDetailDTO.getOrigFilename(), campingDetailDTO.getFilename(), campingDetailDTO.getFilePath(), camping.get());
+        CampingDetail campingDetail = new CampingDetail(campingDetailDTO.getDetailName(), campingDetailDTO.getDetailPrice(), campingDetailDTO.getBaseNumber(), campingDetailDTO.getMaximumNumber(), campingDetailDTO.getDetailFunction(), campingDetailDTO.getSavedTime(), campingDetailDTO.getOrigFilename(), campingDetailDTO.getFilename(), campingDetailDTO.getFilePath(), camping.get());
         System.out.println(campingDetail);
 
         campingDetailRepository.save(campingDetail);

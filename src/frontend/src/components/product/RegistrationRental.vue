@@ -57,7 +57,7 @@
         <br>
         <div>
           <h3 class="join_title">
-            <label for="email">상품가격</label>
+            <label for="email">대여가격</label>
           </h3>
           <span class="box int_email">
             <input type="text" v-model="rentalPrice" id="email" class="int" maxlength="100" placeholder="상품 가격을 입력하세요">

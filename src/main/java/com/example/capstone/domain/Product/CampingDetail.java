@@ -51,11 +51,12 @@ public class CampingDetail {
     private Camping campingId;
 
     public CampingDetail() {}
-    public CampingDetail(String detailName, String detailEx, Integer baseNumber, Integer maximumNumber, LocalDate savedTime, String origFilename, String filename, String filePath, Camping campingId) {
+    public CampingDetail(String detailName, int detailPrice, Integer baseNumber, Integer maximumNumber, String detailFunction, LocalDate savedTime, String origFilename, String filename, String filePath, Camping campingId) {
         this.detailName = detailName;
-        this.detailEx = detailEx;
+        this.detailPrice = detailPrice;
         this.baseNumber = baseNumber;
         this.maximumNumber = maximumNumber;
+        this.detailFunction =detailFunction;
         this.origFilename = origFilename;
         this.filename = filename;
         this.filePath = filePath;
