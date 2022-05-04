@@ -1,7 +1,5 @@
 package com.example.capstone.domain.Product;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,16 +18,25 @@ public class Kind {
     //부모
     @ManyToOne
     @JoinColumn(name = "parentkindid")
-    @JsonManagedReference
+
     private Kind parentkind;
 
     //자식
     @OneToMany(mappedBy = "parentkind")
-    @JsonBackReference
-    private List<Kind> childrenkinds = new ArrayList<>();
+
 
 
     public Kind() {}
+
+    public Kind(String kindname) {
+        this.kindname = kindname;
+    }
+
+    public Kind(String kindname, Kind parentkind) {
+        this.kindname = kindname;
+        this.parentkind = parentkind;
+    }
+
     public Kind(int kindid, String kindname) {
         this.kindid = kindid;
         this.kindname = kindname;
@@ -67,11 +74,5 @@ public class Kind {
     public void setChildrenkinds(List<Kind> childrenkinds) {
         this.childrenkinds = childrenkinds;
     }
-//    public List<Menu> getMenus() {
-//        return menus;
-//    }
-//
-//    public void setMenus(List<Menu> menus) {
-//        this.menus = menus;
-//    }
+
 }
