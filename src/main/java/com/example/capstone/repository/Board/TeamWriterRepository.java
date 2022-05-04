@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface TeamWriterRepository extends JpaRepository<TeamWriter, Integer> {
 
-//    public Optional <TeamWriter> findById(String teamwriter_code);
+
 
 }

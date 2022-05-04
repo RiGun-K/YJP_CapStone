@@ -66,5 +66,15 @@ public class TeamBoardController {
         return  "게시글이 삭제되었습니다.";
 
     }
+
+    @PutMapping("/tbupdate")
+    public String teamupdateList(@RequestBody TeamWriter teamWriter) {
+        Optional<TeamWriter> teamupdateMyList = teamWriterRepository.findById(teamWriter.getTeamwriter_code());
+        teamupdateMyList.get().setNoticetitle(teamWriter.getNoticetitle());
+        teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
+
+        teamWriterRepository.save(teamupdateMyList.get());
+        return "게시글이 수정되었습니다.";
+    }
 }
 
