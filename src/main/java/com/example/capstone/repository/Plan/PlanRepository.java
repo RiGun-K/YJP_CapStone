@@ -13,11 +13,7 @@ import java.util.Optional;
 @Repository
 
 public interface PlanRepository extends JpaRepository<Plan, Long> {
-    @EntityGraph(attributePaths = {"teamCode"})
     Optional<Plan> findByPlanName(String planName);
-
-    @EntityGraph(attributePaths = {"planCode","teamCode"})
     Optional<Plan> findByTeamCodeAndPlanName(Team team, String planName);
-
     List<Plan> findAllByTeamCodeTeamCode(Long team);
 }

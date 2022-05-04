@@ -2,14 +2,10 @@ package com.example.capstone.controller.Plan;
 
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.dto.plan.PlanDto;
-import com.example.capstone.repository.Member.MemberRepository;
-import com.example.capstone.repository.Plan.TeamMemberRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
-import com.example.capstone.service.PlanService;
 import com.example.capstone.service.TeamMemberService;
 import com.example.capstone.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +21,8 @@ import java.util.Optional;
 
 public class TeamManagementApiController {
 
-    private final MemberRepository memberRepository;
+
     private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
-    private final PlanService planService;
     private final TeamMemberService teamMemberService;
     private final TeamService teamService;
 
@@ -92,11 +86,6 @@ public class TeamManagementApiController {
 
     @GetMapping("/api/loadTeamPlans/{teamCode}")
     public List<PlanDto> loadTeamPlans(@PathVariable("teamCode") Long team) {
-//        //== test ==//
-//        TeamDto teamDto = TeamDto.builder()
-//                .teamCode(1L)
-//                .build();
-
         return teamMemberService.loadTeamPlans(team);
 
     }

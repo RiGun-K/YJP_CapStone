@@ -2,7 +2,7 @@
 	<input type="text" v-model="searchPlan" placeholder="키워드를 입력하세요" />
 	<button @click="tagFilter(this.searchPlan)">검색</button>
 	<h2>지역설정</h2>
-	<select v-model="planDestination">
+	<select v-model="planDestination" @click="placeFilter()">
 		<option>전체</option>
 		<option>강원</option>
 		<option>경기</option>
@@ -22,12 +22,16 @@
 
 	<button @click="orderBy('planViews')">조회순</button>
 	<button @click="orderBy('planUsedCount')">카피순</button>
-
-	<div id="plans" v-for="(value, index) in planList" :key="index">
+	<hr />
+	<h1>지역: {{ planDestination }}</h1>
+	<h1>검색: {{ searchPlan }}</h1>
+	<div id="plans" v-for="(value, index) in filteredPlanList" :key="index">
 		플랜이름: {{ value.planName }} <br />조회수: {{ value.planViews }}
 		<br />
 		카피수:
 		{{ value.planUsedCount }}
+		<br />
+		지역:{{ value.planDestination }}
 	</div>
 </template>
 
@@ -41,38 +45,72 @@ export default {
 		return {
 			searchPlan: '',
 			planDestination: '전체',
-			planList: [],
+			allPlanList: [],
+			placeFiltered: [],
+			tagFiltered: [],
+			filteredPlanList: [],
 		};
 	},
 	methods: {
+		placeFilter: function () {
+			if (this.planDestination === '전체') {
+			} else {
+				const placeFiltered = this.tagFiltered.filter(
+					(a) => a.planDestination === this.planDestination,
+				);
+				this.filteredPlanList.length = '';
+				this.filteredPlanList = placeFiltered;
+			}
+		},
 		tagFilter: function (tag) {
-			const url = 'api/tagFilter';
-			console.log(tag);
-			axios
-				.get(url, { params: { TagContent: tag } })
-				.then((response) => {})
-				.catch((error) => {});
+			if (this.searchPlan === '' && this.planDestination === '전체') {
+				this.loadAllPlans();
+			} else {
+				const url = 'api/tagFilter';
+				this.filteredPlanList.length = 0;
+				this.tagFiltered.length = 0;
+				axios
+					.get(url, { params: { tagContent: tag } })
+					.then((response) => {
+						response.data.map((item) => {
+							this.filteredPlanList.push(item);
+							this.tagFiltered.push(item);
+						});
+						if (this.planDestination === '전체') {
+						} else {
+							const placeFiltered = this.filteredPlanList.filter(
+								(a) =>
+									a.planDestination === this.planDestination,
+							);
+							this.filteredPlanList = placeFiltered;
+						}
+					})
+					.catch((error) => {});
+			}
 		},
 		orderBy: function (orderBy) {
 			if (orderBy == 'planViews') {
-				this.planList.sort(function (a, b) {
+				this.filteredPlanList.sort(function (a, b) {
 					return b.planViews - a.planViews;
 				});
 			} else if (orderBy == 'planUsedCount') {
-				this.planList.sort(function (a, b) {
+				this.filteredPlanList.sort(function (a, b) {
 					return b.planUsedCount - a.planUsedCount;
 				});
 			}
 		},
 		loadAllPlans: function () {
 			const url = '/api/loadAllPlans';
-
+			this.tagFiltered.length = 0;
+			this.allPlanList.length = 0;
+			this.placeFiltered.length = 0;
 			axios
 				.get(url)
 				.then((response) => {
 					response.data.map((item) => {
-						this.planList.push(item);
-
+						this.allPlanList.push(item);
+						this.filteredPlanList.push(item);
+						this.tagFiltered.push(item);
 						return console.log(item);
 					});
 				})
@@ -86,8 +124,8 @@ export default {
 
 <style>
 #plans {
-	width: 100px;
-	height: 100px;
+	width: 200px;
+	height: 120px;
 	background-color: #f5d682;
 	border: 1px solid red;
 }

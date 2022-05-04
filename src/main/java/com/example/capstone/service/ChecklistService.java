@@ -30,9 +30,6 @@ public class ChecklistService {
     public Optional<Checklist> updateState(Checklist checklistCode) {
         System.out.println(checklistCode);
         Optional<Checklist> cl = checklistRepository.findById(checklistCode.getChecklistCode());
-//        Checklist ch =  checklistRepository.findById(checklistCode.getChecklistCode()).get();
-        Checklist ch = cl.get();
-        System.out.println(cl.get());
         if (cl.get().getCheckState() == 'y') {
             cl.get().setCheckState('n');
             checklistRepository.save(cl.get());

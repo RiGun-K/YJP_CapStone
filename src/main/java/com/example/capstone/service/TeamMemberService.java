@@ -27,6 +27,7 @@ public class TeamMemberService {
     private final TeamMemberRepository teamMemberRepository;
     private final PlanRepository planRepository;
 
+
     public List<TeamMember> teamManagementPage(Member mcode) {
         List<TeamMember> tm = teamMemberRepository.findByMcode(mcode);
         return tm;
@@ -51,23 +52,18 @@ public class TeamMemberService {
     }
 
     public void refuseTeam(TeamMember teamMember) {
-        System.out.println("받아짐");
         List<TeamMember> acceptionCheck = teamMemberRepository.findByTeamCodeAndMcode(teamMember.getTeamCode(), teamMember.getMcode());
         teamMemberRepository.delete(acceptionCheck.get(0));
-        System.out.println("거절성공");
     }
 
     public String addTeamMember(TeamMember teamMember) {
-
         List<TeamMember> checkMember = teamMemberRepository.findByTeamCodeAndMcode(teamMember.getTeamCode(), teamMember.getMcode());
         if (checkMember.isEmpty()) {
             teamMemberRepository.save(teamMember);
             return "y";
         } else {
-            System.out.println("존재하는 회원입니다");
             return "n";
         }
-
     }
 
     public TeamMember loginedTeamCode(TeamMember teamMember) {
@@ -79,31 +75,8 @@ public class TeamMemberService {
         List<Plan> plans = planRepository.findAllByTeamCodeTeamCode(team);
         List<PlanDto> planDtos = new ArrayList<>();
         for (Plan plan : plans) {
-            // teamDto 만들기
-            Team teamEntity = plan.getTeamCode();
-            TeamDto teamDto = TeamDto.builder()
-                    .teamCode(teamEntity.getTeamCode())
-                    .teamName(teamEntity.getTeamName())
-                    .teamState(teamEntity.getTeamState())
-                    .teamMaster(teamEntity.getTeamMaster()).build();
-            //PlanDto 만들기
-            PlanDto planDto = PlanDto.builder()
-                    .planCode(plan.getPlanCode())
-                    .teamCode(teamDto)
-                    .planName(plan.getPlanName())
-                    .planBudget(plan.getPlanBudget())
-                    .planDestination(plan.getPlanDestination())
-                    .planEnd(plan.getPlanEnd())
-                    .planNumber(plan.getPlanNumber())
-                    .planOpen(plan.getPlanOpen())
-                    .planStart(plan.getPlanStart())
-                    .planViews(plan.getPlanViews())
-                    .planUsedCount(plan.getPlanUsedCount())
-                    .planTotalDate(plan.getPlanTotalDate())
-                    .planType(plan.getPlanType())
-                    .build();
-            // List에 저장
-            planDtos.add(planDto);
+
+            planDtos.add(plan.toPlanDto());
         }
         return planDtos;
 

@@ -79,7 +79,7 @@
 		{{ value }}
 	</button>
 	<div>
-		<button @click="createPlan(), addTags()">다음</button>
+		<button @click="createPlan()">다음</button>
 	</div>
 </template>
 
@@ -111,7 +111,11 @@ export default {
 	},
 	methods: {
 		addTags: function (value) {
-			this.TagContentList.push(value);
+			if (this.TagContentList.indexOf(value) !== -1) {
+				alert('중복된 Tag설정은 불가능합니다');
+			} else {
+				this.TagContentList.push(value);
+			}
 			this.tag = '';
 		},
 		deleteTag: function (index) {

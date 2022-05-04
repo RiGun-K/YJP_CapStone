@@ -2,6 +2,7 @@ package com.example.capstone.service;
 
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanTag;
+import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Plan.PlanTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,13 +30,13 @@ public class PlanTagService {
         }
     }
 
-    public List<Plan> tagFilter(String tagContent) {
-        List<PlanTag> planTags = planTagRepository.findAllByTagContent(tagContent);
-        List<Plan> plans = new ArrayList<>();
+    public List<PlanDto> tagFilter(String tagContent) {
+        List<PlanTag> planTags = planTagRepository.findAllByTagContentContains(tagContent);
+        List<PlanDto> plans = new ArrayList<>();
         for (PlanTag planTag : planTags) {
             System.out.println("planTag = " + planTag);
             Plan plan = planTag.getPlan();
-            plans.add(plan);
+            plans.add(plan.toPlanDto());
         }
 
 //        planTags.stream().map(planTag -> planTag.getPlan()).forEach(plan -> plans.add(plan));

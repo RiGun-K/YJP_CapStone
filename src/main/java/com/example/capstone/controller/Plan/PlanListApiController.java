@@ -2,6 +2,7 @@ package com.example.capstone.controller.Plan;
 
 
 import com.example.capstone.domain.Plan.Plan;
+import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.service.PlanService;
 import com.example.capstone.service.PlanTagService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,13 @@ public class PlanListApiController {
 
 
     @GetMapping("api/loadAllPlans")
-    public List<Plan> loadAllPlans() {
+    public List<PlanDto> loadAllPlans() {
         return planService.loadAllPlans();
     }
 
     @GetMapping("api/tagFilter")
-    public List<Plan> tagFilter(@RequestParam("TagContent") String TagContent) {
-
-        List<Plan> plans = planTagService.tagFilter(TagContent);
-
+    public List<PlanDto> tagFilter(@RequestParam("tagContent") String tagContent) {
+        List<PlanDto> plans = planTagService.tagFilter(tagContent);
         return plans;
     }
 }

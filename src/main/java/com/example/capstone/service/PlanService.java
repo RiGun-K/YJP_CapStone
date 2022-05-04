@@ -3,8 +3,10 @@ package com.example.capstone.service;
 
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
+import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.dto.plan.PlanDetailDto;
 import com.example.capstone.dto.plan.PlanDto;
+import com.example.capstone.dto.plan.TeamDto;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
@@ -29,9 +31,7 @@ public class PlanService {
 
 
     public Plan createPlan(Plan plan) {
-
         planRepository.save(plan);
-
         return plan;
     }
 
@@ -100,8 +100,17 @@ public class PlanService {
         return planDetailDtos;
     }
 
-    public List<Plan> loadAllPlans() {
-        return planRepository.findAll();
-    }
+    public List<PlanDto> loadAllPlans() {
 
+        List<Plan> plans = planRepository.findAll();
+        List<PlanDto> planDtos = new ArrayList<>();
+
+
+        for (Plan plan : plans) {
+            planDtos.add(plan.toPlanDto());
+        }
+
+
+        return planDtos;
+    }
 }
