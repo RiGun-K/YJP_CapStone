@@ -310,7 +310,7 @@ const routes = [
 	},
 	{
 		path: '/basicPlan',
-
+		name: 'basicPlan',
 		component: () => import('@/components/plan/basicPlan'),
 	},
 	{
@@ -332,6 +332,16 @@ const routes = [
 		path: '/planList',
 		name: 'planList',
 		component: () => import('@/components/plan/planList'),
+	},
+	{
+		path: '/selectCopy',
+		name: 'selectCopy',
+		component: () => import('@/components/plan/selectCopy'),
+	},
+	{
+		path: '/usersPlan',
+		name: 'usersPlan',
+		component: () => import('@/components/plan/usersPlan'),
 	},
 ];
 

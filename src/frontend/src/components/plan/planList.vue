@@ -25,8 +25,14 @@
 	<hr />
 	<h1>지역: {{ planDestination }}</h1>
 	<h1>검색: {{ searchPlan }}</h1>
-	<div id="plans" v-for="(value, index) in filteredPlanList" :key="index">
-		플랜이름: {{ value.planName }} <br />조회수: {{ value.planViews }}
+	<div
+		@click="intoPlan(value)"
+		id="plans"
+		v-for="(value, index) in filteredPlanList"
+		:key="index"
+	>
+		{{ value.teamCode.teamName }}팀의{{ value.planName }} 플랜 <br />조회수:
+		{{ value.planViews }}
 		<br />
 		카피수:
 		{{ value.planUsedCount }}
@@ -52,6 +58,12 @@ export default {
 		};
 	},
 	methods: {
+		intoPlan: function (value) {
+			this.$store.commit('updatePlanCode', value);
+			this.$router.push({
+				name: 'usersPlan',
+			});
+		},
 		placeFilter: function () {
 			if (this.planDestination === '전체') {
 			} else {

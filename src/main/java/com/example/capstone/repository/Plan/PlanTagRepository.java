@@ -9,8 +9,6 @@ import java.util.List;
 
 
 public interface PlanTagRepository extends JpaRepository<PlanTag,Long> {
-
-
 //    List<PlanTag> findAllByTagContentContains(String tagContent);
 
     @Query("select p from PlanTag p where p.tagContent LIKE %:tagContent%")

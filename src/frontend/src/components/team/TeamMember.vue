@@ -32,7 +32,7 @@
 				</button>
 			</div>
 			<div v-if="showingDeleteTeamButton">
-				<button @click="openWindow('/basicPlan')">
+				<button @click="openWindow('/selectCopy')">
 					새 플랜 만들기
 				</button>
 			</div>
