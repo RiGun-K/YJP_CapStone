@@ -8,20 +8,31 @@
   <tr>
     <td style="font-size:20px; color: green;">제목</td>
     <td style="font-size:20px; color: green;">내용</td>
+    <td style="font-size:20px; color: green;">글쓴이</td>
   </tr>
 
-  <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
+  <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)" >
     <td>{{item.noticetitle}}</td>
     <td>{{item.noticecontent}}</td>
     <td>{{item.teamMaster.teamMaster}}</td>
   </tr>
 
+  <router-link to="{name: 'TBView', params: { teamwriter_code:item.teamwriter_code }}"></router-link>
 
 </table>
+  <br>
+  <tr>
+    <div id="btnWrap">
+      <button @click="write" class="btn" style="float: right" >글쓰기</button>
+    </div>
+  </tr>
+
 </div>
 </template>
 
 <script>
+
+import axios from "axios";
 
 export default {
   name: 'TeamBoard',
@@ -35,9 +46,25 @@ export default {
     }
   },
   methods: {
+    fetchData() {
+      axios.get('/api/teamlist')
+          .then((res) => {
+            console.log("성공" + res.data);
+            this.list = res.data;
+          })
+          .catch((ex) =>{
+            console.log("실패", ex)
+          })
+    },
+
     detail(item) {
       this.$router.push({
-        path:'TBCreate'
+        path:`/tbview/${item.teamwriter_code}`
+      })
+    },
+    write(){
+      this.$router.push({
+        path: 'tbcreate'
       })
     }
 
