@@ -50,9 +50,9 @@ public class MenuRental {
     private String filePath;
 
     @CreatedDate
-    private LocalDate savedTime;
+    private String savedTime;
     @LastModifiedDate
-    private LocalDate modifiedDate;
+    private String modifiedDate;
 
     // 렌탈 종류
     @ManyToOne()
@@ -65,7 +65,7 @@ public class MenuRental {
     private Member MID;
 
     public MenuRental() {}
-    public MenuRental(String rentalName, int rentalPrice, String rentalEx, LocalDate savedTime, int rentalStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
+    public MenuRental(String rentalName, int rentalPrice, String rentalEx, String savedTime, int rentalStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
         this.rentalName = rentalName;
         this.rentalPrice = rentalPrice;
         this.rentalEx = rentalEx;
@@ -166,19 +166,19 @@ public class MenuRental {
         this.filePath = filePath;
     }
 
-    public LocalDate getSavedTime() {
+    public String getSavedTime() {
         return savedTime;
     }
 
-    public void setSavedTime(LocalDate savedTime) {
+    public void setSavedTime(String savedTime) {
         this.savedTime = savedTime;
     }
 
-    public LocalDate getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(LocalDate modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 

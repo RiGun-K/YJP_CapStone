@@ -12,20 +12,37 @@
           <h3 class="join_title">
             <label for="id">상품분류</label>
           </h3>
-          <select v-model="kindid" placeholder="메뉴명을 입력하세요." class="form-select" aria-label="Default select example">
-            <option v-for="(option, index) in options" :key="index" :value="option">
-              {{option.text}}
-            </option>
+          <select v-model="kindid" class="form-select form-select-sm" aria-label=".form-select-sm example">
+            <option selected disabled>등록하실 상품을 분류해주세요.</option>
+            <optgroup label="캠핑용품">
+              <option value="3">캠핑패키지</option>
+              <option value="4">텐트</option>
+              <option value="5">타프</option>
+              <option value="6">테이블</option>
+              <option value="7">체어</option>
+              <option value="8">침낭</option>
+              <option value="9">매트</option>
+              <option value="10">식기</option>
+              <option value="11">버너</option>
+              <option value="12">화로</option>
+              <option value="13">캠핑소품</option>
+              <option value="14">등산용품</option>
+            </optgroup>
+            <optgroup label="식품">
+              <option value="15">식품패키지</option>
+              <option value="16">육류</option>
+              <option value="17">과일</option>
+              <option value="18">음료</option>
+            </optgroup>
           </select>
-          <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
-
+          <br>
           <br>
           <span class="error_next_box"></span>
           <h3 class="join_title">
             <label for="id">상품명</label>
           </h3>
           <span class="box int_id">
-                        <input type="text" v-model="rentalName" id="id" placeholder="상품명을 입력하세요" class="int" maxlength="20">
+                        <input type="text" v-model="buyName" id="id" placeholder="상품명을 입력하세요" class="int" maxlength="20">
                     </span>
           <span class="error_next_box"></span>
         </div>
@@ -37,7 +54,7 @@
           </h3>
 
           <span class="box int_id">
-          <input type="text" v-model="rentalStock" id="id" placeholder="상품 수량을 입력하세요" class="int" maxlength="100">
+          <input type="text" v-model="buyStock" id="id" placeholder="상품 수량을 입력하세요" class="int" maxlength="100">
                     </span>
           <span class="error_next_box"></span>
 
@@ -49,7 +66,7 @@
             <label for="email">상품가격</label>
           </h3>
           <span class="box int_email">
-            <input type="text" v-model="rentalPrice" id="email" class="int" maxlength="100" placeholder="상품 가격을 입력하세요">
+            <input type="text" v-model="buyPrice" id="email" class="int" maxlength="100" placeholder="상품 가격을 입력하세요">
           </span>
         </div>
 
@@ -59,7 +76,7 @@
             <label for="email">상품설명</label>
           </h3>
           <span class="box int_email">
-            <input type="text" v-model="rentalEx" id="email" class="int" maxlength="100" placeholder="상품 설명을 입력하세요">
+            <input type="text" v-model="buyEx" id="email" class="int" maxlength="100" placeholder="상품 설명을 입력하세요">
           </span>
         </div>
 
@@ -110,10 +127,10 @@ export default {
   data() {
     return {
       kindid: '',
-      rentalName: '',
-      rentalStock: '',
-      rentalPrice: '',
-      rentalEx: '',
+      buyName: '',
+      buyStock: '',
+      buyPrice: '',
+      buyEx: '',
       file: '',
       mid: store.getters.getLoginState.loginState,
 
@@ -121,15 +138,10 @@ export default {
       myContent: [],
 
 
-      options: [
-        { value: '1', text: '캠핑패키지'},
-        { value: '2', text: '캠핑용품'},
-        { value: '3', text: '등산용품'},
-
-      ],
     }
   },
   methods: {
+
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
@@ -163,21 +175,21 @@ export default {
 
       // const photoFile = document.getElementById("file_load");
 
-      formData.append('kindid', this.kindid.value);
-      formData.append('rentalName', this.rentalName);
-      formData.append('rentalPrice', this.rentalPrice);
-      formData.append('rentalStock', this.rentalStock);
-      formData.append('rentalEx', this.rentalEx);
+      formData.append('kindid', this.kindid);
+      formData.append('buyName', this.buyName);
+      formData.append('buyPrice', this.buyPrice);
+      formData.append('buyStock', this.buyStock);
+      formData.append('buyEx', this.buyEx);
       formData.append('file', this.file);
       formData.append('mid', this.mid);
 
 
 
-      console.log(this.kindid.value, this.rentalName, this.rentalStock, this.rentalPrice, this.rentalEx, this.file, this.mid);
+      console.log(this.kindid, this.buyName, this.buyStock, this.buyPrice, this.buyEx, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
       if (confirm("상품을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/Rental_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        axios.post(`${baseURI}/api/Buy_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
               alert("상품이 등록되었습니다.");

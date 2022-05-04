@@ -80,7 +80,7 @@ import store from "@/store";
 import ProductPage from "@/components/product/ProductPage";
 
 export default {
-  name: "MyProductDetail",
+  name: "BuyProductDetail",
   components: { ProductPage },
 
   data() {
@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     myDataList() {
-      this.id = this.$route.params.menuid;
+      this.id = this.$route.params.buyId;
       axios.get('http://localhost:9002/api/myProduct_detail/' + this.id)
         .then(res => {
           console.log(res.data);
@@ -123,7 +123,7 @@ export default {
     },
     updated() {
       this.$router.push({
-        name: "MyProductEdit",
+        name: "BuyProductEdit",
         params: {
                   menuid: this.id,
                   mid: this.myContent.mid.mid,
@@ -143,7 +143,7 @@ export default {
             console.log("삭제되었습니다.", res)
             alert("메뉴가 삭제되었습니다.");
             this.$router.push({
-              name: "MyProductList"
+              name: "BuyProductList"
             })
             })
             .catch(error => {

@@ -2,31 +2,41 @@
   <ProductPage></ProductPage>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <br>
+  <h1>렌탈 등록 페이지 입니다.</h1>
   <br>
   <div id="wrapper">
     <div id="content">
       <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
 
         <div>
-          <br>
-          <span class="error_next_box"></span>
           <h3 class="join_title">
-            <label for="id">객실명</label>
+            <label for="id">상품분류</label>
           </h3>
-          <span class="box int_id">
-                        <input type="text" v-model="detailName" id="id" placeholder="객실명을 입력하세요" class="int" maxlength="20">
-                    </span>
-          <span class="error_next_box"></span>
-        </div>
+          <select v-model="kindid" class="form-select form-select-sm" aria-label=".form-select-sm example">
+            <option selected disabled>등록하실 상품을 분류해주세요.</option>
+            <optgroup label="캠핑용품">
+              <option value="3">캠핑패키지</option>
+              <option value="4">텐트</option>
+              <option value="5">타프</option>
+              <option value="6">테이블</option>
+              <option value="7">체어</option>
+              <option value="8">침낭</option>
+              <option value="9">매트</option>
+              <option value="10">식기</option>
+              <option value="11">버너</option>
+              <option value="12">화로</option>
+              <option value="13">캠핑소품</option>
+              <option value="14">등산용품</option>
+            </optgroup>
+          </select>
 
-        <div>
           <br>
           <span class="error_next_box"></span>
           <h3 class="join_title">
-            <label for="id">객실가격</label>
+            <label for="id">상품명</label>
           </h3>
           <span class="box int_id">
-                        <input type="text" v-model="detailPrice" id="id" placeholder="객실가격을 입력하세요" class="int" maxlength="20">
+                        <input type="text" v-model="rentalName" id="id" placeholder="상품명을 입력하세요" class="int" maxlength="20">
                     </span>
           <span class="error_next_box"></span>
         </div>
@@ -34,11 +44,11 @@
         <br>
         <div>
           <h3 class="join_title">
-            <label for="pswd1" >기준인원</label>
+            <label for="pswd1" >상품수량</label>
           </h3>
 
           <span class="box int_id">
-          <input type="text" v-model="baseNumber" id="id" placeholder="객실 기준인원을 입력하세요" class="int" maxlength="100">
+          <input type="text" v-model="rentalStock" id="id" placeholder="상품 수량을 입력하세요" class="int" maxlength="100">
                     </span>
           <span class="error_next_box"></span>
 
@@ -47,20 +57,20 @@
         <br>
         <div>
           <h3 class="join_title">
-            <label for="email">최대인원</label>
+            <label for="email">대여가격</label>
           </h3>
           <span class="box int_email">
-            <input type="text" v-model="maximumNumber" id="email" class="int" maxlength="100" placeholder="객실 최대인원을 입력하세요">
+            <input type="text" v-model="rentalPrice" id="email" class="int" maxlength="100" placeholder="상품 가격을 입력하세요">
           </span>
         </div>
 
         <br>
         <div>
           <h3 class="join_title">
-            <label for="email">객실기능</label>
+            <label for="email">상품설명</label>
           </h3>
           <span class="box int_email">
-            <input type="text" v-model="detailFunction" id="email" class="int" maxlength="100" placeholder="객실기능을 입력하세요">
+            <input type="text" v-model="rentalEx" id="email" class="int" maxlength="100" placeholder="상품 설명을 입력하세요">
           </span>
         </div>
 
@@ -98,43 +108,33 @@
 
 <script>
 import ProductPage from "@/components/product/ProductPage";
-import axios from "axios";
+import axios from 'axios'
+import store from "@/store";
+
 
 export default {
-  name: "RegistrationCampingDetail",
+  name: "RegistrationBuy",
   components: { ProductPage },
   created() {
-    this.DataList();
+
   },
   data() {
     return {
-      // 방금 등록한 캠핑장이름 찾기
-      campingName: '',
-      content: [],
+      kindid: '',
+      rentalName: '',
+      rentalStock: '',
+      rentalPrice: '',
+      rentalEx: '',
+      file: '',
+      mid: store.getters.getLoginState.loginState,
 
-      // 등록할 DB 칼럼
-      detailName: '',
-      detailPrice: '',
-      baseNumber: '',
-      maximumNumber: '',
-      detailFunction: '',
+      id: '',
+      myContent: [],
+
+
     }
   },
   methods: {
-    DataList() {
-      this.campingName = this.$route.params.campingName;
-      console.log(this.campingName);
-      axios.get('http://localhost:9002/api/CampingDetail_BeforeSignup/' + this.campingName)
-          .then(res => {
-            console.log("방금 등록한 캠핑장 이름 가져오기 성공 ! ");
-            console.log(res.data);
-            this.content = res.data;
-            console.log(this.content.campingId);
-          })
-          .catch(e => {
-            console.log(e);
-          })
-    },
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
@@ -163,39 +163,41 @@ export default {
       }
 
     },
-    BuySubmit() {
+    BuySubmit: function () {
       const formData = new FormData();
 
-      formData.append('detailName', this.detailName);
-      formData.append('detailPrice', this.detailPrice);
-      formData.append('baseNumber', this.baseNumber);
-      formData.append('maximumNumber', this.maximumNumber);
-      formData.append('detailFunction', this.detailFunction);
-      formData.append('file', this.file);
-      formData.append('campingId', this.content.campingId);
+      // const photoFile = document.getElementById("file_load");
 
-      console.log(this.detailName, this.detailPrice, this.baseNumber, this.maximumNumber, this.detailFunction, this.file, this.content.campingId);
+      formData.append('kindid', this.kindid);
+      formData.append('rentalName', this.rentalName);
+      formData.append('rentalPrice', this.rentalPrice);
+      formData.append('rentalStock', this.rentalStock);
+      formData.append('rentalEx', this.rentalEx);
+      formData.append('file', this.file);
+      formData.append('mid', this.mid);
+
+
+
+      console.log(this.kindid, this.rentalName, this.rentalStock, this.rentalPrice, this.rentalEx, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
-      if (confirm("캠핑장 객실을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/CampingDetail_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      if (confirm("상품을 등록하시겠습니까?")) {
+        axios.post(`${baseURI}/api/Rental_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
-              alert("캠핑장 및 객실이 등록되었습니다.");
+              alert("상품이 등록되었습니다.");
               this.$router.push({
-                name: 'ProductMain'
+                name: "ProductMain"
               });
             })
             .catch(function (error) {
               console.log("에러" + error);
-              alert("객실이 등록되지않았습니다.");
+              alert("상품이 등록되지않았습니다.");
             })
       }
 
-    }
-
+    },
   }
-
 }
 </script>
 

@@ -1,5 +1,6 @@
 package com.example.capstone.domain.Product;
 
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +18,12 @@ public class Kind {
     //부모
     @ManyToOne
     @JoinColumn(name = "parentkindid")
+
     private Kind parentkind;
 
     //자식
     @OneToMany(mappedBy = "parentkind")
-    private List<Kind> childrenkinds = new ArrayList<>();
 
-
-//    @JsonManagedReference
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "kind")
-//    @JsonIgnore
-//    private List<Menu> menus;
 
 
     public Kind() {}
@@ -79,4 +74,5 @@ public class Kind {
     public void setChildrenkinds(List<Kind> childrenkinds) {
         this.childrenkinds = childrenkinds;
     }
+
 }

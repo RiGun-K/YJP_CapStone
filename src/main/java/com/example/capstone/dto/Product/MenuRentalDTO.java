@@ -14,7 +14,7 @@ public class MenuRentalDTO {
     private String rentalName;
     private int rentalPrice;
     private String rentalEx;
-    private LocalDate savedTime;
+    private String savedTime;
     private int rentalStock;
     private String origFilename;
     private String filename;

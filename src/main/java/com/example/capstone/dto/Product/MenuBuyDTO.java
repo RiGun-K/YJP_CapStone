@@ -14,7 +14,7 @@ public class MenuBuyDTO {
     private String buyName;
     private int buyPrice;
     private String buyEx;
-    private LocalDate savedTime;
+    private String savedTime;
     private int buyStock;
     private String origFilename;
     private String filename;

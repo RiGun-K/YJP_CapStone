@@ -24,6 +24,6 @@ public class CampingDetailDTO {
     private String filename;
     private String filePath;
 
-    private LocalDate savedTime;
+    private String savedTime;
     private int campingId;
 }

@@ -86,25 +86,6 @@ public class ProductController {
 //
 //        return menuMyList;
 //    }
-    @GetMapping("/myProduct_list/{user}")
-    public List<MenuBuy> myMenuList(@PathVariable("user") String user) {
-        List<MenuBuy> myMenus = menuBuyRepository.findByMIDMID(user);
-
-//        List<Menu> myMenus = menuRepository.findAll();
-//        List<Menu> menuList = menuRepository.findAllByMemberList();
-
-//        if (menus.isEmpty()) {
-//            return null;
-//        } else {
-//            for (Menu m : menus) {
-//                System.out.println(m.getKind().getKindname());
-//                // return m.getKind().getKindname();
-//            }
-//        }
-//        return menus;
-        return myMenus;
-        // 한 행만 출력시 Optional , 전체 행은 List
-    }
 
     /* 나의상품 상세페이지 */
     @GetMapping("/myProduct_detail/{menuid}")
@@ -192,7 +173,7 @@ public class ProductController {
 
 
 
-        menuBuy.setSavedTime(LocalDate.now());
+        menuBuy.setSavedTime(LocalDate.now().toString());
 
         Optional<Member> member = memberRepository.findByMID(menuDTO.getMid());
 

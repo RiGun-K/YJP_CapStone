@@ -34,9 +34,9 @@ public class MenuBuy {
     private String filePath;
 
     @CreatedDate
-    private LocalDate savedTime;
+    private String savedTime;
     @LastModifiedDate
-    private LocalDate modifiedDate;
+    private String modifiedDate;
 
     // 구매종류
     @ManyToOne()
@@ -55,7 +55,7 @@ public class MenuBuy {
 
 
     public MenuBuy() {}
-    public MenuBuy(String buyName, int buyPrice, String buyEx, LocalDate savedTime, int buyStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
+    public MenuBuy(String buyName, int buyPrice, String buyEx, String savedTime, int buyStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
         this.buyName = buyName;
         this.buyPrice = buyPrice;
         this.buyEx = buyEx;
@@ -132,19 +132,19 @@ public class MenuBuy {
         this.filePath = filePath;
     }
 
-    public LocalDate getSavedTime() {
+    public String getSavedTime() {
         return savedTime;
     }
 
-    public void setSavedTime(LocalDate savedTime) {
+    public void setSavedTime(String savedTime) {
         this.savedTime = savedTime;
     }
 
-    public LocalDate getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(LocalDate modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
