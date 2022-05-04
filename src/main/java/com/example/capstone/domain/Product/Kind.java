@@ -20,12 +20,11 @@ public class Kind {
     //부모
     @ManyToOne
     @JoinColumn(name = "parentkindid")
-    @JsonManagedReference
     private Kind parentkind;
 
     //자식
     @OneToMany(mappedBy = "parentkind")
-    @JsonBackReference
+
     private List<Kind> childrenkinds = new ArrayList<>();
 
 

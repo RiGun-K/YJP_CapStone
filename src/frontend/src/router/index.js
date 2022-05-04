@@ -184,6 +184,25 @@ const routes = [
     component: () => import('@/components/product/Camping/CampingProductEdit.vue'),
     props: true,
   },
+  ///////////////////////////////////////////////////////////////////
+  {
+    path: '/RoomProductList',
+    name: 'RoomProductList',
+    component: () => import('@/components/product/Room/RoomProductList.vue')
+  },
+  {
+    path: '/RoomProductDetail/:detailId',
+    name: 'RoomProductDetail',
+    component: () => import('@/components/product/Room/RoomProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/RoomProductEdit',
+    name: 'RoomProductEdit',
+    component: () => import('@/components/product/Room/RoomProductEdit.vue'),
+    props: true,
+  },
+  ///////////////////////////////////////////////////////////////////
 
   {
     path: '/ProductList',
