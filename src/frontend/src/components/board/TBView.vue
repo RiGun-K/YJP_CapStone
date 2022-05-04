@@ -85,12 +85,23 @@ export  default  {
         path: '/teamboard'
       })
     },
-    updateData(){
+    updateData(List) {
+      console.log(List.teamMaster.teamMaster, List.noticetitle, List.noticecontent);
+      this.$router.push({
+        path: `/tbupdate/${List.teamwriter_code}`,
+        query: {
+          teamwriter_code: List.teamwriter_code,
+          noticetitle: List.noticetitle,
+          noticecontent: List.noticecontent
+
+        }
+      })
+
 
     },
     deleteData(){
       if (confirm("삭제하시겠습니까?")) {
-        axios.delete('/api/teamdeleteList'+ this.id)
+        axios.delete('/api/teamdeleteList/'+ this.id)
         .then((res) => {
           console.log("삭제되었습니다.", res)
           alert("게시글이 삭제되었습니다.")

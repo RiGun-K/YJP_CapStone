@@ -113,6 +113,11 @@ const routes = [
     name: 'TBView',
     component: () => import('@/components/board/TBView.vue')
   },
+  {
+    path: '/tbupdate/:teamwriter_code',
+    name: 'TBUpdate',
+    component: () => import('@/components/board/TBUpdate.vue')
+  },
 
     ///////////////////////////////상품관리///////////////////////////////////
 
