@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-  // 1 . 팀테이블에서 하나를 찾겟따
+  // 1 . 팀테이블에서 하나를 찾겠다
   // 2 . teamname을 찾겠다
   public Optional <Team> findByTeamName(String teamName);
 

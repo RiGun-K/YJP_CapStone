@@ -1,5 +1,6 @@
 <template>
   <div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <br><H2 style="font-weight: bold">글 상세보기</H2>
   <br>
   <div class="AddWrap">
@@ -70,13 +71,10 @@ export  default  {
     DataList() {
       this.id = this.$route.params.teamwriter_code;
       console.log(this.id);
-      console.log(this.id);
-      axios.get('/api/teammyList' + this.id)
+      axios.get('/api/teammyList/' + this.id)
           .then((res) => {
             console.log("내가 받은 데이터는", res.data)
             this.List = res.data;
-            this.ch = this.check()
-            console.log(this.List.teamwriter_code)
           })
           .catch(error => {
             console.log("에러" + error)
@@ -112,9 +110,6 @@ export  default  {
 
 
 </script>
-
-
-
 <style scoped>
 .tbAdd{border-top:1px solid #888;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
