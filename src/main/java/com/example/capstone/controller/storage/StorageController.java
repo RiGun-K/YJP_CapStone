@@ -388,13 +388,22 @@ public class StorageController {
     }
 
 
-    ////////////////////////// 상품분류  //////////////////////////
+    ////////////////////////// 상품조회  //////////////////////////
 
     @Autowired
     KindRepository kindRepository;
 
-//    @GetMapping("getKindList/{name}")
-//    private Kind getKindList(@PathVariable(value = "id")int name){
-////        Optional
-//    }
+
+    @Autowired
+    MemberEquipmentRepository memberEquipmentRepository;
+
+    @GetMapping("myItem/{userId}")
+    private List<MemberEquipment> getMyItem(@PathVariable(value = "userId")String userId){
+        Optional<Member> member = memberRepository.findByMID(userId);
+
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findAllByMCode(member.get());
+
+        return memberEquipmentList;
+    }
+
 }

@@ -38,6 +38,15 @@
             :disabledDates="disabledDates" />
       </div>
       <div>
+        넣을 장비 선택
+        내 캠핑장비
+        <div>
+          <ul v-for="(item, index) in myItem" :key="index">
+            <li><input type="checkbox" >{{item.memEquipmentName}}</li>
+          </ul>
+        </div>
+      </div>
+      <div>
         결제금액 : {{form.price}}원
       </div>
       <div>
@@ -73,7 +82,14 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-        })
+        });
+    axios.get('/api/myItem/'+this.userId)
+    .then(res=>{
+      console.log(res.data)
+      this.myItem = res.data
+    }).catch(err=>{
+      console.log(err)
+    });
   },
   created() {
     this.id = this.$route.params.storageCode
@@ -83,6 +99,7 @@ export default {
   },
   data() {
     return {
+      myItem:undefined||{},
       id: '',
       boxList: [],
       name: '',
