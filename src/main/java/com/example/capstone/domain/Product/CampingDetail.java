@@ -1,5 +1,6 @@
 package com.example.capstone.domain.Product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -46,6 +47,7 @@ public class CampingDetail {
     private String savedTime;
 
     // 캠핑장아이디
+    @JsonBackReference
     @ManyToOne()
     @JoinColumn(name = "campingId")
     private Camping campingId;

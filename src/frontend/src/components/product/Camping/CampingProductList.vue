@@ -94,7 +94,7 @@ export default {
     },
     showInfo(CampingList) {
       this.$router.push({
-        path: `/BuyProductDetail/${CampingList.campingId}`
+        path: `/CampingProductDetail/${CampingList.campingId}`
       })
     }
 

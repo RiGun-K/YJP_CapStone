@@ -126,4 +126,14 @@ public class CampingController {
         // 한 행만 출력시 Optional , 전체 행은 List
     }
 
+
+    /* 캠핑장 상세페이지 */
+    @GetMapping("/Camping_Detail/{campingId}")
+    public Optional<Camping> getMyProduct_Detail(@PathVariable("campingId") int campingId) {
+        System.out.println("캠핑장 번호 는" + campingId + "입니다.");
+
+        Optional<Camping> myMenuDetailList = campingRepository.findById(campingId);
+        return myMenuDetailList;
+
+    }
 }
