@@ -211,15 +211,16 @@ export default {
             let msg = '결제에 실패하였습니다.'
             msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-            this.$router.push({
-              name: "BuyComplete",
-              params:{
-                // menuName: this.Content.menuname,
-                // orderPrice: this.price,
-                // orderType: rsp.pay_method,
-                orderMenuCount: 1,
-              }
-            })
+            axios.get('http://localhost:9002/api/orderComplete')
+                .then(res => {
+                  console.log(res.data);
+                  this.Content = res.data;
+                  console.log(this.Content.menuname);
+                  //
+                })
+                .catch(e => {
+                  console.log(e);
+                })
             window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
           }
         })

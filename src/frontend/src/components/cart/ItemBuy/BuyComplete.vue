@@ -13,7 +13,7 @@
         <tr>
           <td>구매상품 총 {{orderMenuCount}}개</td>
           <td>1000</td>
-          <td>{{orderType }}</td>
+          <td>{{orderType}}</td>
         </tr>
       </table>
 
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title">{{menuName }}</h5>
+                    <h5 class="card-title">{{menuName}}</h5>
                     <p class="card-text">옵션</p>
                   </div>
                 </div>
