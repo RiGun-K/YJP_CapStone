@@ -31,6 +31,7 @@ public class MemberController {
 
 
     //////로그인 부분///////
+
     @PostMapping("/login")
     public Member login(@RequestBody HashMap<String, String> loginMem){
         Optional<Member> member = memberRepository.findByMID(loginMem.get("MID"));
@@ -47,6 +48,7 @@ public class MemberController {
     }
 
     ///회원가입///
+
     @PostMapping ("/signUp")
     public Boolean signUp(@RequestBody HashMap<String, String> signUp){
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -71,6 +73,7 @@ public class MemberController {
     }
 
     ///회원상태 변경///
+
     @PostMapping("chagneMSC")
     public Boolean changeMSC(@RequestBody HashMap<String, String> updataData){
         Optional<Member> memberCh = memberRepository.findByMID(updataData.get("MID"));
@@ -85,6 +88,7 @@ public class MemberController {
     }
 
     ///회원 수정///
+
     @PostMapping("memberUpdate")
     public Boolean memberUpdate(@RequestBody HashMap<String, String> updataData){
         Optional<Member> memberCh = memberRepository.findByMID(updataData.get("MID"));
@@ -105,6 +109,7 @@ public class MemberController {
     }
 
     ///회원탈퇴-실제 데이터 삭제는 없다(상태변경)///
+
     @PostMapping("deleteMem")
     public Boolean deleteMem(@RequestBody HashMap<String, String> updataData){
         Optional<Member> memberCh = memberRepository.findByMID(updataData.get("MID"));
@@ -122,6 +127,7 @@ public class MemberController {
 
 
     ///속성 체크//
+
     @PostMapping("/userCheck")
     public Boolean userCheck(@RequestBody HashMap<String, String> signUp) {
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -155,6 +161,7 @@ public class MemberController {
     }
 
     ///판매자 신청///
+
     @PostMapping("signCompany")
     public Boolean signCompany(@RequestBody HashMap<String, String> signUp){
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -184,6 +191,7 @@ public class MemberController {
     }
 
     ///로그인 여부 확인///
+
     @PostMapping("loginCheck")
     public Boolean loginCheck(@RequestBody HashMap<String, String> check){
         Optional<Member> memberCh = memberRepository.findByMID(check.get("MID"));
@@ -194,7 +202,8 @@ public class MemberController {
         }
     }
 
-    ///회원 테이블 조회///
+    ///테이블 조회///
+
     @PostMapping("getMember")
     public Member getMember(@RequestBody HashMap<String, String> check){
         Optional<Member> memberCh = memberRepository.findByMID(check.get("MID"));
@@ -204,7 +213,6 @@ public class MemberController {
             return null;
         }
     }
-
     @GetMapping("getAllmember")
     public List<Member> getAllmember(){
         List<Member> members = memberRepository.findAll();
@@ -214,6 +222,7 @@ public class MemberController {
 
 
     /////////판매자 신청 부분////////
+
     @GetMapping("getRequestCompany")
     public List<Company> getAllRequest(){
         List<Company> companyList = companyRepository.findAll();
