@@ -2,6 +2,7 @@ package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Product.Camping;
 import com.example.capstone.domain.Product.CampingDetail;
+import com.example.capstone.domain.Product.MenuRental;
 import com.example.capstone.dto.Product.CampingDetailDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -91,4 +93,14 @@ public class RoomController {
 
         return campingDetail;
     }
+
+
+//    /* 객실상품 조회 페이지 */
+//    @GetMapping("/Room_List/{user}")
+//    public List<CampingDetail> myRoomList(@PathVariable("user") String user) {
+//        List<CampingDetail> myMenus = campingDetailRepository.findByMIDMID(user);
+//
+//        return myMenus;
+//    }
+
 }
