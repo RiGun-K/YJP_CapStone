@@ -37,7 +37,7 @@ export default {
 
       noticetitle: '',
       noticecontent: '',
-      teamMaster: '예진'
+      teamMaster: 41
     }
   },
   methods: {

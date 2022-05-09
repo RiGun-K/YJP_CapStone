@@ -27,15 +27,16 @@ public class TeamBoardController {
     @PostMapping("/teamwriting")
     // 3. 받은 data 를 @RequestBody 를 사용해서 TeamboardDTO 로 담는다.
     public TeamWriter addWriter(@RequestBody TeamboardDTO teamboardDTO) {
-        System.out.println(teamboardDTO.getTeamMaster());
+        System.out.println(teamboardDTO.getTeamCode());
         // teammaster 찾기
         // Optional<Member> member = memberRepository.findByMID(teamboardDTO.getMid());
 
         // 4. teamMaster는 외래키이므로 teamMaster가 있는 team 테이블에서 찾는다.
-        Optional<Team> teamMaster = teamRepository.findByTeamMaster(teamboardDTO.getTeamMaster());
+        Optional<Team> teamCode = teamRepository.findByTeamCode(teamboardDTO.getTeamCode());
+//        System.out.println(teamMaster.get().getTeamMaster());
 
         // 5. TeamWriter 생성자에 teamboardDTO에 담긴 데이터들을 담는다(보낸다).
-        TeamWriter teamWriter = new TeamWriter(teamboardDTO.getNoticetitle(), teamboardDTO.getNoticecontent(), teamMaster.get());
+        TeamWriter teamWriter = new TeamWriter(teamboardDTO.getNoticetitle(), teamboardDTO.getNoticecontent(), teamboardDTO.getTeamMaster());
         // 6. 담긴 data들을 DB에 저장한다.
         teamWriterRepository.save(teamWriter);
         return teamWriter;

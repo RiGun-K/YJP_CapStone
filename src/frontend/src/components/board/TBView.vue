@@ -48,6 +48,7 @@ export  default  {
   name: 'TBView',
   data() {
     return {
+      teamMaster: '',
       teamwriter_code: '',
       noticetitle: '',
       noticecontent: '',
