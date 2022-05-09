@@ -3,6 +3,7 @@
   <br>
   <h2>캠핑장 및 객실 상세페이지</h2>
   <h3>캠핑장 : {{ this.list.campingName }}</h3>
+  <h3>객실수 : {{ this.list.campingDetails.length }}</h3>
   <div class="cart">
     <div class="cart-list">
       <div class="buy-cart-btn" @click="PBuy">
@@ -55,6 +56,11 @@ export default {
           .catch(e => {
             console.log(e)
           })
+    },
+    PBuy() {
+      this.$router.push({
+        path: `/CampingProductEdit/${this.list.campingId}`
+      })
     },
     // showInfo(CampingList) {
     //   this.$router.push({

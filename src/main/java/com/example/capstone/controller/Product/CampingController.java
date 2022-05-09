@@ -6,6 +6,7 @@ import com.example.capstone.domain.Product.CampingArea;
 import com.example.capstone.domain.Product.Infoter;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.dto.Product.CampingDTO;
+import com.example.capstone.dto.Product.MenuBuyDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
 import lombok.NoArgsConstructor;
@@ -88,12 +89,18 @@ public class CampingController {
 
         System.out.println("-----3-------");
         Optional<Infoter> infoter = infoterRepository.findById(campingDTO.getInfoterId());
+        System.out.println(infoter.get());
 
         System.out.println("-----4-------");
         Optional<CampingArea> campingArea = campingAreaRepository.findById(campingDTO.getAreaId());
+        System.out.println(campingArea.get());
 
 
-
+        System.out.println("-----외래키 값들 시작-------");
+        System.out.println(member.get());
+        System.out.println(infoter.get());
+        System.out.println(campingArea.get());
+        System.out.println("-----외래키 값들 끝-------");
         if(campingDTO.getSavedTime()==null)
             campingDTO.setSavedTime(LocalDate.now().toString());
 
@@ -135,5 +142,99 @@ public class CampingController {
         Optional<Camping> myMenuDetailList = campingRepository.findById(campingId);
         return myMenuDetailList;
 
+    }
+
+    /* 캠핑장 수정 */
+    @PutMapping("/Camping_Update")
+    public Camping UpdateMyProduct_Detail(@RequestParam(value = "file", required = false) MultipartFile uploadFile, Camping camping, CampingDTO campingDTO) throws IllegalStateException, IOException {
+        System.out.println("파일 이름" + uploadFile.getOriginalFilename());
+        System.out.println("파일 크기" + uploadFile.getSize());
+
+//        Optional<Menu> updateMyMenu = menuRepository.findById(menu.getMenuid());
+//        updateMyMenu.get().setMID(menu.getMID());
+//        updateMyMenu.get().setEx(menu.getEx());
+//        updateMyMenu.get().setMenuname(menu.getMenuname());
+//        updateMyMenu.get().setPrice(menu.getPrice());
+//        updateMyMenu.get().setStock(menu.getStock());
+//        updateMyMenu.get().setKindid(menu.getKindid());
+
+//        menuRepository.save(updateMyMenu.get());
+        try {
+            String origFilename = uploadFile.getOriginalFilename();
+
+            UUID uuid = UUID.randomUUID();
+            String filename = uuid + "_" + origFilename;
+            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+            if (!new File(savePath).exists()) {
+                try {
+                    new File(savePath).mkdir();
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            String filePath = savePath + "\\" + filename;
+            uploadFile.transferTo(new File(filePath));
+
+            camping.setOrigFilename(origFilename);
+            camping.setFilename(filename);
+            camping.setFilePath(filePath);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("123");
+        }
+        System.out.println(camping.getAreaId());
+        System.out.println(camping.getMID());
+        System.out.println(camping.getInfoterId());
+
+        /* menu.getMID() 하면 반환값이 String인데 타입은 Menu라서 Null로 뜸
+           따라서 menuDTO.getMid() <- String 타입으로 넘겨서 member 테이블에서 'rigun'을 찾아줌
+         */
+
+//        List<Member> member = memberRepository.findByMID(menuDTO.getMid());
+//
+//        Optional<Kind> kind = kindRepository.findById(menuDTO.getKindid());
+//
+
+        System.out.println("----1--------");
+        Optional<Member> member = memberRepository.findByMID(campingDTO.getMid());
+
+        System.out.println("-----2-------");
+        Optional<Infoter> infoter = infoterRepository.findById(campingDTO.getInfoterId());
+
+        System.out.println("-----3-------");
+        Optional<CampingArea> campingArea = campingAreaRepository.findById(campingDTO.getAreaId());
+
+
+        System.out.println(member.get());
+        System.out.println(infoter.get());
+        System.out.println(campingArea.get());
+
+        System.out.println("-----4-------");
+
+        camping.setMID(member.get());
+        camping.setInfoterId(infoter.get());
+        camping.setAreaId(campingArea.get());
+        //            menu.setMID(memberRepository.findByMID("rigun").get());
+
+        campingRepository.save(camping);
+
+        return camping;
+    }
+
+    /* 캠핑장 삭제 */
+    @DeleteMapping("/Camping_Delete/{campingId}")
+    public String DeleteMyProduct_Detail(@PathVariable("campingId") int campingId) {
+        System.out.println("삭제하실 뷰에서 가져온 메뉴번호는" + campingId + " 입니다.");
+        Optional<Camping> menuCamping = campingRepository.findById(campingId);
+        System.out.println("삭제하실 DB 에서 가져온 메뉴번호는" + menuCamping.get().getCampingId() + " 입니다.");
+
+
+        menuBuyRepository.deleteById(campingId);
+//         menuService.deleteById(menuid);
+        return "메뉴가 삭제되었습니다.";
     }
 }

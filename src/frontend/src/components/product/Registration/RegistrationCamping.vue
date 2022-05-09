@@ -20,6 +20,17 @@
         <div class="mt-3">선택유형 : <strong>{{ infoterid.text }}</strong></div>
 
         <br>
+        <h3 class="join_title">
+          <label for="id">지역분류</label>
+        </h3>
+        <select v-model="areaid" placeholder="지역명을 입력하세요." class="form-select" aria-label="Default select example">
+          <option v-for="(area, index) in ares" :key="index" :value="area">
+            {{area.text}}
+          </option>
+        </select>
+        <div class="mt-3">선택유형 : <strong>{{ areaid.text }}</strong></div>
+
+        <br>
         <span class="error_next_box"></span>
         <h3 class="join_title">
           <label for="id">캠핑장 명</label>
@@ -123,6 +134,7 @@ export default {
   data() {
     return {
       infoterid: '',
+      areaid: '',
       campingName: '',
       campingInfo: '',
       campingDetailState: '',
@@ -146,6 +158,19 @@ export default {
         { value: '5', text: '차박'},
         { value: '6', text: '기타'},
       ],
+      ares: [
+        { value: '1', text: '강원도'},
+        { value: '2', text: '경기도'},
+        { value: '3', text: '경상도'},
+        { value: '4', text: '대구시'},
+        { value: '5', text: '부산시'},
+        { value: '6', text: '서울시'},
+        { value: '7', text: '울산시'},
+        { value: '8', text: '인천시'},
+        { value: '9', text: '전라도'},
+        { value: '10', text: '제주도'},
+        { value: '11', text: '충청도'},
+      ]
     }
   },
   methods: {
@@ -192,6 +217,7 @@ export default {
       // const photoFile = document.getElementById("file_load");
 
       formData.append('infoterId', this.infoterid.value);
+      formData.append('areaId', this.areaid.value);
       formData.append('campingName', this.campingName);
       formData.append('campingInfo', this.campingInfo);
       formData.append('campingDetailState', this.campingDetailState);
@@ -203,15 +229,16 @@ export default {
 
 
 
-      console.log(this.infoterid.value, this.campingName, this.campingInfo, this.campingDetailState, this.postalAddress, this.address, this.detailAddress, this.file, this.mid);
+      console.log(this.infoterid.value, this.areaid.value, this.campingName, this.campingInfo, this.campingDetailState, this.postalAddress, this.address, this.detailAddress, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
       if (confirm("캠핑장을 등록하시겠습니까?")) {
         axios.post(`${baseURI}/api/Camping_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
+              alert("캠핑장이 등록되었습니다.");
               this.$router.push({
-                path: `/RegistrationCampingDetail/${this.campingName}`
+                name: "ProductMain"
               });
             })
             .catch(function (error) {

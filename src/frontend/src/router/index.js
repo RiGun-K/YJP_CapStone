@@ -201,7 +201,7 @@ const routes = [
     props: true
   },
   {
-    path: '/CampingProductEdit',
+    path: '/CampingProductEdit/:campingId',
     name: 'CampingProductEdit',
     component: () => import('@/components/product/Camping/CampingProductEdit.vue'),
     props: true,
