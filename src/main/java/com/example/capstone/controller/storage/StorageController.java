@@ -393,13 +393,6 @@ public class StorageController {
     @Autowired
     KindRepository kindRepository;
 
-    @PostMapping("postKind")
-    private Result postKind(@RequestBody String name) {
-        Kind kind = new Kind(name);
-        kindRepository.save(kind);
-        return new Result("ok");
-    }
-
 //    @GetMapping("getKindList/{name}")
 //    private Kind getKindList(@PathVariable(value = "id")int name){
 ////        Optional

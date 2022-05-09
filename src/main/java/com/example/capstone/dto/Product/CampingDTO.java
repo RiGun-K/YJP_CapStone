@@ -26,5 +26,6 @@ public class CampingDTO {
     private String filePath;
 
     private int infoterId;
+    private int areaId;
     private String mid;
 }

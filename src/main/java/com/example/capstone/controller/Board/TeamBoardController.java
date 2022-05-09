@@ -17,6 +17,6 @@ public class TeamBoardController {
     @Autowired
     private TeamWriterRepository teamWriterRepository;
 
-    @PostMapping("/Teamwriting")
-    public Writer
+//    @PostMapping("/Teamwriting")
+//    public Writer
 }
