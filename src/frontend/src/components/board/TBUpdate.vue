@@ -1,78 +1,82 @@
 <template>
   <div>
+    <br><H2 style="font-weight: bold">공지사항 수정</H2>
     <br>
-    <h1 style="font-weight: bold">팀 공지사항 작성</h1>
-    <button type="button" class="btn btn-outline-primary" @click="list" style="float: left;" >목록</button>
-
+    <button @click="list" style="float: left;">목록</button>
     <form>
       <table class="tbAdd">
 
         <tr>
-          <th>공지 제목</th>
+          <th>제목</th>
           <td><input type="text" v-model="noticetitle" ref="subject" placeholder="제목"/></td>
         </tr>
         <tr>
-          <th>공지 내용</th>
+          <th>내용</th>
           <td><textarea v-model="noticecontent" placeholder="내용을 입력하세요."/></td>
         </tr>
 
       </table>
-
     </form>
   </div>
   <div class="btnWrap">
-    <button @click="main" class="btn" style="float: left;">취소</button>
-    <button type="submit" @click="write" class="btnAdd btn">작성</button>
-    <button type="submit" @click="list" class="btnAdd btn">조회</button>
+    <button @click="list" class="btn" style="float: left;">취소</button>
+    <button @click="update" type="submit" class="btnAdd btn">수정</button>
+
   </div>
+
 </template>
+
 <script>
-import store from "@/store";
+
 import axios from "axios";
 
 export default {
-  name: 'TBCreate',
+  name: "TBUpdate",
   data() {
     return {
-
+      teamwriter_code: '',
       noticetitle: '',
       noticecontent: '',
-      teamMaster: '예진'
     }
   },
+  created() {
+    this.teamwriter_code = this.$route.query.teamwriter_code;
+    this.noticetitle = this.$route.query.noticetitle;
+    this.noticecontent = this.$route.query.noticecontent;
+  },
+
   methods: {
-    write() {
-      // 1. DB에 저장할  data를 담는다.
+    update() {
+      this.id = this.teamwriter_code;
       const data = {
-        teamMaster: this.teamMaster,
+        teamwriter_code: this.teamwriter_code,
         noticetitle: this.noticetitle,
         noticecontent: this.noticecontent
       }
       console.log(data);
+      if (confirm("수정하시겠습니까?")) {
+        axios.put('/api/tbupdate', data)
+        .then((res) => {
+          console.log("수정되었습니다.", res.data)
+          alert("수정되었습니다.")
+          this.$router.push({
+            path: '/TeamBoard'
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
+    },
 
-      // 2. 담은 data를 post 방식으로 '/api/teamwriting 주소로 보낸다
-      axios.post('/api/teamwriting', data)
-          .then((res) => {
-            console.log("성공" + res.data)
-          })
-          .catch((ex) => {
-            console.log("실패", ex)
-          })
-      this.$router.push({
-        path: '/teamboard'
-      })
-    },
-    list() {
-      this.$router.push({
-        path: 'TeamBoard'
-      })
-    },
-    main(){
+    list(){
       this.$router.push({
         path: '/TeamBoard'
       })
     }
+
   }
+
 }
 </script>
 
@@ -86,5 +90,4 @@ export default {
 .btnWrap a{margin:0 10px;}
 .btnAdd {background:#43b984; text-align:center; margin:20px 0 0 0;}
 .btnDelete{background:#f00;}
-
 </style>
