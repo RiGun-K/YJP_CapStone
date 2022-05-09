@@ -168,15 +168,15 @@ export default {
     zcGet() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          this.MZC = data.zonecode;
-          this.roadAddress = data.roadAddress;
+          this.MZadd = data.zonecode;
+          this.MRadd = data.roadAddress;
         }
       }).open({popupKey: '주소검색'})
     },
     empityCheck() {
       if (this.MNick === '') {
         return false
-      } else if (this.MZC === '') {
+      } else if (this.MZadd === '') {
         return false
       } else if (this.MRadd === '') {
         return false

@@ -292,4 +292,10 @@ public class MemberController {
         memberRepository.save(member.get());
         return "사용자 이메일로 임시비밀번호를 전송했습니다";
     }
+    
+    ///테스트///
+    @PostMapping("testCheck")
+    public void testCheck(){
+        System.out.println("테스트 성공");
+    }
 }
