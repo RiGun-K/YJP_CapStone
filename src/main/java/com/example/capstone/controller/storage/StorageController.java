@@ -393,6 +393,7 @@ public class StorageController {
     @Autowired
     KindRepository kindRepository;
 
+
     @Autowired
     MemberEquipmentRepository memberEquipmentRepository;
 

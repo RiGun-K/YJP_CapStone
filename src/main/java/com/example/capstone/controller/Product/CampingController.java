@@ -2,6 +2,7 @@ package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Camping;
+import com.example.capstone.domain.Product.CampingArea;
 import com.example.capstone.domain.Product.Infoter;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.dto.Product.CampingDTO;
@@ -39,6 +40,8 @@ public class CampingController {
     InfoterRepository infoterRepository;
     @Autowired
     CampingDetailRepository campingDetailRepository;
+    @Autowired
+    CampingAreaRepository campingAreaRepository;
 
     /* 캠핑장 등록 페이지 */
     @PostMapping("/Camping_Signup")
@@ -86,12 +89,16 @@ public class CampingController {
         System.out.println("-----3-------");
         Optional<Infoter> infoter = infoterRepository.findById(campingDTO.getInfoterId());
 
+        System.out.println("-----4-------");
+        Optional<CampingArea> campingArea = campingAreaRepository.findById(campingDTO.getAreaId());
+
+
 
         if(campingDTO.getSavedTime()==null)
             campingDTO.setSavedTime(LocalDate.now().toString());
 
 
-        Camping camping = new Camping(campingDTO.getCampingName(), campingDTO.getCampingInfo(), campingDTO.getCampingDetailState(), campingDTO.getPostalAddress(), campingDTO.getAddress(), campingDTO.getDetailAddress(), campingDTO.getSavedTime(), campingDTO.getOrigFilename(), campingDTO.getFilename(), campingDTO.getFilePath(), infoter.get(), member.get());
+        Camping camping = new Camping(campingDTO.getCampingName(), campingDTO.getCampingInfo(), campingDTO.getCampingDetailState(), campingDTO.getPostalAddress(), campingDTO.getAddress(), campingDTO.getDetailAddress(), campingDTO.getSavedTime(), campingDTO.getOrigFilename(), campingDTO.getFilename(), campingDTO.getFilePath(), infoter.get(), campingArea.get(), member.get());
         System.out.println(camping);
 
         campingRepository.save(camping);

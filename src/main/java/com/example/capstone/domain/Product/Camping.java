@@ -61,13 +61,18 @@ public class Camping {
     @JoinColumn(name = "infoterid")
     private Infoter infoterId;
 
+    // 캠핑장 지역
+    @ManyToOne()
+    @JoinColumn(name = "areaid")
+    private CampingArea areaId;
+
     // 판매자 정보
     @ManyToOne
     @JoinColumn(name = "MID")
     private Member MID;
 
     public Camping() {}
-    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, Member MID) {
+    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
         this.campingDetailState = campingDetailState;
@@ -79,6 +84,7 @@ public class Camping {
         this.filename = filename;
         this.filePath = filePath;
         this.infoterId = infoterId;
+        this.areaId = areaId;
         this.MID = MID;
     }
 
@@ -128,9 +134,7 @@ public class Camping {
     }
 
     public void setSavedTime(String savedTime) {
-        this.savedTime =
-
-                savedTime;
+        this.savedTime = savedTime;
     }
 
     public String getModifiedDate() {
@@ -203,5 +207,13 @@ public class Camping {
 
     public void setMID(Member MID) {
         this.MID = MID;
+    }
+
+    public CampingArea getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(CampingArea areaId) {
+        this.areaId = areaId;
     }
 }

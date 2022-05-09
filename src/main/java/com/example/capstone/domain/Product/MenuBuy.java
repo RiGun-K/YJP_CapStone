@@ -25,7 +25,7 @@ public class MenuBuy {
     @Column()
     private int buyStock;
 
-    // 파일
+    // 파일e
     @Column()
     private String origFilename;
     @Column()
