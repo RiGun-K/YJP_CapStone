@@ -12,7 +12,7 @@
       <a class="nav-link" href="CampingProductList">캠핑장</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="RoomProductList">객실</a>
+      <a class="nav-link disabled" href="RoomProductList">객실</a>
     </li>
   </ul>
   <br>
@@ -24,7 +24,7 @@
       <tr>
         <th>분류</th>
         <th>캠핑장명</th>
-        <th>객실 수</th>
+        <th>가용 객실 수</th>
         <th>등록일자</th>
       </tr>
       </thead>
