@@ -7,12 +7,12 @@
       <table class="pay-now-info">
         <tr>
           <td>주문 금액 {{orderPrice}}</td>
-          <td>배송비</td>
+          <td>배송비 1000</td>
           <td>결제 금액 {{orderPrice}}</td>
         </tr>
         <tr>
           <td>구매상품 총 {{orderMenuCount}}개</td>
-          <td>1000</td>
+          <td></td>
           <td>{{orderType}}</td>
         </tr>
       </table>
@@ -58,13 +58,25 @@ export default {
   data () {
 
   },
-  props:
-    ['orderMenuCount', 'orderPrice', 'menuName', 'orderType']
+  props: {
+    orderMenuCount:{
+      type: Number,
+    },
+    orderPrice:{
+      type: Number,
+    },
+    menuName:{
+      type: String,
+    },
+    orderType:{
+      type: String,
+    }
+  }
   ,
   created() {
-    console.log(this.$route.params.orderMenuCount)
-    console.log(this.$route.params.orderPrice)
-    console.log(this.$route.params.menuName)
+    console.log(this.orderMenuCount)
+    console.log(this.menuName)
+    console.log(this.orderType)
 
   }
 }

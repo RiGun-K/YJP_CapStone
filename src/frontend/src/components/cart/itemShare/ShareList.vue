@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import Sidebar from '@/components/cart/Sidebar/Sidebar'
-import { sidebarWidth } from '@/components/cart/Sidebar/state'
+import Sidebar from '@/components/cart/sidebar/Sidebar'
+import { sidebarWidth } from '@/components/cart/sidebar/state'
 import axios from 'axios'
 import ProductList from "@/components/product/ProductList";
 export default {

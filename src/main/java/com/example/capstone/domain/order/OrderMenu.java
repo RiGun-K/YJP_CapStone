@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class OrderMenu {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderMenuId;
 
     @ManyToOne

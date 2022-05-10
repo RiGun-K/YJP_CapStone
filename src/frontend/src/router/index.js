@@ -152,75 +152,97 @@ const routes = [
   {
     path: '/itemBuy',
     name: 'ItemBuy',
-    component: () => import('@/components/cart/ItemBuy/BuyList.vue')
+    component: () => import('@/components/cart/itemBuy/BuyList.vue')
   },
   {
     path: '/itemBuy/buyList/:menuid',
     name: 'BuyDetailList',
-    component: () => import('@/components/cart/ItemBuy/BuyDetailList.vue'),
+    component: () => import('@/components/cart/itemBuy/BuyDetailList.vue'),
     props: true
   },
   {
     path: '/itemBuy/buyNow/:menuid',
     name: 'BuyNow',
-    component: () => import('@/components/cart/ItemBuy/BuyNow.vue'),
+    component: () => import('@/components/cart/itemBuy/BuyNow.vue'),
     props: true
   },
   {
     path: '/itemBuy/buyComplete',
     name: 'BuyComplete',
-    component: () => import('@/components/cart/ItemBuy/BuyComplete.vue'),
+    component: () => import('@/components/cart/itemBuy/BuyComplete.vue'),
     props: true
   },
   {
     path: '/itemShare',
     name: 'ShareList',
-    component: () => import('@/components/cart/ItemShare/ShareList.vue')
+    component: () => import('@/components/cart/itemShare/ShareList.vue')
   },
   {
     path: '/itemShare/shareNow',
     name: 'ShareNow',
-    component: () => import('@/components/cart/ItemShare/ShareNow.vue')
+    component: () => import('@/components/cart/itemShare/ShareNow.vue')
   },
   {
     path: '/itemBuy/shareComplete',
     name: 'shareComplete',
-    component: () => import('@/components/cart/ItemShare/ShareComplete.vue')
+    component: () => import('@/components/cart/itemShare/ShareComplete.vue')
   },
   {
     path: '/infoter',
     name: 'InfoterList',
-    component: () => import('@/components/cart/Infoter/InfoterList.vue')
+    component: () => import('@/components/cart/infoter/InfoterList.vue')
   },
   {
     path: '/infoter/infoterNow',
     name: 'InfoterNow',
-    component: () => import('@/components/cart/Infoter/InfoterNow.vue')
+    component: () => import('@/components/cart/infoter/InfoterNow.vue')
   },
   {
     path: '/infoter/infoterComplete',
     name: 'InfoterComplete',
-    component: () => import('@/components/cart/Infoter/InfoterNow.vue')
+    component: () => import('@/components/cart/infoter/InfoterNow.vue')
   },
   {
     path: '/cart',
     name: 'CartList',
-    component: () => import('@/components/cart/Cart/CartList.vue')
+    component: () => import('@/components/cart/cart/CartList.vue')
   },
   {
     path: '/cart/buy',
     name: 'BuyCart',
-    component: () => import('@/components/cart/Cart/BuyCart.vue')
+    component: () => import('@/components/cart/cart/BuyCart.vue')
   },
   {
     path: '/cart/share',
     name: 'ShareCart',
-    component: () => import('@/components/cart/Cart/ShareCart.vue')
+    component: () => import('@/components/cart/cart/ShareCart.vue')
   },
   {
     path: '/cart/reservation',
     name: 'ReservationCart',
-    component: () => import('@/components/cart/Cart/ReservationCart.vue')
+    component: () => import('@/components/cart/cart/ReservationCart.vue')
+  },
+  {
+    path: '/ordersList',
+    name: 'Orders',
+    component: () => import('@/components/cart/ordersInfo/Orders.vue'),
+    props: true
+  },
+  {
+    path: '/ordersList/buyOrders/:mid',
+    name: 'BuyOrders',
+    component: () => import('@/components/cart/ordersInfo/BuyOrders.vue'),
+    props: true
+  },
+  {
+    path: '/ordersList/shareOrders',
+    name: 'ShareOrders',
+    component: () => import('@/components/cart/ordersInfo/ShareOrders.vue')
+  },
+  {
+    path: '/ordersList/reservationOrders',
+    name: 'ReservationOrders',
+    component: () => import('@/components/cart/ordersInfo/ReservationOrders.vue')
   },
     //////////////////////////////보관함관리/////////////////////////////////
 

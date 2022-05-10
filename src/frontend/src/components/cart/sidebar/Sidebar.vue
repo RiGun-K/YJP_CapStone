@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import { collapsed, toggleSidebar, sidebarWidth } from '@/components/cart/Sidebar/state'
-import SidebarLink from '@/components/cart/Sidebar/SidebarLink'
+import { collapsed, toggleSidebar, sidebarWidth } from '@/components/cart/sidebar/state'
+import SidebarLink from '@/components/cart/sidebar/SidebarLink'
 export default {
   name: 'Sidebar',
   props: {},

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -84,5 +85,21 @@ public class OrderController {
         return "test";
     }
 
+    @GetMapping("/ordersList/buyOrders/{MCode}")
+    public List<Orders> getOrderBuy(@PathVariable("MCode") Long MCode) {
+        System.out.println("회원번호는" + MCode + "입니다.");
+
+        Optional<Member> searchMember = memberRepository.findById(MCode);
+        System.out.println(searchMember);
+
+        if(searchMember.isPresent()) {
+            Member member = searchMember.get();
+            List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
+
+            System.out.println(buyOrdersList);
+            return buyOrdersList;
+        }
+        return null;
+    }
 
 }

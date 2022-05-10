@@ -12,7 +12,7 @@
 <script>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { collapsed } from '@/components/cart/Sidebar/state'
+import { collapsed } from '@/components/cart/sidebar/state'
 
 export default {
   props: {

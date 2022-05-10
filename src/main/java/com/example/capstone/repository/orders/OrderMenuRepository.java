@@ -1,5 +1,6 @@
 package com.example.capstone.repository.orders;
 
+import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.order.OrderMenu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

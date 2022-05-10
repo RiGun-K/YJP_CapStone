@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name="orders")
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderCode;
 
     @Column
