@@ -1,5 +1,15 @@
 <template>
-	<h2>일정작성</h2>
+	<h1>
+		{{ this.$store.state.teamCode.teamCode.teamName }}팀의
+		{{ this.$store.state.planCode.planName }}플랜입니다
+	</h1>
+	<div>
+		<h2>조회수: {{ this.$store.state.planCode.planViews }}</h2>
+		<h2>사용 수: {{ this.$store.state.planCode.planUsedCount }}회</h2>
+		<h2>예상 비용: {{ this.$store.state.planCode.planBudget }}원</h2>
+		<h2>인원: {{ this.$store.state.planCode.planNumber }}명</h2>
+		<h2>지역: {{ this.$store.state.planCode.planDestination }}</h2>
+	</div>
 	<h2>
 		{{ this.$store.state.planCode.planTotalDate - 1 }}박{{
 			this.$store.state.planCode.planTotalDate
@@ -13,31 +23,10 @@
 
 	<hr />
 	<h1>{{ dateIndex }}일차 계획</h1>
-	시작
-	<input type="time" v-model="detailStart" /><br />
-	종료
-	<input type="time" v-model="detailEnd" />
-	<br />
-	Name<input
-		type="text"
-		v-model="detailName"
-		placeholder="일정 이름을 입력하세요"
-	/>
-	<br />
-
-	Memo<input
-		type="text"
-		v-model="detailMemo"
-		placeholder="메모를 입력하세요"
-	/>
-	<br />
 
 	<div v-for="(value, index) in showChecklist" :key="index">
 		<h2>{{ value }}</h2>
 	</div>
-	<button @click="insert">삽입</button>
-	<hr />
-
 	<div>
 		<table border="1" bordercolor="blue" align="center">
 			<th bgcolor="skybule">{{ dateIndex }}일차</th>
@@ -57,28 +46,19 @@
 						<button
 							v-for="(value1, index) in value.checklists"
 							:key="index"
-							title="더블클릭하면 삭제됩니다"
 							:class="[
 								{ color_n: value1.checkState == 'n' },
 								{ color_y: value1.checkState == 'y' },
 							]"
-							@click="updateState(value1, $event)"
-							@dblclick="deleteChecklist(value1)"
 						>
 							{{ value1.checkContent }}
 						</button>
 					</div>
 				</td>
-				<td>
-					<button @click="insertChecklist(value.detailCode)">
-						checkList
-					</button>
-				</td>
 			</tr>
 		</table>
-
 		<div>
-			<button @click="savePlan">플랜저장</button>
+			<button @click="copyPlan">내 플랜에 적용</button>
 		</div>
 	</div>
 </template>
@@ -111,7 +91,6 @@ export default {
 		colorSetting: function () {
 			let a = document.body.getElementsByClassName('checkList');
 			Array.from(a).forEach(function (ele) {
-				console.log('hi there');
 				if (ele.checkState === 'n') {
 					ele.style =
 						'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
@@ -121,37 +100,7 @@ export default {
 			});
 			console.log(a);
 		},
-		deleteChecklist: function (checkListCode) {
-			const url = '/api/deleteChecklist';
-			axios
-				.delete(url, { data: checkListCode })
-				.then((response) => {
-					this.loadDetailPlanOfDay(this.dateIndex);
-				})
-				.catch((error) => {});
-		},
 
-		updateState(checkListCode, event) {
-			console.log(event.target);
-			this.test = checkListCode;
-			const url = '/api/updateState';
-			axios
-				.put(url, checkListCode)
-				.then((response) => {
-					console.log(response.data);
-					if (response.data.checkState === 'n') {
-						console.log('N입니다!!!!!!!!!!!!!');
-						event.target.style =
-							'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
-					} else {
-						event.target.style =
-							'color: white; background-color: skyblue;';
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
 		datesButton: function (index) {
 			this.detailPlanOfDayList.length = 0;
 			this.dateIndex = index;
@@ -175,46 +124,10 @@ export default {
 				});
 			this.colorSetting();
 		},
-		insertChecklist: function (detailCode) {
-			const planDetail = { detailCode: detailCode };
-			console.log(planDetail);
-			const checkContent = prompt('체크리스트를 추가하세요!', 'ex) 휴지');
-			const url = '/api/insertChecklist';
-
-			axios
-				.put(url, {
-					detailCode: planDetail,
-					checkContent: checkContent,
-				})
-				.then((response) => {
-					console.log('성공');
-					this.loadDetailPlanOfDay(this.dateIndex);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+		copyPlan: function () {
+			this.$router.push({ name: 'selectTeam' });
+			console.log(this.$store.state.planCode);
 		},
-
-		insert: function () {
-			const url = '/api/insertDetailPlan';
-			axios
-				.put(url, {
-					detailStart: this.detailStart,
-					detailEnd: this.detailEnd,
-					detailMemo: this.detailMemo,
-					detailDay: this.dateIndex,
-					planCode: this.$store.state.planCode,
-					detailName: this.detailName,
-				})
-				.then((response) => {
-					this.loadDetailPlanOfDay(this.dateIndex);
-					console.log('success');
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-		savePlan: function () {},
 	},
 };
 </script>
@@ -228,8 +141,7 @@ export default {
 	color: white;
 	background-color: skyblue;
 }
-.checkList {
-}
+
 table,
 th {
 	border: 3px solid black;

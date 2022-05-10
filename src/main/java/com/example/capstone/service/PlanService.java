@@ -105,12 +105,16 @@ public class PlanService {
         List<Plan> plans = planRepository.findAll();
         List<PlanDto> planDtos = new ArrayList<>();
 
-
         for (Plan plan : plans) {
             planDtos.add(plan.toPlanDto());
         }
 
 
         return planDtos;
+    }
+    public void countView(PlanDto planDto){
+        Optional<Plan> findPlan = planRepository.findById(planDto.getPlanCode());
+        Plan plan = findPlan.orElse(null);
+        plan.setPlanViews(plan.getPlanViews()+1);
     }
 }

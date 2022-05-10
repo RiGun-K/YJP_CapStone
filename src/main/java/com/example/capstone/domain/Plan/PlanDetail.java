@@ -1,10 +1,7 @@
 package com.example.capstone.domain.Plan;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+
 //@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 
 @Entity
@@ -26,7 +24,7 @@ public class PlanDetail {
     private Long detailCode;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "detailCode",cascade = {CascadeType.ALL},orphanRemoval = true)
+    @OneToMany(mappedBy = "detailCode")//,cascade = {CascadeType.ALL},orphanRemoval = true
     private List<Checklist> checklists = new ArrayList<Checklist>();
 
     @ManyToOne

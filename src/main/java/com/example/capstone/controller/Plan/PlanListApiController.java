@@ -29,4 +29,9 @@ public class PlanListApiController {
         List<PlanDto> plans = planTagService.tagFilter(tagContent);
         return plans;
     }
+    @PutMapping("/api/countView")
+    public void countView(@RequestBody PlanDto plan){
+        System.out.println(plan);
+        planService.countView(plan);
+    }
 }

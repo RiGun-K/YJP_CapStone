@@ -63,6 +63,12 @@ export default {
 			this.$router.push({
 				name: 'usersPlan',
 			});
+			const url = '/api/countView';
+
+			axios
+				.put(url, value)
+				.then((response) => {})
+				.catch((error) => {});
 		},
 		placeFilter: function () {
 			if (this.planDestination === '전체') {

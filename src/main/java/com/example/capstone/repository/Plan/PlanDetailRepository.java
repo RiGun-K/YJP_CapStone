@@ -12,5 +12,5 @@ import java.util.List;
 public interface PlanDetailRepository extends JpaRepository<PlanDetail, Long> {
 
     List<PlanDetail> findByPlanCodeAndDetailDay(Plan planCode, int detailDay);
-
+List<PlanDetail> findByPlanCode(Plan planCode);
 }

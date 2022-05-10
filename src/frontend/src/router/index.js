@@ -343,6 +343,16 @@ const routes = [
 		name: 'usersPlan',
 		component: () => import('@/components/plan/usersPlan'),
 	},
+	{
+		path: '/selectTeam',
+		name: 'selectTeam',
+		component: () => import('@/components/plan/selectTeam'),
+	},
+	{
+		path: '/insertCopy',
+		name: 'insertCopy',
+		component: () => import('@/components/plan/insertCopy'),
+	},
 ];
 
 export const router = createRouter({

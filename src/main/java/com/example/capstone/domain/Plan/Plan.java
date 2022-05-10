@@ -76,4 +76,7 @@ public class Plan {
 
         return planDto;
     }
+    public void 조회햇음() {
+        this.planViews = this.planViews +1;
+    }
 }
