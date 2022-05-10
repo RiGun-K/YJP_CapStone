@@ -38,9 +38,6 @@ public class Storage {  // 보관소
     @Column
     private String storageState = "0";
 
-
-    // 현 테이블의 PK를 외래키로 받는 테이블에서 모든 리스트 조회
-    // 따로 칼럼 추가되지 않고, List< > 로 뽑아올 수 있음 !!
     @JsonManagedReference
     @OneToMany(mappedBy = "storageCode",cascade = CascadeType.ALL)
     private List<StorageBox> storageBoxes = new ArrayList<>();

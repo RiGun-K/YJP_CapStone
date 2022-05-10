@@ -27,6 +27,8 @@ public class CampingDetail {
     @Column
     private int detailPrice;
 
+    // 차후 객실 상태도 추가해야함 ! ( state { 0 : 비어있음, 1 : 마감 } )
+
 
     // 기준인원
     @Column
@@ -47,7 +49,7 @@ public class CampingDetail {
     private String savedTime;
 
     // 캠핑장아이디
-    @JsonBackReference
+    @JsonBackReference  // 자식은 부모를 가져 올 수 없음 ( FK 값 )
     @ManyToOne()
     @JoinColumn(name = "campingId")
     private Camping campingId;

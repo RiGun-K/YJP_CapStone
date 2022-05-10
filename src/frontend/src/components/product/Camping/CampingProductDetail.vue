@@ -3,17 +3,23 @@
   <br>
   <h2>캠핑장 및 객실 상세페이지</h2>
   <h3>캠핑장 : {{ this.list.campingName }}</h3>
+  <h3>객실수 : {{ this.list.campingDetails.length }}</h3>
   <div class="cart">
     <div class="cart-list">
-      <div class="buy-cart-btn" @click="PBuy">
+      <div class="buy-cart-btn" @click="PCamping">
         <img :src="require('@/assets/buyBtn.png')">
         <h5>캠핑장</h5>
         <h5>수정/삭제</h5>
       </div>
-      <div class="share-cart-btn" @click="PRental">
+      <div class="share-cart-btn" @click="PRoom">
         <img :src="require('@/assets/rentBtn.png')">
         <h5>객실</h5>
         <h5>수정/삭제</h5>
+      </div>
+      <div class="share-cart-btn" @click="CRoom">
+        <img :src="require('@/assets/rentBtn.png')">
+        <h5>객실</h5>
+        <h5>등록</h5>
       </div>
     </div>
     <button class="cart-back"><router-link class="nav-link" to="/CampingProductList">뒤로가기</router-link></button>
@@ -56,11 +62,26 @@ export default {
             console.log(e)
           })
     },
+    PCamping() {
+      this.$router.push({
+        path: `/CampingProductEdit/${this.list.campingId}`
+      })
+    },
     // showInfo(CampingList) {
     //   this.$router.push({
     //     path: `/CampingProductDetail/${CampingList.campingId}`
     //   })
     // }
+    PRoom() {
+      this.$router.push({
+        path: `/RoomProductList/${this.list.campingId}`
+      })
+    },
+    CRoom() {
+      this.$router.push({
+        path: `/RoomProductCreate/${this.list.campingId}`
+      })
+    }
 
   }
 }

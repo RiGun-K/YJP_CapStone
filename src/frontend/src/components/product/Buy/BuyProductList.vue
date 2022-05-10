@@ -12,7 +12,7 @@
       <a class="nav-link" href="CampingProductList">캠핑장</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="RoomProductList">객실</a>
+      <a class="nav-link disabled" href="RoomProductList">객실</a>
     </li>
   </ul>
   <br>
@@ -86,7 +86,6 @@ export default {
       axios.get('http://localhost:9002/api/Buy_List/'+this.user)
         .then((res) => {
           console.log(res.data);
-
           this.list = res.data;
         })
         .catch(e => {

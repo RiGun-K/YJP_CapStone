@@ -2,7 +2,7 @@
   <ProductPage></ProductPage>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <br>
-  <h1>객실 수정 및 삭제페이지 입니다.</h1>
+  <h1>캠핑장 내 객실 등록 페이지 입니다.</h1>
   <br>
   <div id="wrapper">
     <div id="content">
@@ -15,7 +15,7 @@
             <label for="id">객실명</label>
           </h3>
           <span class="box int_id">
-                        <input type="text" v-model="list.detailName" id="id" placeholder="객실명을 입력하세요" class="int" maxlength="20">
+                        <input type="text" v-model="detailName" id="id" placeholder="객실명을 입력하세요" class="int" maxlength="20">
                     </span>
           <span class="error_next_box"></span>
         </div>
@@ -27,7 +27,7 @@
             <label for="id">객실가격</label>
           </h3>
           <span class="box int_id">
-                        <input type="text" v-model="list.detailPrice" id="id" placeholder="객실가격을 입력하세요" class="int" maxlength="20">
+                        <input type="text" v-model="detailPrice" id="id" placeholder="객실가격을 입력하세요" class="int" maxlength="20">
                     </span>
           <span class="error_next_box"></span>
         </div>
@@ -39,7 +39,7 @@
           </h3>
 
           <span class="box int_id">
-          <input type="text" v-model="list.baseNumber" id="id" placeholder="객실 기준인원을 입력하세요" class="int" maxlength="100">
+          <input type="text" v-model="baseNumber" id="id" placeholder="객실 기준인원을 입력하세요" class="int" maxlength="100">
                     </span>
           <span class="error_next_box"></span>
 
@@ -51,7 +51,7 @@
             <label for="email">최대인원</label>
           </h3>
           <span class="box int_email">
-            <input type="text" v-model="list.maximumNumber" id="email" class="int" maxlength="100" placeholder="객실 최대인원을 입력하세요">
+            <input type="text" v-model="maximumNumber" id="email" class="int" maxlength="100" placeholder="객실 최대인원을 입력하세요">
           </span>
         </div>
 
@@ -61,7 +61,7 @@
             <label for="email">객실기능</label>
           </h3>
           <span class="box int_email">
-            <input type="text" v-model="list.detailFunction" id="email" class="int" maxlength="100" placeholder="객실기능을 입력하세요">
+            <input type="text" v-model="detailFunction" id="email" class="int" maxlength="100" placeholder="객실기능을 입력하세요">
           </span>
         </div>
 
@@ -87,34 +87,29 @@
 
         <br>
         <div class="btn_area">
-          <button type="submit" class="btn btn-outline-primary" @click="updated" id="btnJoin1">
-            <span>수정하기</span>
+          <button type="submit" class="btn btn-outline-primary" @click="BuySubmit" id="btnJoin">
+            <span>등록하기</span>
           </button>
-          <button type="submit" class="btn btn-outline-primary" @click="deleted" id="btnJoin2">
-            <span>삭제하기</span>
-          </button>
+
         </div>
       </form>
     </div>
   </div>
+
 </template>
 
 <script>
 import ProductPage from "@/components/product/ProductPage";
 import axios from "axios";
-import store from "@/store";
 
 export default {
-  name: "RoomProductDetail",
+  name: "RoomProductCreate",
   components: { ProductPage },
-  created() {
-    this.DataList();
-  },
   data() {
     return {
       // 방금 등록한 캠핑장이름 찾기
       campingName: '',
-      list: [],
+      content: [],
 
       // 등록할 DB 칼럼
       detailName: '',
@@ -122,23 +117,10 @@ export default {
       baseNumber: '',
       maximumNumber: '',
       detailFunction: '',
-      // 객실들의 부모(캠핑장의 아이디) 값 받아오기
-      campingID: store.getters.getCampingIdState.CampingIdOfRooms
+
     }
   },
   methods: {
-    DataList() {
-      this.id = this.$route.params.detailId;
-      console.log("현재 객실 아이디는" + this.id);
-      axios.get('http://localhost:9002/api/Room_Detail/' + this.id)
-          .then((res) => {
-            console.log(res.data);
-            this.list = res.data;
-          })
-          .catch(e => {
-            console.log(e)
-          })
-    },
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
@@ -167,29 +149,28 @@ export default {
       }
 
     },
-    updated() {
-      console.log(this.campingID);
+    BuySubmit() {
+      this.id = this.$route.params.campingId;
       const formData = new FormData();
 
-      formData.append('detailName', this.list.detailName);
-      formData.append('detailPrice', this.list.detailPrice);
-      formData.append('baseNumber', this.list.baseNumber);
-      formData.append('maximumNumber', this.list.maximumNumber);
-      formData.append('detailFunction', this.list.detailFunction);
-      formData.append('campingId', this.campingID);
-      formData.append('detailId', this.list.detailId);
+      formData.append('detailName', this.detailName);
+      formData.append('detailPrice', this.detailPrice);
+      formData.append('baseNumber', this.baseNumber);
+      formData.append('maximumNumber', this.maximumNumber);
+      formData.append('detailFunction', this.detailFunction);
       formData.append('file', this.file);
+      formData.append('campingId', this.id);
 
-      console.log(this.list.detailName, this.list.detailPrice, this.list.baseNumber, this.list.maximumNumber, this.list.detailFunction, this.file, this.list.detailId, this.id);
+      console.log(this.detailName, this.detailPrice, this.baseNumber, this.maximumNumber, this.detailFunction, this.file, this.id);
       const baseURI = 'http://localhost:9002';
 
-      if (confirm("캠핑장 객실을 수정하시겠습니까?")) {
-        axios.put(`${baseURI}/api/Room_Update`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      if (confirm("캠핑장 객실을 등록하시겠습니까?")) {
+        axios.post(`${baseURI}/api/CampingDetail_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
-              alert("객실이 수정되었습니다.");
+              alert("캠핑장 및 객실이 등록되었습니다.");
               this.$router.push({
-                name: 'CampingProductList'
+                name: 'ProductMain'
               });
             })
             .catch(function (error) {
@@ -198,22 +179,6 @@ export default {
             })
       }
 
-    },
-    deleted() {
-      if(confirm("삭제하시겠습니까?")) {
-        axios.delete('http://localhost:9002/api/Room_Delete/' + this.list.detailId)
-            .then(res => {
-              console.log("삭제되었습니다.", res)
-              alert("메뉴가 삭제되었습니다.");
-              this.$router.push({
-                name: "CampingProductList"
-              })
-            })
-            .catch(error => {
-              console.log("삭제가 실패했습니다", error)
-              alert("삭제가 실패했습니다.");
-            })
-      }
     }
 
   }
@@ -294,13 +259,9 @@ select {
   color: red;
   display: none;
 }
-.btn_area {
+
+#btnJoin {
   margin: auto;
-}
-#btnJoin1 {
-  margin-right: 20px;
-}
-#btnJoin2 {
-  margin-left: 4px;
+  display: block;
 }
 </style>

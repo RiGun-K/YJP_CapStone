@@ -201,16 +201,17 @@ const routes = [
     props: true
   },
   {
-    path: '/CampingProductEdit',
+    path: '/CampingProductEdit/:campingId',
     name: 'CampingProductEdit',
     component: () => import('@/components/product/Camping/CampingProductEdit.vue'),
     props: true,
   },
   ///////////////////////////////////////////////////////////////////
   {
-    path: '/RoomProductList',
+    path: '/RoomProductList/:campingId',
     name: 'RoomProductList',
-    component: () => import('@/components/product/Room/RoomProductList.vue')
+    component: () => import('@/components/product/Room/RoomProductList.vue'),
+    props: true,
   },
   {
     path: '/RoomProductDetail/:detailId',
@@ -222,6 +223,12 @@ const routes = [
     path: '/RoomProductEdit',
     name: 'RoomProductEdit',
     component: () => import('@/components/product/Room/RoomProductEdit.vue'),
+    props: true,
+  },
+  {
+    path: '/RoomProductCreate/:campingId',
+    name: 'RoomProductCreate',
+    component: () => import('@/components/product/Room/RoomProductCreate.vue'),
     props: true,
   },
   ///////////////////////////////////////////////////////////////////

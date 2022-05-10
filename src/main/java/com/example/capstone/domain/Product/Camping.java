@@ -77,8 +77,8 @@ public class Camping {
 
     // 현 테이블의 PK를 외래키로 받는 테이블에서 모든 리스트 조회
     // 따로 칼럼 추가되지 않고, List< > 로 뽑아올 수 있음 !!
-    @JsonManagedReference
-    @OneToMany(mappedBy = "campingId",cascade = CascadeType.ALL)
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "campingId",cascade = {CascadeType.ALL})
     private List<CampingDetail> campingDetails = new ArrayList<>();
 
     public Camping() {}
@@ -244,5 +244,13 @@ public class Camping {
 
     public void setAreaId(CampingArea areaId) {
         this.areaId = areaId;
+    }
+
+    public List<CampingDetail> getCampingDetails() {
+        return campingDetails;
+    }
+
+    public void setCampingDetails(List<CampingDetail> campingDetails) {
+        this.campingDetails = campingDetails;
     }
 }
