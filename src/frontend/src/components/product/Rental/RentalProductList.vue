@@ -12,7 +12,7 @@
       <a class="nav-link" href="CampingProductList">캠핑장</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="RoomProductList">객실</a>
+      <a class="nav-link disabled" href="RoomProductList">객실</a>
     </li>
   </ul>
   <br>
@@ -95,7 +95,7 @@ export default {
     },
     showInfo(RentalList) {
       this.$router.push({
-        path: `/BuyProductDetail/${RentalList.rentalId}`
+        path: `/RentalProductDetail/${RentalList.rentalId}`
       })
     }
 

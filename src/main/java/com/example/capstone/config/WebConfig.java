@@ -1,5 +1,8 @@
 package com.example.capstone.config;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.sonatype.plexus.components.sec.dispatcher.model.ConfigProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -15,7 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedOrigins("http://localhost:8081")
                 .allowedHeaders("Origin", "Accept", "X-Requested-With", "Content-Type", "Authorization", "Control-Request-Method", "Access-Control-Request-Headers" );
-
-
     }
+
+
+
 }
