@@ -220,6 +220,8 @@ public class CampingController {
         camping.setAreaId(campingArea.get());
         //            menu.setMID(memberRepository.findByMID("rigun").get());
 
+        camping.setSavedTime(LocalDate.now().toString());
+
         campingRepository.save(camping);
 
         return camping;
@@ -233,7 +235,7 @@ public class CampingController {
         System.out.println("삭제하실 DB 에서 가져온 메뉴번호는" + menuCamping.get().getCampingId() + " 입니다.");
 
 
-        menuBuyRepository.deleteById(campingId);
+        campingRepository.deleteById(campingId);
 //         menuService.deleteById(menuid);
         return "메뉴가 삭제되었습니다.";
     }

@@ -15,10 +15,14 @@ export default createStore({
         diff: 0,
         planCode: '',
         loginedTeamCode: '',
+        CampingIdOfRooms: '',
     },
     getters: {
         getLoginState(state){
             return state.loginState
+        },
+        getCampingIdState(state){
+            return state.CampingIdOfRooms
         }
     },
     mutations: {
@@ -57,6 +61,9 @@ export default createStore({
         updateLoginedTeamCode(state, loginedTeamCode) {
             state.loginedTeamCode = loginedTeamCode;
         },
+        setCampingIdState(state,CampingIdOfRooms) {
+            state.CampingIdOfRooms = CampingIdOfRooms;
+        }
     },
     actions: {
     },

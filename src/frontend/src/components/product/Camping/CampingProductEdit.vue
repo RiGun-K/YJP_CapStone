@@ -233,6 +233,7 @@ export default {
       const formData = new FormData();
 
       // const photoFile = document.getElementById("file_load");
+      formData.append('campingId', this.id);
       formData.append('infoterId', this.infoterid.value);
       formData.append('areaId', this.areaid.value);
       formData.append('campingName', this.list.campingName);
@@ -246,13 +247,14 @@ export default {
 
 
 
-      console.log(this.infoterid.value, this.areaid.value, this.list.campingName, this.list.campingInfo, this.list.campingDetailState, this.postalAddress, this.address, this.detailAddress, this.file, this.mid);
+      console.log(this.id, this.infoterid.value, this.areaid.value, this.list.campingName, this.list.campingInfo, this.list.campingDetailState, this.postalAddress, this.address, this.detailAddress, this.file, this.mid);
       const baseURI = 'http://localhost:9002';
 
       if (confirm("캠핑장을 수정하시겠습니까?")) {
         axios.put(`${baseURI}/api/Camping_Update`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("캠핑장이 수정되었습니다." + res);
+              alert("캠핑장이 수정되었습니다.");
               this.$router.push({
                 name: 'CampingProductList'
               });

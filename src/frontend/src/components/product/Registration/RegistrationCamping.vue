@@ -238,7 +238,7 @@ export default {
               console.log("성공" + res);
               alert("캠핑장이 등록되었습니다.");
               this.$router.push({
-                name: "ProductMain"
+                path: `/RegistrationCampingDetail/${this.campingName}`
               });
             })
             .catch(function (error) {

@@ -12,7 +12,7 @@
       <a class="nav-link" href="CampingProductList">캠핑장</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="RoomProductList">객실</a>
+      <a class="nav-link disabled" href="RoomProductList">객실</a>
     </li>
   </ul>
   <br>
@@ -22,20 +22,20 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th>분류</th>
-        <th>메뉴명</th>
-        <th>수량</th>
+        <th>객실명</th>
+        <th>기능</th>
+        <th>가격</th>
         <th>등록일자</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="RoomList in list"
-          :key="RoomList.id"
-          :item="RoomList" @click="showInfo(RoomList)" style="cursor:pointer;">
-        <th scope="row">{{ RoomList.kindid.kindname }}</th>
-        <td>{{ RoomList.rentalName }}</td>
-        <td>{{ RoomList.rentalStock }}</td>
-        <td>{{ RoomList.savedTime }}</td>
+      <tr v-for="roomList in list"
+          :key="roomList.id"
+          :item="roomList" @click="showInfo(roomList)" style="cursor:pointer;">
+        <th scope="row">{{ roomList.detailName }}</th>
+        <td>{{ roomList.detailFunction }}</td>
+        <td>{{ roomList.detailPrice }}</td>
+        <td>{{ roomList.savedTime }}</td>
       </tr>
       <!--      <router-link :to="{name: 'MyProductDetail', params: { menuid:myProduct.menuid }}"></router-link>-->
       </tbody>
@@ -74,28 +74,31 @@ export default {
   },
   data() {
     return {
+      id: '',
       selected: false,
       list: [],
-      myProduct: '',
+      user: store.getters.getLoginState.loginState,
     }
   },
   methods: {
     goMyData() {
-      this.user = store.getters.getLoginState.loginState
-      console.log("현재 사용자 아이디는" + this.user)
-      axios.get('http://localhost:9002/api/Room_List/'+this.user)
+      this.id = this.$route.params.campingId;
+      console.log("현재 객실의 캠핑장 아이디는" + this.id)
+      axios.get('http://localhost:9002/api/Room_List/' + this.id)
           .then((res) => {
             console.log(res.data);
-
             this.list = res.data;
           })
           .catch(e => {
             console.log(e)
           })
     },
-    showInfo(RoomList) {
+    showInfo(roomList) {
       this.$router.push({
-        path: `/BuyProductDetail/${RoomList.roomId}`
+        path: `/RoomProductDetail/${roomList.detailId}`
+      })
+      store.commit("setCampingIdState", {
+        CampingIdOfRooms:this.id,
       })
     }
 
