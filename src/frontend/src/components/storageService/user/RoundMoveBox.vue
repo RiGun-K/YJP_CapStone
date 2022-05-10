@@ -11,9 +11,16 @@
     <button @click="boxMovePay"> 결제</button>
   </div>
 
+  <div>
+    집주소 가져오기
+
+  </div>
+
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "RoundMoveBox",
   props: {
@@ -39,6 +46,14 @@ export default {
           "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
       document.head.appendChild(script);
     }
+
+    axios.get('/api/myAddress/'+ this.form.userId)
+    .then(res=>{
+      console.log(res.data)
+    }).catch(err=>{
+      console.log(err)
+    })
+
   },
   methods: {
     boxMovePay() {

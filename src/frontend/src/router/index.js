@@ -244,12 +244,12 @@ const routes = [
     component: ()=> import('@/views/user/UserStorageView.vue')
   },
   {
-    path: "/storageView/:storageCode",
+    path: "/storageViewDetail",
     name:"userStorageDetail",
     component: ()=> import('@/components/storageService/user/UserStorageDetail.vue')
   },
   {
-    path:"/storageView/:storageCode/paypage",
+    path:"/storageView/paypage",
     name:"storagePay",
     component:()=> import('@/views/user/StoragePayPage.vue')
   },

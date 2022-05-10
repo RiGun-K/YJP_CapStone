@@ -11,7 +11,7 @@
         <td>상태</td>
         <td v-if="box.boxState == 0">빈 상태</td>
         <td v-else-if="box.boxState == 1">결제완료<button @click="updateState">보관완료</button></td>
-        <td v-if="box.boxState == 2">사용중</td>
+        <td v-else>사용중</td>
       </tr>
       <tr>
         <td>사용중인 사용자</td>
