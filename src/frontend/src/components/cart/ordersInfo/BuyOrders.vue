@@ -38,7 +38,7 @@ export default {
     return{
       content: [],
       orders: [],
-      menus: []
+      menus: [],
     }
   },
   created(){
@@ -48,7 +48,7 @@ export default {
   },
   methods:{
     DataList() {
-      axios.get('http://localhost:9002/api/ordersList/buyOrders/' + this.content.mcode  )
+      axios.get('http://localhost:9002/api/ordersList/buyOrders/' + this.content.mcode)
           .then(res => {
             console.log(res.data);
             this.orders = res.data;

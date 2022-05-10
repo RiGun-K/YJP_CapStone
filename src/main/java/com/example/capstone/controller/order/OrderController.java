@@ -102,4 +102,21 @@ public class OrderController {
         return null;
     }
 
+//    @GetMapping("/ordersList/buyOrders/{MCode}/{OrderCode}")
+//    public List<Orders> getOrderBuy(@PathVariable("MCode") Long MCode, @PathVariable("OrderCode") int OrderCode) {
+//
+//
+//        Optional<Member> searchMember = memberRepository.findById(MCode);
+//        System.out.println(searchMember);
+//
+//        if(searchMember.isPresent()) {
+//            Member member = searchMember.get();
+//            List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
+//
+//            System.out.println(buyOrdersList);
+//            return buyOrdersList;
+//        }
+//        return null;
+//    }
+
 }
