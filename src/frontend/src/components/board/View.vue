@@ -15,6 +15,10 @@
             <td>{{List.mid.mid}}</td>
           </tr>
           <tr>
+            <th>작성일</th>
+            <td>{{List.mid.msd}}</td>
+          </tr>
+          <tr>
             <th>제목</th>
             <td>{{ List.title }}</td>
           </tr>
