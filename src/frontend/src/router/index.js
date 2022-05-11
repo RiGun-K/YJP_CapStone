@@ -73,6 +73,21 @@ const routes = [
     name:'mypage',
     component: () => import('@/components/user/MyPage.vue')
   },
+  {
+    path:'/myPageEquip',
+    name:'myPageEquip',
+    component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
+  },
+  {
+    path:'/myPageWritter',
+    name:'myPageWritter',
+    component: () => import('@/components/user/myPage/MyWritter.vue')
+  },
+  {
+    path:'/myPageOrder',
+    name:'myPageOrder',
+    component: () => import('@/components/user/myPage/MyOrder.vue')
+  },
 
     //////////////////////////////게시판////////////////////////////////////
 

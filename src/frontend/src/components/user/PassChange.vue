@@ -51,7 +51,7 @@ export default {
           alert("비밀번호가 변경되었습니다")
           this.$router.push("/myPage")
         }else{
-          alert("현재 비밀번호를 확인해주세요")
+          alert("비밀번호를 확인해주세요")
         }
       })
     }
