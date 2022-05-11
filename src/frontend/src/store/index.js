@@ -16,7 +16,7 @@ export default createStore({
         planCode: '',
         loginedTeamCode: '',
         storage:{},
-        payStorage:{}
+        payStorage:{},
         CampingIdOfRooms: '',
     },
     getters: {
@@ -77,10 +77,10 @@ export default createStore({
         },
         cartStorageClear(state){
             state.payStorage = {};
-        }
+        },
         setCampingIdState(state,CampingIdOfRooms) {
             state.CampingIdOfRooms = CampingIdOfRooms;
-        }
+        },
     },
     actions: {
     },
