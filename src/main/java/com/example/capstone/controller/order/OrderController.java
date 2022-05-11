@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,8 @@ public class OrderController {
 
     @Autowired
     private OrderMenuRepository orderMenuRepository;
+
+    
 
     @PostMapping("/buyData")
     public String postBuyData(@RequestBody HashMap<String, String> buyData){
@@ -90,7 +93,6 @@ public class OrderController {
         System.out.println("회원번호는" + MCode + "입니다.");
 
         Optional<Member> searchMember = memberRepository.findById(MCode);
-        System.out.println(searchMember);
 
         if(searchMember.isPresent()) {
             Member member = searchMember.get();
@@ -102,21 +104,32 @@ public class OrderController {
         return null;
     }
 
-//    @GetMapping("/ordersList/buyOrders/{MCode}/{OrderCode}")
-//    public List<Orders> getOrderBuy(@PathVariable("MCode") Long MCode, @PathVariable("OrderCode") int OrderCode) {
-//
-//
-//        Optional<Member> searchMember = memberRepository.findById(MCode);
-//        System.out.println(searchMember);
-//
-//        if(searchMember.isPresent()) {
-//            Member member = searchMember.get();
-//            List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
-//
-//            System.out.println(buyOrdersList);
-//            return buyOrdersList;
-//        }
-//        return null;
-//    }
+    @GetMapping("/ordersList/buyOrderMenu/{MCode}")
+    public List<OrderMenu> getOrderMenuBuy(@PathVariable("MCode") Long MCode){
+        Optional<Member> searchMember = memberRepository.findById(MCode);
 
+        if(searchMember.isPresent()){
+            Member member = searchMember.get();
+            List<OrderMenu> orderMenuList = new ArrayList<>();
+
+            List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
+
+            for(int i = 0; i < buyOrdersList.size(); i++){
+                int orderCode = buyOrdersList.get(i).getOrderCode();
+                Optional<Orders> searchOrder = ordersRepository.findById(orderCode);
+                if(searchOrder.isPresent()){
+                    Orders orders = searchOrder.get();
+
+                    OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
+
+                    System.out.println(orderMenu.getOrderMenuId() + ", " + orderMenu.getOrderMenuCount());
+
+                    orderMenuList.add(i, orderMenu);
+                }
+            }
+            System.out.println(orderMenuList);
+            return orderMenuList;
+        }
+        return null;
+    }
 }

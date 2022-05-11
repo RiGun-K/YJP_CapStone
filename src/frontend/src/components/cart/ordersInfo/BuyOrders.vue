@@ -8,15 +8,17 @@
         <tr>
           <th>주문코드</th>
           <th>상품명</th>
+          <th>수량</th>
           <th>주문금액</th>
           <th>결제날짜</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="order in orders" :key="order.orderCode">
+        <tr v-for="(order, index) in orders" :key="order.orderCode">
 
           <td>{{ order.orderCode }}</td>
-          <td>abc</td>
+          <td>{{ this.menus[index].menu.menuname }}</td>
+          <td>{{ this.menus[index].orderMenuCount }}개</td>
           <td>{{ order.orderPrice }}</td>
           <td>{{ order.paymentDate[0]}}년 {{ order.paymentDate[1]}}월 {{ order.paymentDate[2]}}일</td>
         </tr>
@@ -43,28 +45,27 @@ export default {
   },
   created(){
     this.content= this.$store.state.loginState
-    console.log(this.content)
     this.DataList()
   },
   methods:{
     DataList() {
       axios.get('http://localhost:9002/api/ordersList/buyOrders/' + this.content.mcode)
           .then(res => {
-            console.log(res.data);
-            this.orders = res.data;
+            axios.get('http://localhost:9002/api/ordersList/buyOrderMenu/' + this.content.mcode)
+                .then(res2 =>{
+                this.orders = res.data;
+                this.menus = res2.data;
+
+                console.log(this.menus);
+            }).catch(e2 =>{
+              console.log(e2)
+            })
           })
           .catch(e => {
             console.log(e);
           })
-      axios.get('http://localhost:9002/api/ordersList/buyOrders/' + this.content.mcode + '/' + this.orders.orderCode)
-          .then(res => {
-            console.log(res.data);
-            this.menus = res.data;
-          })
-          .catch(e => {
-            console.log(e);
-          })
-    },
+    }
+
   }
 }
 </script>

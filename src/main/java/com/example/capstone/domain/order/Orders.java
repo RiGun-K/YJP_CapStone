@@ -40,7 +40,7 @@ public class Orders {
     @Column
     private LocalDate EndDate; //대여&예약 종료일
     @Column
-    private String deliveryHopeTime;
+    private String deliveryHopeTime; //배송희망시간
 
     @ManyToOne
     @JoinColumn(name = "MCode")
