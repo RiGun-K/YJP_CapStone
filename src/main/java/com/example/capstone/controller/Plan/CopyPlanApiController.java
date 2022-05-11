@@ -1,6 +1,7 @@
 package com.example.capstone.controller.Plan;
 
 
+import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.dto.plan.CopyPlanDto;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.dto.plan.PlanTagDto;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -21,8 +24,8 @@ public class CopyPlanApiController {
 
 
     @PutMapping("/api/createCopyPlan")
-    public void createCopyPlan(@RequestBody CopyPlanDto copyPlanDto){
-    copyPlanService.createCopyPlan(copyPlanDto);
+    public Optional<PlanDto> createCopyPlan(@RequestBody CopyPlanDto copyPlanDto){
+   return copyPlanService.createCopyPlan(copyPlanDto);
 
     }
 }

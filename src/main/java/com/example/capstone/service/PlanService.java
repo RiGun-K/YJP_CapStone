@@ -75,8 +75,6 @@ public class PlanService {
     }
 
     public List<PlanDetailDto> loadDetailPlan(PlanDetailDto plan_detail) {
-        //planCode 검증됐고, detailDay 검증해서 가져왔으므로 여기서 따로 검사할 필요x
-        //PlanDetailDto에서 Plan 엔티티를 가져와야함. PlanDetailDto -> PlanDto -> PlanDto의 PK값
         Optional<Plan> findPlan = planRepository.findById(plan_detail.getPlanCode().getPlanCode());
         Plan planEntity = findPlan.orElse(null);
         if (planEntity == null) return null;

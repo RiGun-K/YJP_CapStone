@@ -29,13 +29,12 @@ public class CopyPlanService {
     private final ChecklistRepository checklistRepository;
     private final EntityManager em;
 
-    public void createCopyPlan(CopyPlanDto copyPlanDto) {
+    public Optional<PlanDto> createCopyPlan(CopyPlanDto copyPlanDto) {
         Optional<Plan> oldPlan = planRepository.findById(copyPlanDto.getOldPlanDto().getPlanCode());
         if (oldPlan.isEmpty()) {
-            return;
+            return null;
         }
        Plan oldPlanCode =oldPlan.get();
-        System.out.println(oldPlanCode);
 
         em.detach(oldPlan.get());
         oldPlan.get().setPlanName(copyPlanDto.getPlanDto().getPlanName());
@@ -63,12 +62,10 @@ public class CopyPlanService {
                 checklists.get(j).setChecklistCode(null);
                 em.persist(checklists.get(j));
             }
-
         }
 
+        Optional<PlanDto> pd= Optional.ofNullable(oldPlan.get().toPlanDto());
 
-//        List<Checklist> checklists = checklistRepository.findByDetailCode()
-
-
+        return pd;
     }
 }
