@@ -23,7 +23,6 @@ export default {
     }
   },
   methods: {
-
     logout() {
       alert("로그아웃")
       store.commit("setLogoutState")
