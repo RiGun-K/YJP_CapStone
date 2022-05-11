@@ -46,6 +46,8 @@ public class CopyPlanService {
         oldPlan.get().setPlanBudget(copyPlanDto.getPlanDto().getPlanBudget());
         oldPlan.get().setPlanTotalDate(copyPlanDto.getPlanDto().getPlanTotalDate());
         oldPlan.get().setPlanOpen(copyPlanDto.getPlanDto().getPlanOpen());
+        oldPlan.get().setPlanViews(0);
+        oldPlan.get().setPlanUsedCount(0);
         List<PlanDetail> planDetail = planDetailRepository.findByPlanCode(oldPlanCode);
         oldPlan.get().setPlanCode(null);
         em.persist(oldPlan.get());
@@ -63,9 +65,12 @@ public class CopyPlanService {
                 em.persist(checklists.get(j));
             }
         }
-
         Optional<PlanDto> pd= Optional.ofNullable(oldPlan.get().toPlanDto());
-
         return pd;
+    }
+
+    public void countUsed(PlanDto planDto){
+        Optional<Plan> plan = planRepository.findById(planDto.getPlanCode());
+        plan.get().setPlanUsedCount(plan.get().getPlanUsedCount()+1);
     }
 }

@@ -26,6 +26,10 @@ public class CopyPlanApiController {
     @PutMapping("/api/createCopyPlan")
     public Optional<PlanDto> createCopyPlan(@RequestBody CopyPlanDto copyPlanDto){
    return copyPlanService.createCopyPlan(copyPlanDto);
+    }
 
+    @PutMapping("api/countUsed")
+    public void countUsed(@RequestBody PlanDto planDto){
+        copyPlanService.countUsed(planDto);
     }
 }

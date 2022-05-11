@@ -26,10 +26,11 @@
 	<h3>
 		공개여부
 		<select v-model="planOpen">
-			<option disabled value="">공개설정</option>
+			<option>공개설정</option>
 			<option>전체공개</option>
-			<option>비공개</option>
+			<option disabled>비공개</option>
 		</select>
+		<h6 style="color: red">카피된 플랜은 비공개할 수 없습니다</h6>
 	</h3>
 	<h3>
 		장소
@@ -166,13 +167,6 @@ export default {
 				planTotalDate: this.diff,
 				planOpen: this.planOpen,
 			};
-			console.log(oldPlanCode);
-			console.log(oldPlanCode);
-			console.log(oldPlanCode);
-			console.log(oldPlanCode);
-			console.log(oldPlanCode);
-			console.log(oldPlanCode);
-			console.log(data);
 
 			const form = { planDto: data, oldPlanDto: oldPlanCode };
 

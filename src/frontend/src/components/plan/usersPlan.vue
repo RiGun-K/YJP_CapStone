@@ -125,8 +125,14 @@ export default {
 			this.colorSetting();
 		},
 		copyPlan: function () {
-			this.$router.push({ name: 'selectTeam' });
-			console.log(this.$store.state.planCode);
+			const url = 'api/countUsed';
+			axios
+				.put(url, this.$store.state.planCode)
+				.then((response) => {
+					this.$router.push({ name: 'selectTeam' });
+					console.log(this.$store.state.planCode);
+				})
+				.catch((error) => {});
 		},
 	},
 };
