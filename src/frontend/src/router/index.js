@@ -63,6 +63,16 @@ const routes = [
     name:'SearchPass',
     component: () => import('@/components/user/PassSearch.vue')
   },
+  {
+    path:'/changePass',
+    name:'changePass',
+    component: () => import('@/components/user/PassChange.vue')
+  },
+  {
+    path:'/myPage',
+    name:'mypage',
+    component: () => import('@/components/user/MyPage.vue')
+  },
 
     //////////////////////////////게시판////////////////////////////////////
 

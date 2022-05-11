@@ -127,8 +127,8 @@ public class MemberController {
     }
 
 
-    ///속성 체크//
-
+    ///속성 체크///
+    ///유저확인///
     @PostMapping("/userCheck")
     public Boolean userCheck(@RequestBody HashMap<String, String> signUp) {
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -138,7 +138,7 @@ public class MemberController {
             return false;
         }
     }
-
+    ///닉네임확인///
     @PostMapping ("/nameCheck")
     public Boolean nameCheck(@RequestBody HashMap<String, String> signUp) {
         Optional<Member> memberCh = memberRepository.findByMNick(signUp.get("MNick"));
@@ -149,7 +149,7 @@ public class MemberController {
             return false;
         }
     }
-
+    ///회사확인///
     @PostMapping("companyCodeCheck")
     public Boolean companyCodeCheck(@RequestBody HashMap<String, String> company){
         Optional<Company> companyList = companyRepository.findCompanyByCCode(company.get("CCode"));
@@ -292,7 +292,22 @@ public class MemberController {
         memberRepository.save(member.get());
         return "사용자 이메일로 임시비밀번호를 전송했습니다";
     }
-    
+
+    ///비밀번호 변경///
+    @PostMapping("changePass")
+    public Boolean changePass(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MCODE")));
+
+        System.out.println(member.get().getMPass().equals(body.get("currentPass")));
+        if(member.get().getMPass().equals(body.get("currentPass"))){
+            member.get().setMPass(body.get("changePass"));
+            memberRepository.save(member.get());
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     ///테스트///
     @PostMapping("testCheck")
     public void testCheck(){

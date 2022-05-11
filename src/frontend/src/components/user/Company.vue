@@ -147,6 +147,9 @@ export default {
         }).then((res)=>{
           if(res.data){
             alert("정상적으로 신청되었습니다.")
+            store.commit("setLoginState",{
+              stateCode:2
+            })
             this.$router.push("/")
           }else{
             alert("이미 신청한 회원입니다.")
