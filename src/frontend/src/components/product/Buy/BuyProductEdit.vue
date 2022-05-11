@@ -1,25 +1,25 @@
 <template>
-  <ProductMain></ProductMain>
+  <ProductPage></ProductPage>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <br>
-  <h1>상품 등록 페이지 입니다.</h1>
+  <h1>상품 수정 페이지 입니다.</h1>
   <br>
   <div class="products-info">
     <div class="product-input-form">
       <label for="text-select">상품분류</label>
 
       <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
-        <select v-model="kindid" class="form-select" aria-label="Default select example">
+        <select v-model="kindid" class="form-select" aria-label="Default select example" >
           <option v-for="(option, index) in options" :key="index" :value="option">
-            {{option.text}}
+            {{ option.text }}
           </option>
         </select>
         <div class="mt-3">선택유형 : <strong>{{ kindid.text }}</strong></div>
 
-        <form class="was-validated">
-          <div class="mb-1">
-            <label for="validationTextarea" class="form-label">메뉴명</label>
-            <textarea v-model="menuname" :state="menuname" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." required></textarea>
+        <form class="was-validated" readonly>
+          <div class="mb-1" readonly>
+            <label for="validationTextarea" class="form-label" readonly>메뉴명</label>
+            <textarea v-model="menuname" :state="menuname" id="feedback-user" class="form-control is-invalid" placeholder="메뉴명을 입력하세요." ></textarea>
           </div>
         </form>
         <br>
@@ -35,7 +35,7 @@
         <form class="was-validated">
           <div class="mb-1">
             <label for="validationTextarea" class="form-label">가격</label>
-            <textarea v-model="price" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="stock" required></textarea>
+            <textarea  v-model="price" id="feedback-user" class="form-control is-invalid" placeholder="가격을 입력하세요." :state="price" required></textarea>
           </div>
         </form>
 
@@ -67,20 +67,22 @@
     </div>
     <br>
   </div>
-  <button variant="outline-primary" type="submit" @click="ProductSubmit">등록하기</button>
+  <br>
+  <button variant="outline-primary" type="submit" @click="updated">수정하기</button>
+  <button variant="outline-primary" type="submit" @click="cancel">삭제하기</button>
+
 </template>
 
-
 <script>
-import axios from 'axios'
-
-import ProductMain from "@/components/product/ProductMain";
+import axios from "axios";
 import store from "@/store";
+import ProductPage from "@/components/product/ProductPage";
 
-// let changeFile;
+
 export default {
-  name: "Registration",
-  components: { ProductMain },
+  name: "BuyProductEdit",
+  components: { ProductPage },
+
   data() {
     return {
       kindid: '',
@@ -89,10 +91,7 @@ export default {
       price: '',
       ex: '',
       file: '',
-      mid: store.getters.getLoginState.loginState,
 
-      id: '',
-      myContent: [],
 
 
       options: [
@@ -101,8 +100,28 @@ export default {
         { value: '2', text: '구매'},
         { value: '3', text: '렌탈'},
       ],
-
     }
+  },
+  created() {
+    this.editMode = this.$route.params.menuid ? true: false;
+    console.log(this.$route.params.menuid)
+    console.log(this.$route.params.menuname)
+    console.log(this.$route.params.stock)
+    console.log(this.$route.params.price)
+    console.log(this.$route.params.ex)
+    console.log(this.$route.params.mid)
+
+    this.mid = store.getters.getLoginState.loginState;
+
+    if(this.editMode) {
+      this.menuid = this.$route.params.menuid
+      this.menuname = this.$route.params.menuname;
+      this.stock = this.$route.params.stock;
+      this.price = this.$route.params.price;
+      this.ex = this.$route.params.ex;
+    }
+
+
   },
 
   methods: {
@@ -128,62 +147,61 @@ export default {
       }
 
     },
-    ProductSubmit: function () {
-      const formData = new FormData();
+    updated() {
+      const updateData = new FormData();
+        updateData.append('menuid', this.menuid);
+        updateData.append('ex', this.ex);
+        updateData.append('menuname', this.menuname);
+        updateData.append('price', this.price);
+        updateData.append('stock', this.stock);
+        updateData.append('kindid', this.kindid.value);
+        updateData.append('mid', this.mid);
+        updateData.append('file', this.file);
+         // updateData.append('') Savedtime 작성해주기 , 안하면 Null로 받아짐
+        console.log(this.kindid.value, this.menuname, this.file, this.stock, this.price, this.ex, this.mid, this.menuid)
 
-      // const photoFile = document.getElementById("file_load");
-
-      formData.append('kindid', this.kindid.value);
-      formData.append('menuname', this.menuname);
-      formData.append('stock', this.stock);
-      formData.append('price', this.price);
-      formData.append('ex', this.ex);
-      formData.append('file', this.file);
-      formData.append('mid', this.mid);
-
-
-
-      console.log(this.kindid.value, this.menuname, this.stock, this.price, this.ex, this.file, this.mid);
-      const baseURI = 'http://localhost:9002';
-
-      axios.post(`${baseURI}/api/product_signup`, formData, { headers: { 'Content-Type': 'multipart/form-data'}} )
-        .then(res => {
-          console.log("성공" + res);
-          alert("상품이 등록되었습니다.");
-          this.$router.push({
-            name: "MyProductList"
-          });
-        })
-        .catch(function (error) {
-          console.log("에러" + error);
-          alert("상품이 등록되지않았습니다.");
-        })
-
+        axios.put('/api/myProduct_Update',  updateData, { headers: { 'Content-Type': 'multipart/form-data'}} )
+          .then(res => {
+            console.log("성공", res);
+            console.log(this.mid);
+            alert("상품이 수정되었습니다.")
+            this.$router.push({
+              name: "BuyProductList"
+            })
+          })
+          .catch(error => {
+            console.log(error)
+            alert("상품이 수정되지 않았습니다.")
+          })
 
     },
+    cancel() {
+      this.$router.push({
+        name: "BuyProductList"
+      })
+    }
 
-  },
-  computed: {
 
   }
+
 }
 </script>
 
 <style scoped>
-h1{
-  text-align: center;
+.content-detail-button {
+  border: 1px solid black;
+  margin-top: 1rem;
+  padding: 2rem;
+  size: 200px;
 }
-.products-info{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.button {
+  cursor: pointer;
+  size: 200px;
 }
-.product-input-form{
-  width: 30%;
-  text-align: center;
-}
-button{
-  margin-left: 49%;
-  margin-top: 3%;
+.content-detail-content {
+  border: 1px solid black;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  min-height: 650px;
 }
 </style>

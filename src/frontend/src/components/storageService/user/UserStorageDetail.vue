@@ -9,7 +9,7 @@
         <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
           <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
-            <p v-else-if="box.storageBoxState == '1' ">사용불가능</p>
+            <p v-else>사용불가능</p>
           </li>
         </ul>
       </div>
@@ -36,6 +36,15 @@
             placeholder="Select Date"
             v-model="date"
             :disabledDates="disabledDates" />
+      </div>
+      <div>
+        넣을 장비 선택
+        내 캠핑장비
+        <div>
+          <ul v-for="(item, index) in myItem" :key="index">
+            <li><input type="checkbox" >{{item.memEquipmentName}}</li>
+          </ul>
+        </div>
       </div>
       <div>
         결제금액 : {{form.price}}원
@@ -73,7 +82,14 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-        })
+        });
+    axios.get('/api/myItem/'+this.userId)
+    .then(res=>{
+      console.log(res.data)
+      this.myItem = res.data
+    }).catch(err=>{
+      console.log(err)
+    });
   },
   created() {
     this.id = this.$route.params.storageCode
@@ -83,6 +99,7 @@ export default {
   },
   data() {
     return {
+      myItem:undefined||{},
       id: '',
       boxList: [],
       name: '',
