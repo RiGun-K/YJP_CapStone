@@ -133,8 +133,17 @@ export default {
   },
   methods: {
     next(){
-      this.geo(this.form.storageAddress)
-      this.boxC = true
+      if (this.form.storageName == ''){
+        alert('보관소명을 입력하세요')
+      }else if (this.form.storageZipcode == ''){
+        alert('주소를 입력하세요')
+      }else if (this.form.storageAddress == ''){
+        alert('주소를 입력하세요')
+      }else{
+        this.geo(this.form.storageAddress)
+        this.boxC = true
+      }
+
     },
     geo(index){
       // 주소-좌표 변환 객체를 생성합니다
@@ -149,6 +158,7 @@ export default {
             }
           }
       );
+      console.log('this.a')
       console.log(this.a)
     },
     initMap() {
@@ -249,13 +259,11 @@ export default {
       this.box.small = 0
       this.box.medium = 0
       this.box.large = 0
-      this.box.storageName = ''
     },
     postStorage() {
       this.inputCheck()
       this.form.latitude = this.a.latitude
       this.form.longitude = this.a.longitude
-      this.box.storageName = this.form.storageName
       const data = {
         box: this.box,
         storage: this.form
@@ -268,13 +276,10 @@ export default {
               if (res.data.result === 'ok') {
                 alert('추가되었습니다')
                 console.log('중복없음')
-                this.box.storageName = this.form.storageName
-                this.name = this.form.storageName
                 this.clearInput()
                 this.addStorage = true
                 this.claerBox()
                 this.addStorage = false
-                this.name = ''
                 alert('보관소와 보관함이 추가되었습니다.')
                 this.$router.push('/storageAdmin')
               } else {

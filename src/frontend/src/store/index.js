@@ -15,6 +15,8 @@ export default createStore({
         diff: 0,
         planCode: '',
         loginedTeamCode: '',
+        storage:{},
+        payStorage:{}
         CampingIdOfRooms: '',
     },
     getters: {
@@ -61,6 +63,21 @@ export default createStore({
         updateLoginedTeamCode(state, loginedTeamCode) {
             state.loginedTeamCode = loginedTeamCode;
         },
+        storageCheck(state, storage){
+            state.storage = storage;
+            console.log(state.storage)
+        },
+        storageClear(state){
+            state.storage = {};
+            console.log('지워졌나')
+            console.log(state.storage)
+        },
+        putCartStorage(state, form){
+            state.payStorage = form;
+        },
+        cartStorageClear(state){
+            state.payStorage = {};
+        }
         setCampingIdState(state,CampingIdOfRooms) {
             state.CampingIdOfRooms = CampingIdOfRooms;
         }

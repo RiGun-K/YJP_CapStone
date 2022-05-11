@@ -33,6 +33,11 @@ public class MemberEquipment {
     @JoinColumn(name = "kindid")
     private Kind kindid;
 
+    @ManyToOne
+    @JoinColumn(name = "useStorageBoxCode")
+    @JsonBackReference
+    private UseStorageBox useStorageBoxCode;
+
     public MemberEquipment() {
     }
 
@@ -82,6 +87,14 @@ public class MemberEquipment {
 
     public void setKindid(Kind kindid) {
         this.kindid = kindid;
+    }
+
+    public UseStorageBox getUseStorageBoxCode() {
+        return useStorageBoxCode;
+    }
+
+    public void setUseStorageBoxCode(UseStorageBox useStorageBoxCode) {
+        this.useStorageBoxCode = useStorageBoxCode;
     }
 }
 
