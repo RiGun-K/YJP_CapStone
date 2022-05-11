@@ -76,10 +76,10 @@ export default createStore({
         },
         cartStorageClear(state){
             state.payStorage = {};
-        }
+        },
         setCampingIdState(state,CampingIdOfRooms) {
             state.CampingIdOfRooms = CampingIdOfRooms;
-        }
+        },
     },
     actions: {
     },
