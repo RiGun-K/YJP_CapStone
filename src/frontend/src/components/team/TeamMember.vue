@@ -20,12 +20,8 @@
 		</div>
 		<div>
 			회원추가하기
-			<input
-				type="text"
-				v-model="newMemberCode"
-				placeholder="회원번호"
-			/>
-			<button @click="addTeamMember">추가하기</button>
+			<input type="text" v-model="newMemberCode" placeholder="회원번호" />
+			<button @click="addTeamMember(this.newMemberCode)">추가하기</button>
 		</div>
 
 		<div>
@@ -36,7 +32,7 @@
 				</button>
 			</div>
 			<div v-if="showingDeleteTeamButton">
-				<button @click="openWindow('/basicPlan')">
+				<button @click="openWindow('/selectCopy')">
 					새 플랜 만들기
 				</button>
 			</div>
@@ -76,9 +72,9 @@ export default {
 					console.log(error);
 				});
 		},
-		addTeamMember: function () {
+		addTeamMember: function (newMemberCode) {
 			const url = 'api/addTeamMember';
-			const member = { mcode: this.newMemberCode };
+			const member = { mcode: newMemberCode };
 			const team = {
 				teamCode: this.$store.state.teamCode.teamCode.teamCode,
 			};

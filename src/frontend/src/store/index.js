@@ -1,5 +1,5 @@
-import {createStore} from 'vuex';
-import createPersistedState from 'vuex-persistedstate'
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
     state: {
@@ -16,7 +16,7 @@ export default createStore({
         planCode: '',
         loginedTeamCode: '',
         storage:{},
-        payStorage:{}
+        payStorage:{},
         CampingIdOfRooms: '',
     },
     getters: {
@@ -57,7 +57,6 @@ export default createStore({
             state.diff = diff;
         },
         updatePlanCode(state, planCode) {
-            console.log('a뭐가저장됐나~' + planCode);
             state.planCode = planCode;
         },
         updateLoginedTeamCode(state, loginedTeamCode) {
@@ -85,7 +84,5 @@ export default createStore({
     actions: {
     },
 
-    plugins:[
-        createPersistedState()
-    ]
+	plugins: [createPersistedState()],
 });

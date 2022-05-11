@@ -26,10 +26,11 @@
 	<h3>
 		공개여부
 		<select v-model="planOpen">
-			<option disabled value="">공개설정</option>
+			<option>공개설정</option>
 			<option>전체공개</option>
-			<option>비공개</option>
+			<option disabled>비공개</option>
 		</select>
+		<h6 style="color: red">카피된 플랜은 비공개할 수 없습니다</h6>
 	</h3>
 	<h3>
 		장소
@@ -151,10 +152,9 @@ export default {
 			this.diff = secondValue.diff(firstValue, 'd') + 1;
 			this.$store.commit('updateDiff', this.diff);
 		},
-		// addTags: function () {
-		// 	const url = '/api/addTags';
-		// },
+
 		createPlan: function () {
+			const oldPlanCode = this.$store.state.planCode;
 			const data = {
 				planName: this.planName,
 				teamCode: this.$store.state.teamCode.teamCode,
@@ -167,7 +167,9 @@ export default {
 				planTotalDate: this.diff,
 				planOpen: this.planOpen,
 			};
-			const form = { plan: data, tagContentList: this.TagContentList };
+
+			const form = { planDto: data, oldPlanDto: oldPlanCode };
+
 			if (
 				this.planName !== '' &&
 				this.planBudget !== '' &&
@@ -181,13 +183,13 @@ export default {
 				if (this.TagContentList.length < 3) {
 					alert('테그를 3개 이상 입력해야합니다');
 				} else {
-					console.log(this.$store.state.teamCode.teamCode);
-					const url = '/api/createPlan';
+					const url = '/api/createCopyPlan';
 					axios
-						.post(url, form)
+						.put(url, form)
 						.then((response) => {
 							this.planCode = response.data;
 							this.$store.commit('updatePlanCode', response.data);
+							console.log(this.$store.state.planCode);
 							this.$router.push({
 								name: 'detailPlan',
 							});

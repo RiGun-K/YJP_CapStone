@@ -2,7 +2,6 @@
 <!------------------------------------------------------------------------- -->
 
 <template>
-	<h3>MY TEAM</h3>
 	<button @Click="showingAddTeamForm">팀 만들기</button>
 	<div v-if="addTeamForm">
 		<input
@@ -19,7 +18,7 @@
 
 	<!------------------------------------------------------------------------- -->
 
-	<h3>{{ $store.state.mcode.mname }} 님의 소속팀</h3>
+	<h3>플랜을 작성할 팀을 선택하세요</h3>
 
 	<p v-html="noTeam"></p>
 	<div v-if="showingTeamList">
@@ -27,7 +26,6 @@
 			<button @click="loadTeamMemberList(value.teamCode)">
 				{{ value.teamCode.teamName }}
 			</button>
-			<button @click="refuse(value.teamCode.teamCode)">탈퇴하기</button>
 		</div>
 	</div>
 
@@ -54,9 +52,9 @@
 		>
 			{{ value.mcode.mname }}
 		</button>
-		<a :href="$store.state.teamURL"
-			>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
-		>
+		<router-link to="/insertCopy"
+			>{{ $store.state.teamCode.teamCode.teamName }}에 플랜 생성하기
+		</router-link>
 	</div>
 	<!------------------------------------------------------------------------- -->
 </template>
