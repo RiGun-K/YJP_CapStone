@@ -3,9 +3,11 @@ package com.example.capstone.controller.Member;
 import com.example.capstone.domain.Member.Company;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Member.PhCheck;
+import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.repository.Member.CompanyRepository;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.domain.Member.MailCheck;
+import com.example.capstone.repository.Storage.MemberEquipmentTest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -300,6 +302,20 @@ public class MemberController {
         }
     }
 
+    ///마이페이지 부분///
+    ///레포지토리 테스트
+    @Autowired
+    private MemberEquipmentTest memberEquipmentTest;
+    ///내장비페이지///
+    @PostMapping("myPageEquip")
+    public List<MemberEquipment> myPageEquip(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<MemberEquipment> memberEquipmentList = memberEquipmentTest.findByMCode(member.get());
+
+
+        System.out.println("내장비 진입");
+        return  memberEquipmentList;
+    }
     ///테스트///
     @PostMapping("testCheck")
     public void testCheck(){

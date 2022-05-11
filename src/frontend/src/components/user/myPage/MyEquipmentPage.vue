@@ -1,12 +1,55 @@
 <template>
   <div id="content">
     <p>내장비페이지</p>
+    <table border="1px">
+      <tr>
+        <th>장비번호</th>
+        <th>장비명</th>
+        <th>장비상태</th>
+        <th>장비수량</th>
+      </tr>
+      <tr v-for="(body) in EquipList">
+        <td>{{ body.memEquipmentCode}}</td>
+        <td>{{ body.memEquipmentName}}</td>
+        <td>{{ stateCheck(body.memEquipmentState)}}</td>
+        <td>{{ body.memEquipmentCount}}</td>
+      </tr>
+    </table>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import store from "@/store";
+
 export default {
-  name: "MyEquipmentPage"
+  name: "MyEquipmentPage",
+  data(){
+    return{
+      EquipList:[]
+    }
+  },
+  methods:{
+    stateCheck(sCode) {
+      switch (sCode) {
+        case "1":
+          return "정상"
+        default:
+          return "비정상"
+      }
+    }
+  },
+  created(){
+    axios.post("/api/myPageEquip",{
+      MID:store.getters.getLoginState.mcode
+    })
+    .then((res)=>{
+      console.log(res.data)
+      this.EquipList = res.data
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
 }
 </script>
 
