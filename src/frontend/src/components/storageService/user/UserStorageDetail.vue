@@ -40,7 +40,6 @@
             <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{item.memEquipmentName}}</li>
           </ul>
         </div>
-        {{checkItem}}
       </div>
       <div>
         결제금액 : {{form.price}}원
@@ -177,7 +176,11 @@ export default {
       this.form.useStorageStartTime = this.startDay
       this.form.useStorageEndTime = this.endDay
       this.form.item = this.checkItem
+      console.log('14234235144444444444235e')
+      console.log(this.form)
+
       this.$store.commit('putCartStorage',this.form)
+      this.form.item = []
       this.$router.push({name:"storagePay",params:this.form})
 
       this.checkItem = []

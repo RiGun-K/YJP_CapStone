@@ -87,9 +87,11 @@ export default {
   },
   methods:{
     upload(){
-      this.form = this.$store.state.payStorage
       this.form = this.$route.params
+      this.form = this.$store.state.payStorage
       this.form.userId = store.getters.getLoginState.loginState
+      console.log('1423423514235e')
+      console.log(this.form)
       axios.get('/api/storageBoxGet/' + this.form.storageBoxCode)
           .then(res=>{
             this.form.storageBoxName = res.data

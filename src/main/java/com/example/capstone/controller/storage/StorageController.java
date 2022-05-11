@@ -39,6 +39,12 @@ public class StorageController {
     @Autowired
     private UseStorageBoxRepository useStorageBoxRepository;
 
+    @Autowired
+    KindRepository kindRepository;
+
+    @Autowired
+    MemberEquipmentRepository memberEquipmentRepository;
+
     @PostMapping("/postStorage")
     public Result postStorage(@RequestBody StorageData storageData) {
         Storage storage = storageData.getStorage();
@@ -190,6 +196,7 @@ public class StorageController {
         Optional<Member> user = memberRepository.findByMID(renewalBox.getUserId());
         Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
         Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
+        Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
 
         LocalDateTime start = renewalBox.getStartTime();
         LocalDateTime end = renewalBox.getEndTime();
@@ -197,7 +204,11 @@ public class StorageController {
         Orders orderList = new Orders(user.get());
         ordersRepository.save(orderList);
 
+        beforeUseStorageBox.get().setUseStorageState("1");
+        useStorageBoxRepository.save(beforeUseStorageBox.get());
+
         UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList);
+        useStorageBox.setUseStorageState("2");
         useStorageBoxRepository.save(useStorageBox);
 
 //         박스 상태 변화
@@ -394,6 +405,16 @@ public class StorageController {
         return new Result("ok");
     }
 
+    //사용자 사용하는 보관함의 장비 조회
+    @GetMapping("getBoxInItem/{useBoxCode}")
+    private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode")Long useBoxCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(useStorageBox.get());
+
+
+        return memberEquipmentList;
+    }
+
     //사용자주소 조회
     @GetMapping("myAddress/{mid}")
     private Member getMemberAddress(@PathVariable(value = "mid")String mid){
@@ -403,11 +424,6 @@ public class StorageController {
     }
     ////////////////////////// 상품조회  //////////////////////////
 
-    @Autowired
-    KindRepository kindRepository;
-
-    @Autowired
-    MemberEquipmentRepository memberEquipmentRepository;
 
     @GetMapping("myItem/{userId}")
     private List<MemberEquipment> getMyItem(@PathVariable(value = "userId")String userId){

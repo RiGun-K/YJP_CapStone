@@ -22,7 +22,6 @@
       <div class="storage">
         <div class="storage-name-btn">
           <h5 class="storage-name-h5">보관소 이름: {{ name }}</h5>
-
           <button @click="askBox(this.boxList)" class="storage-submit-btn">신청</button>
           <button @click="closeDetail" class="storage-submit-btn">닫기</button>
         </div>
