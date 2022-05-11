@@ -1,5 +1,5 @@
 <template>
-  <ProductMain />
+  <ProductPage></ProductPage>
 <!--  <img src="@/assets/camp3.jpg" class="img-fluid" alt="...">-->
   <img :src='pic' class="img-fluid" alt="...">
   <div class="mt-4">
@@ -21,13 +21,14 @@
 
 <script>
 import axios from "axios";
-import ProductMain from "@/components/product/ProductMain";
 import pic from '@/assets/camp2.jpg'
+import ProductPage from "@/components/product/ProductPage";
+
 // import require from require
 
 export default {
   name: "ProductDetail",
-  components: { ProductMain },
+  components: { ProductPage },
 
   created() {
     this.DataList();

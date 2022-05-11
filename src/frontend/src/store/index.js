@@ -17,10 +17,14 @@ export default createStore({
         loginedTeamCode: '',
         storage:{},
         payStorage:{}
+        CampingIdOfRooms: '',
     },
     getters: {
         getLoginState(state){
             return state.loginState
+        },
+        getCampingIdState(state){
+            return state.CampingIdOfRooms
         }
     },
     mutations: {
@@ -73,6 +77,9 @@ export default createStore({
         },
         cartStorageClear(state){
             state.payStorage = {};
+        }
+        setCampingIdState(state,CampingIdOfRooms) {
+            state.CampingIdOfRooms = CampingIdOfRooms;
         }
     },
     actions: {

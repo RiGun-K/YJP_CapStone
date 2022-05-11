@@ -66,7 +66,6 @@ export default {
           MID:this.userID,
           MPASS:this.password
         }).then(res=>{
-          console.log(res.data)
           switch (res.data){
             case "ID":
               alert("아이디를 확인해주세요")
@@ -83,6 +82,9 @@ export default {
             case 1:
               alert("정지된 회원입니다")
               this.$router.push("/login")
+              break;
+            case '':
+              alert("로그인 실패 아이디와 비밀번호를 확인해주세요")
               break;
             default :
               alert("로그인에 성공했습니다.")

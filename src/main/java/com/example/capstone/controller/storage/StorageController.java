@@ -423,8 +423,6 @@ public class StorageController {
         return member.get();
     }
     ////////////////////////// 상품조회  //////////////////////////
-
-
     @GetMapping("myItem/{userId}")
     private List<MemberEquipment> getMyItem(@PathVariable(value = "userId")String userId){
         Optional<Member> member = memberRepository.findByMID(userId);

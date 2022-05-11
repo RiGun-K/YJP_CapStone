@@ -63,6 +63,31 @@ const routes = [
     name:'SearchPass',
     component: () => import('@/components/user/PassSearch.vue')
   },
+  {
+    path:'/changePass',
+    name:'changePass',
+    component: () => import('@/components/user/PassChange.vue')
+  },
+  {
+    path:'/myPage',
+    name:'mypage',
+    component: () => import('@/components/user/MyPage.vue')
+  },
+  {
+    path:'/myPageEquip',
+    name:'myPageEquip',
+    component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
+  },
+  {
+    path:'/myPageWritter',
+    name:'myPageWritter',
+    component: () => import('@/components/user/myPage/MyWritter.vue')
+  },
+  {
+    path:'/myPageOrder',
+    name:'myPageOrder',
+    component: () => import('@/components/user/myPage/MyOrder.vue')
+  },
 
     //////////////////////////////게시판////////////////////////////////////
 
@@ -96,50 +121,147 @@ const routes = [
     name: 'Update',
     component: () => import('@/components/board/Update.vue')
   },
+  {
+    path: '/tbcreate',
+    name: 'TBCreate',
+    component: () => import('@/components/board/TBCreate.vue')
+
+  },
+  {
+    path: '/teamboard',
+    name: 'TeamBoard',
+    component: () => import('@/components/board/TeamBoard.vue')
+
+  },
+  {
+    path: '/tbview/:teamwriter_code',
+    name: 'TBView',
+    component: () => import('@/components/board/TBView.vue')
+  },
+  {
+    path: '/tbupdate/:teamwriter_code',
+    name: 'TBUpdate',
+    component: () => import('@/components/board/TBUpdate.vue')
+  },
 
     ///////////////////////////////상품관리///////////////////////////////////
-  {
-    path: '/sellerSignup',
-    name: 'SellerSignup',
-    component: () => import('@/components/product/SellerSignup.vue')
-  },
-  {
-    path: '/userList',
-    name: 'UserList',
-    component: () => import('@/components/product/UserList.vue')
-  },
+
   {
     path: '/ProductMain',
     name: 'ProductMain',
     component: () => import('@/components/product/ProductMain.vue')
   },
   {
-    path: '/MyProductList',
-    name: 'MyProductList',
-    component: () => import('@/components/product/MyProductList.vue')
+    path: '/ProductPage',
+    name: 'ProductPage',
+    component: () => import('@/components/product/ProductPage.vue')
+  },
+    ////////////////////////////////////////////////////
+  {
+    path: '/ProductBuy',
+    name: 'ProductBuy',
+    component: () => import('@/components/product/Registration/RegistrationBuy.vue')
   },
   {
-    path: '/MyProductDetail/:menuid',
-    name: 'MyProductDetail',
-    component: () => import('@/components/product/MyProductDetail.vue'),
+    path: '/ProductRental',
+    name: 'ProductRental',
+    component: () => import('@/components/product/Registration/RegistrationRental.vue')
+  },
+  {
+    path: '/ProductCamping',
+    name: 'ProductCamping',
+    component: () => import('@/components/product/Registration/RegistrationCamping.vue')
+  },
+  {
+    path: '/RegistrationCampingDetail/:campingName',
+    name: 'RegistrationCampingDetail',
+    component: () => import('@/components/product/Registration/RegistrationCampingDetail.vue')
+  },
+    /////////////////////////////////////////////////////////
+  {
+    path: '/BuyProductList',
+    name: 'BuyProductList',
+    component: () => import('@/components/product/Buy/BuyProductList.vue')
+  },
+  {
+    path: '/BuyProductDetail/:buyId',
+    name: 'BuyProductDetail',
+    component: () => import('@/components/product/Buy/BuyProductDetail.vue'),
     props: true
   },
   {
-    path: '/MyProductEdit',
-    name: 'MyProductEdit',
-    component: () => import('@/components/product/MyProductEdit.vue'),
+    path: '/BuyProductEdit',
+    name: 'BuyProductEdit',
+    component: () => import('@/components/product/Buy/BuyProductEdit.vue'),
     props: true,
   },
+    ////////////////////////////////////////////////////////////////
+  {
+    path: '/RentalProductList',
+    name: 'RentalProductList',
+    component: () => import('@/components/product/Rental/RentalProductList.vue')
+  },
+  {
+    path: '/RentalProductDetail/:rentalId',
+    name: 'RentalProductDetail',
+    component: () => import('@/components/product/Rental/RentalProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/RentalProductEdit',
+    name: 'RentalProductEdit',
+    component: () => import('@/components/product/Rental/RentalProductEdit.vue'),
+    props: true,
+  },
+    ///////////////////////////////////////////////////////////////////
+  {
+    path: '/CampingProductList',
+    name: 'CampingProductList',
+    component: () => import('@/components/product/Camping/CampingProductList.vue')
+  },
+  {
+    path: '/CampingProductDetail/:campingId',
+    name: 'CampingProductDetail',
+    component: () => import('@/components/product/Camping/CampingProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/CampingProductEdit/:campingId',
+    name: 'CampingProductEdit',
+    component: () => import('@/components/product/Camping/CampingProductEdit.vue'),
+    props: true,
+  },
+  ///////////////////////////////////////////////////////////////////
+  {
+    path: '/RoomProductList/:campingId',
+    name: 'RoomProductList',
+    component: () => import('@/components/product/Room/RoomProductList.vue'),
+    props: true,
+  },
+  {
+    path: '/RoomProductDetail/:detailId',
+    name: 'RoomProductDetail',
+    component: () => import('@/components/product/Room/RoomProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/RoomProductEdit',
+    name: 'RoomProductEdit',
+    component: () => import('@/components/product/Room/RoomProductEdit.vue'),
+    props: true,
+  },
+  {
+    path: '/RoomProductCreate/:campingId',
+    name: 'RoomProductCreate',
+    component: () => import('@/components/product/Room/RoomProductCreate.vue'),
+    props: true,
+  },
+  ///////////////////////////////////////////////////////////////////
+
   {
     path: '/ProductList',
     name: 'ProductList',
     component: () => import('@/components/product/ProductList.vue')
-  },
-  {
-    path: '/registration',
-    name: 'Registration',
-    component: () => import('@/components/product/Registration.vue'),
-    props: true
   },
   {
     path: '/ProductDetail/:menuid',
@@ -155,7 +277,7 @@ const routes = [
     component: () => import('@/components/cart/ItemBuy/BuyList.vue')
   },
   {
-    path: '/itemBuy/buyList/:menuid',
+    path: '/itemBuy/buyList/:buyId',
     name: 'BuyDetailList',
     component: () => import('@/components/cart/ItemBuy/BuyDetailList.vue'),
     props: true

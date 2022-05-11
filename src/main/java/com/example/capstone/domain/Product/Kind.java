@@ -30,16 +30,6 @@ public class Kind {
 
 
     public Kind() {}
-
-    public Kind(String kindname) {
-        this.kindname = kindname;
-    }
-
-    public Kind(String kindname, Kind parentkind) {
-        this.kindname = kindname;
-        this.parentkind = parentkind;
-    }
-
     public Kind(int kindid, String kindname) {
         this.kindid = kindid;
         this.kindname = kindname;
@@ -77,4 +67,11 @@ public class Kind {
     public void setChildrenkinds(List<Kind> childrenkinds) {
         this.childrenkinds = childrenkinds;
     }
+//    public List<Menu> getMenus() {
+//        return menus;
+//    }
+//
+//    public void setMenus(List<Menu> menus) {
+//        this.menus = menus;
+//    }
 }
