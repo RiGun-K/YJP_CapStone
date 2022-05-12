@@ -15,6 +15,10 @@
             <td>{{List.mid.mid}}</td>
           </tr>
           <tr>
+            <th>작성일</th>
+            <td>{{List.mid.msd}}</td>
+          </tr>
+          <tr>
             <th>제목</th>
             <td>{{ List.title }}</td>
           </tr>
@@ -28,16 +32,6 @@
     </div>
   </div>
 
-
-  <button @click="commentsList" class="btn" style="float: left;">댓글확인</button>
-
-  <div class="dap_ins">
-      <div style="margin-top:30px; ">
-        <textarea name="commenttext" v-model="commenttext" class="reply_content" id="re_content" ></textarea>
-        <button @click="comments" id="rep_bt" class="re_bt">댓글</button>
-      </div>
-
-  </div>
   <div id="foot_box"></div>
 
     <div class="btnWrap">
@@ -46,6 +40,38 @@
       <button @click="updateData(List)" class="btn" style="float: left;" v-if="ch">수정</button>
       <button @click="deleteData" class="btn" style="float: left;" v-if="ch">삭제</button>
     </div>
+<br>
+  <br>
+  <br>
+
+  <button @click="commentsList" class="btn" style="float: left;">댓글확인</button>
+
+  <div class="dap_ins">
+    <div style="margin-top:30px; ">
+      <textarea name="commenttext" v-model="commenttext" class="reply_content" id="re_content" ></textarea>
+      <button @click="comments" id="rep_bt" class="re_bt">댓글</button>
+    </div>
+
+  </div>
+
+  <div class="listWrap">
+    <table class="tbList">
+      <br>
+      <br>
+      <tr>
+        <td style="font-size:20px; color: green;">댓글</td>
+        <td style="font-size:20px; color: green;">글쓴이</td>
+        <td style="font-size:20px; color: green;">작성일</td>
+      </tr>
+
+      <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
+        <td>{{item.content}}</td>
+        <td>{{item.mid.mid }}</td>
+        <td>{{item.mid.msd }}</td>
+      </tr>
+    </table>
+  </div>
+
 </template>
 
 <script>
@@ -115,7 +141,8 @@ export default {
           query: {
             writer_code: List.writer_code,
             title: List.title,
-            content: List.content
+            content: List.content,
+
           }
         })
 
@@ -129,10 +156,12 @@ export default {
     comments(){
       const data= {
         mid: store.getters.getLoginState.loginState,
-        commenttext: this.commenttext,
+        content: this.commenttext,
+        writer_code: this.id,
+        parentWriter: this.id,
       }
       console.log(data);
-      axios.post('/comment/list', data)
+      axios.post('/api/comment', data)
       .then((res) => {
         console.log("성공" + res.data)
       })
@@ -147,7 +176,7 @@ export default {
     commentsList() {
       axios.get('/api/commentsList' )
           .then((res) => {
-            console.log(res.data);
+            console.log("내가 받은 데이터는", res.data);
             this.listss = res.data;
           })
           .catch((ex) =>{
@@ -165,10 +194,10 @@ export default {
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
 .tbAdd td{padding:10px 10px; box-sizing:border-box; text-align:left;}
 .tbAdd td.txt_cont{height:300px; vertical-align:top;}
-.btnWrap{text-align:center; margin:20px 0 0 0;}
+.btnWrap{text-align:center; margin:20px 0 0 0; float: right;}
 .btnWrap a{margin:0 10px;}
-.btnAdd {background:#43b984}
-.btnDelete{background:#f00;}
+/*.btnAdd {background:#43b984}*/
+/*.btnDelete{background:#f00;}*/
 
 .btn {
   margin: 10px;
