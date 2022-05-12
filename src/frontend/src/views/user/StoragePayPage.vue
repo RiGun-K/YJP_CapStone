@@ -15,6 +15,17 @@
         <td>{{form.storageBoxName}}</td>
       </tr>
     </table>
+    <table>
+      <tr >
+        <td colspan="2">보관장비</td>
+      </tr>
+      <tr v-for="(item,index) in form.item" :key="index">
+        <td>{{ index+1}}.</td>
+        <td>{{item.memEquipmentName}}</td>
+      </tr>
+
+    </table>
+    <hr>
     <hr>
     <table>
       <tr >
@@ -58,57 +69,62 @@ export default {
   data(){
     return{
       form:{
-        userId:'',
         storageName:'',
         storageBoxName:'',
         storageBoxCode:'',
         useStorageStartTime:'',
         useStorageEndTime:'',
-        price:''
+        price:'',
+        item:[]
       },
     }
   },
   mounted() {
+
     const IMP = window.IMP
     IMP.init('imp35975601')
-
-    this.form = this.$route.params
-    console.log(this.form)
-    this.form.userId = store.getters.getLoginState.loginState
-    console.log(this.form)
-    axios.get('/api/storageBoxGet/'+this.form.storageBoxCode)
-    .then(res=>{
-      this.form.storageBoxName = res.data
-    }).catch(err=>{
-      console.log(err)
-    })
+    this.upload()
   },
   methods:{
+    upload(){
+      this.form = this.$route.params
+      this.form = this.$store.state.payStorage
+      this.form.userId = store.getters.getLoginState.loginState
+      console.log('1423423514235e')
+      console.log(this.form)
+      axios.get('/api/storageBoxGet/' + this.form.storageBoxCode)
+          .then(res=>{
+            this.form.storageBoxName = res.data
+          }).catch(err=>{
+        console.log(err)
+      })
+    },
     paymentBtn () {
-      if (confirm('결제 하시겠습니까?')) {
-        const IMP = window.IMP
-        IMP.init('imp35975601')
-        IMP.request_pay({
-          pg: 'html5_inicis',
-          pay_method: 'card',
-          merchant_uid: 'merchant_' + new Date().getTime(),
-          name: this.form.storageName +'보관소'+this.form.storageBoxName+'보관함',
-          amount: this.form.price/100,
-          buyer_tel: '01012345678',
-          confirm_url: ''
-        }, (rsp) => {
-          if (rsp.success) {
-
-            this.savePay()
-
-          } else {
-            let msg = '결제에 실패하였습니다.'
-            msg += '에러 내용 : ' + rsp.error_msg
-            alert(msg)
-
-          }
-        })
-      }
+      // if (confirm('결제 하시겠습니까?')) {
+      //   const IMP = window.IMP
+      //   IMP.init('imp35975601')
+      //   IMP.request_pay({
+      //     pg: 'html5_inicis',
+      //     pay_method: 'card',
+      //     merchant_uid: 'merchant_' + new Date().getTime(),
+      //     name: this.form.storageName +'보관소'+this.form.storageBoxName+'보관함',
+      //     amount: this.form.price/100,
+      //     buyer_tel: '01012345678',
+      //     confirm_url: ''
+      //   }, (rsp) => {
+      //     if (rsp.success) {
+      //
+      //       this.savePay()
+      //
+      //     } else {
+      //       let msg = '결제에 실패하였습니다.'
+      //       msg += '에러 내용 : ' + rsp.error_msg
+      //       alert(msg)
+      //
+      //     }
+      //   })
+      // }
+      this.savePay()
     },
     savePay(){
       const jsonData = {
@@ -116,13 +132,18 @@ export default {
         storageBoxCode:this.form.storageBoxCode,
         useStorageStartTime:new Date(this.form.useStorageStartTime),
         useStorageEndTime:new Date(this.form.useStorageEndTime),
-        price:this.form.price
+        price:this.form.price,
+        item:[]
       }
-
+      for (let i = 0; i < this.form.item.length; i++) {
+        jsonData.item.push(this.form.item[i].memEquipmentCode)
+      }
+      this.$store.commit('storageClear')
       console.log('data')
       console.log(jsonData)
       axios.post('/api/payBox',jsonData)
           .then(res=>{
+            this.$store.commit('cartStorageClear')
             alert('결제가 완료 되었습니다.')
             console.log(res)
             this.$router.push("/storageView");
@@ -131,6 +152,7 @@ export default {
             alert('결제가 실패 되었습니다.')
             console.log(err)
           })
+
     },
     checkBuy () {
       if (this.buyCheck === true) {

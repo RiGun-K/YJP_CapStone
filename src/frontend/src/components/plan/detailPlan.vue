@@ -78,7 +78,7 @@
 		</table>
 
 		<div>
-			<button>플랜저장</button>
+			<button @click="savePlan">플랜저장</button>
 		</div>
 	</div>
 </template>
@@ -214,6 +214,7 @@ export default {
 					console.log(error);
 				});
 		},
+		savePlan: function () {},
 	},
 };
 </script>

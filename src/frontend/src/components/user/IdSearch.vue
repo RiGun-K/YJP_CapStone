@@ -18,6 +18,16 @@
         </span>
       <span class="error_next_box"></span>
     </div>
+      <div style="text-align: center" v-if="authCheck">
+        <br/><br/>
+        <h3>
+          <label>{{clientID}}</label>
+        </h3>
+        <br/>
+      </div>
+      <div style="text-align: center">
+        <button @click="returnLogin">돌아가기</button>
+      </div>
   </div>
   </div>
 </template>
@@ -31,7 +41,9 @@ export default {
       clientPH:'',
       clientAuth:'',
       serverAuth:'',
-      authCheck:false
+      authCheck:false,
+      clientID:'',
+      resultString:''
     }
   },
   methods:{
@@ -51,9 +63,21 @@ export default {
       if(this.serverAuth == this.clientAuth){
         alert("인증되었습니다")
         this.authCheck = true
+        axios.post("/api/checkID",{
+          MPH:this.clientPH
+        })
+        .then((res)=>{
+          console.log(res)
+          this.clientID = res.data
+        }).catch((err)=>{
+          console.log(err)
+        })
       }else{
         alert("인증번호가 다릅니다 다시 확인해주세요")
       }
+    },
+    returnLogin(){
+      this.$router.push("/login")
     }
   }
 }
