@@ -29,9 +29,7 @@ public class TeamMemberService {
     private final TeamMemberRepository teamMemberRepository;
     private final PlanRepository planRepository;
     private final MemberRepository memberRepository;
-
 //
-
     public List<TeamMember> teamManagementPage(Member mcode) {
         List<TeamMember> tm = teamMemberRepository.findByMcode(mcode);
         return tm;

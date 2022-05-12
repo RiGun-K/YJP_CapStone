@@ -48,6 +48,7 @@ public class CopyPlanService {
         oldPlan.get().setPlanOpen(copyPlanDto.getPlanDto().getPlanOpen());
         oldPlan.get().setPlanViews(0);
         oldPlan.get().setPlanUsedCount(0);
+        oldPlan.get().setTeamCode(copyPlanDto.getTeamDto());
         List<PlanDetail> planDetail = planDetailRepository.findByPlanCode(oldPlanCode);
         oldPlan.get().setPlanCode(null);
         em.persist(oldPlan.get());
