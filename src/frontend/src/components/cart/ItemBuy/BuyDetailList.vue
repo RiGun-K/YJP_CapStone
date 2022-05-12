@@ -1,4 +1,5 @@
 <template>
+  <h2>상품 상세페이지</h2>
   <div class="mt-4">
     <b-card-text>
       <div class="content-detail-list">
@@ -7,23 +8,24 @@
           <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
-            <p class="card-text">가격: {{ this.content.buyPrice }}</p>
-            <p class="card-text">설명: {{ this.content.buyEx }}</p>
-            <a href="#" class="btn btn-primary" @click="buyData">구매</a>
+            <h5 class="card-text">가격: {{ this.content.buyPrice }}</h5>
+            <h5 class="card-text">설명: {{ this.content.buyEx }}</h5>
+            <h5 class="card-text">잔여수량: {{ this.content.buyStock }}</h5>
+            <h5 class="card-text">등록일자: {{ this.content.savedTime }}</h5>
           </div>
         </div>
       </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
-        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">찜</b-button>
-      </div>
     </b-card-text>
+
+<!--    <div class="text-center">-->
+<!--    <img :src="'/api/product_detail_images/' + content.filename" class="rounded float-start"  width= "400" alt="...">-->
+<!--    </div>-->
+
   </div>
-<!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-<!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-<!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-<!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-<!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
+    <!--        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">찜</b-button>-->
+  </div>
 
 </template>
 
@@ -52,6 +54,7 @@ export default {
           .then(res => {
             console.log(res.data);
             this.content = res.data;
+            console.log(this.content.buyId);
             console.log(this.content.filePath);
             console.log(this.content.filename);
             axios.get('http://localhost:9002/api/product_detail_images/' + this.content.filename )
@@ -69,7 +72,7 @@ export default {
     },
     buyData() {
       this.$router.push({
-        path: `/itemBuy/buyNow/${this.content.menuid}`
+        path: `/itemBuy/buyNow/${this.content.buyId}`
       })
     },
     putData() {
@@ -82,6 +85,9 @@ export default {
 </script>
 
 <style scoped>
+h2,h3{
+  margin: 4%;
+}
 .mt-4 {
   text-align: center;
 }
@@ -92,12 +98,13 @@ export default {
   text-decoration: none;
   display: inline-block;
 }
-.d-grid gap-2 d-md-flex justify-content-md-end {
-  margin: auto;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-}
 .card {
 }
+.d-grid gap-2 d-md-flex justify-content-md-end {
+  text-align: center;
+  margin: auto;
+  display: block;
+}
+
+
 </style>

@@ -12,7 +12,7 @@
         </colgroup>
         <tr>
           <th>글쓴이</th>
-          <td>{{List.teamMaster.teamMaster}}</td>
+          <td>{{List.teamMaster}}</td>
         </tr>
         <tr>
           <th>제목</th>
@@ -48,6 +48,7 @@ export  default  {
   name: 'TBView',
   data() {
     return {
+      teamMaster: '',
       teamwriter_code: '',
       noticetitle: '',
       noticecontent: '',
