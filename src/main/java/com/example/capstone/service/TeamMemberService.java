@@ -82,11 +82,13 @@ public class TeamMemberService {
         return planDtos;
     }
     public void autoMemberAdd(Team tm){
-        Optional<Member> member = memberRepository.findByMname(tm.getTeamMaster());
+        Optional<Member> member = memberRepository.findById(tm.getTeamMaster());
+        System.out.println("ddddddddd");
         TeamMember teamMember = new TeamMember();
         teamMember.setTeamCode(tm);
         teamMember.setMcode(member.get());
         teamMember.setAcception("y");
+        System.out.println(teamMember.getTeamCode());
         teamMemberRepository.save(teamMember);
     }
 }

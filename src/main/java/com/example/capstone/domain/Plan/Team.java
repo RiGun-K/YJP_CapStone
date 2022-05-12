@@ -29,7 +29,7 @@ public class Team {
     private char teamState;
 
     @Column
-    private String teamMaster;
+    private Long teamMaster;
 
 
 

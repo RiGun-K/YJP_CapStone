@@ -11,10 +11,10 @@ public class TeamDto {
     private Long teamCode;
     private String teamName;
     private char teamState;
-    private String teamMaster;
+    private Long teamMaster;
 
     @Builder
-    public TeamDto(Long teamCode, String teamName, char teamState, String teamMaster) {
+    public TeamDto(Long teamCode, String teamName, char teamState, Long teamMaster) {
         this.teamCode = teamCode;
         this.teamName = teamName;
         this.teamState = teamState;
