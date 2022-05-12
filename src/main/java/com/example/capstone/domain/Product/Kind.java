@@ -17,21 +17,16 @@ public class Kind {
     @Column()
     private String kindname;
 
+    //부모
     @ManyToOne
     @JoinColumn(name = "parentkindid")
     @JsonManagedReference
     private Kind parentkind;
 
+    //자식
     @OneToMany(mappedBy = "parentkind")
     @JsonBackReference
     private List<Kind> childrenkinds = new ArrayList<>();
-
-
-//    @JsonManagedReference
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "kind")
-//    @JsonIgnore
-//    private List<Menu> menus;
 
 
     public Kind() {}
@@ -72,6 +67,21 @@ public class Kind {
         this.kindname = kindname;
     }
 
+    public Kind getParentkind() {
+        return parentkind;
+    }
+
+    public void setParentkind(Kind parentkind) {
+        this.parentkind = parentkind;
+    }
+
+    public List<Kind> getChildrenkinds() {
+        return childrenkinds;
+    }
+
+    public void setChildrenkinds(List<Kind> childrenkinds) {
+        this.childrenkinds = childrenkinds;
+    }
 //    public List<Menu> getMenus() {
 //        return menus;
 //    }

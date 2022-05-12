@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 <template>
 	<h1>아래 정보는 AI추천기능을 위해 사용됩니다</h1>
 	<h1>날짜 선택</h1>
@@ -19,7 +21,16 @@
 		placeholder="플랜이름"
 		v-model="planName"
 	/>
+
 	<p>{{ checkResult }}</p>
+	<h3>
+		공개여부
+		<select v-model="planOpen">
+			<option disabled value="">공개설정</option>
+			<option>전체공개</option>
+			<option>비공개</option>
+		</select>
+	</h3>
 	<h3>
 		장소
 		<select v-model="planDestination">
@@ -56,8 +67,20 @@
 	<button v-on:click="planNumber -= 1">-</button>
 	<h3>예상 경비</h3>
 	<input type="number" placeholder="0" v-model="planBudget" />
-
-	<button @click="createPlan()">다음</button>
+	<h3>TAG 설정</h3>
+	<input type="text" v-model="tag" />
+	<button @click="addTags(this.tag)">추가</button>
+	<button
+		title="더블클릭하면 삭제됩니다"
+		v-for="(value, index) in TagContentList"
+		:key="index"
+		@dblclick="deleteTag(index)"
+	>
+		{{ value }}
+	</button>
+	<div>
+		<button @click="createPlan()">다음</button>
+	</div>
 </template>
 
 <script>
@@ -81,9 +104,24 @@ export default {
 			checkResult: '',
 			planCode: '',
 			diff: '',
+			planOpen: '전체공개',
+			tag: '',
+			TagContentList: [],
 		};
 	},
 	methods: {
+		addTags: function (value) {
+			if (this.TagContentList.indexOf(value) !== -1) {
+				alert('중복된 Tag설정은 불가능합니다');
+			} else {
+				this.TagContentList.push(value);
+			}
+			this.tag = '';
+		},
+		deleteTag: function (index) {
+			console.log(index);
+			this.TagContentList.splice(index, 1);
+		},
 		checkPlanName: function () {
 			const url = 'api/checkPlanName';
 			this.checkResult = '';
@@ -112,9 +150,24 @@ export default {
 			this.planEnd = secondValue.format('YYYYMMDD');
 			this.diff = secondValue.diff(firstValue, 'd') + 1;
 			this.$store.commit('updateDiff', this.diff);
-			// console.log(this.$store.state.diff);
 		},
+		// addTags: function () {
+		// 	const url = '/api/addTags';
+		// },
 		createPlan: function () {
+			const data = {
+				planName: this.planName,
+				teamCode: this.$store.state.teamCode.teamCode,
+				planStart: this.planStart,
+				planEnd: this.planEnd,
+				planDestination: this.planDestination,
+				planType: this.planType,
+				planNumber: this.planNumber,
+				planBudget: this.planBudget,
+				planTotalDate: this.diff,
+				planOpen: this.planOpen,
+			};
+			const form = { plan: data, tagContentList: this.TagContentList };
 			if (
 				this.planName !== '' &&
 				this.planBudget !== '' &&
@@ -122,41 +175,28 @@ export default {
 				this.planType !== '' &&
 				this.planDestination !== '' &&
 				this.planEnd !== '' &&
-				this.planStart !== ''
+				this.planStart !== '' &&
+				this.planOpen !== ''
 			) {
-				console.log(this.$store.state.teamCode.teamCode); // store로 저장하면 안된다 디비에 값을 넣어 디테일플랜에서 디비값을 참조해야한다. 나중에 바꾸자
-				const url = '/api/createPlan';
-
-				axios
-					.post(
-						url,
-
-						{
-							planName: this.planName,
-							teamCode: this.$store.state.teamCode.teamCode,
-							planStart: this.planStart,
-							planEnd: this.planEnd,
-							planDestination: this.planDestination,
-							planType: this.planType,
-							planNumber: this.planNumber,
-							planBudget: this.planBudget,
-							planTotalDate: this.diff,
-						},
-					)
-					.then((response) => {
-						this.planCode = response.data;
-
-						this.$store.commit('updatePlanCode', response.data);
-						// response.date는  {planCode: 251, teamCode: {…}, planDestination: '대구', planName: '123', planBudget: 0,
-
-						this.$router.push({
-							name: 'detailPlan',
+				if (this.TagContentList.length < 3) {
+					alert('테그를 3개 이상 입력해야합니다');
+				} else {
+					console.log(this.$store.state.teamCode.teamCode);
+					const url = '/api/createPlan';
+					axios
+						.post(url, form)
+						.then((response) => {
+							this.planCode = response.data;
+							this.$store.commit('updatePlanCode', response.data);
+							this.$router.push({
+								name: 'detailPlan',
+							});
+						})
+						.catch((error) => {
+							alert('에러');
+							console.log(error);
 						});
-					})
-					.catch((error) => {
-						alert('에러');
-						console.log(error);
-					});
+				}
 			} else {
 				alert('모든 입력값을 입력하세요');
 			}
@@ -164,5 +204,4 @@ export default {
 	},
 };
 </script>
-
 <style></style>

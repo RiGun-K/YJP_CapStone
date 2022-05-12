@@ -3,7 +3,7 @@ package com.example.capstone.dto.Product;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ public class MenuDTO {
     private String menuname;
     private int price;
     private String ex;
-    private LocalDateTime savedTime;
+    private LocalDate savedTime;
     private int stock;
     private String origFilename;
     private String filename;

@@ -2,27 +2,27 @@
   <div class="user-storage-view">
     <h3>보관소 리스트 페이지</h3>
 
-      <div class="storage-get" v-for="(storage,index) in storageList" :key="index" @click="GetStorageDetail(storage.storageCode)"
-           style="margin-bottom: 3%">
-        <div class="card" style="width: 35%; font-weight: bolder; margin-left: 7%">
-          <div class="card-body">
-            이름: {{ storage.storageName }}
-          </div>
-          <div class="card-body">
-            주소: {{ storage.storageAddress }}
-          </div>
+    <div class="storage-get" v-for="(storage,index) in storageList" :key="index"
+         @click="GetStorageDetail(storage.storageCode)"
+         style="margin-bottom: 3%">
+      <div class="card" style="width: 35%; font-weight: bolder; margin-left: 7%">
+        <div class="card-body">
+          이름: {{ storage.storageName }}
+        </div>
+        <div class="card-body">
+          주소: {{ storage.storageAddress }}
         </div>
       </div>
-      <div style="float: right;">
-        <div id="map"></div>
-      </div>
+    </div>
+    <div>
+      <div id="map"></div>
+    </div>
 
     <div v-if="check">
       <div class="storage">
         <div class="storage-name-btn">
           <h5 class="storage-name-h5">보관소 이름: {{ name }}</h5>
-
-          <button @click="askBox(this.boxList.storageCode)" class="storage-submit-btn">신청</button>
+          <button @click="askBox(this.boxList)" class="storage-submit-btn">신청</button>
           <button @click="closeDetail" class="storage-submit-btn">닫기</button>
         </div>
         <div class="storage-view">
@@ -50,8 +50,6 @@ export default {
   components: {},
   created() {
     this.memberId = store.getters.getLoginState.loginState
-    console.log('this.memberId')
-    console.log(this.memberId)
     axios.get('/api/getStorage')
         .then((res) => {
           this.storageList = res.data
@@ -62,8 +60,6 @@ export default {
         .catch((error) => {
           console.log(error)
         })
-
-
   },
   mounted() {
     //  카카오맵
@@ -77,17 +73,18 @@ export default {
           "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
       document.head.appendChild(script);
     }
+
   },
   data() {
     return {
       map: null,
       markers: [],
-      markPositions1: [],
       storageList: [],
       check: false,
       boxList: [],
       name: '',
-      memberId: ''
+      memberId: '',
+      markPositions1: [],
     }
   },
   methods: {
@@ -95,26 +92,30 @@ export default {
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
-        level: 8,
+        level: 9,
       };
-      console.log(options)
       this.map = new kakao.maps.Map(container, options);
-
-      // 마커 만들기
-
-      let position = []
-      for (let i = 0; i < this.storageList.length; i++) {
-        position = [this.storageList[i].longitude, this.storageList[i].latitude]
-        this.markPositions1.push(position)
-      }
-      this.displayMarker(this.markPositions1)
+      console.log('this.map')
+      console.log(this.map)
+      this.allMarker()
     },
-    displayMarker(markerPositions) {
+    allMarker() {
+      console.log('markers')
+      console.log(this.markers)
+      // 마커 지우기
       if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
+        this.markers.forEach((item) => {
+          item.setMap(null);
+        })
       }
-
-      const positions = markerPositions.map(
+      const pos = [];
+      for (let i = 0; i < this.storageList.length; i++) {
+        pos.push([
+          this.storageList[i].longitude, this.storageList[i].latitude
+        ]);
+      }
+      console.log(pos)
+      const positions = pos.map(
           (position) => new kakao.maps.LatLng(...position)
       );
 
@@ -128,14 +129,41 @@ export default {
         );
 
         const bounds = positions.reduce(
-            (bounds, position) => bounds.extend(position.latlng),
+            (bounds, latlng) => bounds.extend(latlng),
             new kakao.maps.LatLngBounds()
         );
 
         this.map.setBounds(bounds);
       }
     },
+    displayMarker(place) {
+      if (this.markers.length > 0) {
+        this.markers.forEach((item) => {
+          item.setMap(null);
+        })
+      }
+      console.log('place')
+      console.log(place)
+      const positions = place.map(
+          (position) => new kakao.maps.LatLng(...position)
+      );
+      console.log(positions)
+      if (positions.length > 0) {
+        this.markers = positions.map(
+            (position) =>
+                new kakao.maps.Marker({
+                  map: this.map,
+                  position,
+                })
+        );
 
+        const bounds = positions.reduce(
+            (bounds, latlng) => bounds.extend(latlng),
+            new kakao.maps.LatLngBounds()
+        );
+        this.map.setBounds(bounds);
+      }
+    },
     GetStorageDetail(storageCode) {
       this.detailCheck()
       axios.get('/api/storageView/' + storageCode)
@@ -143,13 +171,14 @@ export default {
             console.log(res.data)
             this.boxList = res.data
             this.name = this.boxList.storageName
-            const point = [this.boxList.longitude,this.boxList.latitude]
+            const point = [this.boxList.longitude, this.boxList.latitude]
             this.displayMarker([point])
           })
           .catch((err) => {
             console.log(err)
           })
     },
+
     detailCheck() {
       if (!this.check) {
         this.check = !this.check
@@ -161,10 +190,11 @@ export default {
         this.initMap()
       }
     },
-    askBox(storageCode) {
-      console.log('보관소 코드')
-      console.log(storageCode)
-      this.$router.push({name: 'userStorageDetail', params: {storageCode: storageCode}})
+    askBox(storage) {
+      console.log('보관소')
+      console.log(storage)
+      this.$store.commit('storageCheck', storage)
+      this.$router.push({name: 'userStorageDetail'})
     }
   }
 }

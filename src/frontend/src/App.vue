@@ -9,7 +9,7 @@
 
 <script>
 import Header from '@/components/common/Header'
-// import Footer from '@/components/common/Footer'
+import Footer from '@/components/common/Footer'
 import NavBar from '@/components/common/NavBar'
 
 export default {
@@ -32,7 +32,7 @@ html,body{padding:0; margin:0;}
   //text-align: center;
   color: #2c3e50;
 }
-h1{color:#43b984;}
+h1{color:#2c3e50;}
 table{width:100%; border-collapse:collapse;}
 .wrap{width:100%;}
 .container{width:800px; margin:0 auto;}

@@ -6,26 +6,43 @@
         <div>
           <table class='scrolltbody'>
             <tbody>
-            <tr>
-              <td>보관소</td>
-              <td>보관함</td>
-              <td>시작일</td>
-              <td>종료 예정일</td>
-            </tr>
-            <tr v-for="(useBox,index) in useBoxes" :key="index">
-              <td>{{ useBox.storageName }}</td>
-              <td>{{ useBox.boxName }}</td>
-              <td>{{ useBox.startTime }}</td>
-              <td>{{ useBox.endTime }}</td>
-              <td v-if="useBox.none">
-                <button @click="moveBox(useBox)">장비 이동</button><button @click="repairBox(useBox)">장비 수리</button>
-                <button class="mystoragebox-re" @click="renewalPay(useBox)">보관함 연장 / 해지</button>
-              </td>
-            </tr>
+              <tr>
+                <td>보관소</td>
+                <td>보관함</td>
+                <td>시작일</td>
+                <td>종료 예정일</td>
+              </tr>
+              <tr v-for="(useBox,index) in useBoxes" :key="index">
+                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.storageName }}</td>
+                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.boxName }}</td>
+                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.startTime }}</td>
+                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }} {{useBox.none}}</td>
+                <td v-if="useBox.none">
+                  <button v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button><button v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
+                  <button class="mystoragebox-re" v-if="useBox.BoxState == '3' || useBox.useBoxState=='2'" @click="renewalPay(useBox)">보관함 연장 / 해지</button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </div>
+
+    <div v-if="modal">
+      <button @click="close()">X</button>
+      박스안의 캠핑장비
+      <div v-if="myItem.length > 0">
+        <ul v-for="(item,index) in myItem" :key="index">
+          <li>{{item.memEquipmentName}}</li>
+          <li>수량 : {{item.memEquipmentCount}}</li>
+        </ul>
+      </div>
+      <div v-else>
+        보관중인 장비가 없습니다
+      </div>
+    </div>
+    <div v-if="false">
+      <BoxInItemModal ></BoxInItemModal>
     </div>
   </div>
 </template>
@@ -33,13 +50,19 @@
 <script>
 import axios from "axios";
 import store from "@/store";
+import BoxInItemModal from "@/components/storageService/user/BoxInItemModal.vue";
 
 export default {
   name: "MyStorageBox",
+  components:{
+    BoxInItemModal
+  },
   data() {
     return {
+      modal:false,
       memberId: '',
-      useBoxes: []
+      useBoxes: [],
+      myItem:{}
     }
   },
   mounted() {
@@ -58,10 +81,12 @@ export default {
               const box = {
                 startTime: '',
                 endTime: '',
+                boxCode:'',
                 boxName: '',
                 boxState: '',
                 storageName: '',
                 useBoxCode:'',
+                useBoxState:'',
                 start: '',
                 end: '',
                 none: true
@@ -70,42 +95,45 @@ export default {
               const end = new Date(boxes[i][1])
               box.startTime = start.getFullYear() + '년' + (start.getMonth() + 1) + '월' + start.getDate() + '일 (' + arrDayStr[start.getDay()] + ')'
               box.endTime = end.getFullYear() + '년' + (end.getMonth() + 1) + '월' + end.getDate() + '일 (' + arrDayStr[end.getDay()] + ')'
-              box.boxName = boxes[i][2]
-              box.boxState = boxes[i][3]
-              box.storageName = boxes[i][4]
-              box.useBoxCode = boxes[i][5]
+              box.boxCode = boxes[i][2]
+              box.boxName = boxes[i][3]
+              box.boxState = boxes[i][4]
+              box.storageName = boxes[i][5]
+              box.useBoxCode = boxes[i][6]
+              box.useBoxState = boxes[i][7]
               box.start = start
               box.end = end
               // box.boxState 가 1 이면 연장 버튼 on 0이면 연장 버튼 off
               if (i > 0) {
                 // 이전 보관함이름 = 지금 보관함이름 && 이전 보관소 이름 = 지금 보관소 이름
-                if (boxes[i - 1][2] == box.boxName && box.storageName == boxes[i - 1][4]) {
+                console.log(boxes[i - 1][3] + '&'+ box.boxName+'//'+box.storageName + '&'+ boxes[i - 1][5])
+                if (boxes[i - 1][3] == box.boxName && box.storageName == boxes[i - 1][5]) {
+                  console.log(box.boxState)
                   if (box.boxState == '1') {
                     this.useBoxes[i - 1].none = false
+
                     box.none = true
+                    console.log(box.none)
                   } else if (box.boxState == '0') {
                     box.none = false
                   }
                   // 이전 보관함이름 == 지금 보관함이름 && 이전 보관소 이름 != 지금 보관소 이름
-                } else if (boxes[i - 1][2] == box.boxName && box.storageName != boxes[i - 1][4]) {
+                } else if (boxes[i - 1][3] == box.boxName && box.storageName != boxes[i - 1][5]) {
                   if (box.boxState == '1') {
-                    // this.useBoxes[i - 1].none = true
                     box.none = true
                   } else if (box.boxState == '0') {
                     box.none = false
                   }
                   // 이전 보관함이름 != 지금 보관함이름 && 이전 보관소 이름 == 지금 보관소 이름
-                } else if (boxes[i - 1][2] != box.boxName && box.storageName == boxes[i - 1][4]) {
+                } else if (boxes[i - 1][3] != box.boxName && box.storageName == boxes[i - 1][5]) {
                   if (box.boxState == '1') {
-                    // this.useBoxes[i - 1].none = true
                     box.none = true
                   } else if (box.boxState == '0') {
                     box.none = false
                   }
                   // 이전 보관함이름 != 지금 보관함이름 && 이전 보관소 이름 != 지금 보관소 이름
-                } else if (boxes[i - 1][2] != box.boxName && box.storageName != boxes[i - 1][4]) {
+                } else if (boxes[i - 1][3] != box.boxName && box.storageName != boxes[i - 1][5]) {
                   if (box.boxState == '1') {
-                    // this.useBoxes[i - 1].none = true
                     box.none = true
                   } else if (box.boxState == '0') {
                     box.none = false
@@ -120,6 +148,7 @@ export default {
               }
               this.useBoxes.push(box)
             }
+            console.log(this.useBoxes)
           }
         })
         .catch(err => {
@@ -127,6 +156,22 @@ export default {
         })
   },
   methods: {
+    close(){
+      this.modal = false
+    },
+    detailBox(useBoxCode){
+      if(!this.modal){
+        this.modal = !this.modal
+      }
+      axios.get('/api/getBoxInItem/'+useBoxCode)
+      .then(res=>{
+        console.log(res.data)
+        this.myItem = res.data
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
     moveBox(useBox){
       this.$router.push({
         name: 'moveBox',
@@ -134,6 +179,7 @@ export default {
           userId: this.memberId,  // 사용자 아이디
           storageName: useBox.storageName,    // 보관소 이름
           boxName: useBox.boxName,       // 보관함 이름
+          boxCode: useBox.boxCode,        // 보관함 코드
           useBoxCode : useBox.useBoxCode // 사용 보관함 코드
         }
       })
@@ -145,6 +191,7 @@ export default {
           userId: this.memberId,  // 사용자 아이디
           storageName: useBox.storageName,    // 보관소 이름
           boxName: useBox.boxName,       // 보관함 이름
+          useBoxCode : useBox.useBoxCode  // 사용 보관함 코드
         }
       })
     },
@@ -159,10 +206,11 @@ export default {
           endTime: useBox.endTime,      // 종료년월인
           start: useBox.start,            // 시작date
           end: useBox.end,                 // 종료date
-          none: false
+          none: false,
+          useBoxCode : useBox.useBoxCode  // 사용 보관함 코드
         }
       })
-    }
+    },
   }
 }
 </script>

@@ -1,8 +1,7 @@
-import {createRouter, createWebHistory} from 'vue-router'
-
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-    /////////////////////////////회원관리///////////////////////////////
+	  /////////////////////////////회원관리///////////////////////////////
   {
     path: '/',
     name: 'Main',
@@ -63,6 +62,31 @@ const routes = [
     name:'SearchPass',
     component: () => import('@/components/user/PassSearch.vue')
   },
+  {
+    path:'/changePass',
+    name:'changePass',
+    component: () => import('@/components/user/PassChange.vue')
+  },
+  {
+    path:'/myPage',
+    name:'mypage',
+    component: () => import('@/components/user/MyPage.vue')
+  },
+  {
+    path:'/myPageEquip',
+    name:'myPageEquip',
+    component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
+  },
+  {
+    path:'/myPageWritter',
+    name:'myPageWritter',
+    component: () => import('@/components/user/myPage/MyWritter.vue')
+  },
+  {
+    path:'/myPageOrder',
+    name:'myPageOrder',
+    component: () => import('@/components/user/myPage/MyOrder.vue')
+  },
 
     //////////////////////////////게시판////////////////////////////////////
 
@@ -120,48 +144,123 @@ const routes = [
   },
 
     ///////////////////////////////상품관리///////////////////////////////////
-  {
-    path: '/sellerSignup',
-    name: 'SellerSignup',
-    component: () => import('@/components/product/SellerSignup.vue')
-  },
-  {
-    path: '/userList',
-    name: 'UserList',
-    component: () => import('@/components/product/UserList.vue')
-  },
+
   {
     path: '/ProductMain',
     name: 'ProductMain',
     component: () => import('@/components/product/ProductMain.vue')
   },
   {
-    path: '/MyProductList',
-    name: 'MyProductList',
-    component: () => import('@/components/product/MyProductList.vue')
+    path: '/ProductPage',
+    name: 'ProductPage',
+    component: () => import('@/components/product/ProductPage.vue')
+  },
+    ////////////////////////////////////////////////////
+  {
+    path: '/ProductBuy',
+    name: 'ProductBuy',
+    component: () => import('@/components/product/Registration/RegistrationBuy.vue')
   },
   {
-    path: '/MyProductDetail/:menuid',
-    name: 'MyProductDetail',
-    component: () => import('@/components/product/MyProductDetail.vue'),
+    path: '/ProductRental',
+    name: 'ProductRental',
+    component: () => import('@/components/product/Registration/RegistrationRental.vue')
+  },
+  {
+    path: '/ProductCamping',
+    name: 'ProductCamping',
+    component: () => import('@/components/product/Registration/RegistrationCamping.vue')
+  },
+  {
+    path: '/RegistrationCampingDetail/:campingName',
+    name: 'RegistrationCampingDetail',
+    component: () => import('@/components/product/Registration/RegistrationCampingDetail.vue')
+  },
+    /////////////////////////////////////////////////////////
+  {
+    path: '/BuyProductList',
+    name: 'BuyProductList',
+    component: () => import('@/components/product/Buy/BuyProductList.vue')
+  },
+  {
+    path: '/BuyProductDetail/:buyId',
+    name: 'BuyProductDetail',
+    component: () => import('@/components/product/Buy/BuyProductDetail.vue'),
     props: true
   },
   {
-    path: '/MyProductEdit',
-    name: 'MyProductEdit',
-    component: () => import('@/components/product/MyProductEdit.vue'),
+    path: '/BuyProductEdit',
+    name: 'BuyProductEdit',
+    component: () => import('@/components/product/Buy/BuyProductEdit.vue'),
     props: true,
   },
+    ////////////////////////////////////////////////////////////////
+  {
+    path: '/RentalProductList',
+    name: 'RentalProductList',
+    component: () => import('@/components/product/Rental/RentalProductList.vue')
+  },
+  {
+    path: '/RentalProductDetail/:rentalId',
+    name: 'RentalProductDetail',
+    component: () => import('@/components/product/Rental/RentalProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/RentalProductEdit',
+    name: 'RentalProductEdit',
+    component: () => import('@/components/product/Rental/RentalProductEdit.vue'),
+    props: true,
+  },
+    ///////////////////////////////////////////////////////////////////
+  {
+    path: '/CampingProductList',
+    name: 'CampingProductList',
+    component: () => import('@/components/product/Camping/CampingProductList.vue')
+  },
+  {
+    path: '/CampingProductDetail/:campingId',
+    name: 'CampingProductDetail',
+    component: () => import('@/components/product/Camping/CampingProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/CampingProductEdit/:campingId',
+    name: 'CampingProductEdit',
+    component: () => import('@/components/product/Camping/CampingProductEdit.vue'),
+    props: true,
+  },
+  ///////////////////////////////////////////////////////////////////
+  {
+    path: '/RoomProductList/:campingId',
+    name: 'RoomProductList',
+    component: () => import('@/components/product/Room/RoomProductList.vue'),
+    props: true,
+  },
+  {
+    path: '/RoomProductDetail/:detailId',
+    name: 'RoomProductDetail',
+    component: () => import('@/components/product/Room/RoomProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/RoomProductEdit',
+    name: 'RoomProductEdit',
+    component: () => import('@/components/product/Room/RoomProductEdit.vue'),
+    props: true,
+  },
+  {
+    path: '/RoomProductCreate/:campingId',
+    name: 'RoomProductCreate',
+    component: () => import('@/components/product/Room/RoomProductCreate.vue'),
+    props: true,
+  },
+  ///////////////////////////////////////////////////////////////////
+
   {
     path: '/ProductList',
     name: 'ProductList',
     component: () => import('@/components/product/ProductList.vue')
-  },
-  {
-    path: '/registration',
-    name: 'Registration',
-    component: () => import('@/components/product/Registration.vue'),
-    props: true
   },
   {
     path: '/ProductDetail/:menuid',
@@ -177,13 +276,13 @@ const routes = [
     component: () => import('@/components/cart/ItemBuy/BuyList.vue')
   },
   {
-    path: '/itemBuy/buyList/:menuid',
+    path: '/itemBuy/buyList/:buyId',
     name: 'BuyDetailList',
     component: () => import('@/components/cart/ItemBuy/BuyDetailList.vue'),
     props: true
   },
   {
-    path: '/itemBuy/buyNow/:menuid',
+    path: '/itemBuy/buyNow/:buyId',
     name: 'BuyNow',
     component: () => import('@/components/cart/ItemBuy/BuyNow.vue'),
     props: true
@@ -199,7 +298,7 @@ const routes = [
     component: () => import('@/components/cart/ItemShare/ShareList.vue')
   },
   {
-    path: '/itemShare/shareNow',
+    path: '/itemShare/shareNow/:rentalId',
     name: 'ShareNow',
     component: () => import('@/components/cart/ItemShare/ShareNow.vue')
   },
@@ -214,7 +313,7 @@ const routes = [
     component: () => import('@/components/cart/Infoter/InfoterList.vue')
   },
   {
-    path: '/infoter/infoterNow',
+    path: '/infoter/infoterNow/:campingId',
     name: 'InfoterNow',
     component: () => import('@/components/cart/Infoter/InfoterNow.vue')
   },
@@ -243,6 +342,28 @@ const routes = [
     name: 'ReservationCart',
     component: () => import('@/components/cart/Cart/ReservationCart.vue')
   },
+  {
+    path: '/ordersList',
+    name: 'Orders',
+    component: () => import('@/components/cart/ordersInfo/Orders.vue'),
+    props: true
+  },
+  {
+    path: '/ordersList/buyOrders/:mid',
+    name: 'BuyOrders',
+    component: () => import('@/components/cart/ordersInfo/BuyOrders.vue'),
+    props: true
+  },
+  {
+    path: '/ordersList/shareOrders',
+    name: 'ShareOrders',
+    component: () => import('@/components/cart/ordersInfo/ShareOrders.vue')
+  },
+  {
+    path: '/ordersList/reservationOrders',
+    name: 'ReservationOrders',
+    component: () => import('@/components/cart/ordersInfo/ReservationOrders.vue')
+  },
     //////////////////////////////보관함관리/////////////////////////////////
 
   {
@@ -266,12 +387,12 @@ const routes = [
     component: ()=> import('@/views/user/UserStorageView.vue')
   },
   {
-    path: "/storageView/:storageCode",
+    path: "/storageViewDetail",
     name:"userStorageDetail",
     component: ()=> import('@/components/storageService/user/UserStorageDetail.vue')
   },
   {
-    path:"/storageView/:storageCode/paypage",
+    path:"/storageView/paypage",
     name:"storagePay",
     component:()=> import('@/views/user/StoragePayPage.vue')
   },
@@ -291,9 +412,20 @@ const routes = [
     component:()=>import('@/components/storageService/user/MoveBox.vue')
   },
   {
-    path: "/myBox/moveBox/pay",
-    name: "BoxMovePay",
-    component:()=>import('@/views/user/BoxMovePay.vue'),
+    path: "/myBox/moveBox/boxToBox",
+    name: "StorageMoveBoxDetail",
+    component:()=>import('@/components/storageService/user/StorageMoveBoxDetail.vue')
+  },
+  {
+    path: "/myBox/moveBox/storagePay",
+    name: "BoxToBoxMovePay",
+    component:()=>import('@/views/user/BoxToBoxMovePay.vue'),
+    props: true
+  },
+  {
+    path: "/myBox/moveBox/roundPay",
+    name: "roundToBoxMovePay",
+    component:()=>import('@/views/user/roundToBoxMovePay.vue'),
     props: true
   },
   {
@@ -313,42 +445,65 @@ const routes = [
       }
     ]
   },
-  //////////////계획관리//////////////////////
-  {
-    path: '/TeamManagementPage',
-    name: 'teamManage',
-    component: () => import('@/components/team/TeamManagementPage'),
-  },
-  {
-    path: '/TeamMember',
-    name: 'teamMember',
-    component: () => import('@/components/team/TeamMember'),
-  },
-  {
-    path: '/basicPlan',
-
-    component: () => import('@/components/plan/basicPlan'),
-  },
-  {
-    path: '/detailPlan',
-    name: 'detailPlan',
-    component: () => import('@/components/plan/detailPlan'),
-  },
-  {
-    path: '/selectCampingPlace',
-    name: 'selectCampingPlace',
-    component: () => import('@/components/plan/selectCampingPlace'),
-  },
-  {
-    path: '/detailPlan/:detailCode',
-    name: 'checkDetailPlan',
-    component: () => import('@/components/plan/detailPlan'),
-  },
-
-
-]
+	//////////////계획관리//////////////////////
+	{
+		path: '/TeamManagementPage',
+		name: 'teamManage',
+		component: () => import('@/components/team/TeamManagementPage'),
+	},
+	{
+		path: '/TeamMember',
+		name: 'teamMember',
+		component: () => import('@/components/team/TeamMember'),
+	},
+	{
+		path: '/basicPlan',
+		name: 'basicPlan',
+		component: () => import('@/components/plan/basicPlan'),
+	},
+	{
+		path: '/detailPlan',
+		name: 'detailPlan',
+		component: () => import('@/components/plan/detailPlan'),
+	},
+	{
+		path: '/selectCampingPlace',
+		name: 'selectCampingPlace',
+		component: () => import('@/components/plan/selectCampingPlace'),
+	},
+	{
+		path: '/detailPlan/:detailCode',
+		name: 'checkDetailPlan',
+		component: () => import('@/components/plan/detailPlan'),
+	},
+	{
+		path: '/planList',
+		name: 'planList',
+		component: () => import('@/components/plan/planList'),
+	},
+	{
+		path: '/selectCopy',
+		name: 'selectCopy',
+		component: () => import('@/components/plan/selectCopy'),
+	},
+	{
+		path: '/usersPlan',
+		name: 'usersPlan',
+		component: () => import('@/components/plan/usersPlan'),
+	},
+	{
+		path: '/selectTeam',
+		name: 'selectTeam',
+		component: () => import('@/components/plan/selectTeam'),
+	},
+	{
+		path: '/insertCopy',
+		name: 'insertCopy',
+		component: () => import('@/components/plan/insertCopy'),
+	},
+];
 
 export const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
+	history: createWebHistory(),
+	routes,
+});
