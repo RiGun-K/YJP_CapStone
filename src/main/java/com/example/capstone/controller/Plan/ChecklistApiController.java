@@ -36,5 +36,6 @@ public class ChecklistApiController {
     @DeleteMapping("/api/deleteChecklist")
     public void deleteChecklist(@RequestBody Checklist checklist) {
         checklistService.deleteChecklist(checklist);
+
     }
 }

@@ -1,18 +1,12 @@
 package com.example.capstone.domain.Board;
 
 import com.example.capstone.domain.Member.Member;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.ToString;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-@AllArgsConstructor
-@ToString
 @Entity
+@Data
 @Table(name="writer")
 public class Writer {
     @Id
@@ -27,17 +21,6 @@ public class Writer {
     @JoinColumn(name = "MID")
     private Member MID;
 
-    //부모
-    @ManyToOne
-    @JoinColumn(name = "parentWcode")
-    @JsonManagedReference
-    private Writer parentWriter;
-
-    //자식
-    @OneToMany(mappedBy = "parentWriter")
-    @JsonBackReference
-    private List<Writer> childrenWriter = new ArrayList<>();
-
     public Writer(String title, String content, Member MID) {
         this.title = title;
         this.content = content;
@@ -47,16 +30,6 @@ public class Writer {
     public Writer() {
 
     }
-
-
-    public Writer(String content, Member MID, Writer parentWriter) {
-        this.content = content;
-        this.MID = MID;
-        this.parentWriter = parentWriter;
-    }
-
-
-
 
     public int getWriter_code() {
         return writer_code;
@@ -88,22 +61,6 @@ public class Writer {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Writer getParentWriter() {
-        return parentWriter;
-    }
-
-    public void setParentWriter(Writer parentWriter) {
-        this.parentWriter = parentWriter;
-    }
-
-    public List<Writer> getChildrenWriter() {
-        return childrenWriter;
-    }
-
-    public void setChildrenWriter(List<Writer> childrenWriter) {
-        this.childrenWriter = childrenWriter;
     }
 }
 

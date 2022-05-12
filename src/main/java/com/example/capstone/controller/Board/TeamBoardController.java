@@ -24,23 +24,25 @@ public class TeamBoardController {
     @Autowired
     private TeamRepository teamRepository;
 
-    @PostMapping("/teamwriting")
-    // 3. 받은 data 를 @RequestBody 를 사용해서 TeamboardDTO 로 담는다.
-    public TeamWriter addWriter(@RequestBody TeamboardDTO teamboardDTO) {
-        System.out.println(teamboardDTO.getTeamCode());
-        // teammaster 찾기
-        // Optional<Member> member = memberRepository.findByMID(teamboardDTO.getMid());
 
-        // 4. teamMaster는 외래키이므로 teamMaster가 있는 team 테이블에서 찾는다.
-        Optional<Team> teamCode = teamRepository.findByTeamCode(teamboardDTO.getTeamCode());
-//        System.out.println(teamMaster.get().getTeamMaster());
+//    @PostMapping("/teamwriting")
+//    // 3. 받은 data 를 @RequestBody 를 사용해서 TeamboardDTO 로 담는다.
+//    public TeamWriter addWriter(@RequestBody TeamboardDTO teamboardDTO) {
+//        System.out.println(teamboardDTO.getTeamCode());
+//        // teammaster 찾기
+//        // Optional<Member> member = memberRepository.findByMID(teamboardDTO.getMid());
+//
+//        // 4. teamMaster는 외래키이므로 teamMaster가 있는 team 테이블에서 찾는다.
+//        Optional<Team> teamCode = teamRepository.findByTeamCode(teamboardDTO.getTeamCode());
+////        System.out.println(teamMaster.get().getTeamMaster());
+//
+//        // 5. TeamWriter 생성자에 teamboardDTO에 담긴 데이터들을 담는다(보낸다).
+//        TeamWriter teamWriter = new TeamWriter(teamboardDTO.getNoticetitle(), teamboardDTO.getNoticecontent(), teamboardDTO.getTeamMaster());
+//        // 6. 담긴 data들을 DB에 저장한다.
+//        teamWriterRepository.save(teamWriter);
+//        return teamWriter;
+//    }
 
-        // 5. TeamWriter 생성자에 teamboardDTO에 담긴 데이터들을 담는다(보낸다).
-        TeamWriter teamWriter = new TeamWriter(teamboardDTO.getNoticetitle(), teamboardDTO.getNoticecontent(), teamboardDTO.getTeamMaster());
-        // 6. 담긴 data들을 DB에 저장한다.
-        teamWriterRepository.save(teamWriter);
-        return teamWriter;
-    }
 
     @GetMapping("/teamlist")
     public List<TeamWriter> teamwriterMyList() {
@@ -73,10 +75,8 @@ public class TeamBoardController {
         Optional<TeamWriter> teamupdateMyList = teamWriterRepository.findById(teamWriter.getTeamwriter_code());
         teamupdateMyList.get().setNoticetitle(teamWriter.getNoticetitle());
         teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
-
         teamWriterRepository.save(teamupdateMyList.get());
-        return "게시글 수정";
+        return "게시글이 수정되었습니다.";
     }
-
-
 }
+

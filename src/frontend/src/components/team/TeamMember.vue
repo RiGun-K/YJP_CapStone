@@ -107,18 +107,17 @@ export default {
 		},
 		showingDeleteTeam: function () {
 			if (
-				this.$store.state.mcode.mname ===
+				this.$store.state.member.mcode ===
 					this.$store.state.teamCode.teamCode.teamMaster ||
 				this.$store.state.teamCode.teamMemberAuthority === 'y'
 			) {
-				console.log('바로호출됨');
 				this.showingDeleteTeamButton = true;
 			}
 			const url = '/api/loginedTeamCode';
 
 			axios
 				.post(url, {
-					mcode: this.$store.state.mcode,
+					mcode: this.$store.state.member,
 					teamCode: this.$store.state.teamCode.teamCode,
 				})
 				.then((response) => {

@@ -35,6 +35,7 @@ public class CopyPlanService {
             return null;
         }
        Plan oldPlanCode =oldPlan.get();
+
         em.detach(oldPlan.get());
         oldPlan.get().setPlanName(copyPlanDto.getPlanDto().getPlanName());
         oldPlan.get().setPlanStart(copyPlanDto.getPlanDto().getPlanStart());
