@@ -10,14 +10,12 @@
           <table class="tbList">
       <tr>
         <td style="font-size:20px; color: green;">제목</td>
-        <td style="font-size:20px; color: green;">내용</td>
         <td style="font-size:20px; color: green;">글쓴이</td>
         <td style="font-size:20px; color: green;">작성일</td>
       </tr>
 
       <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
         <td>{{item.title}}</td>
-        <td>{{item.content}}</td>
         <td>{{item.mid.mid }}</td>
         <td>{{item.mid.msd }}</td>
       </tr>

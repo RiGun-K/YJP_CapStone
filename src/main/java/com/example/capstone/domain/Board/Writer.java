@@ -4,11 +4,9 @@ import com.example.capstone.domain.Member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +47,16 @@ public class Writer {
     public Writer() {
 
     }
+
+
+    public Writer(String content, Member MID, Writer parentWriter) {
+        this.content = content;
+        this.MID = MID;
+        this.parentWriter = parentWriter;
+    }
+
+
+
 
     public int getWriter_code() {
         return writer_code;

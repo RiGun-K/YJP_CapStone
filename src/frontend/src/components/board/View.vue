@@ -54,6 +54,24 @@
 
   </div>
 
+  <div class="listWrap">
+    <table class="tbList">
+      <br>
+      <br>
+      <tr>
+        <td style="font-size:20px; color: green;">댓글</td>
+        <td style="font-size:20px; color: green;">글쓴이</td>
+        <td style="font-size:20px; color: green;">작성일</td>
+      </tr>
+
+      <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
+        <td>{{item.content}}</td>
+        <td>{{item.mid.mid }}</td>
+        <td>{{item.mid.msd }}</td>
+      </tr>
+    </table>
+  </div>
+
 </template>
 
 <script>
@@ -138,7 +156,9 @@ export default {
     comments(){
       const data= {
         mid: store.getters.getLoginState.loginState,
-        commenttext: this.commenttext,
+        content: this.commenttext,
+        writer_code: this.id,
+        parentWriter: this.id,
       }
       console.log(data);
       axios.post('/api/comment', data)

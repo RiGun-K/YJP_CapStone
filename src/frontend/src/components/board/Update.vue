@@ -63,8 +63,6 @@ export default {
         content: this.content
       }
       console.log(formdata);
-      const real = {update:formdata};
-      console.log(real)
       // if (confirm("수정하시겠습니까?")) {
         axios.post('/api/update', {
           writer_code: this.writer_code,
