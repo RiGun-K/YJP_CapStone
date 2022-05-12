@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="share-orders">
     <h1>Share Orders</h1>
   </div>
 </template>
@@ -11,5 +11,10 @@ export default {
 </script>
 
 <style scoped>
-
+.share-orders{
+  width: 100%;
+  height: 100%;
+  margin-top: 2%;
+  margin-left: 3%;
+}
 </style>
