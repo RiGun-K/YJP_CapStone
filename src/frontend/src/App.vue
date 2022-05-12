@@ -32,7 +32,6 @@ html,body{padding:0; margin:0;}
   //text-align: center;
   color: #2c3e50;
 }
-h1{color:#43b984;}
 table{width:100%; border-collapse:collapse;}
 .wrap{width:100%;}
 .container{width:800px; margin:0 auto;}
