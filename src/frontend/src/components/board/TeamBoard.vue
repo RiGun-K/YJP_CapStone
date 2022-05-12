@@ -21,6 +21,7 @@
 
 </table>
   <br>
+  <br>
   <tr>
     <div id="btnWrap">
       <button @click="write" class="btn" style="float: right" >글쓰기</button>

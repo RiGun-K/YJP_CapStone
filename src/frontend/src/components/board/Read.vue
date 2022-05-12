@@ -68,7 +68,6 @@ export default {
       item: '',
     }
   },
-
   methods: {
     fetchData() {
       axios.get('/api/list')
@@ -88,10 +87,8 @@ export default {
     detail(item) {
       this.$router.push({
         path: `/view/${item.writer_code}`
-
       })
     }
-
   }
 }
 </script>
