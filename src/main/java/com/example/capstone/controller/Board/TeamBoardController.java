@@ -36,7 +36,7 @@ public class TeamBoardController {
 //        System.out.println(teamMaster.get().getTeamMaster());
 
         // 5. TeamWriter 생성자에 teamboardDTO에 담긴 데이터들을 담는다(보낸다).
-        TeamWriter teamWriter = new TeamWriter(teamboardDTO.getNoticetitle(), teamboardDTO.getNoticecontent(), teamboardDTO.getTeamMaster());
+        TeamWriter teamWriter = new TeamWriter(teamboardDTO.getNoticetitle(), teamboardDTO.getNoticecontent(), teamboardDTO.getTeamCode());
         // 6. 담긴 data들을 DB에 저장한다.
         teamWriterRepository.save(teamWriter);
         return teamWriter;
@@ -69,14 +69,13 @@ public class TeamBoardController {
     }
 
     @PutMapping("/tbupdate")
-    public void teamupdateList(@RequestBody TeamWriter teamWriter) {
+    public String teamupdateList(@RequestBody TeamWriter teamWriter) {
         Optional<TeamWriter> teamupdateMyList = teamWriterRepository.findById(teamWriter.getTeamwriter_code());
         teamupdateMyList.get().setNoticetitle(teamWriter.getNoticetitle());
         teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
 
         teamWriterRepository.save(teamupdateMyList.get());
         return "게시글이 수정되었습니다.";
-
     }
 }
 
