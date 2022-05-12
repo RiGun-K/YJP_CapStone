@@ -4,16 +4,14 @@ public class Box {
     private int small;
     private int medium;
     private int large;
-    private String storageName;
 
     public Box() {
     }
 
-    public Box(int small, int medium, int large, String storageName) {
+    public Box(int small, int medium, int large) {
         this.small = small;
         this.medium = medium;
         this.large = large;
-        this.storageName = storageName;
     }
 
     public int getSmall() {
@@ -40,11 +38,4 @@ public class Box {
         this.large = large;
     }
 
-    public String getStorageName() {
-        return storageName;
-    }
-
-    public void setStorageName(String storageName) {
-        this.storageName = storageName;
-    }
 }

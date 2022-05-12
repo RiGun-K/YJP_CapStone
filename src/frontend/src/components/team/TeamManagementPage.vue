@@ -1,3 +1,4 @@
+/* eslint-disable */
 <!------------------------------------------------------------------------- -->
 
 <template>
@@ -109,6 +110,7 @@ export default {
 									'팀이 생성되었습니다',
 							);
 							this.$store.state.insertName = '';
+							//	component('TeamMember').addTeamMember(this.mcode);
 						} else {
 							console.log('중복값!');
 							alert('이미 존재하는 팀 이름입니다');
@@ -123,13 +125,12 @@ export default {
 		},
 		// -----------------------------------------------------
 		TeamManage: function (mcode) {
-      console.log(mcode)
+			console.log(mcode);
 			this.mcode = mcode;
 			this.showingTeamList = true;
 			this.teamList.length = 0;
 			this.unacceptedTeamCode.length = 0;
 			const url = 'http://localhost:9002';
-
 			axios
 				.post(`${url}/api/TeamManagementPage/` + this.mcode)
 				.then((response) => {

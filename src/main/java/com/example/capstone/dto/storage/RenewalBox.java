@@ -8,6 +8,7 @@ public class RenewalBox {
     private String boxName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private Long useBoxCode;
 
     public RenewalBox() {
     }
@@ -58,5 +59,13 @@ public class RenewalBox {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public Long getUseBoxCode() {
+        return useBoxCode;
+    }
+
+    public void setUseBoxCode(Long useBoxCode) {
+        this.useBoxCode = useBoxCode;
     }
 }

@@ -1,6 +1,10 @@
 package com.example.capstone.domain.storage;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Kind;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Columns;
 
 import javax.persistence.*;
 
@@ -9,17 +13,12 @@ import javax.persistence.*;
 public class MemberEquipment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) //int.autoincrement
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long memEquipmentCode;
 
     @ManyToOne
     @JoinColumn(name = "MCode")
     private Member MCode;
-    ;
-
-    @ManyToOne
-    @JoinColumn(name = "assortItemCode")
-    private AssortItem assortItemCode;
 
     @Column
     private String memEquipmentName;
@@ -30,16 +29,16 @@ public class MemberEquipment {
     @Column
     private int memEquipmentCount;
 
-    public MemberEquipment() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "kindid")
+    private Kind kindid;
 
-    public MemberEquipment(long memEquipmentCode, Member MCode, AssortItem assortItemCode, String memEquipmentName, String memEquipmentState, int memEquipmentCount) {
-        this.memEquipmentCode = memEquipmentCode;
-        this.MCode = MCode;
-        this.assortItemCode = assortItemCode;
-        this.memEquipmentName = memEquipmentName;
-        this.memEquipmentState = memEquipmentState;
-        this.memEquipmentCount = memEquipmentCount;
+    @ManyToOne
+    @JoinColumn(name = "useStorageBoxCode")
+    @JsonBackReference
+    private UseStorageBox useStorageBoxCode;
+
+    public MemberEquipment() {
     }
 
     public long getMemEquipmentCode() {
@@ -56,14 +55,6 @@ public class MemberEquipment {
 
     public void setMCode(Member MCode) {
         this.MCode = MCode;
-    }
-
-    public AssortItem getAssortItemCode() {
-        return assortItemCode;
-    }
-
-    public void setAssortItemCode(AssortItem assortItemCode) {
-        this.assortItemCode = assortItemCode;
     }
 
     public String getMemEquipmentName() {
@@ -88,6 +79,22 @@ public class MemberEquipment {
 
     public void setMemEquipmentCount(int memEquipmentCount) {
         this.memEquipmentCount = memEquipmentCount;
+    }
+
+    public Kind getKindid() {
+        return kindid;
+    }
+
+    public void setKindid(Kind kindid) {
+        this.kindid = kindid;
+    }
+
+    public UseStorageBox getUseStorageBoxCode() {
+        return useStorageBoxCode;
+    }
+
+    public void setUseStorageBoxCode(UseStorageBox useStorageBoxCode) {
+        this.useStorageBoxCode = useStorageBoxCode;
     }
 }
 

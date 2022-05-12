@@ -47,6 +47,16 @@
           </span>
           <span class="error_next_box">상세주소를 다시 확인해주세요.</span>
         </div>
+        <div>
+          <h3 class="join_title">
+            <label for="email">이름</label>
+          </h3>
+          <span class="input-group mb-3">
+          <input type="text" v-model="Mname" class="form-control" placeholder="이름입력" aria-label="Recipient's username"
+                 aria-describedby="button-addon2" readonly>
+         </span>
+          <span class="error_next_box"></span>
+        </div>
 
         <div>
           <h3 class="join_title">
@@ -112,6 +122,7 @@ export default {
       MRadd:'',
       MAdd:'',
       MPH:'',
+      Mname:'',
       MEmail:'',
       Member:null,
       nickCh:false,
@@ -121,12 +132,16 @@ export default {
       emailAuthBoolean:false,
       clientAuth:'',
       serverAuth:'',
-      authCheck:false
+      authCheck:false,
+      clientCheckMail:true,
+      clientCheckPH:true
     }
   },
   methods:{
     update(){
-      if(this.empityCheck() && this.nickCh){
+      if(this.empityCheck() && this.nickCh
+        && this.clientCheckMail && this.clientCheckPH
+      ){
         axios.post("api/memberUpdate",{
           MID:this.MID,
           MNick:this.MNick,
@@ -134,7 +149,8 @@ export default {
           MRadd:this.MRadd,
           MAdd:this.MAdd,
           MPH:this.MPH,
-          MEmail:this.MEmail
+          MEmail:this.MEmail,
+          Mname:this.Mname
         }).then((res)=>{
           if(res.data){
             alert("업데이트 되었습니다")
@@ -152,17 +168,17 @@ export default {
     zcGet() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          this.MZC = data.zonecode;
-          this.roadAddress = data.roadAddress;
+          this.MZadd = data.zonecode;
+          this.MRadd = data.roadAddress;
         }
       }).open({popupKey: '주소검색'})
     },
     empityCheck() {
       if (this.MNick === '') {
         return false
-      } else if (this.MZC === '') {
+      } else if (this.MZadd === '') {
         return false
-      } else if (this.MAdd === '') {
+      } else if (this.MRadd === '') {
         return false
       } else if (this.MPH === '') {
         return false
@@ -224,7 +240,8 @@ export default {
     },
     mailAuthCheck(){
       if(this.emailAuth == this.MEmailAuthInput){
-        this.emailAuthBoolean=true
+        this.emailAuthBoolean = true
+        this.clientCheckMail = true
         alert("인증번호가 맞습니다")
       }else{
         alert("인증번호가 다릅니다")
@@ -246,6 +263,7 @@ export default {
       if(this.serverAuth == this.clientAuth){
         alert("인증되었습니다")
         this.authCheck = true
+        this.clientCheckPH = true
       }else{
         alert("인증번호가 다릅니다 다시 확인해주세요")
       }
@@ -262,6 +280,7 @@ export default {
       this.MAdd = this.Member.madd
       this.MPH = this.Member.mph
       this.MEmail = this.Member.mmail
+      this.Mname = this.Member.mname
     }).catch((err)=>{
       console.log(err)
     })
@@ -274,6 +293,21 @@ export default {
       }else{
         this.btnNch = false
         this.nickCh = false
+      }
+    },
+    MEmail:function (){
+      if(this.MEmail === this.Member.mmail){
+        this.clientCheckMail = true
+      }else{
+        this.clientCheckMail = false
+        this.test = '변동'
+      }
+    },
+    MPH:function (){
+      if(this.MPH === this.Member.mph){
+        this.clientCheckPH = true
+      }else{
+        this.clientCheckPH = false
       }
     }
   }

@@ -11,7 +11,7 @@
         <td>상태</td>
         <td v-if="box.boxState == 0">빈 상태</td>
         <td v-else-if="box.boxState == 1">결제완료<button @click="updateState">보관완료</button></td>
-        <td v-if="box.boxState == 2">사용중</td>
+        <td v-else>사용중</td>
       </tr>
       <tr>
         <td>사용중인 사용자</td>
@@ -89,9 +89,9 @@ export default {
               data.userName = datak[0]
               data.boxCode = datak[1]
               data.boxName = datak[2]
-              data.boxState = datak[3]
-              data.boxType = datak[4]
-              data.storageCode = datak[5]
+              data.boxState = datak[4]
+              data.boxType = datak[5]
+              data.storageCode = datak[6]
               data.useStorageCode = datak[7]
               data.useStorageState = datak[8]
               this.box = data

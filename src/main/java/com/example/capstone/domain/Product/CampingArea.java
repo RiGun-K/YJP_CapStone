@@ -1,4 +1,5 @@
 package com.example.capstone.domain.Product;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -67,3 +68,4 @@ public class CampingArea {
         this.childrencampingarea = childrencampingarea;
     }
 }
+
