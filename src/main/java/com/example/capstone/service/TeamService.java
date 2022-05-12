@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class TeamService {
+    private final TeamRepository teamRepository;
 
     public void deleteTeam(Team team){
         teamRepository.delete(team);
@@ -19,10 +20,6 @@ public class TeamService {
         Optional<Team> teamCode = teamRepository.findByTeamName(teamName);
         return teamCode;
     }
-
-
-
-    private final TeamRepository teamRepository;
 
     public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;

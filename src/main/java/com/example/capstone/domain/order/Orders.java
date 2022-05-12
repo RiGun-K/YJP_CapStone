@@ -50,13 +50,13 @@ public class Orders {
 
     }
 
-    public Orders(Member MCode) {
-        this.MCode = MCode;
+    public Orders(Member MID) {
+        this.MID = MID;
     }
 
-    public Orders(Member MCode, int orderPrice) {
+    public Orders(Member MID, int orderPrice) {
         this.orderPrice = orderPrice;
-        this.MCode = MCode;
+        this.MID = MID;
     }
 
     public int getOrderCode() {
@@ -200,12 +200,4 @@ public class Orders {
         this.MID = MID;
     }
 
-    public Orders( Member MID, int orderPrice) {
-        this.orderPrice = orderPrice;
-        this.MID = MID;
-    }
-
-    public Orders(Member MID) {
-        this.MID = MID;
-    }
 }
