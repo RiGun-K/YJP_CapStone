@@ -33,6 +33,9 @@
             <router-link class="nav-link" to="/myPage" v-if="uiLogin">마이페이지</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/ordersList" v-if="uiLogin">주문 내역</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/mAdmin" v-if="uiLogin==5">관리자 페이지</router-link>
           </li>
           <li class="nav-item">

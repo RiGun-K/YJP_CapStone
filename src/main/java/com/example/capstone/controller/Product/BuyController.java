@@ -2,19 +2,25 @@ package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Kind;
+import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.dto.Product.MenuBuyDTO;
 import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +30,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @RequestMapping("/api")
 public class BuyController {
+
+
+    private static String FORMAT_YYYYMMDD = "yyyy/MM/dd"; // 1)
+    private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern(FORMAT_YYYYMMDD);
 
     @Autowired
     MemberRepository memberRepository;
@@ -40,6 +50,7 @@ public class BuyController {
     @Autowired
     CampingDetailRepository campingDetailRepository;
 
+
     /* 구매상품 등록 페이지 */
     @PostMapping("/Buy_Signup")
     public MenuBuy addMenuBuy(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
@@ -49,8 +60,9 @@ public class BuyController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+            String todayPath = LocalDateTime.now() + "_" + System.currentTimeMillis();
+            String filename = todayPath + "_" + origFilename;
+            System.out.println("변환된 파일명" + filename);
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
@@ -144,8 +156,8 @@ public class BuyController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+            String todayPath = LocalDateTime.now() + "_" + System.currentTimeMillis();
+            String filename = todayPath + "_" + origFilename;
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
             /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
@@ -214,4 +226,25 @@ public class BuyController {
 //         menuService.deleteById(menuid);
         return "메뉴가 삭제되었습니다.";
     }
+
+
+
+    /* 조회수 증가 */
+    /* 조회수를 받아와서 1 증가시키는것 까지 되었지만 repository 또는 DB에 값을 저장을 할 수 없다. */
+//    @PutMapping("/product_BuyViews")
+//    public MenuBuy product_BuyViews(@RequestBody HashMap<>) {
+//        System.out.println(menuBuyDTO.getBuyid());
+//
+//            Optional<MenuBuy> menuBuy1= menuBuyRepository.findById(menuBuyDTO.getBuyid());
+//        System.out.println(menuBuy1.get().getBuyViews());
+//
+//             menuBuy1.get().setBuyViews(menuBuy1.get().getBuyViews()+1);
+//        System.out.println(menuBuy1.get());
+//        menuBuyDTO.setBuyViews(menuBuy1.get().getBuyViews());
+//
+//        menuBuyRepository.save(menuBuyDTO);
+//    }
+
+
 }
+

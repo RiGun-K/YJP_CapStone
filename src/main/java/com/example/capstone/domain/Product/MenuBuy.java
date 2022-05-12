@@ -1,6 +1,9 @@
 package com.example.capstone.domain.Product;
 
 import com.example.capstone.domain.Member.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,6 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@AllArgsConstructor
+@ToString
 @Table(name="menubuy")
 public class MenuBuy {
 
@@ -32,6 +37,9 @@ public class MenuBuy {
     private String filename;
     @Column()
     private String filePath;
+
+    @Column()
+    private int BuyViews = 0;
 
     @CreatedDate
     private String savedTime;
@@ -67,6 +75,8 @@ public class MenuBuy {
         this.kindid = kindid;
         this.MID = MID;
     }
+
+
 
     public int getBuyId() {
         return buyId;
@@ -162,5 +172,13 @@ public class MenuBuy {
 
     public void setMID(Member MID) {
         this.MID = MID;
+    }
+
+    public int getBuyViews() {
+        return BuyViews;
+    }
+
+    public void setBuyViews(int buyViews) {
+        BuyViews = buyViews;
     }
 }

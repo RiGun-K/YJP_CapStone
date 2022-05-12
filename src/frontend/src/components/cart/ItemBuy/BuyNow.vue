@@ -5,15 +5,15 @@
     <table>
       <tr>
         <td class="buy-now-td">이름</td>
-        <td>{{ this.Content.mid.mid }}</td>
+        <td>{{ this.content.mid.mnick }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">이메일</td>
-        <td>{{ this.Content.mid.mmail }}</td>
+        <td>{{ this.content.mid.mmail }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">휴대폰 번호</td>
-        <td>{{ this.Content.mid.mph }}</td>
+        <td>{{ this.content.mid.mph }}</td>
       </tr>
     </table>
 
@@ -21,7 +21,7 @@
     <table>
       <tr>
         <td class="buy-now-td">이름</td>
-        <td><input type="text" v-model="Content.mid.mid"></td>
+        <td><input type="text" v-model="getterName"></td>
       </tr>
       <tr>
         <td class="buy-now-td">우편번호</td>
@@ -49,11 +49,11 @@
     <table>
       <tr>
         <td class="buy-now-td">상품 이름</td>
-        <td>{{ this.Content.menuname }}</td>
+        <td>{{ this.content.buyName }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">상품 금액</td>
-        <td>{{ this.Content.price }}</td>
+        <td>{{ this.content.buyPrice }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">배송비</td>
@@ -119,23 +119,21 @@ export default {
       deliveryMessage: '',
       onlyNumber: true,
       paymentDate: new Date(),
-      Content: [],
+      content: [],
     }
   },
   mounted () {
     const IMP = window.IMP
     IMP.init('imp35975601')
-
   },
   methods: {
     DataList() {
-      this.id = this.$route.params.menuid;
+      this.id = this.$route.params.buyId;
       console.log(this.id);
       axios.get('http://localhost:9002/api/product_detail/' + this.id)
           .then(res => {
             console.log(res.data);
-            this.Content = res.data;
-            console.log(this.Content.menuname);
+            this.content = res.data;
             //
           })
           .catch(e => {
@@ -172,47 +170,54 @@ export default {
           pg: 'html5_inicis',
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
-          name: this.Content.menuname,
+          name: this.content.buyName,
           amount: this.price,
           buyer_tel: this.getterPhoneNumber,
-          buyer_name: this.Content.mid.mid,
-          buyer_email: this.Content.mid.mmail,
+          buyer_name: this.content.mid.mid,
+          buyer_email: this.content.mid.mmail,
           confirm_url: ''
         }, (rsp) => {
           if (rsp.success) {
-            // let msg = '결제가 완료되었습니다.'
+            const msg = '결제가 완료되었습니다.'
             // msg += '고유ID : ' + rsp.imp_uid
             // msg += '상점 거래 ID : ' + rsp.merchant_uid
             // msg += '결제 금액 : ' + rsp.paid_amount
             // msg += '카드 승인번호 : ' + rsp.apply_num
-            // alert(msg)
-
-            window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
+            alert(msg)
+            console.log(this.content.buyId);
+            this.axios.post('http://localhost:9002/api/buyData', {
+              MID: this.content.mid.mid,
+              deliveryZipcode: this.zip,
+              deliveryAddress: this.detailAddress,
+              deliveryGetter: this.getterName,
+              deliveryGetterTel: this.getterPhoneNumber,
+              deliveryRequest: this.deliveryMessage,
+              orderPrice: this.price,
+              orderType: rsp.pay_method,
+              paymentCode: rsp.merchant_uid,
+              orderState: '2',
+              orderMenuCount: 1,
+              menuId: this.content.buyId,
+            })
+                .then((res)=>{
+                  console.log(res.data);
+                })
+                .catch((err)=>{
+                  console.log(err)
+                });
+            this.$router.push({
+              name: "BuyComplete",
+              params: {
+                orderMenuCount: 1,
+                menuName: this.content.buyName,
+                orderPrice: this.price,
+                orderType: rsp.pay_method
+              }
+            })
           } else {
             let msg = '결제에 실패하였습니다.'
             msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-            // let data = {
-            //   MID: this.Content.mid.mcode,
-            //   deliveryZipcode: this.zip,
-            //   deliveryAddress: this.detailAddress,
-            //   deliveryGetter: this.getterName,
-            //   deliveryGetterTel: this.getterPhoneNumber,
-            //   deliveryRequest: this.deliveryMessage,
-            //   orderPrice: this.price,
-            //   orderType: rsp.pay_method,
-            //   paymentCode: rsp.merchant_uid,
-            //   orderState: '2'
-            // }
-            //
-            // this.axios.post('/api/buyData', data)
-            //     .then((res)=>{
-            //       console.log(res);
-            //     })
-            //     .catch((err)=>{
-            //       console.log(err)
-            //     });
-            window.location.href = 'http://localhost:8081/itemBuy/buyComplete'
           }
         })
       }
