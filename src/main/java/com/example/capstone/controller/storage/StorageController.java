@@ -40,10 +40,10 @@ public class StorageController {
     private UseStorageBoxRepository useStorageBoxRepository;
 
     @Autowired
-    KindRepository kindRepository;
+    private KindRepository kindRepository;
 
     @Autowired
-    MemberEquipmentRepository memberEquipmentRepository;
+    private MemberEquipmentRepository memberEquipmentRepository;
 
     @PostMapping("/postStorage")
     public Result postStorage(@RequestBody StorageData storageData) {
@@ -296,20 +296,7 @@ public class StorageController {
         }
     }
 
-
-    //    로그인 없이 사용자 지정 할 때 사용
-    @GetMapping("memberCheck/{memberId}")
-    public Result getMemberId(@PathVariable(value = "memberId") String memberId) {
-        Optional<Member> member = memberRepository.findByMID(memberId);
-        return new Result("ok");
-//        if(member.){
-//            return new Result("ok");
-//        }else{
-//            return new Result("no");
-//        }
-    }
-
-    //    로그인 없이 매니저 확인 할 때 사용
+    // 매니저 확인 할 때 사용
     @GetMapping("managerCheck/{managerId}")
     public Result getManagerCheck(@PathVariable(value = "managerId") String managerId) throws NoSuchElementException {
         try {
@@ -421,15 +408,6 @@ public class StorageController {
         Optional<Member> member = memberRepository.findByMID(mid);
 
         return member.get();
-    }
-    ////////////////////////// 상품조회  //////////////////////////
-    @GetMapping("myItem/{userId}")
-    private List<MemberEquipment> getMyItem(@PathVariable(value = "userId")String userId){
-        Optional<Member> member = memberRepository.findByMID(userId);
-
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findAllByMCode(member.get());
-
-        return memberEquipmentList;
     }
 
 }
