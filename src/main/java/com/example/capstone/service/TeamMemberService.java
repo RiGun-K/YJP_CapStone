@@ -7,6 +7,7 @@ import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.dto.plan.TeamDto;
+import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.TeamMemberRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
@@ -26,6 +27,7 @@ public class TeamMemberService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PlanRepository planRepository;
+    private final MemberRepository memberRepository;
 
 
     public List<TeamMember> teamManagementPage(Member mcode) {
