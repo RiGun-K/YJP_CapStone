@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+//
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping
@@ -88,7 +88,6 @@ public class TeamManagementApiController {
     @GetMapping("/api/loadTeamPlans/{teamCode}")
     public List<PlanDto> loadTeamPlans(@PathVariable("teamCode") Long team) {
         return teamMemberService.loadTeamPlans(team);
-
     }
 
 }
