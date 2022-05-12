@@ -36,7 +36,6 @@ export default {
   name: 'Create',
   data() {
     return {
-
       title: '',
       content: ''
     }

@@ -171,7 +171,6 @@ export default {
           MEmail: this.email,
           MSC: '3'
         }).then(res => {
-          console.log(res.data)
           if (res.data) {
             alert(`가입했습니다 환영합니다 '${this.nick}'회원님`)
             this.$router.push("login")
@@ -322,7 +321,6 @@ export default {
       axios.post("/api/phCheck",{
         MPH:this.ph
       }).then((res)=>{
-        console.log(res)
         this.serverAuth = res.data
         alert("인증번호가 발송되었습니다")
       }).catch((err)=>{
