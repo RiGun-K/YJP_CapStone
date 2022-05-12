@@ -13,4 +13,7 @@ public class TeamboardDTO {
     private String noticetitle;
     private String noticecontent;
 
+
+
+
 }
