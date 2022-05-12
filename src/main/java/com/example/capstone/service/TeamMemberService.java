@@ -7,10 +7,12 @@ import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.dto.plan.TeamDto;
+import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.TeamMemberRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.bridge.MessageWriter;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,7 +28,7 @@ public class TeamMemberService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PlanRepository planRepository;
-
+    private final MemberRepository memberRepository;
 
     public List<TeamMember> teamManagementPage(Member mcode) {
         List<TeamMember> tm = teamMemberRepository.findByMcode(mcode);
@@ -75,10 +77,16 @@ public class TeamMemberService {
         List<Plan> plans = planRepository.findAllByTeamCodeTeamCode(team);
         List<PlanDto> planDtos = new ArrayList<>();
         for (Plan plan : plans) {
-
             planDtos.add(plan.toPlanDto());
         }
         return planDtos;
-
+    }
+    public void autoMemberAdd(Team tm){
+        Optional<Member> member = memberRepository.findByMname(tm.getTeamMaster());
+        TeamMember teamMember = new TeamMember();
+        teamMember.setTeamCode(tm);
+        teamMember.setMcode(member.get());
+        teamMember.setAcception("y");
+        teamMemberRepository.save(teamMember);
     }
 }
