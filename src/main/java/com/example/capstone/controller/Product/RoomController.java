@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,8 +56,8 @@ public class RoomController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+            String todayPath = LocalDateTime.now() + "_" + System.currentTimeMillis();
+            String filename = todayPath + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
@@ -140,8 +141,8 @@ public class RoomController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+            String todayPath = LocalDateTime.now() + "_" + System.currentTimeMillis();
+            String filename = todayPath + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";

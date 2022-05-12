@@ -35,6 +35,7 @@
           <th>상품명</th>
           <th>가격</th>
           <th>등록일자</th>
+          <th>조회수</th>
         </tr>
         </thead>
         <tbody>
@@ -46,6 +47,7 @@
           <td>{{ product.buyName }}</td>
           <td>{{ product.buyPrice }}</td>
           <td>{{ product.savedTime }}</td>
+          <td>{{ product.buyViews }}</td>
         </tr>
         <!-- PathVariable 을 위해서는 router-link 작성 -->
         <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -82,7 +84,7 @@ export default {
   },
   methods: {
     goData() {
-      axios.get('http://localhost:9002/api/product_list')
+      axios.get('http://localhost:9002/api/product_BuyList')
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
@@ -96,13 +98,19 @@ export default {
       this.$router.push({
         path: `/itemBuy/buyList/${product.buyId}`
       })
+      console.log(product);
+      console.log(product);
+      const data = {buyid:product.buyId};
+      console.log(data.buyId)
+      axios.put('http://localhost:9002/api/product_BuyViews', { buyid:product.buyId })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch(e => {
+            console.log(e)
+          })
     },
-    // buyNowBtn () {
-    //   window.location.href = 'http://localhost:8081/itemBuy/buyNow'
-    // },
-    // buyAddCart () {
-    //   window.location.href = 'http://localhost:8081/cart'
-    // }
+
   }
 
 }

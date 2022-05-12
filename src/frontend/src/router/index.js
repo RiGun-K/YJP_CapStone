@@ -63,6 +63,31 @@ const routes = [
     name:'SearchPass',
     component: () => import('@/components/user/PassSearch.vue')
   },
+  {
+    path:'/changePass',
+    name:'changePass',
+    component: () => import('@/components/user/PassChange.vue')
+  },
+  {
+    path:'/myPage',
+    name:'mypage',
+    component: () => import('@/components/user/MyPage.vue')
+  },
+  {
+    path:'/myPageEquip',
+    name:'myPageEquip',
+    component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
+  },
+  {
+    path:'/myPageWritter',
+    name:'myPageWritter',
+    component: () => import('@/components/user/myPage/MyWritter.vue')
+  },
+  {
+    path:'/myPageOrder',
+    name:'myPageOrder',
+    component: () => import('@/components/user/myPage/MyOrder.vue')
+  },
 
     //////////////////////////////게시판////////////////////////////////////
 
@@ -258,7 +283,7 @@ const routes = [
     props: true
   },
   {
-    path: '/itemBuy/buyNow/:menuid',
+    path: '/itemBuy/buyNow/:buyId',
     name: 'BuyNow',
     component: () => import('@/components/cart/ItemBuy/BuyNow.vue'),
     props: true
@@ -274,7 +299,7 @@ const routes = [
     component: () => import('@/components/cart/ItemShare/ShareList.vue')
   },
   {
-    path: '/itemShare/shareNow',
+    path: '/itemShare/shareNow/:rentalId',
     name: 'ShareNow',
     component: () => import('@/components/cart/ItemShare/ShareNow.vue')
   },
@@ -289,7 +314,7 @@ const routes = [
     component: () => import('@/components/cart/Infoter/InfoterList.vue')
   },
   {
-    path: '/infoter/infoterNow',
+    path: '/infoter/infoterNow/:campingId',
     name: 'InfoterNow',
     component: () => import('@/components/cart/Infoter/InfoterNow.vue')
   },
@@ -317,6 +342,28 @@ const routes = [
     path: '/cart/reservation',
     name: 'ReservationCart',
     component: () => import('@/components/cart/Cart/ReservationCart.vue')
+  },
+  {
+    path: '/ordersList',
+    name: 'Orders',
+    component: () => import('@/components/cart/ordersInfo/Orders.vue'),
+    props: true
+  },
+  {
+    path: '/ordersList/buyOrders/:mid',
+    name: 'BuyOrders',
+    component: () => import('@/components/cart/ordersInfo/BuyOrders.vue'),
+    props: true
+  },
+  {
+    path: '/ordersList/shareOrders',
+    name: 'ShareOrders',
+    component: () => import('@/components/cart/ordersInfo/ShareOrders.vue')
+  },
+  {
+    path: '/ordersList/reservationOrders',
+    name: 'ReservationOrders',
+    component: () => import('@/components/cart/ordersInfo/ReservationOrders.vue')
   },
     //////////////////////////////보관함관리/////////////////////////////////
 
