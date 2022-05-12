@@ -107,7 +107,7 @@ export default {
 		},
 		showingDeleteTeam: function () {
 			if (
-				this.$store.state.mcode.mname ===
+				this.$store.state.member.mname ===
 					this.$store.state.teamCode.teamCode.teamMaster ||
 				this.$store.state.teamCode.teamMemberAuthority === 'y'
 			) {
@@ -118,7 +118,7 @@ export default {
 
 			axios
 				.post(url, {
-					mcode: this.$store.state.mcode,
+					mcode: this.$store.state.member,
 					teamCode: this.$store.state.teamCode.teamCode,
 				})
 				.then((response) => {
