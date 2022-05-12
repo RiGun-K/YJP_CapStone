@@ -88,7 +88,5 @@ public class TeamManagementApiController {
     @GetMapping("/api/loadTeamPlans/{teamCode}")
     public List<PlanDto> loadTeamPlans(@PathVariable("teamCode") Long team) {
         return teamMemberService.loadTeamPlans(team);
-
     }
-
 }

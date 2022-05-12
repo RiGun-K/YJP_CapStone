@@ -77,18 +77,12 @@ public class TeamMemberService {
         List<Plan> plans = planRepository.findAllByTeamCodeTeamCode(team);
         List<PlanDto> planDtos = new ArrayList<>();
         for (Plan plan : plans) {
-
             planDtos.add(plan.toPlanDto());
         }
         return planDtos;
-
     }
     public void autoMemberAdd(Team tm){
         Optional<Member> member = memberRepository.findByMname(tm.getTeamMaster());
-        System.out.println(member.get().getMCode());
-        System.out.println(member.get().getMname());
-
-
         TeamMember teamMember = new TeamMember();
         teamMember.setTeamCode(tm);
         teamMember.setMcode(member.get());
@@ -96,4 +90,3 @@ public class TeamMemberService {
         teamMemberRepository.save(teamMember);
     }
 }
-//
