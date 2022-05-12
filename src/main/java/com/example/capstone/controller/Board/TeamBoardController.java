@@ -74,6 +74,9 @@ public class TeamBoardController {
         teamupdateMyList.get().setNoticetitle(teamWriter.getNoticetitle());
         teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
 
+        teamWriterRepository.save(teamupdateMyList.get());
+        return "게시글이 수정되었습니다.";
 
+    }
 }
 
