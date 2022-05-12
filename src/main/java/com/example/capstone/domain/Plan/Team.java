@@ -27,10 +27,8 @@ public class Team {
     private String teamName;
     @Column
     private char teamState;
-
-    @Column
+    @Column(name="TEAMMASTER")
     private String teamMaster;
-
 
 
 

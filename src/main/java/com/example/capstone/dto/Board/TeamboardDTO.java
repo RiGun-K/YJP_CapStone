@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public class TeamboardDTO {
 
-    private String teamCode;
     private String teamMaster;
     private String noticetitle;
     private String noticecontent;

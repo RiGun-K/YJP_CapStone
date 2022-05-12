@@ -13,6 +13,7 @@ import java.util.Optional;
 public class ProductService {
     private final MemberRepository MemberRepository;
     private MemberRepository memberRepository;
+
     private MenuRepository menuRepository;
 
     @Autowired
@@ -21,8 +22,15 @@ public class ProductService {
         this.menuRepository = menuRepository;
     }
 
+
     public Member findByMemberId(long userid){
         Optional<Member> memberfind = memberRepository.findById(userid);
         return memberfind.get();
     }
+
+//    @Transactional
+//    public int savePost(MenuDTO menuDTO) {
+//        return menuRepository.save(menuDTO.toEntity()).getMenuid();
+//
+//    }
 }
