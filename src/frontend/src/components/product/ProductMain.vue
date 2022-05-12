@@ -1,32 +1,46 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/registration">상품 등록</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-
-          <li class="nav-item">
-            <a class="nav-link" href="/MyProductList">나의 상품</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/ProductList" active>상품 리스트</a>
-          </li>
-        </ul>
+  <ProductPage></ProductPage>
+  <br>
+  <h2>상품등록</h2>
+  <div class="cart">
+    <div class="cart-list">
+      <div class="buy-cart-btn" @click="PBuy">
+        <img :src="require('@/assets/buyBtn.png')">
+        <h5>구매</h5>
+      </div>
+      <div class="share-cart-btn" @click="PRental">
+        <img :src="require('@/assets/rentBtn.png')">
+        <h5>렌탈</h5>
+      </div>
+      <div class="reservation-cart-btn" @click="PCamping">
+        <img :src="require('@/assets/calendarBtn.png')">
+        <h5>캠핑장</h5>
       </div>
     </div>
+    <button class="cart-back"><router-link class="nav-link" to="/">뒤로가기</router-link></button>
+  </div>
 
-  </nav>
+
+
 </template>
 
 <script>
-import ProductList from "@/components/product/ProductList";
+import ProductPage from "@/components/product/ProductPage";
 
 export default {
   name: "main",
-  components: {ProductList}
+  components: {ProductPage},
+  methods: {
+    PBuy() {
+      window.location.href = 'http://localhost:8081/ProductBuy'
+    },
+    PRental() {
+      window.location.href = 'http://localhost:8081/ProductRental'
+    },
+    PCamping() {
+      window.location.href = 'http://localhost:8081/ProductCamping'
+    }
+  }
 }
 </script>
 
@@ -34,5 +48,63 @@ export default {
 
 .navbar navbar-expand-lg navbar-light bg-light {
   justify-content: center;
+}
+h2,h3{
+  margin: 4%;
+}
+.cart{
+  width: 100%;
+  height: 100%;
+}
+.cart-back{
+  margin-top: 5% ;
+  margin-left: 48%;
+}
+.cart .cart-list{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.cart .buy-cart-btn{
+  width: 15%;
+  border: 1px solid black;
+  text-align: center;
+  padding: 3%;
+  margin: 3%;
+}
+.cart .buy-cart-btn img{
+  width: 50%;
+  height: 50%;
+}
+.cart .buy-cart-btn h5 {
+  margin-top: 7%;
+}
+.cart .share-cart-btn{
+  margin: 3%;
+  width: 15%;
+  border: 1px solid black;
+  padding: 3%;
+  text-align: center;
+}
+.cart .share-cart-btn img{
+  width: 50%;
+  height: 50%;
+}
+.cart .share-cart-btn h5 {
+  margin-top: 7%;
+}
+.cart .reservation-cart-btn{
+  width: 15%;
+  margin: 3%;
+  border: 1px solid black;
+  padding: 3%;
+  text-align: center;
+}
+.cart .reservation-cart-btn img{
+  width: 50%;
+  height: 50%;
+}
+.cart .reservation-cart-btn h5 {
+  margin-top: 7%;
 }
 </style>

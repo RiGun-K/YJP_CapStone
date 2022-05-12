@@ -1,11 +1,14 @@
 package com.example.capstone.controller.Member;
 
 import com.example.capstone.domain.Member.Company;
+import com.example.capstone.domain.Member.MailCheck;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Member.PhCheck;
+import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.repository.Member.CompanyRepository;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.domain.Member.MailCheck;
+import com.example.capstone.repository.Storage.MemberEquipmentTest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,6 @@ public class MemberController {
 
 
     //////로그인 부분///////
-
     @PostMapping("/login")
     public Member login(@RequestBody HashMap<String, String> loginMem){
         Optional<Member> member = memberRepository.findByMID(loginMem.get("MID"));
@@ -44,11 +46,9 @@ public class MemberController {
         }else{
             return null;
         }
-
     }
 
     ///회원가입///
-
     @PostMapping ("/signUp")
     public Boolean signUp(@RequestBody HashMap<String, String> signUp){
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -66,6 +66,7 @@ public class MemberController {
         member.setMPH(signUp.get("MPH"));
         member.setMMail(signUp.get("MEmail"));
         member.setMSC(signUp.get("MSC"));
+        member.setMname(signUp.get("Mname"));
         member.setMSD(LocalDate.now().toString());
 
         memberRepository.save(member);
@@ -73,7 +74,6 @@ public class MemberController {
     }
 
     ///회원상태 변경///
-
     @PostMapping("chagneMSC")
     public Boolean changeMSC(@RequestBody HashMap<String, String> updataData){
         Optional<Member> memberCh = memberRepository.findByMID(updataData.get("MID"));
@@ -88,7 +88,6 @@ public class MemberController {
     }
 
     ///회원 수정///
-
     @PostMapping("memberUpdate")
     public Boolean memberUpdate(@RequestBody HashMap<String, String> updataData){
         Optional<Member> memberCh = memberRepository.findByMID(updataData.get("MID"));
@@ -109,7 +108,6 @@ public class MemberController {
     }
 
     ///회원탈퇴-실제 데이터 삭제는 없다(상태변경)///
-
     @PostMapping("deleteMem")
     public Boolean deleteMem(@RequestBody HashMap<String, String> updataData){
         Optional<Member> memberCh = memberRepository.findByMID(updataData.get("MID"));
@@ -126,8 +124,8 @@ public class MemberController {
     }
 
 
-    ///속성 체크//
-
+    ///속성 체크///
+    ///유저확인///
     @PostMapping("/userCheck")
     public Boolean userCheck(@RequestBody HashMap<String, String> signUp) {
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -137,7 +135,7 @@ public class MemberController {
             return false;
         }
     }
-
+    ///닉네임확인///
     @PostMapping ("/nameCheck")
     public Boolean nameCheck(@RequestBody HashMap<String, String> signUp) {
         Optional<Member> memberCh = memberRepository.findByMNick(signUp.get("MNick"));
@@ -148,7 +146,7 @@ public class MemberController {
             return false;
         }
     }
-
+    ///회사확인///
     @PostMapping("companyCodeCheck")
     public Boolean companyCodeCheck(@RequestBody HashMap<String, String> company){
         Optional<Company> companyList = companyRepository.findCompanyByCCode(company.get("CCode"));
@@ -160,8 +158,18 @@ public class MemberController {
         }
     }
 
-    ///판매자 신청///
+    ///회원 아이디의 전화번호 확인///
+    @PostMapping("phequalCheck")
+    public Boolean phequalCheck(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMID(body.get("MID"));
+        if(member.get().getMPH().equals(body.get("MPH"))){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    ///판매자 신청///
     @PostMapping("signCompany")
     public Boolean signCompany(@RequestBody HashMap<String, String> signUp){
         Optional<Member> memberCh = memberRepository.findByMID(signUp.get("MID"));
@@ -191,7 +199,6 @@ public class MemberController {
     }
 
     ///로그인 여부 확인///
-
     @PostMapping("loginCheck")
     public Boolean loginCheck(@RequestBody HashMap<String, String> check){
         Optional<Member> memberCh = memberRepository.findByMID(check.get("MID"));
@@ -203,7 +210,6 @@ public class MemberController {
     }
 
     ///테이블 조회///
-
     @PostMapping("getMember")
     public Member getMember(@RequestBody HashMap<String, String> check){
         Optional<Member> memberCh = memberRepository.findByMID(check.get("MID"));
@@ -222,7 +228,6 @@ public class MemberController {
 
 
     /////////판매자 신청 부분////////
-
     @GetMapping("getRequestCompany")
     public List<Company> getAllRequest(){
         List<Company> companyList = companyRepository.findAll();
@@ -234,7 +239,6 @@ public class MemberController {
     public void acceptCompany(@RequestBody HashMap<String, String> check){
         Optional<Company> company = companyRepository.findCompanyByCCode(check.get("CCode"));
         company.get().setCsc("2");
-        System.out.println(company.get().getMember().getMID());
         Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
         members.get().setMSC("4");
         companyRepository.save(company.get());
@@ -258,5 +262,64 @@ public class MemberController {
         PhCheck phCheck = new PhCheck();
         phCheck.setFromClient(pNumber.get("MPH"));
         return phCheck.sendAuth();
+    }
+
+    ///아이디찾기///
+    @PostMapping("checkID")
+    public String checkID(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMPH(body.get("MPH"));
+        if(member.isEmpty()){
+            return "아이디가 존재하지 않습니다";
+        }else{
+            return "사용자의 아이디는 " + member.get().getMID() + "입니다";
+        }
+    }
+
+    ///비밀번호찾기///
+    @PostMapping("checkPass")
+    public String checkPass(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMID(body.get("MID"));
+        mailCheck.setAddress(member.get().getMMail());
+        mailCheck.passSend();
+        member.get().setMPass(Integer.toString(mailCheck.getAutoInt()));
+        memberRepository.save(member.get());
+        return "사용자 이메일로 임시비밀번호를 전송했습니다";
+    }
+
+    ///비밀번호 변경///
+    @PostMapping("changePass")
+    public Boolean changePass(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MCODE")));
+
+        if(body.get("currentPass").equals(body.get("changePass"))){
+         return false;
+        }
+        else if(member.get().getMPass().equals(body.get("currentPass"))){
+            member.get().setMPass(body.get("changePass"));
+            memberRepository.save(member.get());
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    ///마이페이지 부분///
+    ///레포지토리 테스트
+    @Autowired
+    private MemberEquipmentTest memberEquipmentTest;
+    ///내장비페이지///
+    @PostMapping("myPageEquip")
+    public List<MemberEquipment> myPageEquip(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<MemberEquipment> memberEquipmentList = memberEquipmentTest.findByMCode(member.get());
+
+
+        System.out.println("내장비 진입");
+        return  memberEquipmentList;
+    }
+    ///테스트///
+    @PostMapping("testCheck")
+    public void testCheck(){
+        System.out.println("테스트 성공");
     }
 }

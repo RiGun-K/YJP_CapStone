@@ -27,10 +27,10 @@
             <router-link class="nav-link" to="/ProductMain" v-if="uiLogin==4">판매자 전용</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/company" v-if="sellerCheck()">판매자 신청</router-link>
+            <router-link class="nav-link" to="/company" v-if="uiLogin==3">판매자 신청</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/memberupdate" v-if="uiLogin">정보 수정</router-link>
+            <router-link class="nav-link" to="/myPage" v-if="uiLogin">마이페이지</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/mAdmin" v-if="uiLogin==5">관리자 페이지</router-link>
@@ -94,8 +94,8 @@ export default {
 </script>
 
 <style scoped>
-@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css",
-@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js",
+@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
 
 .login {
   text-align: center;

@@ -65,6 +65,7 @@ export default {
         this.$refs.title.focus();
         return;
       }
+      this.$router.go(-1)
     },
 
     list(){
