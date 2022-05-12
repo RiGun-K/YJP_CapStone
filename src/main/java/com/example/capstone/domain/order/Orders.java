@@ -12,7 +12,6 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int orderCode;
-
     @Column
     private int orderPrice; //주문금액
     @Column
@@ -50,13 +49,17 @@ public class Orders {
 
     }
 
+
     public Orders(Member MID) {
         this.MID = MID;
+
     }
 
     public Orders(Member MID, int orderPrice) {
         this.orderPrice = orderPrice;
+
         this.MID = MID;
+
     }
 
     public int getOrderCode() {
@@ -199,5 +202,4 @@ public class Orders {
         this.deliveryHopeTime = deliveryHopeTime;
         this.MID = MID;
     }
-
 }

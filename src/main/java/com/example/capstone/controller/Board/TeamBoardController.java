@@ -24,6 +24,7 @@ public class TeamBoardController {
     @Autowired
     private TeamRepository teamRepository;
 
+
 //    @PostMapping("/teamwriting")
 //    // 3. 받은 data 를 @RequestBody 를 사용해서 TeamboardDTO 로 담는다.
 //    public TeamWriter addWriter(@RequestBody TeamboardDTO teamboardDTO) {
@@ -41,6 +42,7 @@ public class TeamBoardController {
 //        teamWriterRepository.save(teamWriter);
 //        return teamWriter;
 //    }
+
 
     @GetMapping("/teamlist")
     public List<TeamWriter> teamwriterMyList() {
@@ -75,7 +77,6 @@ public class TeamBoardController {
         teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
         teamWriterRepository.save(teamupdateMyList.get());
         return "게시글이 수정되었습니다.";
-
     }
 }
 
