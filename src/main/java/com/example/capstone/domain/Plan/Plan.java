@@ -1,11 +1,9 @@
 package com.example.capstone.domain.Plan;
 
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.capstone.dto.plan.PlanDto;
+import com.example.capstone.dto.plan.TeamDto;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 //@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 @Entity
+@ToString
 public class Plan {
 
     @Id
@@ -22,8 +21,8 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long planCode;
 
-    @ManyToOne
-    @JoinColumn(name= "TEAMCODE")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAMCODE")
     private Team teamCode;
 
     @Column
@@ -39,9 +38,45 @@ public class Plan {
     @Column
     private String planEnd;
     @Column
-    private String planUpdate;
+    private String planOpen;
     @Column
     private int planNumber;
     @Column
     private int planTotalDate;
+    @Column
+    private Integer planViews = 0;
+    @Column
+    private Integer planUsedCount = 0;
+
+
+    public PlanDto toPlanDto() {
+
+        Team teamEntity = this.getTeamCode();
+        TeamDto teamDto = TeamDto.builder()
+                .teamCode(teamEntity.getTeamCode())
+                .teamName(teamEntity.getTeamName())
+                .teamState(teamEntity.getTeamState())
+                .teamMaster(teamEntity.getTeamMaster()).build();
+
+        PlanDto planDto = PlanDto.builder()
+                .planCode(this.getPlanCode())
+                .teamCode(teamDto)
+                .planName(this.getPlanName())
+                .planBudget(this.getPlanBudget())
+                .planDestination(this.getPlanDestination())
+                .planEnd(this.getPlanEnd())
+                .planNumber(this.getPlanNumber())
+                .planOpen(this.getPlanOpen())
+                .planStart(this.getPlanStart())
+                .planViews(this.getPlanViews())
+                .planUsedCount(this.getPlanUsedCount())
+                .planTotalDate(this.getPlanTotalDate())
+                .planType(this.getPlanType())
+                .build();
+
+        return planDto;
+    }
+    public void 조회햇음() {
+        this.planViews = this.planViews +1;
+    }
 }

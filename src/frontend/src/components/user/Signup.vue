@@ -73,6 +73,17 @@
 
       <div>
         <h3 class="join_title">
+          <label for="email">이름</label>
+        </h3>
+        <span class="input-group mb-3">
+          <input type="text" v-model="Mname" class="form-control" placeholder="이름입력" aria-label="Recipient's username"
+                 aria-describedby="button-addon2">
+         </span>
+        <span class="error_next_box"></span>
+      </div>
+
+      <div>
+        <h3 class="join_title">
           <label for="email">전화번호</label>
         </h3>
         <span class="input-group mb-3">
@@ -132,6 +143,7 @@ export default {
       add: "",
       ph: "",
       email: "",
+      Mname:'',
       userCh: false,
       nickCheck: false,
       wordCheck: false,
@@ -155,6 +167,7 @@ export default {
           MRadd:this.radd,
           MAdd: this.add,
           MPH: this.ph,
+          Mname:this.Mname,
           MEmail: this.email,
           MSC: '3'
         }).then(res => {
@@ -265,8 +278,8 @@ export default {
       }
     },
     addCheck() {
-      if (this.add === '') {
-        return true
+      if (this.radd === '') {
+        return false
       } else {
         return true
       }

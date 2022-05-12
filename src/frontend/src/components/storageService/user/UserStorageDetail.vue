@@ -5,23 +5,18 @@
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
     <div class="storage-view">
-      <div class="storage-box" v-for="(box,index) in boxList.storageBoxes" :key="index">
+      <div class="storage-box" v-for="(box,index) in boxList.storageBoxes" :key="index" @click="findTime(box)">
         <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
           <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
             <p v-else>사용불가능</p>
           </li>
+          <li>가격 : {{box.storageBoxPrice}}원</li>
         </ul>
       </div>
     </div>
-    <div style="display: flex; margin-bottom: 1.5%">
-      <h5 style="margin-left: 3%" >사용하실 보관함을 선택하세요</h5>
-      <select  class="form-select" style="width:10%; margin-left: 2%; margin-top: -1%"  v-model="boxCode" @click="findTime(boxCode)">
-        <option value="선택">선택</option>
-        <option :value="box.storageBoxCode" v-for="(box,index) in boxList.storageBoxes" :key="index">{{ box.storageBoxName }}</option>
-      </select>
-    </div>
     <div v-if="stateCheck">
+      <div><h3>{{boxName}}</h3></div>
       <div>
         <p style="margin-left: 3%; margin-top: 2%">대여기간 설정</p>
         <Datepicker style="margin-left: 3%; margin-bottom: 5%; width: 20%"
@@ -42,7 +37,7 @@
         내 캠핑장비
         <div>
           <ul v-for="(item, index) in myItem" :key="index">
-            <li><input type="checkbox" >{{item.memEquipmentName}}</li>
+            <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{item.memEquipmentName}}</li>
           </ul>
         </div>
       </div>
@@ -72,17 +67,6 @@ export default {
     Datepicker
   },
   mounted() {
-    axios.get('/api/storageView/' + this.id)
-        .then((res) => {
-          console.log(res.data)
-          this.boxList = res.data
-          console.log('this.boxList')
-          console.log(this.boxList)
-          this.name = this.boxList.storageName
-        })
-        .catch((err) => {
-          console.log(err)
-        });
     axios.get('/api/myItem/'+this.userId)
     .then(res=>{
       console.log(res.data)
@@ -92,29 +76,29 @@ export default {
     });
   },
   created() {
-    this.id = this.$route.params.storageCode
     this.userId = store.getters.getLoginState.loginState
-    console.log('this.userId')
-    console.log(this.userId)
+    this.boxList = this.$store.state.storage
+    this.name = this.boxList.storageName
   },
   data() {
     return {
+      checkItem:[],
       myItem:undefined||{},
       id: '',
       boxList: [],
       name: '',
+      boxName:'',
       date:null,
       startDay:'',
       endDay:'',
       userId:'',
-      boxCode:'선택',
       form:{
-        userId:'',
         storageName:'',
         storageBoxCode:'',
         useStorageStartTime:'',
         useStorageEndTime:'',
-        price:''
+        price:'',
+        item:[]
       },
       today: new Date(),
       useTimeList:[],
@@ -122,20 +106,7 @@ export default {
       stateCheck:false
     }
   },
-  watch:{
-    boxCode:function (newBoxCode){
-      this.boxPrice(newBoxCode)
-    }
-  },
   methods:{
-    boxPrice(newBoxCode){
-      axios.get('/api/boxPrice/'+newBoxCode)
-      .then(res=>{
-        console.log(res.data)
-        this.form.price = res.data
-      })
-    },
-
     backPage(){
       this.$router.push('/storageView')
     },
@@ -143,14 +114,13 @@ export default {
     findTime(boxCode){
       this.date = null
       this.disabledDates=[]
-      if(boxCode == ''||boxCode=='선택') return
-      axios.get('/api/findUseTime/' + boxCode)
+      axios.get('/api/findUseTime/' + boxCode.storageBoxCode)
           .then(res=>{
             this.useTimeList = res.data
             console.log(res.data)
 
             for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
-              if(boxCode == this.boxList.storageBoxes[i].storageBoxCode){
+              if(boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode){
                 if(this.boxList.storageBoxes[i].storageBoxState == '0'){
                   this.stateCheck = true
                 }else{
@@ -183,25 +153,36 @@ export default {
           .catch(err=>{
             console.log(err)
           })
+      this.boxName = boxCode.storageBoxName
+      this.form.price = boxCode.storageBoxPrice
+      console.log('this.form.price')
+      console.log(this.form.price)
+      this.form.storageBoxCode = boxCode.storageBoxCode
+      console.log('this.form.storageBoxCode')
+      console.log(this.form.storageBoxCode)
+      console.log('this.form234234234')
+      console.log(this.form)
     },
     pay(){
-
       if(this.date ==null){
         alert('날짜 선택하세요')
         return
       }
       this.startDay = this.date
       const start = new Date(this.startDay)
-      this.endDay =new Date(start.setDate(start.getDate()+29))
-      if(this.boxCode==""||this.boxCode=="선택"){
-        alert('보관함를 선택하세요')
-        return
-      }
+      this.endDay = new Date(start.setDate(start.getDate()+29))
+
       this.form.storageName = this.name
-      this.form.storageBoxCode = this.boxCode
       this.form.useStorageStartTime = this.startDay
       this.form.useStorageEndTime = this.endDay
-      this.$router.push({name:"storagePay", params:this.form})
+      this.form.item = this.checkItem
+
+
+      this.$store.commit('putCartStorage',this.form)
+      this.form.item = []
+      this.$router.push({name:"storagePay",params:this.form})
+
+      this.checkItem = []
       this.date = []
       this.startDay = ''
       this.endDay = ''

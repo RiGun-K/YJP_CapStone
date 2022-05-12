@@ -27,10 +27,10 @@
             <router-link class="nav-link" to="/ProductMain" v-if="uiLogin==4">판매자 전용</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/company" v-if="sellerCheck()">판매자 신청</router-link>
+            <router-link class="nav-link" to="/company" v-if="uiLogin==3">판매자 신청</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/memberupdate" v-if="uiLogin">정보 수정</router-link>
+            <router-link class="nav-link" to="/myPage" v-if="uiLogin">마이페이지</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/ordersList" v-if="uiLogin">주문 내역</router-link>

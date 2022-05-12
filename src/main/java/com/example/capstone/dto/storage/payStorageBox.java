@@ -1,6 +1,8 @@
 package com.example.capstone.dto.storage;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class payStorageBox {
 
@@ -9,6 +11,7 @@ public class payStorageBox {
     private LocalDateTime useStorageStartTime;
     private LocalDateTime useStorageEndTime;
     private int price;
+    private List<Long> item = new ArrayList<Long>();
 
     public payStorageBox() {
     }
@@ -64,5 +67,13 @@ public class payStorageBox {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<Long> getItem() {
+        return item;
+    }
+
+    public void setItem(List<Long> item) {
+        this.item = item;
     }
 }

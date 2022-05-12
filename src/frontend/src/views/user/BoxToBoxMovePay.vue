@@ -63,6 +63,8 @@ export default {
       axios.post('/api/boxToBoxPay',data)
       .then(res=>{
         console.log(res)
+        alert('결제되었습니다')
+
       }).catch(err=>{
         console.log(err)
       })

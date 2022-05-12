@@ -10,8 +10,8 @@
             <ul>
               <li>보관함 이름: {{ storage.storageBoxName }}</li>
               <li>보관함 상태:<p v-if="storage.storageBoxState == '0'">사용안함</p>
-                <p v-else-if="storage.storageBoxState == '2' ">사용중</p>
                 <p v-else-if="storage.storageBoxState == '1' ">결제완료</p>
+                <p v-else >사용중</p>
               </li>
             </ul>
           </div>
