@@ -19,7 +19,7 @@
 
 	<!------------------------------------------------------------------------- -->
 
-	<h3>{{ $store.state.mcode.mname }} 님의 소속팀</h3>
+	<h3>{{ $store.state.member.mname }} 님의 소속팀</h3>
 
 	<p v-html="noTeam"></p>
 	<div v-if="showingTeamList">
@@ -118,7 +118,7 @@ export default {
 					})
 					.catch((error) => {
 						console.log('에러!');
-						console.log(this.$store.state.mcode);
+						console.log(this.$store.state.member);
 						console.log(error);
 					});
 			}
@@ -158,14 +158,14 @@ export default {
 
 		accept: function (teamCode) {
 			const url = 'http://localhost:9002/api/acceptTeam';
-			const member = { mcode: this.$store.state.mcode.mcode };
+			const member = { mcode: this.$store.state.member.mcode };
 			const tc = { teamCode: teamCode };
 
 			axios
 				.post(url, { mcode: member, teamCode: tc })
 				.then((response) => {
 					alert('수락완료!');
-					this.TeamManage(this.$store.state.mcode.mcode);
+					this.TeamManage(this.$store.state.member.mcode);
 				})
 				.catch((error) => {
 					console.log(error);
@@ -174,13 +174,13 @@ export default {
 		// -----------------------------------------------------
 		refuse: function (teamCode) {
 			const url = 'http://localhost:9002/api/refuseTeam';
-			const member = { mcode: this.$store.state.mcode.mcode };
+			const member = { mcode: this.$store.state.member.mcode };
 			const tc = { teamCode: teamCode };
 			axios
 				.post(url, { mcode: member, teamCode: tc })
 				.then((response) => {
 					alert('거절하였습니다!');
-					this.TeamManage(this.$store.state.mcode.mcode);
+					this.TeamManage(this.$store.state.member.mcode);
 				})
 				.catch((error) => {
 					console.log(error);
