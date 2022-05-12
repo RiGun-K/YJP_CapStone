@@ -49,13 +49,17 @@ public class Orders {
 
     }
 
-    public Orders(Member MCode) {
-        this.MID = MCode;
+
+    public Orders(Member MID) {
+        this.MID = MID;
+
     }
 
-    public Orders(Member MCode, int orderPrice) {
+    public Orders(Member MID, int orderPrice) {
         this.orderPrice = orderPrice;
-        this.MID = MCode;
+
+        this.MID = MID;
+
     }
 
     public int getOrderCode() {
