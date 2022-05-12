@@ -15,20 +15,19 @@ public class TeamWriter {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int teamwriter_code;
 
-    @JoinColumn(name = "TEAMCODE")
-    private Long teamCode;
+//    @JoinColumn(name = "TEAMCODE")
+//    private Team teamCode;
 
-//    @ManyToOne()
-//    @JoinColumn(name = "TEAMMASTER")
-//    private  Team teamMaster;
+    @ManyToOne()
+    @JoinColumn(name = "TEAMMASTER")
+    private  Team teamMaster;
 
     @Column()
-    private String teamMaster;
     private String noticetitle;
     private String noticecontent;
 
     public TeamWriter() {}
-    public TeamWriter(String noticetitle, String noticecontent, String teamMaster){
+    public TeamWriter(String noticetitle, String noticecontent, Team teamMaster){
         this.noticetitle = noticetitle;
         this.noticecontent = noticecontent;
         this.teamMaster = teamMaster;
@@ -42,11 +41,11 @@ public class TeamWriter {
         this.teamwriter_code = teamwriter_code;
     }
 
-    public String getTeamMaster() {
+    public Team getTeamMaster() {
         return teamMaster;
     }
 
-    public void setTeamMaster(String teamMaster) {
+    public void setTeamMaster(Team teamMaster) {
         this.teamMaster = teamMaster;
     }
 

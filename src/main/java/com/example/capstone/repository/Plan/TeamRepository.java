@@ -16,7 +16,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
   public Optional <Team> findByTeamName(String teamName);
 
   // 1. 우리는 팀마스터를 찾아야된다
-  public Optional <Team> findByTeamCode(String teamMaster);
+  public Optional <Team> findByTeamMaster(String teamMaster);
 
 
 

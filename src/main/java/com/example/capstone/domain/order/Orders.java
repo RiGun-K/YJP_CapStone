@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Table(name="orders")
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int orderCode;
 
     @Column
     private int orderPrice; //주문금액
     @Column
-    private String orderType; //주문유형
+    private char orderType; //주문유형
     @Column
     private String paymentCode; //결제코드
     @Column
@@ -32,7 +32,7 @@ public class Orders {
     @Column
     private String deliveryAddress; //배송지 상세주소
     @Column
-    private String orderState; //주문상태
+    private char orderState; //주문상태
     @Column
     private String deliveryRequest; //배송요청사항
     @Column
@@ -43,8 +43,8 @@ public class Orders {
     private String deliveryHopeTime;
 
     @ManyToOne
-    @JoinColumn(name = "MCode")
-    private Member MCode;
+    @JoinColumn(name = "MID")
+    private Member MID;
 
     public Orders() {
 
@@ -75,11 +75,11 @@ public class Orders {
         this.orderPrice = orderPrice;
     }
 
-    public String getOrderType() {
+    public char getOrderType() {
         return orderType;
     }
 
-    public void setOrderType(String orderType) {
+    public void setOrderType(char orderType) {
         this.orderType = orderType;
     }
 
@@ -99,14 +99,6 @@ public class Orders {
         this.paymentDate = paymentDate;
     }
 
-    public String getPaymentInfo() {
-        return paymentInfo;
-    }
-
-    public void setPaymentInfo(String paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
-
     public String getDeliveryGetter() {
         return deliveryGetter;
     }
@@ -115,12 +107,16 @@ public class Orders {
         this.deliveryGetter = deliveryGetter;
     }
 
-    public String getDeliveryGetterTel() {
-        return deliveryGetterTel;
+    public String getDeliveryRequest() {
+        return deliveryRequest;
     }
 
-    public void setDeliveryGetterTel(String deliveryGetterTel) {
-        this.deliveryGetterTel = deliveryGetterTel;
+    public String getPaymentInfo() {
+        return paymentInfo;
+    }
+
+    public void setPaymentInfo(String paymentInfo) {
+        this.paymentInfo = paymentInfo;
     }
 
     public String getDeliveryZipcode() {
@@ -139,15 +135,15 @@ public class Orders {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public String getOrderState() {
+    public char getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(String orderState) {
+    public void setOrderState(char orderState) {
         this.orderState = orderState;
     }
 
-    public String getDeliveryRequest() {
+    public String getDelivaryRequest() {
         return deliveryRequest;
     }
 
@@ -179,11 +175,37 @@ public class Orders {
         this.deliveryHopeTime = deliveryHopeTime;
     }
 
-    public Member getMCode() {
-        return MCode;
+    public Member getMID() {
+        return MID;
     }
 
-    public void setMCode(Member MCode) {
-        this.MCode = MCode;
+    public void setMID(Member MID) {
+        this.MID = MID;
+    }
+
+    public Orders(int orderCode, int orderPrice, char orderType, String paymentCode, LocalDateTime paymentDate, String paymentInfo, String deliveryZipcode, String deliveryAddress, char orderState, String deliveryRequest, LocalDate startDate, LocalDate endDate, String deliveryHopeTime, Member MID) {
+        this.orderCode = orderCode;
+        this.orderPrice = orderPrice;
+        this.orderType = orderType;
+        this.paymentCode = paymentCode;
+        this.paymentDate = paymentDate;
+        this.paymentInfo = paymentInfo;
+        this.deliveryZipcode = deliveryZipcode;
+        this.deliveryAddress = deliveryAddress;
+        this.orderState = orderState;
+        this.deliveryRequest = deliveryRequest;
+        StartDate = startDate;
+        EndDate = endDate;
+        this.deliveryHopeTime = deliveryHopeTime;
+        this.MID = MID;
+    }
+
+    public Orders( Member MID, int orderPrice) {
+        this.orderPrice = orderPrice;
+        this.MID = MID;
+    }
+
+    public Orders(Member MID) {
+        this.MID = MID;
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class PlanTagService {
+
     private final PlanTagRepository planTagRepository;
 
     public void insertTags(List<String> tags, Plan plan) {
@@ -25,6 +26,7 @@ public class PlanTagService {
             pt.setTagContent(tags.get(i));
             pt.setPlan(plan);
             planTagRepository.save(pt);
+
         }
     }
 
@@ -36,6 +38,8 @@ public class PlanTagService {
             Plan plan = planTag.getPlan();
             plans.add(plan.toPlanDto());
         }
+
+//        planTags.stream().map(planTag -> planTag.getPlan()).forEach(plan -> plans.add(plan));
         return plans;
     }
 }

@@ -1,5 +1,6 @@
 <template>
-  <table border="1px" align="center" >
+  <table border="1px" align="center" style="margin-left: 5%; margin-right: 5%;
+                                            width: 90%" >
     <tr>
       <th colspan="10">판매 관리자</th>
     </tr>

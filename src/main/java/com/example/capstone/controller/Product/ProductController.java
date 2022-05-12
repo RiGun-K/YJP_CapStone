@@ -1,15 +1,11 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Camping;
 import com.example.capstone.domain.Product.MenuBuy;
-import com.example.capstone.domain.Product.MenuRental;
 import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
-import com.example.capstone.repository.Product.CampingRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
-import com.example.capstone.repository.Product.MenuRentalRepository;
 import com.example.capstone.service.ProductService;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -52,38 +48,16 @@ public class ProductController {
     MenuBuyRepository menuBuyRepository;
 
     @Autowired
-    MenuRentalRepository menuRentalRepository;
-
-    @Autowired
-    CampingRepository campingRepository;
-
-    @Autowired
     KindRepository kindRepository;
 
     @Autowired
     ProductService productService;
 
 
-    /* 구매상품 리스트 */
-    @GetMapping("/product_BuyList")
-    public List<MenuBuy> menuBuysList() {
+    /* 전체상품 리스트 */
+    @GetMapping("/product_list")
+    public List<MenuBuy> menuList() {
         List<MenuBuy> menus = menuBuyRepository.findAll();
-        System.out.println(menus);
-        return menus;
-    }
-
-    /* 렌탈상품 리스트 */
-    @GetMapping("/product_RentalList")
-    public List<MenuRental> menuRentalsList() {
-        List<MenuRental> menus = menuRentalRepository.findAll();
-        System.out.println(menus);
-        return menus;
-    }
-
-    /* 캠핑상품 리스트 */
-    @GetMapping("/product_CampingList")
-    public List<Camping> menuCampingsList() {
-        List<Camping> menus = campingRepository.findAll();
         System.out.println(menus);
         return menus;
     }
@@ -97,14 +71,34 @@ public class ProductController {
         return menuDetailList;
 
     }
-    
+
+//    /* 구매상품 결제 페이지 내 해당 상품이미지 불러오기 */
+//    @GetMapping(value = "/product_detail_images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+//    public ResponseEntity<byte[]> imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
+//        System.out.println(filename);
+//        System.out.println("-------------------1----------------");
+//
+//        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\main\\resources\\static\\images\\" + filename;
+//        InputStream imageStream = new FileInputStream(requestPath);
+//        System.out.println(imageStream);
+//        System.out.println("-------------------2----------------");
+//
+//        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+//        System.out.println(imageByteArray);
+//        System.out.println("-------------------3----------------");
+//        imageStream.close();
+//        return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
+//    }
+
+
+
     /* 구매상품 결제 페이지 내 해당 상품이미지 불러오기 */
     @GetMapping(value = "/product_detail_images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
         System.out.println(filename);
         System.out.println("-------------------1----------------");
 
-        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\frontend\\src\\assets\\" + filename;
+        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\frontend\\public\\upload\\" + filename + ".jpg";
         InputStream imageStream = new FileInputStream(requestPath);
         System.out.println(imageStream);
         System.out.println("-------------------2----------------");
