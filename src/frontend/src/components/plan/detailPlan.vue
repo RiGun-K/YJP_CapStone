@@ -214,9 +214,7 @@ export default {
 					console.log(error);
 				});
 		},
-		savePlan: function () {
-			this.$router.push({ name: 'teamMember' });
-		},
+		savePlan: function () {},
 	},
 };
 </script>

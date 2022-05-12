@@ -28,6 +28,7 @@ public class Team {
     @Column
     private char teamState;
 
+
     @Column
     private Long teamMaster;
 

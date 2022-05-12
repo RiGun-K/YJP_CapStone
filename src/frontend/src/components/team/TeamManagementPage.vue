@@ -109,11 +109,10 @@ export default {
 								this.$store.state.insertName +
 									'팀이 생성되었습니다',
 							);
-							this.TeamManage(
-								this.$store.getters.getLoginState.mcode,
-							);
 							this.$store.state.insertName = '';
+							//	component('TeamMember').addTeamMember(this.mcode);
 						} else {
+							console.log('중복값!');
 							alert('이미 존재하는 팀 이름입니다');
 						}
 					})

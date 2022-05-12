@@ -7,19 +7,15 @@ import com.example.capstone.repository.Board.BoardRepository;
 import com.example.capstone.repository.Member.MemberRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @NoArgsConstructor
 @RequestMapping("/api")
 public class BoardController {
-
 
     @Autowired
     private BoardRepository boardRepository;
@@ -40,7 +36,7 @@ public class BoardController {
     @GetMapping("/list")
     public List<Writer> writerMyList() {
         List<Writer> writerList = boardRepository.findAll();
-        System.out.println(writerList.get(0).getWriter_code());
+        System.out.println(writerList);
         return writerList;
     }
 
@@ -62,11 +58,11 @@ public class BoardController {
 
     }
 
-    @PostMapping("/update")
-    public String updateList(@RequestBody HashMap<String, String> id) {
-        Optional<Writer> updateMyList = boardRepository.findById(Integer.parseInt(id.get("writer_code")));
-        updateMyList.get().setTitle(id.get("title"));
-        updateMyList.get().setContent(id.get("content"));
+    @PutMapping("/update")
+    public String updateList(@RequestBody Writer writer) {
+        Optional<Writer> updateMyList = boardRepository.findById(writer.getWriter_code());
+        updateMyList.get().setTitle(writer.getTitle());
+        updateMyList.get().setContent(writer.getContent());
 
         boardRepository.save(updateMyList.get());
         return "게시글이 수정되었습니다.";

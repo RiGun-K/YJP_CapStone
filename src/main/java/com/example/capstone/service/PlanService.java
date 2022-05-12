@@ -29,10 +29,12 @@ public class PlanService {
     public final PlanRepository planRepository;
     public final PlanDetailRepository plan_detailRepository;
 
+
     public Plan createPlan(Plan plan) {
         planRepository.save(plan);
         return plan;
     }
+
 
     public String checkPlanName(Plan plan) {
 
@@ -50,9 +52,12 @@ public class PlanService {
     }
 
     public void insertDetailPlan(PlanDetailDto plan_detaildto) {
+        //planDetailDto에서 PlanDto를 꺼낸다.
         PlanDto planDto = plan_detaildto.getPlanCode();
+        // PlanDto를 DB에서 조회하여 찾는다.
         Optional<Plan> findPlan = planRepository.findById(planDto.getPlanCode());
         Plan planEntity = findPlan.orElse(null);
+        // DB에서 조회되지 않으면 끝
         if (planEntity == null) return;
 
         // PlanDetail를 저장하기위해 엔티티를 생성
@@ -73,6 +78,7 @@ public class PlanService {
         Optional<Plan> findPlan = planRepository.findById(plan_detail.getPlanCode().getPlanCode());
         Plan planEntity = findPlan.orElse(null);
         if (planEntity == null) return null;
+
         List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDay(planEntity, plan_detail.getDetailDay());
         List<PlanDetailDto> planDetailDtos = new ArrayList<>();
 
@@ -96,9 +102,12 @@ public class PlanService {
 
         List<Plan> plans = planRepository.findAll();
         List<PlanDto> planDtos = new ArrayList<>();
+
         for (Plan plan : plans) {
             planDtos.add(plan.toPlanDto());
         }
+
+
         return planDtos;
     }
     public void countView(PlanDto planDto){
