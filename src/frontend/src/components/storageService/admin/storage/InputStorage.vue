@@ -140,7 +140,6 @@ export default {
       }else if (this.form.storageAddress == ''){
         alert('주소를 입력하세요')
       }else{
-        this.geo(this.form.storageAddress)
         this.boxC = true
       }
 
@@ -155,6 +154,9 @@ export default {
             if (status === kakao.maps.services.Status.OK){
               this.a.latitude = result[0].y
               this.a.longitude = result[0].x
+            }else{
+              this.a.latitude = ''
+              this.a.longitude = ''
             }
           }
       );
