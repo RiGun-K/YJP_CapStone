@@ -61,10 +61,10 @@ public class TeamBoardController {
 
     @DeleteMapping("/teamdeleteList/{teamwriter_code}")
     public String teamdeleteList(@PathVariable("teamwriter_code") int teamwriter_code) {
-        System.out.println("삭제할 게시글 번호는 : " +teamwriter_code);
+        System.out.println("삭제할 게시글 번호는 : " + teamwriter_code);
         Optional<TeamWriter> teamWriter = teamWriterRepository.findById(teamwriter_code);
         teamWriterRepository.delete(teamWriter.get());
-        return  "게시글이 삭제되었습니다.";
+        return "게시글이 삭제되었습니다.";
 
     }
 
@@ -74,6 +74,9 @@ public class TeamBoardController {
         teamupdateMyList.get().setNoticetitle(teamWriter.getNoticetitle());
         teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
 
+        teamWriterRepository.save(teamupdateMyList.get());
+        return "게시글 수정";
+    }
+
 
 }
-
