@@ -89,4 +89,5 @@ public class TeamManagementApiController {
     public List<PlanDto> loadTeamPlans(@PathVariable("teamCode") Long team) {
         return teamMemberService.loadTeamPlans(team);
     }
+
 }
