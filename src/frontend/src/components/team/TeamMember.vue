@@ -13,10 +13,6 @@
 			<button>
 				{{ value.mcode.mname }}
 			</button>
-			<p>
-				팀원 초대/수정 권한
-				{{ value.teamMemberAuthority }}
-			</p>
 		</div>
 		<div>
 			회원추가하기

@@ -154,6 +154,7 @@ export default {
 		},
 
 		createPlan: function () {
+			console.log(this.$store.state.teamCode.teamCode);
 			const oldPlanCode = this.$store.state.planCode;
 			const data = {
 				planName: this.planName,
@@ -168,7 +169,11 @@ export default {
 				planOpen: this.planOpen,
 			};
 
-			const form = { planDto: data, oldPlanDto: oldPlanCode };
+			const form = {
+				planDto: data,
+				oldPlanDto: oldPlanCode,
+				teamDto: this.$store.state.teamCode.teamCode,
+			};
 
 			if (
 				this.planName !== '' &&

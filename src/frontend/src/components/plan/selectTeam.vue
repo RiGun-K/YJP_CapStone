@@ -202,6 +202,10 @@ export default {
 					response.data.map((item) => {
 						console.log(item);
 						this.$store.commit('updateTeamCode', item);
+						console.log(item);
+						console.log(item);
+						console.log(item);
+						console.log(item);
 						if (item.acception === 'y') {
 							this.$store.commit('updateTeamMemberList', item);
 						}
