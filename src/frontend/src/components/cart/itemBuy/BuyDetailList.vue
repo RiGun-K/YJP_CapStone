@@ -54,9 +54,13 @@ export default {
       })
     },
     putData() {
-      this.$router.push({
-        path: "/cart"
-      })
+      if (confirm('추가되었습니다, 장바구니에서 확인하시겠습니까?')) {
+        this.$router.push({
+          path: `/cart/buy/${this.content.mid.mcode}`
+        })
+      }else{
+
+      }
     }
   }
 }

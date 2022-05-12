@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'BuyCart',
   data () {
@@ -53,7 +55,9 @@ export default {
         { name: 1, count: 1, price: 25000, delivery: 5000, checked: false },
         { name: 2, count: 5, price: 20000, delivery: 7000, checked: false },
         { name: 3, count: 3, price: 15000, delivery: 10000, checked: false }
-      ]
+      ],
+      content: [],
+      cartList: []
     }
   },
   setup () {
@@ -63,6 +67,10 @@ export default {
         check2: false
       }
     }
+  },
+  created() {
+    this.content= this.$store.state.loginState
+    this.CartList()
   },
   computed: {
     priceAll () {
@@ -103,6 +111,16 @@ export default {
     },
     addCount (index) {
       this.list[index].count++
+    },
+    CartList(){
+      console.log(this.content)
+      axios.get('http://localhost:9002/api/buyCart/' + this.content.mcode)
+        .then(res =>{
+          this.cartList = res.data
+          console.log(this.cartList)
+        }).catch(e =>{
+          console.log(e)
+      })
     }
   }
 }
