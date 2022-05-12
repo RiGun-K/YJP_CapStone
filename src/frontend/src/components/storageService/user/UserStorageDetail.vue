@@ -176,7 +176,8 @@ export default {
       this.form.useStorageStartTime = this.startDay
       this.form.useStorageEndTime = this.endDay
       this.form.item = this.checkItem
-
+      console.log('14234235144444444444235e')
+      console.log(this.form)
 
       this.$store.commit('putCartStorage',this.form)
       this.form.item = []
