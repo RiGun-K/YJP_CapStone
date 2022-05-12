@@ -126,5 +126,6 @@ export default {
 }
 .card-header{
   font-size: 1.5em;
+
 }
 </style>
