@@ -61,19 +61,20 @@ public class TeamBoardController {
 
     @DeleteMapping("/teamdeleteList/{teamwriter_code}")
     public String teamdeleteList(@PathVariable("teamwriter_code") int teamwriter_code) {
-        System.out.println("삭제할 게시글 번호는 : " +teamwriter_code);
+        System.out.println("삭제할 게시글 번호는 : " + teamwriter_code);
         Optional<TeamWriter> teamWriter = teamWriterRepository.findById(teamwriter_code);
         teamWriterRepository.delete(teamWriter.get());
-        return  "게시글이 삭제되었습니다.";
+        return "게시글이 삭제되었습니다.";
 
     }
 
     @PutMapping("/tbupdate")
-    public String teamupdateList(@RequestBody TeamWriter teamWriter) {
+    public void teamupdateList(@RequestBody TeamWriter teamWriter) {
         Optional<TeamWriter> teamupdateMyList = teamWriterRepository.findById(teamWriter.getTeamwriter_code());
         teamupdateMyList.get().setNoticetitle(teamWriter.getNoticetitle());
         teamupdateMyList.get().setNoticecontent(teamWriter.getNoticecontent());
 
 
+    }
 }
 
