@@ -27,8 +27,11 @@ public class Team {
     private String teamName;
     @Column
     private char teamState;
-    @Column(name="TEAMMASTER")
-    private String teamMaster;
+
+
+    @Column
+    private Long teamMaster;
+
 
 
 
