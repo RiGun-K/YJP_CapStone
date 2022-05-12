@@ -108,7 +108,8 @@ export default {
 		showingDeleteTeam: function () {
 			if (
 				this.$store.state.mcode.mname ===
-				this.$store.state.teamCode.teamCode.teamMaster
+					this.$store.state.teamCode.teamCode.teamMaster ||
+				this.$store.state.teamCode.teamMemberAuthority === 'y'
 			) {
 				console.log('바로호출됨');
 				this.showingDeleteTeamButton = true;
