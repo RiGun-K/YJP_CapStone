@@ -40,10 +40,10 @@ public class StorageController {
     private UseStorageBoxRepository useStorageBoxRepository;
 
     @Autowired
-    private KindRepository kindRepository;
+    KindRepository kindRepository;
 
     @Autowired
-    private MemberEquipmentRepository memberEquipmentRepository;
+    MemberEquipmentRepository memberEquipmentRepository;
 
     @PostMapping("/postStorage")
     public Result postStorage(@RequestBody StorageData storageData) {
@@ -192,12 +192,17 @@ public class StorageController {
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
         System.out.println(renewalBox.getBoxName());
         System.out.println(renewalBox.getStorageName());
+        System.out.println(renewalBox.getUseBoxCode());
 
         Optional<Member> user = memberRepository.findByMID(renewalBox.getUserId());
         Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
+        System.out.println(storage.get().getStorageCode());
         Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
         Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
-
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
+        for (int i = 0 ; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(null);
+        }
         LocalDateTime start = renewalBox.getStartTime();
         LocalDateTime end = renewalBox.getEndTime();
 
@@ -207,8 +212,11 @@ public class StorageController {
         beforeUseStorageBox.get().setUseStorageState("1");
         useStorageBoxRepository.save(beforeUseStorageBox.get());
 
-        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList);
+        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList,user.get());
         useStorageBox.setUseStorageState("2");
+        for (int i = 0 ; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(useStorageBox);
+        }
         useStorageBoxRepository.save(useStorageBox);
 
 //         박스 상태 변화
@@ -284,6 +292,7 @@ public class StorageController {
     //    로그인 없이 보관함 사용중인 사용자 조회
     @GetMapping("checkMember/{memberId}")
     public Object[] checkMember(@PathVariable("memberId") String memberId) throws NoSuchElementException {
+        System.out.println("멤버아이디는" + memberId);
         try {
             Object[] useStorageBoxes = storageRepository.findByMember(memberId);
 
@@ -296,7 +305,20 @@ public class StorageController {
         }
     }
 
-    // 매니저 확인 할 때 사용
+
+    //    로그인 없이 사용자 지정 할 때 사용
+    @GetMapping("memberCheck/{memberId}")
+    public Result getMemberId(@PathVariable(value = "memberId") String memberId) {
+        Optional<Member> member = memberRepository.findByMID(memberId);
+        return new Result("ok");
+//        if(member.){
+//            return new Result("ok");
+//        }else{
+//            return new Result("no");
+//        }
+    }
+
+    //    로그인 없이 매니저 확인 할 때 사용
     @GetMapping("managerCheck/{managerId}")
     public Result getManagerCheck(@PathVariable(value = "managerId") String managerId) throws NoSuchElementException {
         try {
@@ -408,6 +430,15 @@ public class StorageController {
         Optional<Member> member = memberRepository.findByMID(mid);
 
         return member.get();
+    }
+    ////////////////////////// 상품조회  //////////////////////////
+    @GetMapping("myItem/{userId}")
+    private List<MemberEquipment> getMyItem(@PathVariable(value = "userId")String userId){
+        Optional<Member> member = memberRepository.findByMID(userId);
+
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findAllByMCode(member.get());
+
+        return memberEquipmentList;
     }
 
 }

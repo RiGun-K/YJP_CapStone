@@ -313,7 +313,13 @@ const routes = [
     component: () => import('@/components/cart/Infoter/InfoterList.vue')
   },
   {
-    path: '/infoter/infoterNow/:campingId',
+    path: '/infoter/infoterList/:campingId',
+    name: 'InfoterDetailList',
+    component: () => import('@/components/cart/Infoter/InfoterDetailList.vue'),
+    props: true
+  },
+  {
+    path: '/infoter/infoterNow/:detailId',
     name: 'InfoterNow',
     component: () => import('@/components/cart/Infoter/InfoterNow.vue')
   },
@@ -355,12 +361,12 @@ const routes = [
     props: true
   },
   {
-    path: '/ordersList/shareOrders',
+    path: '/ordersList/shareOrders/:mid',
     name: 'ShareOrders',
     component: () => import('@/components/cart/ordersInfo/ShareOrders.vue')
   },
   {
-    path: '/ordersList/reservationOrders',
+    path: '/ordersList/reservationOrders/:mid',
     name: 'ReservationOrders',
     component: () => import('@/components/cart/ordersInfo/ReservationOrders.vue')
   },

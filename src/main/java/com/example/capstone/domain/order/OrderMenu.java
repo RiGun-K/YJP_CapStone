@@ -1,6 +1,7 @@
 package com.example.capstone.domain.order;
 
 
+import com.example.capstone.domain.Product.CampingDetail;
 import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
 
@@ -22,6 +23,10 @@ public class OrderMenu {
     @ManyToOne
     @JoinColumn(name = "menuBuyId")
     private MenuBuy menuBuy;
+
+    @ManyToOne
+    @JoinColumn(name = "campingRId")
+    private CampingDetail campingDetail;
 
     @Column
     private int orderMenuCount;
@@ -56,5 +61,13 @@ public class OrderMenu {
 
     public void setOrderMenuCount(int orderMenuCount) {
         this.orderMenuCount = orderMenuCount;
+    }
+
+    public CampingDetail getCampingDetail() {
+        return campingDetail;
+    }
+
+    public void setCampingDetail(CampingDetail campingDetail) {
+        this.campingDetail = campingDetail;
     }
 }

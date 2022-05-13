@@ -1,12 +1,45 @@
 <template>
   <div id="content">
-    <p>내게시글페이지</p>
+    <p>내게시글</p>
+    <table border="1px">
+      <tr>
+        <th>게시글번호</th>
+        <th>제목</th>
+        <th>작성일</th>
+      </tr>
+      <tr v-for="(body) in writerList">
+        <td>{{ body.writer_code}}</td>
+        <td>{{ body.title}}</td>
+        <td>공란</td>
+      </tr>
+    </table>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import store from "@/store";
+
 export default {
-  name: "MyWritter"
+  name: "MyWritter",
+  data(){
+    return{
+      writerList:[]
+    }
+  },
+  methods:{
+
+  },
+  created() {
+    axios.post("/api/myWritter",{
+      MID:store.getters.getLoginState.mcode
+    }).then((res)=>{
+      console.log(res.data)
+      this.writerList = res.data
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
 }
 </script>
 

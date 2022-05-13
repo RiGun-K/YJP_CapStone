@@ -47,6 +47,7 @@
           <td>{{ product.rentalName }}</td>
           <td>{{ product.rentalPrice }}</td>
           <td>{{ product.savedTime }}</td>
+          <td>14</td>
         </tr>
         <!-- PathVariable 을 위해서는 router-link 작성 -->
         <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -63,7 +64,6 @@ import Sidebar from '@/components/cart/Sidebar/Sidebar'
 import { sidebarWidth } from '@/components/cart/Sidebar/state'
 import axios from 'axios'
 import ProductList from "@/components/product/ProductList";
-
 // import { reactive } from 'vue'
 export default {
   name: 'ItemBuy',
@@ -105,7 +105,6 @@ export default {
     //   window.location.href = 'http://localhost:8081/cart'
     // }
   }
-
 }
 </script>
 
@@ -139,7 +138,6 @@ export default {
 /*  color: white;*/
 /*  background-color: #b2e2fd;*/
 /*}*/
-
 .buy-list{
   width: 50%;
   height: 100%;

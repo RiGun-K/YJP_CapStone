@@ -19,6 +19,7 @@
     </div>
 
     <br>
+    <br>
     <span class="buy-list">
       <table class="table table-striped">
         <thead>
@@ -57,13 +58,11 @@
 <script>
 import axios from 'axios'
 import ProductList from "@/components/product/ProductList";
-
 export default {
   name: 'InfoterList',
   return: {
     ProductList
   },
-
   created() {
     this.goData()
   },
@@ -88,10 +87,9 @@ export default {
     // path로 받기
     toDetail(product){
       this.$router.push({
-        path: `/infoter/infoterNow/${product.campingId}`
+        path: `/infoter/infoterList/${product.campingId}`
       })
     },
-
     ReservationNowBtn () {
       window.location.href = 'http://localhost:8081/infoter/infoterNow'
     },

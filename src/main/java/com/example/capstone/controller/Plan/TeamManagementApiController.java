@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+//
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping
@@ -50,6 +50,7 @@ public class TeamManagementApiController {
         Optional<Team> newTeamName = teamRepository.findByTeamName(tm.getTeamName());
         if (newTeamName.isEmpty()) {
             teamRepository.save(tm);
+            teamMemberService.autoMemberAdd(tm);
             return "y";
         } else {
             return "n";
@@ -87,7 +88,6 @@ public class TeamManagementApiController {
     @GetMapping("/api/loadTeamPlans/{teamCode}")
     public List<PlanDto> loadTeamPlans(@PathVariable("teamCode") Long team) {
         return teamMemberService.loadTeamPlans(team);
-
     }
 
 }

@@ -49,26 +49,16 @@ export default {
 
   methods: {
     update() {
-      const axiosConfig = {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }
-
       this.id = this.writer_code;
-      const formdata = {
+      const data = {
         // mid: store.getters.getLoginState.loginState,
         writer_code: this.writer_code,
         title: this.title,
         content: this.content
       }
-      console.log(formdata);
-      // if (confirm("수정하시겠습니까?")) {
-        axios.post('/api/update', {
-          writer_code: this.writer_code,
-          title: this.title,
-          content: this.content
-        })
+      console.log(data);
+      if (confirm("수정하시겠습니까?")) {
+        axios.put('/api/update', data)
             .then((res) => {
               console.log("수정되었습니다.", res.data)
               alert("수정되었습니다.")
@@ -80,7 +70,7 @@ export default {
               console.log(error)
             })
 
-      // }
+      }
     },
 
     list(){

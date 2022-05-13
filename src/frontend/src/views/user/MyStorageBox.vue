@@ -16,7 +16,7 @@
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.storageName }}</td>
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.boxName }}</td>
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.startTime }}</td>
-                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }} {{useBox.none}}</td>
+                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }}</td>
                 <td v-if="useBox.none">
                   <button v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button><button v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
                   <button class="mystoragebox-re" v-if="useBox.BoxState == '3' || useBox.useBoxState=='2'" @click="renewalPay(useBox)">보관함 연장 / 해지</button>

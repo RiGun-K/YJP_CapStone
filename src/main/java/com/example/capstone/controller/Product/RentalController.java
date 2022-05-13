@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,7 +42,6 @@ public class RentalController {
     CampingDetailRepository campingDetailRepository;
 
     /* 렌탈상품 등록 페이지 */
-    // uuid 말고 현재시간으로 구분하기위해 LocalDateTime 사용
     @PostMapping("/Rental_Signup")
     public MenuRental addMenuRental(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuRentalDTO menuRentalDTO) throws IllegalStateException, IOException {
         System.out.println("파일 이름" + uploadFile.getOriginalFilename());
@@ -52,9 +50,8 @@ public class RentalController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-//            UUID uuid = UUID.randomUUID();
-            String todayPath = LocalDateTime.now() + "_" + System.currentTimeMillis();
-            String filename = todayPath + "_" + origFilename;
+            UUID uuid = UUID.randomUUID();
+            String filename = uuid + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
@@ -123,8 +120,8 @@ public class RentalController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            String todayPath = LocalDateTime.now() + "_" + System.currentTimeMillis();
-            String filename = todayPath + "_" + origFilename;
+            UUID uuid = UUID.randomUUID();
+            String filename = uuid + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";

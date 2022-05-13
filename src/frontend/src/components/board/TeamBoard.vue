@@ -14,13 +14,12 @@
   <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)" >
     <td>{{item.noticetitle}}</td>
     <td>{{item.noticecontent}}</td>
-    <td>{{item.teamMaster }}</td>
+    <td>{{item.teamMaster.teamMaster}}</td>
   </tr>
 
   <router-link to="{name: 'TBView', params: { teamwriter_code:item.teamwriter_code }}"></router-link>
 
 </table>
-  <br>
   <br>
   <tr>
     <div id="btnWrap">

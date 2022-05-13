@@ -26,10 +26,10 @@ export default {
       window.location.href = 'http://localhost:8081/ordersList/buyOrders/' + this.Content.mcode
     },
     shareOrders(){
-      window.location.href = 'http://localhost:8081/ordersList/shareOrders'
+      window.location.href = 'http://localhost:8081/ordersList/shareOrders/' + this.Content.mcode
     },
     reservationOrders(){
-      window.location.href = 'http://localhost:8081/ordersList/reservationOrders'
+      window.location.href = 'http://localhost:8081/ordersList/reservationOrders/' + this.Content.mcode
     }
   },
 }
