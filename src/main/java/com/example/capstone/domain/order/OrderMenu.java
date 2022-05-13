@@ -25,7 +25,7 @@ public class OrderMenu {
     private MenuBuy menuBuy;
 
     @ManyToOne
-    @JoinColumn(name = "campingRId")
+    @JoinColumn(name = "detailId")
     private CampingDetail campingDetail;
 
     @Column

@@ -93,7 +93,7 @@ export default {
     // },
 
     buyData() {
-      this.stateCheck = true,
+      this.stateCheck = true;
           axios.get('http://localhost:9002/api/product_detail_images/' + this.content.campingDetails[0].filename )
               .then(res => {
                 console.log("이미지 불러오기 성공");

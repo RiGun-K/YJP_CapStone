@@ -290,7 +290,8 @@ const routes = [
   {
     path: '/itemBuy/buyComplete',
     name: 'BuyComplete',
-    component: () => import('@/components/cart/ItemBuy/BuyComplete.vue')
+    component: () => import('@/components/cart/ItemBuy/BuyComplete.vue'),
+    props: true
   },
   {
     path: '/itemShare',
