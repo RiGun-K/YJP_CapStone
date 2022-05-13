@@ -1,14 +1,14 @@
 package com.example.capstone.repository.orders;
 
-import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface OrdersRepository extends JpaRepository<Orders, Integer> {
-    List<Orders> findByMCode(Member MCode);
+public interface OrderMenuRepository extends JpaRepository<OrderMenu, Integer> {
+    OrderMenu findByOrders(Orders orders);
 
 }
