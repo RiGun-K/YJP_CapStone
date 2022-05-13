@@ -7,14 +7,12 @@ import com.example.capstone.domain.Plan.PlanDetail;
 import com.example.capstone.dto.plan.CopyPlanDto;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Plan.ChecklistRepository;
-import com.example.capstone.repository.Plan.CopyPlanRepository;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +25,7 @@ public class CopyPlanService {
     private final PlanRepository planRepository;
     private final PlanDetailRepository planDetailRepository;
     private final ChecklistRepository checklistRepository;
+    private final PlanTagService planTagService;
     private final EntityManager em;
 
     public Optional<PlanDto> createCopyPlan(CopyPlanDto copyPlanDto) {
@@ -52,6 +51,8 @@ public class CopyPlanService {
         List<PlanDetail> planDetail = planDetailRepository.findByPlanCode(oldPlanCode);
         oldPlan.get().setPlanCode(null);
         em.persist(oldPlan.get());
+        planTagService.insertTags(copyPlanDto.getPlanTagDto().getTagContentList(),oldPlan.get());
+
 
         for (int i = 0; i < planDetail.size(); i++) {
             em.detach(planDetail.get(i));

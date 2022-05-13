@@ -173,6 +173,7 @@ export default {
 				planDto: data,
 				oldPlanDto: oldPlanCode,
 				teamDto: this.$store.state.teamCode.teamCode,
+				planTagDto: { tagContentList: this.TagContentList },
 			};
 
 			if (

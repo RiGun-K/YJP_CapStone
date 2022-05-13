@@ -13,5 +13,6 @@ public class CopyPlanDto {
     private PlanDto planDto;
     private PlanDto oldPlanDto;
     private Team teamDto;
+private PlanTagDto planTagDto;
 //
 }
