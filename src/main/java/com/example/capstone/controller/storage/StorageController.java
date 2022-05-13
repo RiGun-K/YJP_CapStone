@@ -192,12 +192,17 @@ public class StorageController {
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
         System.out.println(renewalBox.getBoxName());
         System.out.println(renewalBox.getStorageName());
+        System.out.println(renewalBox.getUseBoxCode());
 
         Optional<Member> user = memberRepository.findByMID(renewalBox.getUserId());
         Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
+        System.out.println(storage.get().getStorageCode());
         Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
         Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
-
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
+        for (int i = 0 ; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(null);
+        }
         LocalDateTime start = renewalBox.getStartTime();
         LocalDateTime end = renewalBox.getEndTime();
 
@@ -207,8 +212,11 @@ public class StorageController {
         beforeUseStorageBox.get().setUseStorageState("1");
         useStorageBoxRepository.save(beforeUseStorageBox.get());
 
-        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList);
+        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList,user.get());
         useStorageBox.setUseStorageState("2");
+        for (int i = 0 ; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(useStorageBox);
+        }
         useStorageBoxRepository.save(useStorageBox);
 
 //         박스 상태 변화
