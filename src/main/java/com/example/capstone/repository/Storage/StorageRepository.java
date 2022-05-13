@@ -16,8 +16,7 @@ public interface StorageRepository extends JpaRepository<Storage, Long> {
                     "from STORAGE s \n" +
                     "join STORAGEBOX b on s.STORAGE_CODE = b.STORAGE_CODE \n" +
                     "join USESTORAGEBOX u on  u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +
-                    "join ORDERS o on o.ORDER_CODE = u.ORDER_CODE \n" +
-                    "join MEMBER m on m.MCODE = o.MID \n" +
+                    "join MEMBER m on m.MCODE = u.MCODE \n" +
                     "WHERE m.MID = :memberId \n" +
                     "order by s.STORAGE_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_START_TIME ", nativeQuery = true)
     public Object[] findByMember(@Param("memberId") String memberId );

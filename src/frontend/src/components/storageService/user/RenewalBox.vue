@@ -99,7 +99,7 @@ export default {
         boxName:this.form.boxName,
         startTime:startTime,
         endTime:endTime,
-        useBoxCode : this.useBoxCode
+        useBoxCode : this.form.useBoxCode
       }
       axios.post('/api/renewalPay', data)
           .then(res=>{

@@ -25,7 +25,7 @@ export default {
       this.$router.push("myPageEquip")
     },
     myOrder(){
-      this.$router.push("myPageOrder")
+      this.$router.push("ordersList")
     }
   }
 }
