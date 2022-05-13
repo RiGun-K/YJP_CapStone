@@ -50,6 +50,15 @@ public class Orders {
 
     }
 
+    public Orders(Member MCode) {
+        this.MCode = MCode;
+    }
+
+    public Orders(Member MCode, int orderPrice) {
+        this.orderPrice = orderPrice;
+        this.MCode = MCode;
+    }
+
     public int getOrderCode() {
         return orderCode;
     }
