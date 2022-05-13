@@ -292,6 +292,7 @@ public class StorageController {
     //    로그인 없이 보관함 사용중인 사용자 조회
     @GetMapping("checkMember/{memberId}")
     public Object[] checkMember(@PathVariable("memberId") String memberId) throws NoSuchElementException {
+        System.out.println("멤버아이디는" + memberId);
         try {
             Object[] useStorageBoxes = storageRepository.findByMember(memberId);
 

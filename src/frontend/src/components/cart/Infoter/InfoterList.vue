@@ -17,6 +17,37 @@
       <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
       <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
     </div>
+
+    <br>
+    <br>
+    <span class="buy-list">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>분류</th>
+          <th>상품명</th>
+          <th>주소</th>
+          <th>등록일자</th>
+          <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="product in list"
+            :key="product.id"
+            :item="product" @click="toDetail(product)" style="cursor:pointer;">
+
+          <td>{{ product.infoterId.infoterName }}</td>
+          <td>{{ product.campingName }}</td>
+          <td>{{ product.address }}</td>
+          <td>{{ product.savedTime }}</td>
+          <td>51</td>
+        </tr>
+        <!-- PathVariable 을 위해서는 router-link 작성 -->
+        <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
+        </tbody>
+      </table>
+    </span>
+
     <div class="infoter-btn-group">
       <button class="infoter-list-btn" @click="ReservationNowBtn">Reservation Now</button>
       <button class="infoter-list-btn" @click="ReservationAddCart">Add to Cart</button>
@@ -25,9 +56,40 @@
 </template>
 
 <script>
+import axios from 'axios'
+import ProductList from "@/components/product/ProductList";
 export default {
   name: 'InfoterList',
+  return: {
+    ProductList
+  },
+  created() {
+    this.goData()
+  },
+  data() {
+    return {
+      selected: false,
+      list: [],
+      product: '',
+    }
+  },
   methods: {
+    goData() {
+      axios.get('http://localhost:9002/api/product_CampingList')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    // path로 받기
+    toDetail(product){
+      this.$router.push({
+        path: `/infoter/infoterList/${product.campingId}`
+      })
+    },
     ReservationNowBtn () {
       window.location.href = 'http://localhost:8081/infoter/infoterNow'
     },
