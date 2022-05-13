@@ -9,6 +9,7 @@
     </div>
     팀원 리스트
 
+
     <div v-for="(value, index) in $store.state.teamMemberList" :key="index">
       <button>
         {{ value.mcode.mname }}
@@ -19,6 +20,8 @@
       <input type="text" v-model="newMemberCode" placeholder="회원번호" />
       <button @click="addTeamMember(this.newMemberCode)">추가하기</button>
     </div>
+
+
 
     <div>
       <h2>플랜목록</h2>
