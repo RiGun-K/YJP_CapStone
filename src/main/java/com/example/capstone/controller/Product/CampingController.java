@@ -7,9 +7,12 @@ import com.example.capstone.domain.Product.Infoter;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.dto.Product.CampingDTO;
 import com.example.capstone.dto.Product.MenuBuyDTO;
+import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
+import com.example.capstone.service.CampingService;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,13 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@NoArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class CampingController {
 
@@ -43,6 +47,9 @@ public class CampingController {
     CampingDetailRepository campingDetailRepository;
     @Autowired
     CampingAreaRepository campingAreaRepository;
+
+    @Autowired
+    CampingService campingService;
 
     /* 캠핑장 등록 페이지 */
     @PostMapping("/Camping_Signup")
@@ -238,5 +245,14 @@ public class CampingController {
         campingRepository.deleteById(campingId);
 //         menuService.deleteById(menuid);
         return "메뉴가 삭제되었습니다.";
+    }
+
+
+    @PostMapping("/Camping_countView")
+    public void countCampingView(@RequestBody HashMap<String, String> campingId){
+        System.out.println(campingId.get("a"));
+        Optional<Camping> campingF = campingRepository.findById(Integer.parseInt(campingId.get("a")));
+        campingF.get().setCampingViews(campingF.get().getCampingViews()+1);
+        campingRepository.save(campingF.get());
     }
 }

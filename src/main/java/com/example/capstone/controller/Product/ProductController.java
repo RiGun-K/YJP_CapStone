@@ -10,6 +10,7 @@ import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
 import com.example.capstone.service.ProductService;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.springframework.beans.factory.annotation.Autowired;

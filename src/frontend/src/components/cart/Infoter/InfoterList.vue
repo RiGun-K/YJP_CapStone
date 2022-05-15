@@ -1,6 +1,25 @@
 <template>
   <div class="infoter">
-    <h2>인포터</h2>
+    <h2>캠핑장 예약</h2>
+    <br>
+    <img src="@/assets/캠핑.png" class="card-img-top" alt="..." @click="cam">
+    <img src="@/assets/카라반.png" class="card-img-top" alt="..." @click="cara">
+    <img src="@/assets/글램핑.png" class="card-img-top" alt="..." @click="gram">
+    <img src="@/assets/팬션.png" class="card-img-top" alt="..." @click="fan">
+    <img src="@/assets/차박.png" class="card-img-top" alt="..." @click="car">
+    <img src="@/assets/당일피크닉.png" class="card-img-top" alt="..." @click="today">
+
+    <br>
+    <br>
+    <section>
+    <form action="https://search.naver.com/search.naver">
+      <div class="search">
+        <input type="text" name="query" value="">
+        <button type="submit">검색</button>
+      </div>
+    </form>
+    </section>
+
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="btnradio1">전체</label>
@@ -40,7 +59,7 @@
           <td>{{ product.campingName }}</td>
           <td>{{ product.address }}</td>
           <td>{{ product.savedTime }}</td>
-          <td>51</td>
+          <td>{{ product.campingViews }}</td>
         </tr>
         <!-- PathVariable 을 위해서는 router-link 작성 -->
         <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -84,18 +103,43 @@ export default {
             console.log(e)
           })
     },
-    // path로 받기
+
+    // 상세페이지 접속
     toDetail(product){
-      this.$router.push({
-        path: `/infoter/infoterList/${product.campingId}`
-      })
+      console.log(product.campingId);
+      axios.post('http://localhost:9002/api/Camping_countView', {
+        a: product.campingId
+    })
+          .then((res) => {
+            console.log("조회수 증가됨" + res.data);
+            this.$router.push({
+              path: `/infoter/infoterList/${product.campingId}`
+            })
+          })
+          .catch(e => {
+            console.log(e)
+          })
+
     },
-    ReservationNowBtn () {
-      window.location.href = 'http://localhost:8081/infoter/infoterNow'
+    cam() {
+
     },
-    ReservationAddCart () {
-      window.location.href = 'http://localhost:8081/cart'
-    }
+    cara() {
+
+    },
+    gram() {
+
+    },
+    fan() {
+
+    },
+    car() {
+
+    },
+    today() {
+
+    },
+
   }
 }
 </script>
@@ -134,5 +178,33 @@ export default {
 .infoter-list-btn:hover{
   color: white;
   background-color: #b2e2fd;
+}
+
+img {
+  width : 10%;
+  height: 10%;
+}
+
+.search {
+  width: 300px;
+  height: 100px;
+}
+.search input {
+  width: 80%;
+  height: 30px;
+  font-size: 18px;
+  border: none;
+  border-bottom: 1px black solid;
+}
+
+.search button {
+  font-size: 18px;
+  border: none;
+  background-color: green;
+  width: 50px;
+  height: 30px;
+  border-radius: 15px;
+  color: #fff;
+  cursor: pointer;
 }
 </style>

@@ -1,12 +1,14 @@
 package com.example.capstone.dto.Product;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class CampingDTO {
 
     private int campingId;
@@ -24,6 +26,8 @@ public class CampingDTO {
     private String origFilename;
     private String filename;
     private String filePath;
+
+    private int campingViews = 0;
 
     private int infoterId;
     private int areaId;
