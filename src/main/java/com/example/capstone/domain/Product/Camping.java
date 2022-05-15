@@ -3,8 +3,7 @@ package com.example.capstone.domain.Product;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.storage.StorageBox;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,6 +16,8 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@ToString
 @Table(name = "camping")
 public class Camping {
 
@@ -58,6 +59,9 @@ public class Camping {
     private String filename;
     @Column()
     private String filePath;
+
+    @Column()
+    private int campingViews = 0;
 
 
     // 캠핑장 종류
@@ -252,5 +256,13 @@ public class Camping {
 
     public void setCampingDetails(List<CampingDetail> campingDetails) {
         this.campingDetails = campingDetails;
+    }
+
+    public int getCampingViews() {
+        return campingViews;
+    }
+
+    public void setCampingViews(int campingViews) {
+        this.campingViews = campingViews;
     }
 }

@@ -1,11 +1,12 @@
 <template>
+
   <div class="mt-4">
     <h2> 캠핑장 예약 </h2>
     <b-card-text>
       <div class="content-detail-list">
         <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
         <div class="card" style="width: 18rem;">
-          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
+          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="..." @click="oo">
           <div class="card-body">
             <h5 class="card-title">상품명: {{ this.content.campingName }}</h5>
             <p class="card-text">설명: {{ this.content.campingInfo }}</p>
@@ -104,7 +105,8 @@ export default {
       this.$router.push({
             path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
           })
-    }
+    },
+
 
   }
 }
