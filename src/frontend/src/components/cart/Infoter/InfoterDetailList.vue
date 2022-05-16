@@ -35,6 +35,40 @@
         </div>
       </b-card-text>
     </div>
+
+
+    <br>
+    <div class="btn_area">
+      <button type="button" @click="detail_1" class="btn_Bottom">
+        <span>캠핑장 소개</span>
+      </button>
+      <button type="button" @click="detail_2" class="btn_Bottom">
+        <span>이용 안내</span>
+      </button>
+      <button type="button" @click="detail_3" class="btn_Bottom">
+        <span>위치/주변정보</span>
+      </button>
+      <button type="button" @click="detail_4" class="btn_Bottom">
+        <span>캠핑/여행후기</span>
+      </button>
+    </div>
+
+    <br>
+    <!--    <div v-if="stateCheckB">-->
+    <h2>리뷰</h2>
+    <div class="content-detail-list-1">
+      <br>
+      <div class="my-box">
+        <div class="review">
+          <p class="review-title">d</p>
+          <p class="review-text">설명</p>
+
+        </div>
+
+        <!--        </div>-->
+      </div>
+
+    </div>
   </div>
   <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
   <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
