@@ -247,7 +247,7 @@ public class CampingController {
         return "메뉴가 삭제되었습니다.";
     }
 
-
+    /* 캠핑장 조회 시 조회수 증가 */
     @PostMapping("/Camping_countView")
     public void countCampingView(@RequestBody HashMap<String, String> campingId){
         System.out.println(campingId.get("a"));
@@ -255,4 +255,5 @@ public class CampingController {
         campingF.get().setCampingViews(campingF.get().getCampingViews()+1);
         campingRepository.save(campingF.get());
     }
+
 }

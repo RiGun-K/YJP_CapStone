@@ -2,13 +2,15 @@
   <div class="infoter">
     <h2>캠핑장 예약</h2>
     <br>
-    <img src="@/assets/캠핑.png" class="card-img-top" alt="..." @click="cam">
-    <img src="@/assets/카라반.png" class="card-img-top" alt="..." @click="cara">
-    <img src="@/assets/글램핑.png" class="card-img-top" alt="..." @click="gram">
-    <img src="@/assets/팬션.png" class="card-img-top" alt="..." @click="fan">
-    <img src="@/assets/차박.png" class="card-img-top" alt="..." @click="car">
-    <img src="@/assets/당일피크닉.png" class="card-img-top" alt="..." @click="today">
-
+    <div class="campingkindimage">
+    <img src="@/assets/전체.png" class="card-img-top" alt="..." @click="goData">
+    <img src="@/assets/캠핑.png" class="card-img-top" alt="..." @click="cam(1)">
+    <img src="@/assets/카라반.png" class="card-img-top" alt="..." @click="cam(2)">
+    <img src="@/assets/글램핑.png" class="card-img-top" alt="..." @click="cam(3)">
+    <img src="@/assets/팬션.png" class="card-img-top" alt="..." @click="cam(4)">
+    <img src="@/assets/차박.png" class="card-img-top" alt="..." @click="cam(5)">
+    <img src="@/assets/당일피크닉.png" class="card-img-top" alt="..." @click="cam(6)">
+    </div>
     <br>
     <br>
     <section>
@@ -22,13 +24,13 @@
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-      <label class="btn btn-outline-primary" for="btnradio1">전체</label>
+      <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio2">최신순</label>
+      <label class="btn btn-outline-primary" for="btnradio2" @click="orderBy('latest')">최신순</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio3">인기순</label>
+      <label class="btn btn-outline-primary" for="btnradio3" @click="orderBy('latestd')">인기순</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
       <label class="btn btn-outline-primary" for="btnradio4">낮은 가격순</label>
@@ -48,6 +50,7 @@
           <th>주소</th>
           <th>등록일자</th>
           <th>조회수</th>
+          <th>이미지</th>
         </tr>
         </thead>
         <tbody>
@@ -60,17 +63,22 @@
           <td>{{ product.address }}</td>
           <td>{{ product.savedTime }}</td>
           <td>{{ product.campingViews }}</td>
+          <td><img :src="'/api/product_detail_images/' + product.filename"> </td>
         </tr>
         <!-- PathVariable 을 위해서는 router-link 작성 -->
         <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
         </tbody>
       </table>
+
     </span>
 
     <div class="infoter-btn-group">
       <button class="infoter-list-btn" @click="ReservationNowBtn">Reservation Now</button>
       <button class="infoter-list-btn" @click="ReservationAddCart">Add to Cart</button>
     </div>
+
+<!--    <img src="@\assets\595cf686-1619-43f3-8b76-e32c9965c14e_camp2.jpg"/>-->
+
   </div>
 </template>
 
@@ -94,10 +102,17 @@ export default {
   },
   methods: {
     goData() {
-      axios.get('http://localhost:9002/api/product_CampingList')
+      axios.get('/api/product_CampingList')
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
+            axios.get('/api/product_detail_images/' + this.product.filename )
+                .then(res => {
+                  console.log("이미지 불러오기 성공");
+                })
+                .catch(e => {
+                  console.log("이미지 불러오기 실패" + e);
+                })
           })
           .catch(e => {
             console.log(e)
@@ -107,9 +122,7 @@ export default {
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
-      axios.post('http://localhost:9002/api/Camping_countView', {
-        a: product.campingId
-    })
+      axios.post('/api/Camping_countView', { a: product.campingId })
           .then((res) => {
             console.log("조회수 증가됨" + res.data);
             this.$router.push({
@@ -121,24 +134,29 @@ export default {
           })
 
     },
-    cam() {
-
+    cam(index) {
+      axios.get('/api/product_detail_camping/' + index)
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
     },
-    cara() {
 
-    },
-    gram() {
+    orderBy: function (orderBy) {
+      if(orderBy == 'latest') {
+        this.list.sort(function (a, b) {
+          return b.latest - a.latest;
+        });
 
-    },
-    fan() {
-
-    },
-    car() {
-
-    },
-    today() {
-
-    },
+      } else if (orderBy == 'latestd') {
+        this.list.sort(function (a, b) {
+          return b.latestd - a.latestd;
+        })
+      }
+    }
 
   }
 }
@@ -179,6 +197,18 @@ export default {
   color: white;
   background-color: #b2e2fd;
 }
+
+
+.table table-striped {
+  width : 30%;
+  height: 30%;
+}
+.buy-list {
+  width : 20%;
+  height: 20%;
+}
+
+
 
 img {
   width : 10%;

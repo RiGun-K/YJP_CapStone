@@ -22,6 +22,7 @@
     <table>
       <tr>
         <td class="infoter-now-td">이름</td>
+
         <td><input type="text" v-model="reservationName"></td>
       </tr>
       <tr>
@@ -44,6 +45,7 @@
                         format="yyyy/MM/dd"
                         autoApply
                         :closeOnAutoApply="false"></Datepicker></td>
+
       </tr>
     </table>
 
@@ -54,12 +56,19 @@
         <td>{{ this.content.detailName }}</td>
       </tr>
       <tr>
-        <td class="infoter-now-td">상품 금액</td>
+
+        <td class="buy-now-td">객실 금액</td>
         <td>{{ this.content.detailPrice }}</td>
+      </tr>
+      <tr>
+        <td class="infoter-now-td">총 결제 금액</td>
+        <td>{{price}}</td>
       </tr>
     </table>
 
-    <h5>취소 및 환불수수료 동의<button>보기</button></h5>
+
+    <h5>구매조건 확인 및 결제대행 서비스 약관 동의 <button @click="checkBuy()">보기</button></h5>
+
     <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
     <h5>개인정보 수집 및 이용 동의<button>보기</button></h5>
 
@@ -67,15 +76,15 @@
     <button class="pay-infoter-now" @click="paymentBtn()">결제하기</button>
     <button class="cancel-infoter-now" @click="cancelBtn()">취소</button>
 
+
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import store from "@/store";
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import dayjs from "dayjs";
+import axios from "axios";
+import store from "@/store";
 
 export default {
   name: 'InfoterNow',
@@ -97,6 +106,7 @@ export default {
       endDate: new Date(),
     }
   },
+
   setup () {
     const today = new Date()
     const todayEnd = new Date()
@@ -111,6 +121,7 @@ export default {
     IMP.init('imp35975601')
   },
   methods: {
+
     paymentBtn () {
       if (confirm('결제 하시겠습니까?')) {
         const IMP = window.IMP
@@ -209,6 +220,7 @@ export default {
       this.endDate = end.format('YYYYMMDD');
     },
   },
+
   watch: {
     reservationTel(val) {
       const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
@@ -219,6 +231,7 @@ export default {
       return this.reservationTel=this.reservationTel.replace(/[^-\.0-9]/g,'');
     }
   }
+
 }
 </script>
 
