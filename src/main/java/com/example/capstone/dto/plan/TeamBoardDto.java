@@ -10,12 +10,12 @@ import lombok.*;
 @NoArgsConstructor
 public class TeamBoardDto {
     private TeamDto teamDto;
-    private Long memberDto;
+    private MemberDto memberDto;
     private String contentDto;
     private String boardDateDto;
 
     @Builder
-    public TeamBoardDto(TeamDto teamDto, Long memberDto, String contentDto, String boardDateDto) {
+    public TeamBoardDto(TeamDto teamDto, MemberDto memberDto, String contentDto, String boardDateDto) {
         this.teamDto = teamDto;
         this.memberDto = memberDto;
         this.contentDto = contentDto;

@@ -13,7 +13,7 @@
 			<th>내용</th>
 			<th>작성일</th>
 			<tr v-for="(value, index) in contentList" :key="index">
-				<td>누구?</td>
+				<td>{{ value.memberDto.mname }}</td>
 				<td>{{ value.contentDto }}</td>
 				<td>{{ value.boardDateDto }}</td>
 			</tr>
@@ -61,6 +61,7 @@ export default {
 	created() {
 		this.showingDeleteTeam();
 		this.loadTeamPlans();
+		this.loadTeamBoards();
 	},
 	data() {
 		return {
@@ -70,31 +71,40 @@ export default {
 			planList: [],
 			content: '',
 			contentList: [],
+			//	teamCode = this.$state.state.teamCode.teamCode,
 		};
 	},
 	methods: {
+		loadTeamBoards: function () {
+			const url = 'api/loadTeamBoards';
+			const data = {
+				teamCode: this.$store.state.teamCode.teamCode.teamCode,
+			};
+			this.contentList.length = 0;
+			axios
+				.get(url, { params: data })
+				.then((response) => {
+					response.data.map((item) => {
+						this.contentList.push(item);
+						console.log(this.contentList);
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 		insertContent: function (content) {
 			const url = 'api/insertContent';
 			const data = {
 				contentDto: content,
 				teamDto: this.$store.state.teamCode.teamCode,
 				memberDto: this.$store.state.member.mcode,
-				// memberDto: {
-				// 	mCodeDto: this.$store.state.member.mcode,
-				// 	mName: this.$store.state.member.mname,
-				// },
 			};
-			console.log(data);
-			console.log(data.teamDto);
-			console.log(data.memberDto);
-
 			axios
 				.post(url, data)
 				.then((response) => {
-					response.data.map((item) => {
-						this.contentList.push(item);
-						console.log(this.contentList);
-					});
+					this.loadTeamBoards();
+					this.content = '';
 				})
 				.catch((error) => {
 					console.log(error);

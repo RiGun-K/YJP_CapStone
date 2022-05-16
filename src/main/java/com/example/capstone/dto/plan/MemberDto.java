@@ -18,6 +18,10 @@ public class MemberDto {
         this.mName = member.getMname();
     }
 
+    public MemberDto(Long mCodeDto){
+        this.mCodeDto = mCodeDto;
+    }
+
     @Builder
     public MemberDto(Long mCodeDto, String mName) {
         this.mCodeDto = mCodeDto;

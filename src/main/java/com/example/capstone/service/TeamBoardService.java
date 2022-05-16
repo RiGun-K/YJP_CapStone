@@ -28,12 +28,12 @@ public class TeamBoardService {
     private  final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
 
-    public List<TeamBoardDto> insertContent(TeamBoardDto teamBoardDto) {
+    public void insertContent(TeamBoardDto teamBoardDto) {
 
         TeamDto teamDto = teamBoardDto.getTeamDto();
-       Long memberDto = teamBoardDto.getMemberDto();
+        MemberDto memberDto = teamBoardDto.getMemberDto();
         Optional<Team> team = teamRepository.findById(teamDto.getTeamCode());
-        Optional<Member> member = memberRepository.findById(memberDto);
+        Optional<Member> member = memberRepository.findById(memberDto.getMCodeDto());
         System.out.println(member.get());
 
         TeamBoard teamBoard = new TeamBoard();
@@ -44,14 +44,30 @@ public class TeamBoardService {
         teamBoard.setMcode(member.get());
         teamBoardRepository.save(teamBoard);
 
-        List<TeamBoard> teamBoards = teamBoardRepository.findAll();
+//        List<TeamBoard> teamBoards = teamBoardRepository.findAll();
+//        List<TeamBoardDto> teamBoardDtos = new ArrayList<>();
+//
+//        for (TeamBoard tb : teamBoards) {
+//            TeamBoardDto teamBoardDto1 = TeamBoardDto.builder()
+//                    .teamDto(new TeamDto(tb.getTeamCode()))
+//                    .contentDto(tb.getBoardContent())
+//                    .memberDto(new MemberDto(tb.getMcode()))
+//                    .boardDateDto(tb.getBoardDate())
+//                    .build();
+//            teamBoardDtos.add(teamBoardDto1);
+//        }
+//        return teamBoardDtos;
+    }
+    public List<TeamBoardDto> loadTeamBoards(Long teamDto){
+        Optional<Team> team = teamRepository.findById(teamDto);
+        List<TeamBoard> teamBoards = teamBoardRepository.findByTeamCodeOrderByBoardDate(team.get());
         List<TeamBoardDto> teamBoardDtos = new ArrayList<>();
 
         for (TeamBoard tb : teamBoards) {
             TeamBoardDto teamBoardDto1 = TeamBoardDto.builder()
                     .teamDto(new TeamDto(tb.getTeamCode()))
                     .contentDto(tb.getBoardContent())
-                    .memberDto(tb.getMcode().getMCode())
+                    .memberDto(new MemberDto(tb.getMcode()))
                     .boardDateDto(tb.getBoardDate())
                     .build();
             teamBoardDtos.add(teamBoardDto1);

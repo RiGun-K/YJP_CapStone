@@ -3,12 +3,10 @@ package com.example.capstone.controller.Plan;
 
 import com.example.capstone.domain.Plan.TeamBoard;
 import com.example.capstone.dto.plan.TeamBoardDto;
+import com.example.capstone.dto.plan.TeamDto;
 import com.example.capstone.service.TeamBoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,9 +19,13 @@ public class TeamBoardApiController {
 
 
     @PostMapping("api/insertContent")
-    public List<TeamBoardDto> insertContent(@RequestBody TeamBoardDto teamBoardDto){
+    public void insertContent(@RequestBody TeamBoardDto teamBoardDto){
         System.out.println(teamBoardDto.toString());
-   return  teamBoardService.insertContent(teamBoardDto);
+     teamBoardService.insertContent(teamBoardDto);
 
+    }
+    @GetMapping("api/loadTeamBoards")
+    public List<TeamBoardDto> loadTeamBoards(@RequestParam Long teamCode){
+        return teamBoardService.loadTeamBoards(teamCode);
     }
 }
