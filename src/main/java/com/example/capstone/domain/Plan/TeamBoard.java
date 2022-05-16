@@ -11,13 +11,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ToString
-public class TeamMember {
-
+public class TeamBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long teamMemberCode;
+    private  Long teamBoardCode;
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "MCODE")
@@ -28,7 +26,10 @@ public class TeamMember {
     private Team teamCode;
 
     @Column
-    private char teamMemberAuthority;
+    private String boardContent;
     @Column
-    private String acception="n";
+    private String boardDate;
+
+
+
 }

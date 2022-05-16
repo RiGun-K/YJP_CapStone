@@ -79,7 +79,7 @@ public class PlanService {
         Plan planEntity = findPlan.orElse(null);
         if (planEntity == null) return null;
 
-        List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDay(planEntity, plan_detail.getDetailDay());
+        List<PlanDetail> planDetails = plan_detailRepository.findByPlanCodeAndDetailDayOrderByDetailStart(planEntity, plan_detail.getDetailDay());
         List<PlanDetailDto> planDetailDtos = new ArrayList<>();
 
         for (PlanDetail pd : planDetails) {

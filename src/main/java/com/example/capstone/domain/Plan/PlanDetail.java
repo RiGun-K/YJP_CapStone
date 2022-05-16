@@ -11,9 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
-//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-
 @Entity
 public class PlanDetail {
 

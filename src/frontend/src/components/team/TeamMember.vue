@@ -3,7 +3,24 @@
 		<h2>{{ $store.state.teamCode.teamCode.teamName }}팀의 상세정보</h2>
 
 		<h3>팀 관리자 -{{ $store.state.teamCode.teamCode.teamMaster }}-</h3>
+		<h1>팀게시판</h1>
 
+		<table class="tbAdd">
+			<colgroup>
+				<col width="15%" />
+			</colgroup>
+			<th>작성자</th>
+			<th>내용</th>
+			<th>작성일</th>
+			<tr v-for="(value, index) in contentList" :key="index">
+				<td>누구?</td>
+				<td>{{ value.contentDto }}</td>
+				<td>{{ value.boardDateDto }}</td>
+			</tr>
+		</table>
+		<textarea v-model="content">게시글을 작성하세요</textarea>
+		<button @click="insertContent(content)">작성</button>
+		<hr />
 		<div v-if="showingDeleteTeamButton">
 			<button @click="deleteTeam()">팀 삭제하기</button>
 		</div>
@@ -51,9 +68,38 @@ export default {
 			showingDeleteTeamButton: false,
 			open: false,
 			planList: [],
+			content: '',
+			contentList: [],
 		};
 	},
 	methods: {
+		insertContent: function (content) {
+			const url = 'api/insertContent';
+			const data = {
+				contentDto: content,
+				teamDto: this.$store.state.teamCode.teamCode,
+				memberDto: this.$store.state.member.mcode,
+				// memberDto: {
+				// 	mCodeDto: this.$store.state.member.mcode,
+				// 	mName: this.$store.state.member.mname,
+				// },
+			};
+			console.log(data);
+			console.log(data.teamDto);
+			console.log(data.memberDto);
+
+			axios
+				.post(url, data)
+				.then((response) => {
+					response.data.map((item) => {
+						this.contentList.push(item);
+						console.log(this.contentList);
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 		loadTeamPlans: function () {
 			const url = '/api/loadTeamPlans/';
 			axios
@@ -151,4 +197,22 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.tbAdd {
+	border-top: 1px solid #888;
+}
+.tbAdd th,
+.tbAdd td {
+	border-bottom: 1px solid #eee;
+	padding: 5px 0;
+}
+.tbAdd td {
+	padding: 10px 10px;
+	box-sizing: border-box;
+	text-align: left;
+}
+.tbAdd td.txt_cont {
+	height: 300px;
+	vertical-align: top;
+}
+</style>
