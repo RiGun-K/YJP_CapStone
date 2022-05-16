@@ -35,42 +35,7 @@
         </div>
       </b-card-text>
     </div>
-
-    <br>
-    <div class="btn_area">
-    <button type="button" @click="detail_1" class="btn_Bottom">
-      <span>캠핑장 소개</span>
-    </button>
-      <button type="button" @click="detail_2" class="btn_Bottom">
-        <span>이용 안내</span>
-      </button>
-      <button type="button" @click="detail_3" class="btn_Bottom">
-        <span>위치/주변정보</span>
-      </button>
-      <button type="button" @click="detail_4" class="btn_Bottom">
-        <span>캠핑/여행후기</span>
-      </button>
-    </div>
-
-    <br>
-<!--    <div v-if="stateCheckB">-->
-      <h2>리뷰</h2>
-      <div class="content-detail-list-1">
-        <br>
-        <div class="my-box">
-          <div class="review">
-            <p class="review-title">d</p>
-            <p class="review-text">설명</p>
-
-          </div>
-
-<!--        </div>-->
-      </div>
-
-    </div>
   </div>
-
-
   <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
   <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
   <!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
@@ -94,9 +59,7 @@ export default {
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
       images: '',
-
       stateCheck: false,
-      stateCheckB: false,
     }
   },
   methods: {
@@ -141,11 +104,7 @@ export default {
       this.$router.push({
             path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
           })
-    },
-    detail_4() {
-      this.stateCheckB = true
-    },
-
+    }
 
   }
 }
@@ -170,36 +129,4 @@ export default {
 }
 .card {
 }
-
-/* 버튼 */
-.btn_area {
-  margin: 20px 0 91px;
-}
-.btn_Bottom {
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10px;
-}
-
-.my-box {
-  border:3px solid;
-  padding:30px 0 5%;
-  box-sizing: border-box;
-  width: 1000px;
-  margin:0 auto;
-}
-
-.review{
-  font-size: 20px;
-  margin-right: 70%;
-}
-
-
-
 </style>

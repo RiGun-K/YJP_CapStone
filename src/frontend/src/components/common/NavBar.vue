@@ -6,13 +6,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
+            <router-link class="nav-link" to="/infoter" v-if="uiLogin">캠핑장</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/TeamManagementPage" v-if="uiLogin">캠핑플랜</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/storageView" v-if="uiLogin">보관함</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/infoter" v-if="uiLogin">인포터</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/itemBuy">Item Buy</router-link>

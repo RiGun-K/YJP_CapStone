@@ -33,7 +33,7 @@
       </tr>
       <tr>
         <!--        <td></td>-->
-        <td><input size="40" v-bind:name="detailAddress" placeholder="상세 주소 입력"> </td>
+        <td><input size="40" v-bind:value="detailAddress" placeholder="상세 주소 입력"> </td>
       </tr>
       <tr>
         <td class="buy-now-td">연락처</td>
@@ -65,7 +65,7 @@
     <table>
       <tr>
         <td class="buy-now-td">총 상품 금액</td>
-        <td>200000</td>
+        <td>{{ this.content.buyPrice }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">배송비</td>
@@ -73,7 +73,7 @@
       </tr>
       <tr>
         <td class="buy-now-td">총 결제 금액</td>
-        <td>{{price}}</td>
+        <td>{{ this.content.buyPrice }}</td>
       </tr>
     </table>
 
@@ -112,7 +112,6 @@ export default {
       zip: '',
       basicAddress: '',
       detailAddress: '',
-      price: 1000,
       buyCheck: false,
       getterName: '',
       getterPhoneNumber: '',
@@ -171,7 +170,7 @@ export default {
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
           name: this.content.buyName,
-          amount: this.price,
+          amount: this.content.buyPrice,
           buyer_tel: this.getterPhoneNumber,
           buyer_name: this.content.mid.mid,
           buyer_email: this.content.mid.mmail,
@@ -192,7 +191,7 @@ export default {
               deliveryGetter: this.getterName,
               deliveryGetterTel: this.getterPhoneNumber,
               deliveryRequest: this.deliveryMessage,
-              orderPrice: this.price,
+              orderPrice: this.content.buyPrice,
               orderType: rsp.pay_method,
               paymentCode: rsp.merchant_uid,
               orderState: '2',
@@ -210,7 +209,7 @@ export default {
               params: {
                 orderMenuCount: 1,
                 menuName: this.content.buyName,
-                orderPrice: this.price,
+                orderPrice: this.content.buyPrice,
                 orderType: rsp.pay_method
               }
             })
