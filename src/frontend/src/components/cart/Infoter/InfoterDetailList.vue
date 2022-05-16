@@ -200,4 +200,6 @@ export default {
   margin-right: 70%;
 }
 
+
+
 </style>
