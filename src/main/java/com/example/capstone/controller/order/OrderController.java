@@ -2,7 +2,6 @@ package com.example.capstone.controller.order;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.CampingDetail;
-import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
@@ -15,7 +14,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,13 +104,17 @@ public class OrderController {
         Optional<Member> searchMember = memberRepository.findByMID(buyData.get("MID"));
         if (searchMember.isPresent()) {
             Member member = searchMember.get();
+
             order.setMCode(member);
-            order.setDeliveryZipcode(buyData.get("deliveryZipcode"));
-            order.setDeliveryAddress(buyData.get("deliveryAddress"));
-            order.setDeliveryGetter(buyData.get("deliveryGetter"));
-            order.setDeliveryGetterTel(buyData.get("deliveryGetterTel"));
-            order.setDeliveryRequest(buyData.get("deliveryRequest"));
+            order.setDeliveryGetter(buyData.get("reservationName"));
+            order.setDeliveryGetterTel(buyData.get("reservationTel"));
+            order.setDeliveryRequest(buyData.get("reservationRequest"));
             order.setOrderPrice(Integer.parseInt(buyData.get("orderPrice")));
+
+            DateTimeFormatter format1 = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+            order.setStartDate(LocalDate.parse(buyData.get("startDate"), format1));
+            order.setEndDate(LocalDate.parse(buyData.get("endDate"), format1));
             order.setOrderType(buyData.get("orderType"));
             order.setPaymentCode(buyData.get("paymentCode"));
             order.setOrderState(buyData.get("orderState"));
@@ -125,18 +130,18 @@ public class OrderController {
             System.out.println("buyData Order Error");
         }
 
-        Optional<CampingDetail> searchMenu = campingDetailRepository.findById(Integer.parseInt(buyData.get("menuId")));
-        System.out.println("구매한 상품번호는" + searchMenu);
+        Optional<CampingDetail> searchRoom = campingDetailRepository.findById(Integer.parseInt(buyData.get("roomId")));
+        System.out.println("구매한 상품번호는" + searchRoom);
 
-        if (searchMenu.isPresent()) {
+        if (searchRoom.isPresent()) {
 
-            CampingDetail campingDetail = searchMenu.get();
+            CampingDetail campingDetail = searchRoom.get();
             OrderMenu orderMenu = new OrderMenu();
 
             orderMenu.setOrders(order);
             orderMenu.setCampingDetail(campingDetail);
             orderMenu.setOrderMenuCount(Integer.parseInt(buyData.get("orderMenuCount")));
-            ;
+
 
             orderMenuRepository.save(orderMenu);
 
@@ -157,7 +162,21 @@ public class OrderController {
             Member member = searchMember.get();
             List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
 
-            System.out.println(buyOrdersList);
+            for(int i = 0; i < buyOrdersList.size(); i++){
+                Optional<Orders> searchOrder = ordersRepository.findById(buyOrdersList.get(i).getOrderCode());
+
+                if(searchOrder.isPresent()){
+                    Orders orders = searchOrder.get();
+                    OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
+
+                    MenuBuy menuBuy = orderMenu.getMenuBuy();
+
+                    if(menuBuy == null) {
+                        buyOrdersList.remove(i);
+                    }
+                }
+            }
+
             return buyOrdersList;
         }
         return null;
@@ -180,19 +199,82 @@ public class OrderController {
                 if (searchOrder.isPresent()) {
                     Orders orders = searchOrder.get();
 
-                    System.out.println(orders.getOrderCode());
-
                     OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
 
-                    System.out.println(orderMenu);
+                    MenuBuy menuBuy = orderMenu.getMenuBuy();
 
-                    orderMenuList.add(i, orderMenu);
+                    if(menuBuy != null) {
+                        orderMenuList.add(i, orderMenu);
+                    }
                 }
             }
-            System.out.println(orderMenuList);
+
+            System.out.println(orderMenuList.size());
             return orderMenuList;
         }
         return null;
     }
+
+
+    @GetMapping("/ordersList/reservationOrders/{MCode}")
+    public List<Orders> getOrderReservation(@PathVariable("MCode") Long MCode) {
+        Optional<Member> searchMember = memberRepository.findById(MCode);
+
+        if (searchMember.isPresent()) {
+            Member member = searchMember.get();
+            List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
+
+            for(int i = 0; i < buyOrdersList.size(); i++){
+                Optional<Orders> searchOrder = ordersRepository.findById(buyOrdersList.get(i).getOrderCode());
+
+                if(searchOrder.isPresent()){
+                    Orders orders = searchOrder.get();
+                    OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
+
+                    CampingDetail campingDetail = orderMenu.getCampingDetail();
+
+                    if(campingDetail == null) {
+                        buyOrdersList.remove(i);
+                    }
+                }
+            }
+
+            return buyOrdersList;
+        }
+        return null;
+    }
+
+    @GetMapping("/ordersList/reservationOrderMenu/{MCode}")
+    public List<OrderMenu> getOrderMenuReservation(@PathVariable("MCode") Long MCode) {
+        Optional<Member> searchMember = memberRepository.findById(MCode);
+
+        if (searchMember.isPresent()) {
+            Member member = searchMember.get();
+            List<OrderMenu> orderMenuList = new ArrayList<>();
+
+            List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
+
+            for (int i = 0; i < buyOrdersList.size(); i++) {
+                int orderCode = buyOrdersList.get(i).getOrderCode();
+                Optional<Orders> searchOrder = ordersRepository.findById(orderCode);
+                if (searchOrder.isPresent()) {
+                    Orders orders = searchOrder.get();
+
+                    OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
+
+                    CampingDetail campingDetail = orderMenu.getCampingDetail();
+
+                    if(campingDetail != null) {
+                        orderMenuList.add(i, orderMenu);
+                    }
+                }
+            }
+
+            System.out.println(orderMenuList.size());
+            return orderMenuList;
+        }
+        return null;
+    }
+
 
 }
