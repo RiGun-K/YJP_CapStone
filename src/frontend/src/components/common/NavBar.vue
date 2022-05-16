@@ -33,7 +33,10 @@
             <router-link class="nav-link" to="/myPage" v-if="uiLogin!='' && uiLogin!=5">마이페이지</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/mAdmin" v-if="uiLogin==5">관리자 페이지</router-link>
+            <router-link class="nav-link" to="/mAdmin" v-if="uiLogin==5">관리자업무</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/storageManager" v-if="uiLogin==5">보관소관리자</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/sellerAccept" v-if="uiLogin==5">판매자승인</router-link>

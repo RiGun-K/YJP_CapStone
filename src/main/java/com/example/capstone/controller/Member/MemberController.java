@@ -335,7 +335,7 @@ public class MemberController {
 
     ///테스트///
     @PostMapping("testCheck")
-    public void testCheck(){
-        System.out.println("테스트 성공");
+    public void testCheck(@RequestBody String a){
+       System.out.println(a);
     }
 }
