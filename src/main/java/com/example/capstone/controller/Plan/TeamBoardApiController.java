@@ -28,4 +28,14 @@ public class TeamBoardApiController {
     public List<TeamBoardDto> loadTeamBoards(@RequestParam Long teamCode){
         return teamBoardService.loadTeamBoards(teamCode);
     }
+
+    @PutMapping("api/editContent")
+    public void editContent(@RequestBody TeamBoardDto teamBoardDto){
+        System.out.println(teamBoardDto.toString());
+        teamBoardService.editContent(teamBoardDto);
+    }
+    @DeleteMapping("api/deleteContent")
+    public void deleteContent(@RequestParam Long teamBoardDto){
+        teamBoardService.deleteContent(teamBoardDto);
+    }
 }

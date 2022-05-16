@@ -25,7 +25,7 @@ import java.util.Optional;
 @Transactional
 public class TeamBoardService {
     private final TeamBoardRepository teamBoardRepository;
-    private  final TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
 
     public void insertContent(TeamBoardDto teamBoardDto) {
@@ -58,7 +58,8 @@ public class TeamBoardService {
 //        }
 //        return teamBoardDtos;
     }
-    public List<TeamBoardDto> loadTeamBoards(Long teamDto){
+
+    public List<TeamBoardDto> loadTeamBoards(Long teamDto) {
         Optional<Team> team = teamRepository.findById(teamDto);
         List<TeamBoard> teamBoards = teamBoardRepository.findByTeamCodeOrderByBoardDate(team.get());
         List<TeamBoardDto> teamBoardDtos = new ArrayList<>();
@@ -69,9 +70,22 @@ public class TeamBoardService {
                     .contentDto(tb.getBoardContent())
                     .memberDto(new MemberDto(tb.getMcode()))
                     .boardDateDto(tb.getBoardDate())
+                    .teamBoardCodeDto(tb.getTeamBoardCode())
                     .build();
             teamBoardDtos.add(teamBoardDto1);
         }
         return teamBoardDtos;
+    }
+
+    public void editContent(TeamBoardDto teamBoardDto) {
+        String localDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+        Optional<TeamBoard> teamBoard = teamBoardRepository.findById(teamBoardDto.getTeamBoardCodeDto());
+        teamBoard.get().setBoardContent(teamBoardDto.getContentDto());
+        teamBoard.get().setBoardDate(localDateTime);
+        teamBoardRepository.save(teamBoard.get());
+    }
+    public void deleteContent(Long teamBoardDto){
+        Optional<TeamBoard> teamBoard = teamBoardRepository.findById(teamBoardDto);
+        teamBoardRepository.delete(teamBoard.get());
     }
 }

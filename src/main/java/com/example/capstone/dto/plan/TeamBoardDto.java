@@ -13,12 +13,14 @@ public class TeamBoardDto {
     private MemberDto memberDto;
     private String contentDto;
     private String boardDateDto;
+    private Long teamBoardCodeDto;
 
     @Builder
-    public TeamBoardDto(TeamDto teamDto, MemberDto memberDto, String contentDto, String boardDateDto) {
+    public TeamBoardDto(TeamDto teamDto, MemberDto memberDto, String contentDto, String boardDateDto, Long teamBoardCodeDto) {
         this.teamDto = teamDto;
         this.memberDto = memberDto;
         this.contentDto = contentDto;
         this.boardDateDto = boardDateDto;
+        this.teamBoardCodeDto = teamBoardCodeDto;
     }
 }

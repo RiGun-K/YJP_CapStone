@@ -16,6 +16,18 @@
 				<td>{{ value.memberDto.mname }}</td>
 				<td>{{ value.contentDto }}</td>
 				<td>{{ value.boardDateDto }}</td>
+				<td
+					v-if="
+						value.memberDto.mname === this.$store.state.member.mname
+					"
+				>
+					<button @click="editContent(value.teamBoardCodeDto)">
+						수정
+					</button>
+					<button @click="deleteContent(value.teamBoardCodeDto)">
+						삭제
+					</button>
+				</td>
 			</tr>
 		</table>
 		<textarea v-model="content">게시글을 작성하세요</textarea>
@@ -71,10 +83,36 @@ export default {
 			planList: [],
 			content: '',
 			contentList: [],
-			//	teamCode = this.$state.state.teamCode.teamCode,
+			myContent: true,
 		};
 	},
 	methods: {
+		deleteContent: function (boardCode) {
+			const url = 'api/deleteContent';
+			axios
+				.delete(url, { params: { teamBoardDto: boardCode } })
+				.then((response) => {
+					this.loadTeamBoards();
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
+		editContent: function (boardCode) {
+			const url = 'api/editContent';
+			const newContent = prompt('새 글을 입력하세요');
+			axios
+				.put(url, {
+					teamBoardCodeDto: boardCode,
+					contentDto: newContent,
+				})
+				.then((response) => {
+					this.loadTeamBoards();
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 		loadTeamBoards: function () {
 			const url = 'api/loadTeamBoards';
 			const data = {
@@ -117,7 +155,6 @@ export default {
 				.then((response) => {
 					response.data.map((item) => {
 						this.planList.push(item);
-						return console.log(item);
 					});
 				})
 				.catch((error) => {
