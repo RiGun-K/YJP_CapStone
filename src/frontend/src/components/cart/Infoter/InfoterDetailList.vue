@@ -6,19 +6,21 @@
       <div class="content-detail-list">
         <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
         <div class="card" style="width: 18rem;">
-          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="..." @click="oo">
+          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">상품명: {{ this.content.campingName }}</h5>
             <p class="card-text">설명: {{ this.content.campingInfo }}</p>
             <p class="card-text">주소: {{ this.content.address }}</p>
             <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-            <a href="#" class="btn btn-primary" @click="buyData">객실선택</a>
+            <a href="#" class="btn btn-primary" @click="detailData">객실선택</a>
           </div>
         </div>
       </div>
 
     </b-card-text>
     <br>
+
+
     <div v-if="stateCheck">
       <h2> 캠핑장 내 객실 선택 및 예약</h2>
       <b-card-text>
@@ -30,6 +32,20 @@
               <p class="card-text">설명: {{ this.content.campingDetails[0].detailFunction }}</p>
               <p class="card-text">최대인원: {{ this.content.campingDetails[0].maximumNumber }}</p>
               <p class="card-text">객실 가격: {{ this.content.campingDetails[0].detailPrice }}</p>
+              <a href="#" class="btn btn-primary" @click="buyData">예약 및 결제</a>
+            </div>
+          </div>
+        </div>
+      </b-card-text>
+      <b-card-text>
+        <div class="content-detail-list">
+          <div class="card" style="width: 18rem;">
+            <img :src="'/api/product_detail_images/' + content.campingDetails[1].filename" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">객실명: {{ this.content.campingDetails[1].detailName }}</h5>
+              <p class="card-text">설명: {{ this.content.campingDetails[1].detailFunction }}</p>
+              <p class="card-text">최대인원: {{ this.content.campingDetails[1].maximumNumber }}</p>
+              <p class="card-text">객실 가격: {{ this.content.campingDetails[1].detailPrice }}</p>
               <a href="#" class="btn btn-primary" @click="buyData">예약 및 결제</a>
             </div>
           </div>
@@ -87,23 +103,15 @@ export default {
           })
 
     },
-    // buyData() {
-    //   this.$router.push({
-    //     path: `/itemBuy/buyNow/${this.content.buyId}`
-    //   })
-    // },
 
+
+    detailData() {
+      this.stateCheck = true;
+    },
     buyData() {
-      this.stateCheck = true,
-          axios.get('http://localhost:9002/api/product_detail_images/' + this.content.campingDetails[0].filename )
-              .then(res => {
-                console.log("이미지 불러오기 성공");
-              })
-              .catch(e => {
-                console.log("이미지 불러오기 실패" + e);
-              })
       this.$router.push({
             path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
+        // path: `/infoter/infoterNow/${this.content.campingDetails[1].detailId}`
           })
     },
 

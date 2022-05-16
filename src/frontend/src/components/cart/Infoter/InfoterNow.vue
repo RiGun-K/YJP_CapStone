@@ -17,65 +17,42 @@
       </tr>
     </table>
 
-    <h3>받는사람 정보</h3>
+    <h3>예약 정보</h3>
     <table>
       <tr>
-        <td class="buy-now-td">이름</td>
-        <td><input type="text" v-model="getterName"></td>
+        <td class="infoter-now-td">이름</td>
+        <td><input type="text"></td>
       </tr>
       <tr>
-        <td class="buy-now-td">우편번호</td>
-        <td><input v-bind:value="zip" v-bind:disabled="zip" placeholder="우편번호"><button @click="showApi()">우편번호 찾기</button></td>
+        <td class="infoter-now-td">연락처</td>
+        <td><input type="text"></td>
       </tr>
       <tr>
-        <td rowspan='2' class="buy-now-td">배송 주소</td>
-        <td><input size="40" v-bind:value="basicAddress" v-bind:disabled="basicAddress" placeholder="기본 주소"></td>
+        <td class="infoter-now-td">예약 요청사항</td>
+        <td><input size="40" type="text"></td>
       </tr>
       <tr>
-        <!--        <td></td>-->
-        <td><input size="40" v-bind:name="detailAddress" placeholder="상세 주소 입력"> </td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">연락처</td>
-        <td><input type="text" v-model="getterPhoneNumber" maxlength="12"></td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">배송 요청사항</td>
-        <td><input v-model="deliveryMessage" size="40" type="text"></td>
-      </tr>
-    </table>
-
-    <h3>상품 정보</h3>
-    <table>
-      <tr>
-        <td class="buy-now-td">객실 이름</td>
-        <td>{{ this.content.detailName }}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">상품 금액</td>
-        <td>{{ this.content.detailPrice }}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">배송비</td>
-        <td>10000</td>
+        <td class="infoter-now-td">예약일</td>
+        <td><Datepicker v-model="reservationDate" :enable-time-picker="false" :min-date="today" :max-date="end" range placeholder="Select date range"></Datepicker></td>
       </tr>
     </table>
 
     <h3>결제 정보</h3>
     <table>
       <tr>
-        <td class="buy-now-td">총 상품 금액</td>
-        <td>200000</td>
+        <td class="buy-now-td">객실 이름</td>
+        <td>{{ this.content.detailName }}</td>
       </tr>
       <tr>
-        <td class="buy-now-td">배송비</td>
-        <td>10000</td>
+        <td class="buy-now-td">객실 금액</td>
+        <td>{{ this.content.detailPrice }}</td>
       </tr>
       <tr>
-        <td class="buy-now-td">총 결제 금액</td>
+        <td class="infoter-now-td">총 결제 금액</td>
         <td>{{price}}</td>
       </tr>
     </table>
+
 
     <h5>구매조건 확인 및 결제대행 서비스 약관 동의 <button @click="checkBuy()">보기</button></h5>
     <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
@@ -83,28 +60,19 @@
     <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
     <button class="payNow" @click="paymentBtn()">결제하기</button>
 
-    <!--    <div class="buy-check-scroll" v-if="buyCheck">-->
-    <!--      <div>-->
-    <!--        <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--          This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--          This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--          This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--          This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--          This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--          This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.-->
-    <!--        </p>-->
-    <!--      </div>-->
-    <!--    </div>-->
     <button class="cancel-buy-now" @click="cancelBtn()">취소</button>
 
   </div>
 </template>
 
 <script>
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 import axios from "axios";
 import store from "@/store";
 export default {
-  name: 'BuyNow',
+  name: 'InfoterNow',
+  components: { Datepicker },
   created() {
     this.DataList();
   },
@@ -122,6 +90,17 @@ export default {
       paymentDate: new Date(),
       content: [],
       user: [],
+      reservationDate: null
+    }
+  },
+
+  setup () {
+    const today = new Date()
+    const todayEnd = new Date()
+    const end = new Date(todayEnd.setDate(todayEnd.getDate() + 21))
+    return {
+      today,
+      end
     }
   },
   mounted () {
@@ -154,28 +133,7 @@ export default {
             console.log(e);
           })
     },
-    showApi () {
-      new window.daum.Postcode({
-        oncomplete: (data) => {
-          let fullRoadAddr = data.roadAddress
-          let extraRoadAddr = ''
-          if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-            extraRoadAddr += data.bname
-          }
-          if (data.buildingName !== '' && data.apartment === 'Y') {
-            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName)
-          }
-          if (extraRoadAddr !== '') {
-            extraRoadAddr = ' (' + extraRoadAddr + ')'
-          }
-          if (fullRoadAddr !== '') {
-            fullRoadAddr += extraRoadAddr
-          }
-          this.zip = data.zonecode
-          this.basicAddress = fullRoadAddr
-        }
-      }).open()
-    },
+
     paymentBtn () {
       if (confirm('결제 하시겠습니까?')) {
         const IMP = window.IMP
@@ -247,16 +205,6 @@ export default {
       }
     }
   },
-  watch: {
-    getterPhoneNumber(val) {
-      const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-      if(reg.exec(val)!==null) {
-        this.getterPhoneNumber = this.getterPhoneNumber.slice(0,-1);
-        alert("숫자만 입력해주세요")
-      }
-      return this.getterPhoneNumber=this.getterPhoneNumber.replace(/[^-\.0-9]/g,'');
-    }
-  }
 }
 </script>
 

@@ -17,9 +17,9 @@
             <tbody>
             <tr>
               <td>{{ order.orderCode }}</td>
-              <td>{{ this.menus[0].menuBuy.buyName }}</td>
-              <td>{{ this.menus[0].orderMenuCount }}개</td>
-              <td>{{ this.menus[0].orders.orderPrice }}</td>
+              <td>{{ this.menus[index].menu.menuname }}</td>
+              <td>{{ this.menus[index].orderMenuCount }}개</td>
+              <td>{{ order.orderPrice }}</td>
             </tr>
             <!-- PathVariable 을 위해서는 router-link 작성 -->
             <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -56,8 +56,8 @@ export default {
                   this.menus = res2.data;
                   console.log(this.menus);
                 }).catch(e2 =>{
-              console.log(e2)
-            })
+                  console.log(e2)
+                })
           })
           .catch(e => {
             console.log(e);
