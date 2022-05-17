@@ -1,59 +1,36 @@
 <template>
-  <div class="storages-add">
-    <!--    <div class="storage-add">-->
+  <div class="allBody">
+    <div class="bodydiv">
+      <label class="labelWidth">보관소명</label>
+      <input type="text" v-model="form.storageName" placeholder="보관소명">
+    </div>
+    <div class="bodydiv">
+      <label class="labelWidth">우편주소</label>
+      <input type="text" v-model="form.storageZipcode" placeholder="우편번호" readonly>
+      <button @click="showApi()" class="addressBtn">주소찾기</button>
+    </div>
+    <div class="bodydiv">
+      <label class="labelWidth">도로명주소</label>
+      <input type="text" v-model="form.storageAddress" placeholder="도로명주소" readonly>
+    </div>
+    <div class="bodydiv">
+      <label class="labelWidth">상세주소</label>
+      <input type="text" v-model="form.storageDetailAddress" placeholder="상세주소">
+    </div>
+    <div class="bodydiv">
+      <label class="labelWidth">이미지</label>
+          <input type="file"
+                 id="file"
+                 @change="handleImage"
+                 enctype="multipart/form-data"
+                 aria-describedby="inputGroupFileAddon04"
+                 aria-label="Upload"
+                 placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+                 drop-placeholder="Drop file here...">
+    </div>
 
-    <!--      <div class="form-floating mb-3">-->
-    <!--        <input type="text" v-model="form.storageName" placeholder="보관소명" class="form-control" id="floatingName">-->
-    <!--        <label for="floatingName">보관소명</label>-->
-    <!--      </div>-->
-    <!--      <div class="form-floating mb-3">-->
-    <!--        <input type="text" v-model="form.storageZipcode" placeholder="우편번호" class="form-control" id="floatingZipcode">-->
-    <!--        <label for="floatingZipcode">우편번호</label>-->
-    <!--      </div>-->
-    <!--      <div class="form-floating">-->
-    <!--        <input type="text" v-model="form.storageAddress" placeholder="주소" class="form-control" id="floatingAddress">-->
-    <!--        <label for="floatingAddress">주소</label>-->
-    <!--      </div>-->
-    <!--      <button class="storage-add-btn" @click="postStorage()">ADD</button>-->
-    <!--    </div>-->
-
-    <table>
-      <tr>
-        <td>보관소명</td>
-        <td><input type="text" v-model="form.storageName" placeholder="보관소명"></td>
-      </tr>
-      <tr>
-        <td>우편주소</td>
-        <td>
-          <input type="text" v-model="form.storageZipcode" placeholder="우편번호">
-          <button @click="showApi()">우편번호 찾기</button>
-        </td>
-      </tr>
-      <tr>
-        <td>도로명주소</td>
-        <td><input type="text" v-model="form.storageAddress" placeholder="주소"></td>
-      </tr>
-      <tr>
-        <td>상세주소</td>
-        <td><input type="text" v-model="form.storageDetailAddress" placeholder="주소"></td>
-      </tr>
-      <tr>
-        <td>이미지</td>
-        <td>
-          <form>
-            <input type="file"
-                   id="file"
-                   @change="handleImage"
-                   enctype="multipart/form-data"
-                   aria-describedby="inputGroupFileAddon04"
-                   aria-label="Upload"
-                   placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                   drop-placeholder="Drop file here...">
-          </form>
-        </td>
-      </tr>
-    </table>
     <button class="storage-add-btn" @click="next()">NEXT</button>
+
     <div class="storage-box" v-if="boxC">
       <p>보관함 추가</p>
       <div class="storage-box-add">
@@ -84,7 +61,9 @@
           </tbody>
         </table>
       </div>
-      <button class="storage-add-btn" @click="postStorage()">ADD</button>
+      <div class="storageBtnBody">
+        <button class="storageBtn" @click="postStorage()">ADD</button>
+      </div>
     </div>
   </div>
   <div id="map" ></div>
@@ -297,32 +276,54 @@ export default {
 </script>
 
 <style scoped>
-.storages-add {
+.allBody{
   width: 100%;
-  height: 100%;
+  margin-top: 1%;
   text-align: center;
 }
 
-.storage-add {
-  margin-top: 10%;
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  margin-left: 25%;
-
+.labelWidth{
+  text-align: left;
+  width: 10%;
 }
 
-.form-floating {
-  margin-right: 5%;
+.bodydiv{
+  text-align: left;
+  margin-left: 25%;
+  width: 70%;
+  margin-top: 1%;
+}
+
+.addressBtn{
+  width: 8%;
+  height: 100%;
+  margin-left: 1%;
+  text-align: center;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+}
+
+.storageBtn{
+  margin-top: 1%;
+  padding: 1%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+}
+
+.storageBtnBody{
+  width: 100%;
+  text-align: right;
 }
 
 .storage-add-btn {
-  width: 10%;
+  width: 6%;
+  height: 6%;
   text-align: center;
-  margin-left: 2%;
-  margin-right: 3%;
-  margin-bottom: 20%;
-  padding: 1.5%;
+  padding: 1%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
@@ -335,37 +336,17 @@ export default {
 }
 
 .storage-box {
-  padding-top: 1%;
+  margin-top: 2%;
   border: solid 3px #000a69;
   width: 50%;
   justify-content: center;
   align-items: center;
   margin-left: 25%;
   padding-bottom: 1%;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 1%;
 }
-
-.storage-box-p {
-  padding-bottom: 3%;
-}
-
-.storage-btn {
-  text-align: center;
-  margin-left: 2%;
-  margin-right: 3%;
-  margin-top: 10%;
-  width: 45%;
-  padding: 1.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-}
-
-.storage-btn:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-
 .storage-add-sub {
   background-color: #ffffff;
   color: #00a3de;

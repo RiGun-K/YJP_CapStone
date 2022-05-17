@@ -13,9 +13,9 @@
     <button @click="search()">검색</button>
 
 
-    <div class="storage-get" v-for="(storage,index) in storageList" :key="index"
+    <div v-for="(storage,index) in storageList" :key="index"
          @click="GetStorageDetail(storage.storageCode)"
-         style="margin-bottom: 3%">
+         class="listBody">
       <div class="card" style="width: 35%; font-weight: bolder; margin-left: 7%">
         <div class="card-body">
           이름: {{ storage.storageName }}
@@ -262,6 +262,18 @@ export default {
 </script>
 
 <style scoped>
+/*추가*/
+.listBody{
+  padding: 1%;
+  margin-left: 5%;
+  float: left;
+  width: 40%;
+  border: 1px solid black;
+}
+
+
+
+/*기존*/
 #map {
   width: 400px;
   height: 400px;

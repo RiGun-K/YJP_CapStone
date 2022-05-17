@@ -1,8 +1,8 @@
 <template>
   <table border="1px" align="center" style="margin-left: 5%; margin-right: 5%;
-                                            width: 90%" >
+                                            width: 90%; margin-top: 1%" >
     <tr>
-      <th colspan="10">판매 관리자</th>
+      <th colspan="10"><h1 style="color: black">판매 관리자</h1></th>
     </tr>
     <tr>
       <th>신청자</th>
@@ -79,5 +79,8 @@ export default {
 </script>
 
 <style scoped>
-
+th, td{
+  text-align: center;
+  border: 1px solid #111111;
+}
 </style>

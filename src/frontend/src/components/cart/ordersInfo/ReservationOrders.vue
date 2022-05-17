@@ -16,10 +16,10 @@
             </thead>
             <tbody>
             <tr>
-              <td>{{ order.orderCode }}</td>
-              <td>{{ this.menus[1].campingDetail.detailName }}</td>
-              <td>{{ this.menus[1].orderMenuCount }}개</td>
-              <td>{{ order.orderPrice }}</td>
+              <td>{{  }}</td>
+              <td>{{ }}</td>
+              <td>{{  }}개</td>
+              <td>{{  }}</td>
             </tr>
             <!-- PathVariable 을 위해서는 router-link 작성 -->
             <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -34,7 +34,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "BuyOrders",
+  name: "ReservationOrders",
   data(){
     return{
       content: [],
@@ -48,13 +48,13 @@ export default {
   },
   methods:{
     DataList() {
-      axios.get('http://localhost:9002/api/ordersList/buyOrders/' + this.content.mcode)
+      axios.get('http://localhost:9002/api/ordersList/reservationOrders/' + this.content.mcode)
           .then(res => {
-            axios.get('http://localhost:9002/api/ordersList/buyOrderMenu/' + this.content.mcode)
+            axios.get('http://localhost:9002/api/ordersList/reservationOrderMenu/' + this.content.mcode)
                 .then(res2 =>{
                   this.orders = res.data;
                   this.menus = res2.data;
-                  console.log(this.menus);
+                  console.log(this.orders);
                 }).catch(e2 =>{
               console.log(e2)
             })
