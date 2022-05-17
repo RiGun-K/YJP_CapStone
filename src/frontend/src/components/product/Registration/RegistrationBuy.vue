@@ -86,19 +86,23 @@
         </h3>
         <div class="input-group">
           <form>
-            <input type="file"
+            <input multiple
+                   type="file"
                    id="file"
+                   name="profile_files"
+                   ref="serveyImage"
                    @change="handleImage"
                    enctype="multipart/form-data"
                    aria-describedby="inputGroupFileAddon04"
                    aria-label="Upload"
                    placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                   multiple
                    accept="image/*"
-                   drop-placeholder="Drop file here..." >
+                   drop-placeholder="Drop file here..."
+                   >
             <div id="image_container"/>
           </form>
         </div>
+        <br>
 
         <br>
         <div class="btn_area">
@@ -132,12 +136,13 @@ export default {
       buyPrice: '',
       buyEx: '',
       file: '',
+
       mid: store.getters.getLoginState.loginState,
 
       id: '',
       myContent: [],
-
-
+      clist: [],
+      files: '',
     }
   },
   methods: {
@@ -159,6 +164,8 @@ export default {
           let img = document.createElement("img");
           img.setAttribute("src", e1.target.result);
           document.querySelector("div#image_container").appendChild(img);
+
+
         });
 
 
@@ -170,38 +177,68 @@ export default {
       }
 
     },
+
+
     BuySubmit: function () {
-      const formData = new FormData();
+      console.log(this.file.length);  // undefined
 
-      // const photoFile = document.getElementById("file_load");
-
-      formData.append('kindid', this.kindid);
-      formData.append('buyName', this.buyName);
-      formData.append('buyPrice', this.buyPrice);
-      formData.append('buyStock', this.buyStock);
-      formData.append('buyEx', this.buyEx);
-      formData.append('file', this.file);
-      formData.append('mid', this.mid);
-
-
-
-      console.log(this.kindid, this.buyName, this.buyStock, this.buyPrice, this.buyEx, this.file, this.mid);
-      const baseURI = 'http://localhost:9002';
-
-      if (confirm("상품을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/Buy_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
-            .then(res => {
-              console.log("성공" + res);
-              alert("상품이 등록되었습니다.");
-              this.$router.push({
-                name: "ProductMain"
-              });
-            })
-            .catch(function (error) {
-              console.log("에러" + error);
-              alert("상품이 등록되지않았습니다.");
-            })
+      const data = {
+        kindid: this.kindid,
+        buyName: this.buyName,
+        buyPrice:  this.buyPrice,
+        buyStock: this.buyStock,
+        buyEx: this.buyEx,
+        mid: this.mid
       }
+
+      axios.post('/api/Buy_Signup', data)
+          .then(res => {
+            console.log("성공" + res);
+            console.log(res.data);
+            this.clist = res.data;
+            this.buyId = this.clist.buyId;
+
+            //
+            const formData = new FormData();
+
+
+
+            // formData.append('file', this.file);
+            formData.append('buyId', this.buyId);
+
+
+
+
+
+            for(let i = 0; i < this.files.length; i++) {
+              formData.append("file", this.files[i]);
+            }
+
+
+            console.log(this.files[i], this.buyId);
+
+
+            if (confirm("상품을 등록하시겠습니까?")) {
+              axios.post('/api/Buy_Signup_Files/', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                  .then(res => {
+                    console.log("성공" + res);
+                    alert("상품이 등록되었습니다.");
+                    this.$router.push({
+                      name: "ProductMain"
+                    });
+                  })
+                  .catch(function (error) {
+                    console.log("에러" + error);
+                    alert("상품이 등록되지않았습니다.");
+                  })
+            }
+
+          })
+          .catch(function (error) {
+            console.log("에러" + error);
+          })
+
+
 
     },
   }

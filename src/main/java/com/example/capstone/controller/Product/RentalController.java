@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,8 +52,11 @@ public class RentalController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+
+
+//            UUID uuid = UUID.randomUUID();
+            String filename = now + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
@@ -119,9 +124,11 @@ public class RentalController {
 
         try {
             String origFilename = uploadFile.getOriginalFilename();
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+
+//            UUID uuid = UUID.randomUUID();
+            String filename = now + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";

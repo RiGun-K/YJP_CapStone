@@ -1,8 +1,13 @@
 package com.example.capstone.controller.Product;
 
+import com.example.capstone.domain.Board.Writer;
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Camping;
+import com.example.capstone.domain.Product.Images;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.dto.Board.BoardDTO;
+import com.example.capstone.dto.Product.ImagesDTO;
 import com.example.capstone.dto.Product.MenuBuyDTO;
 import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
@@ -11,10 +16,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,58 +48,79 @@ public class BuyController {
     @Autowired
     CampingDetailRepository campingDetailRepository;
 
+    @Autowired
+    ImagesRepository imagesRepository;
+
+
     /* 구매상품 등록 페이지 */
     @PostMapping("/Buy_Signup")
-    public MenuBuy addMenuBuy(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
-        System.out.println("파일 이름" + uploadFile.getOriginalFilename());
-        System.out.println("파일 크기" + uploadFile.getSize());
-
-        try {
-            String origFilename = uploadFile.getOriginalFilename();
-
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
-
-            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
-            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
-            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdir();
-                }
-                catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String filePath = savePath + "\\" + filename;
-            uploadFile.transferTo(new File(filePath));
-
-            MenuBuyDTO.setOrigFilename(origFilename);
-            MenuBuyDTO.setFilename(filename);
-            MenuBuyDTO.setFilePath(filePath);
+    public MenuBuy addMenuBuy(@RequestBody MenuBuyDTO menuBuyDTO) {
+        Optional<Member> member = memberRepository.findByMID(menuBuyDTO.getMid());
+        Optional<Kind> kind = kindRepository.findById(menuBuyDTO.getKindid());
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(MenuBuyDTO.getMid());
-        Optional<Member> member = memberRepository.findByMID(MenuBuyDTO.getMid());
+        if(menuBuyDTO.getSavedTime()==null)
+            menuBuyDTO.setSavedTime(LocalDate.now().toString());
 
 
-        Optional<Kind> kind = kindRepository.findById(MenuBuyDTO.getKindid());
-
-
-        if(MenuBuyDTO.getSavedTime()==null)
-            MenuBuyDTO.setSavedTime(LocalDate.now().toString());
-
-
-        MenuBuy menuBuy = new MenuBuy(MenuBuyDTO.getBuyName(), MenuBuyDTO.getBuyPrice(), MenuBuyDTO.getBuyEx(), MenuBuyDTO.getSavedTime(), MenuBuyDTO.getBuyStock(), MenuBuyDTO.getOrigFilename(), MenuBuyDTO.getFilename(), MenuBuyDTO.getFilePath(), kind.get(), member.get());
+        MenuBuy menuBuy = new MenuBuy(menuBuyDTO.getBuyName(), menuBuyDTO.getBuyPrice(), menuBuyDTO.getBuyEx(), menuBuyDTO.getSavedTime(), menuBuyDTO.getBuyStock(), kind.get(), member.get());
         System.out.println(menuBuy);
 
         menuBuyRepository.save(menuBuy);
 
         return menuBuy;
+    }
+
+    // MultipartHttpServletRequest mhsq
+    /* 구매상품에 대한 이미지 등록 */
+    @PostMapping("/Buy_Signup_Files/")
+    public void addMenuBuyFiles(MultipartHttpServletRequest mhsq, ImagesDTO imagesDTO) throws IllegalStateException, IOException {
+
+        /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+        String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+        /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+        if (!new File(savePath).exists()) {
+            try {
+                new File(savePath).mkdir();
+            }
+            catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+
+        List<MultipartFile> mf = mhsq.getFiles("file");
+        System.out.println(mf.size());
+        if (mf.size() == 1 && mf.get(0).getOriginalFilename().equals("")) {
+
+        } else {
+            for (int i = 0; i < mf.size(); i++) {
+                // 파일명 중복처리
+                String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+                // 본래 파일명
+                String origFilename = mf.get(i).getOriginalFilename();
+                // DB에 저장되는 파일명
+                String filename = now + "_" + origFilename;
+
+                String filePath = savePath + "\\" + filename;
+                mf.get(i).transferTo(new File(filePath));
+
+                imagesDTO.setOrigFilename(origFilename);
+                imagesDTO.setFilename(filename);
+                imagesDTO.setFilePath(filePath);
+
+                System.out.println(imagesDTO.getBuyId());
+                Optional<MenuBuy> menuBuy = menuBuyRepository.findById(imagesDTO.getBuyId());
+
+
+                Images images = new Images(imagesDTO.getOrigFilename(), imagesDTO.getFilename(), imagesDTO.getFilePath(), menuBuy.get());
+                System.out.println(images);
+
+                imagesRepository.save(images);
+                System.out.println("파일이 저장되었습니다.");
+            }
+
+        }
+
     }
 
     /* 구매상품 조회 페이지 */
@@ -143,9 +172,12 @@ public class BuyController {
 //        menuRepository.save(updateMyMenu.get());
         try {
             String origFilename = uploadFile.getOriginalFilename();
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+
+//            UUID uuid = UUID.randomUUID();
+            String filename = now + "_" + origFilename;
+
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
             /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
