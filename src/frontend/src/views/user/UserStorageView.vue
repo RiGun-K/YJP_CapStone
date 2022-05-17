@@ -1,33 +1,35 @@
 <template>
   <div class="user-storage-view">
     <h3>보관소 리스트 페이지</h3>
-
-    <select v-model="bigPick" @change="bigCheck(bigPick)">
-      <option value="0">전국</option>
-      <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
-    </select>
-    <select v-model="smallPick">
-      <option value="0">전체</option>
-      <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
-    </select>
-    <button @click="search()">검색</button>
-
-
-    <div v-for="(storage,index) in storageList" :key="index"
-         @click="GetStorageDetail(storage.storageCode)"
-         class="listBody">
-      <div class="card" style="width: 35%; font-weight: bolder; margin-left: 7%">
-        <div class="card-body">
-          이름: {{ storage.storageName }}
-        </div>
-        <div class="card-body">
-          주소: {{ storage.storageAddress }}
-        </div>
-        <button @click="askBox(this.boxList)" class="storage-submit-btn">신청</button>
-      </div>
-
+    <div class="searchDiv">
+      <select v-model="bigPick" @change="bigCheck(bigPick)">
+        <option value="0">전국</option>
+        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+      </select>
+      <select v-model="smallPick">
+        <option value="0">전체</option>
+        <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+      </select>
+      <button @click="search()">검색</button>
     </div>
-    <div>
+
+
+    <div class="listBody">
+      <div v-for="(storage,index) in storageList" :key="index"
+           @click="GetStorageDetail(storage.storageCode)" class="listObj">
+        <div class="card">
+          <div class="card-body">
+            이름: {{ storage.storageName }}
+          </div>
+          <div class="card-body">
+            주소: {{ storage.storageAddress }}
+          </div>
+          <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mapDiv">
       <div id="map"></div>
     </div>
 
@@ -264,14 +266,30 @@ export default {
 <style scoped>
 /*추가*/
 .listBody{
-  padding: 1%;
+  padding: 0.5%;
   margin-left: 5%;
+  margin-top: 1%;
+  margin-right: 1%;
+  width: 45%;
   float: left;
-  width: 40%;
-  border: 1px solid black;
 }
-
-
+.searchDiv{
+  margin-left: 2%;
+  margin-top: 1%;
+}
+.listObj{
+  width: 100%;
+}
+.mapDiv{
+  margin-top: 1%;
+  width: 45%;
+  float: right;
+}
+.card{
+  margin-top: 1%;
+  width: 100%;
+  text-align: right;
+}
 
 /*기존*/
 #map {
@@ -290,46 +308,10 @@ export default {
   margin-bottom: 5%;
 }
 
-.card-body {
-  padding: 3%;
-}
-
-.storage-box {
-  border: solid 3px #00a3de;
-  border-radius: 10px;
-  width: 30%;
-}
-
-.storage-view {
-  display: -webkit-flex;
-  display: flex;
-}
-
-.storage {
-  border: solid 3px #000a69;
-  margin-left: 7%;
-  width: 50%;
-  padding-top: 2%;
-  padding-bottom: 2%;
-}
-
-.storage-name-h5 {
-  margin-left: 2%;
-  margin-top: 2%;
-  font-weight: bolder;
-  width: 40%;
-}
-
-.storage-name-btn {
-  display: flex;
-  width: 100%;
-  height: 30%;
-}
-
 .storage-submit-btn {
   margin: 2% -30% 2% 33%;
   text-align: center;
-  width: 10%;
+  width: 20%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
