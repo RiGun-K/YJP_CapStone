@@ -5,12 +5,13 @@ import com.example.capstone.domain.Member.Company;
 import com.example.capstone.domain.Member.MailCheck;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Member.PhCheck;
+import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.repository.Board.BoardRepository;
 import com.example.capstone.repository.Member.CompanyRepository;
 import com.example.capstone.repository.Member.MemberRepository;
-import com.example.capstone.domain.Member.MailCheck;
-import com.example.capstone.repository.Storage.MemberEquipmentTest;
+import com.example.capstone.repository.Product.KindRepository;
+import com.example.capstone.repository.Storage.MemberEquipmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,16 @@ public class MemberController {
     @Autowired
     private CompanyRepository companyRepository;
 
+    ///게시글///
+    @Autowired
+    private BoardRepository boardRepository;
+
+    ///레포지토리 테스트///
+    @Autowired
+    private MemberEquipmentRepository memberEquipmentRepository;
+
+    @Autowired
+    private KindRepository kindRepository;
 
     //////로그인 부분///////
     @PostMapping("/login")
@@ -306,22 +317,37 @@ public class MemberController {
     }
 
     ///마이페이지 부분///
-    ///레포지토리 테스트///
-    @Autowired
-    private MemberEquipmentTest memberEquipmentTest;
 
     ///내장비페이지///
     @PostMapping("myPageEquip")
     public List<MemberEquipment> myPageEquip(@RequestBody HashMap<String, String> body){
         Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
-        List<MemberEquipment> memberEquipmentList = memberEquipmentTest.findByMCode(member.get());
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findAllByMCode(member.get());
 
         return  memberEquipmentList;
     }
 
-    ///레포지토리 테스트///
-    @Autowired
-    private BoardRepository boardRepository;
+    ///분류조회///
+    @GetMapping("allKindGet")
+    public List<Kind> allKindGet(){
+        List<Kind> kindList = kindRepository.findAll();
+        return kindList;
+    }
+
+    ///장비추가///
+    @PostMapping("addMyEquip")
+    public Boolean addMyEquip(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        Optional<Kind> kind = kindRepository.findByKindname(body.get("KindName"));
+        MemberEquipment memberEquipment = new MemberEquipment();
+        memberEquipment.setMemEquipmentName(body.get("NAME"));
+        memberEquipment.setKindid(kind.get());
+        memberEquipment.setMCode(member.get());
+        memberEquipment.setMemEquipmentCount(Integer.parseInt(body.get("Count")));
+        memberEquipment.setMemEquipmentState("0");
+        memberEquipmentRepository.save(memberEquipment);
+        return true;
+    }
 
     ///내게시글페이지///
     @PostMapping("myWritter")

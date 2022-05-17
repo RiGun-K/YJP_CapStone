@@ -168,6 +168,7 @@ router-link{
   top: 100%;
   text-align: center;
   border: 1px solid black;
+  z-index: 1;
 }
 .menu{
   margin-top: 1%;

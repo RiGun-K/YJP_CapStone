@@ -92,6 +92,11 @@ const routes = [
     name:'memberAdmin',
     component: () => import('@/components/user/adminManage/MemberManagementAdmin')
   },
+  {
+    path:'/addEquipment',
+    name:'addEquipment',
+    component: () => import('@/components/user/myPage/AddEquip')
+  },
 
     //////////////////////////////게시판////////////////////////////////////
 
