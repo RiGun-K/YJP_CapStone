@@ -16,7 +16,7 @@
     <section>
     <form action="https://search.naver.com/search.naver">
       <div class="search">
-        <input type="text" name="query" value="">
+        <input type="text" name="query" value="1">
         <button type="submit">검색</button>
       </div>
     </form>
