@@ -131,8 +131,8 @@ export default {
           (result, status) => {
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK){
-              this.a.latitude = result[0].y
-              this.a.longitude = result[0].x
+              this.a.latitude = result[0].x
+              this.a.longitude = result[0].y
             }else{
               this.a.latitude = ''
               this.a.longitude = ''
