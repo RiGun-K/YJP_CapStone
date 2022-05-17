@@ -73,6 +73,7 @@ export default createStore({
 			console.log(state.storage);
 		},
 		putCartStorage(state, form) {
+			console.log(form)
 			state.payStorage = form;
 		},
 		cartStorageClear(state) {

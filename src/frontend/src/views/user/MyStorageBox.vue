@@ -106,7 +106,6 @@ export default {
               // box.boxState 가 1 이면 연장 버튼 on 0이면 연장 버튼 off
               if (i > 0) {
                 // 이전 보관함이름 = 지금 보관함이름 && 이전 보관소 이름 = 지금 보관소 이름
-                console.log(boxes[i - 1][3] + '&'+ box.boxName+'//'+box.storageName + '&'+ boxes[i - 1][5])
                 if (boxes[i - 1][3] == box.boxName && box.storageName == boxes[i - 1][5]) {
                   console.log(box.boxState)
                   if (box.boxState == '1') {

@@ -30,7 +30,9 @@
     <table>
       <tr>
         <td>장비 이동</td>
-        <td v-if="box.useStorageState == 4">장비 이동 신청</td>
+        <td v-if="box.useStorageState == 4">
+          장비 이동 신청 <button>이동 시작</button>
+        </td>
         <td v-else>없음</td>
       </tr>
       <tr>
