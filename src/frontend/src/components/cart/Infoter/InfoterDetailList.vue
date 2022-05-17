@@ -11,13 +11,15 @@
             <p class="card-text">설명: {{ this.content.campingInfo }}</p>
             <p class="card-text">주소: {{ this.content.address }}</p>
             <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-            <a href="#" class="btn btn-primary" @click="buyData">객실선택</a>
+            <a href="#" class="btn btn-primary" @click="detailData">객실선택</a>
           </div>
         </div>
       </div>
 
     </b-card-text>
     <br>
+
+
     <div v-if="stateCheck">
       <h2> 캠핑장 내 객실 선택 및 예약</h2>
       <b-card-text>
@@ -34,6 +36,54 @@
           </div>
         </div>
       </b-card-text>
+      <b-card-text>
+        <div class="content-detail-list">
+          <div class="card" style="width: 18rem;">
+            <img :src="'/api/product_detail_images/' + content.campingDetails[1].filename" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">객실명: {{ this.content.campingDetails[1].detailName }}</h5>
+              <p class="card-text">설명: {{ this.content.campingDetails[1].detailFunction }}</p>
+              <p class="card-text">최대인원: {{ this.content.campingDetails[1].maximumNumber }}</p>
+              <p class="card-text">객실 가격: {{ this.content.campingDetails[1].detailPrice }}</p>
+              <a href="#" class="btn btn-primary" @click="buyData">예약 및 결제</a>
+            </div>
+          </div>
+        </div>
+      </b-card-text>
+    </div>
+
+
+    <br>
+    <div class="btn_area">
+      <button type="button" @click="detail_1" class="btn_Bottom">
+        <span>캠핑장 소개</span>
+      </button>
+      <button type="button" @click="detail_2" class="btn_Bottom">
+        <span>이용 안내</span>
+      </button>
+      <button type="button" @click="detail_3" class="btn_Bottom">
+        <span>위치/주변정보</span>
+      </button>
+      <button type="button" @click="detail_4" class="btn_Bottom">
+        <span>캠핑/여행후기</span>
+      </button>
+    </div>
+
+    <br>
+    <!--    <div v-if="stateCheckB">-->
+    <h2>리뷰</h2>
+    <div class="content-detail-list-1">
+      <br>
+      <div class="my-box">
+        <div class="review">
+          <p class="review-title">d</p>
+          <p class="review-text">설명</p>
+
+        </div>
+
+        <!--        </div>-->
+      </div>
+
     </div>
   </div>
   <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
@@ -86,23 +136,15 @@ export default {
           })
 
     },
-    // buyData() {
-    //   this.$router.push({
-    //     path: `/itemBuy/buyNow/${this.content.buyId}`
-    //   })
-    // },
 
+
+    detailData() {
+      this.stateCheck = true;
+    },
     buyData() {
-      this.stateCheck = true,
-          axios.get('http://localhost:9002/api/product_detail_images/' + this.content.campingDetails[0].filename )
-              .then(res => {
-                console.log("이미지 불러오기 성공");
-              })
-              .catch(e => {
-                console.log("이미지 불러오기 실패" + e);
-              })
       this.$router.push({
             path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
+        // path: `/infoter/infoterNow/${this.content.campingDetails[1].detailId}`
           })
     }
 
