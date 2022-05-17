@@ -54,7 +54,7 @@ export default {
                 .then(res2 =>{
                   this.orders = res.data;
                   this.menus = res2.data;
-                  console.log(this.orders);
+                  console.log(this.menus);
                 }).catch(e2 =>{
               console.log(e2)
             })

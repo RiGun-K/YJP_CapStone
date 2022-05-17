@@ -98,26 +98,26 @@ public class OrderController {
 
     /* 캠핑장 객실 예약 */
     @PostMapping("/CampingRoomData")
-    public String postCampingRoomData(@RequestBody HashMap<String, String> buyData) {
+    public String postCampingRoomData(@RequestBody HashMap<String, String> reservationData) {
         Orders order = new Orders();
 
-        Optional<Member> searchMember = memberRepository.findByMID(buyData.get("MID"));
+        Optional<Member> searchMember = memberRepository.findByMID(reservationData.get("MID"));
         if (searchMember.isPresent()) {
             Member member = searchMember.get();
 
             order.setMCode(member);
-            order.setDeliveryGetter(buyData.get("reservationName"));
-            order.setDeliveryGetterTel(buyData.get("reservationTel"));
-            order.setDeliveryRequest(buyData.get("reservationRequest"));
-            order.setOrderPrice(Integer.parseInt(buyData.get("orderPrice")));
+            order.setDeliveryGetter(reservationData.get("reservationName"));
+            order.setDeliveryGetterTel(reservationData.get("reservationTel"));
+            order.setDeliveryRequest(reservationData.get("reservationRequest"));
+            order.setOrderPrice(Integer.parseInt(reservationData.get("orderPrice")));
 
             DateTimeFormatter format1 = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-            order.setStartDate(LocalDate.parse(buyData.get("startDate"), format1));
-            order.setEndDate(LocalDate.parse(buyData.get("endDate"), format1));
-            order.setOrderType(buyData.get("orderType"));
-            order.setPaymentCode(buyData.get("paymentCode"));
-            order.setOrderState(buyData.get("orderState"));
+            order.setStartDate(LocalDate.parse(reservationData.get("startDate"), format1));
+            order.setEndDate(LocalDate.parse(reservationData.get("endDate"), format1));
+            order.setOrderType(reservationData.get("orderType"));
+            order.setPaymentCode(reservationData.get("paymentCode"));
+            order.setOrderState(reservationData.get("orderState"));
 
             LocalDateTime now = LocalDateTime.now();
 
@@ -130,7 +130,7 @@ public class OrderController {
             System.out.println("buyData Order Error");
         }
 
-        Optional<CampingDetail> searchRoom = campingDetailRepository.findById(Integer.parseInt(buyData.get("roomId")));
+        Optional<CampingDetail> searchRoom = campingDetailRepository.findById(Integer.parseInt(reservationData.get("roomId")));
         System.out.println("구매한 상품번호는" + searchRoom);
 
         if (searchRoom.isPresent()) {
@@ -140,8 +140,7 @@ public class OrderController {
 
             orderMenu.setOrders(order);
             orderMenu.setCampingDetail(campingDetail);
-            orderMenu.setOrderMenuCount(Integer.parseInt(buyData.get("orderMenuCount")));
-
+            orderMenu.setOrderMenuCount(Integer.parseInt(reservationData.get("orderMenuCount")));
 
             orderMenuRepository.save(orderMenu);
 
