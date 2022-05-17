@@ -5,7 +5,7 @@
     보관소 이름: {{ this.storageList.storageName }}
     <div class="storage-view">
       <div class="storage-box" v-for="(storage,index) in storageList.storageBoxes" :key="index"
-           @click="modalViewChk(storage.storageBoxCode)">
+           @click="modalViewChk(storage)">
         <div>
           <ul>
             <li>보관함 이름: {{ storage.storageBoxName }}</li>
@@ -26,7 +26,7 @@
   <div v-if="modalView">
     <button @click="modalView = false">X</button>
     <div>
-      <BoxModalDetail :boxCode="boxCode"></BoxModalDetail>
+      <BoxModalDetail :boxCode="boxCode" ></BoxModalDetail>
     </div>
   </div>
 </template>
@@ -71,14 +71,13 @@ export default {
   },
   methods: {
     modalViewChk(storage) {
-      // console.log('post storageCode')
-      // console.log(storage)
+      console.log('post storageCode')
+      console.log(storage)
       this.boxCode = storage
       if (!this.modalView) {
         this.modalView = !this.modalView
       }
 
-      // this.$router.push({name:'boxDetail', params:{storage:storage}})
     },
     inputMamager() {
 

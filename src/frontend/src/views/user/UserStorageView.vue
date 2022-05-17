@@ -23,7 +23,7 @@
         <div class="card-body">
           주소: {{ storage.storageAddress }}
         </div>
-        <button @click="askBox(this.boxList)" class="storage-submit-btn">신청</button>
+        <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
       </div>
 
     </div>
