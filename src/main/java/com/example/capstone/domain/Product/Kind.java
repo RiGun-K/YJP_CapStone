@@ -35,7 +35,6 @@ public class Kind {
         this.kindname = kindname;
     }
 
-
     public int getKindid() {
         return kindid;
     }

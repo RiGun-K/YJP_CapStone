@@ -1,5 +1,5 @@
 <template>
-  <div class="infoterNow">
+  <div class="buyNow">
     <h2>주문/결제</h2>
     <h3>구매자 정보</h3>
     <table>
@@ -21,28 +21,19 @@
     <table>
       <tr>
         <td class="infoter-now-td">이름</td>
-        <td><input type="text" v-model="reservationName"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td class="infoter-now-td">연락처</td>
-        <td><input type="text" v-model="reservationTel" maxlength="12"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td class="infoter-now-td">예약 요청사항</td>
-        <td><input size="40" type="text" v-model="reservationRequest"></td>
+        <td><input size="40" type="text"></td>
       </tr>
       <tr>
         <td class="infoter-now-td">예약일</td>
-        <td><Datepicker v-model="reservationDate"
-                        :enable-time-picker="false"
-                        :min-date="today"
-                        :max-date="end"
-                        range
-                        placeholder="Select date range"
-                        v-on="toString()"
-                        format="yyyy/MM/dd"
-                        autoApply
-                        :closeOnAutoApply="false"></Datepicker></td>
+        <td><Datepicker v-model="reservationDate" :enable-time-picker="false" :min-date="today" :max-date="end" range placeholder="Select date range"></Datepicker></td>
       </tr>
     </table>
 
@@ -79,8 +70,6 @@ import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import axios from "axios";
 import store from "@/store";
-import dayjs from "dayjs";
-
 export default {
   name: 'InfoterNow',
   components: { Datepicker },
@@ -89,17 +78,19 @@ export default {
   },
   data () {
     return {
-      reservationName: '',
-      reservationTel: '',
-      reservationRequest: '',
+      zip: '',
+      basicAddress: '',
+      detailAddress: '',
+      price: 1000,
+      buyCheck: false,
+      getterName: '',
+      getterPhoneNumber: '',
+      deliveryMessage: '',
       onlyNumber: true,
       paymentDate: new Date(),
-      reservationDate: [],
       content: [],
       user: [],
-      startDate: new Date(),
-      endDate: new Date(),
-      price: 1000,
+      reservationDate: null
     }
   },
 
@@ -142,51 +133,43 @@ export default {
             console.log(e);
           })
     },
-    toString() {
-      const start = dayjs(this.reservationDate[0]);
-      this.startDate = start.format('YYYYMMDD');
-      const end = dayjs(this.reservationDate[1]);
-      this.endDate = end.format('YYYYMMDD');
-    },
 
     paymentBtn () {
       if (confirm('결제 하시겠습니까?')) {
         const IMP = window.IMP
-        console.log(this.startDate)
-        console.log(this.endDate)
         IMP.init('imp35975601')
         IMP.request_pay({
           pg: 'html5_inicis',
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
           name: this.content.detailName,
-          amount: this.price, // amount - 실제 결제금액
-          buyer_tel: this.reservationTel,
+          amount: this.price,
+          buyer_tel: this.getterPhoneNumber,
           buyer_name: this.user.mid,
           buyer_email: this.user.mmail,
           confirm_url: ''
         }, (rsp) => {
           if (rsp.success) {
-            let msg = '결제가 완료되었습니다.'
-            msg += '고유ID : ' + rsp.imp_uid
-            msg += '상점 거래 ID : ' + rsp.merchant_uid
-            msg += '결제 금액 : ' + rsp.paid_amount
-            msg += '카드 승인번호 : ' + rsp.apply_num
+            const msg = '결제가 완료되었습니다.'
+            // msg += '고유ID : ' + rsp.imp_uid
+            // msg += '상점 거래 ID : ' + rsp.merchant_uid
+            // msg += '결제 금액 : ' + rsp.paid_amount
+            // msg += '카드 승인번호 : ' + rsp.apply_num
             alert(msg)
             console.log(this.content.buyId);
             this.axios.post('http://localhost:9002/api/CampingRoomData', {
               MID: this.user.mid,
-              reservationName: this.reservationName,
-              reservationTel: this.reservationTel,
-              reservationRequest: this.reservationRequest,
-              orderPrice: this.content.detailPrice,
+              deliveryZipcode: this.zip,
+              deliveryAddress: this.detailAddress,
+              deliveryGetter: this.getterName,
+              deliveryGetterTel: this.getterPhoneNumber,
+              deliveryRequest: this.deliveryMessage,
+              orderPrice: this.price,
               orderType: rsp.pay_method,
               paymentCode: rsp.merchant_uid,
               orderState: '2',
               orderMenuCount: 1,
-              startDate: this.startDate,
-              endDate: this.endDate,
-              roomId: this.content.detailId,
+              menuId: this.content.detailId,
             })
                 .then((res)=>{
                   console.log(res.data);
@@ -195,12 +178,11 @@ export default {
                   console.log(err)
                 });
             this.$router.push({
-              name: "InfoterComplete",
+              name: "BuyComplete",
               params: {
                 orderMenuCount: 1,
                 menuName: this.content.detailName,
-                orderPrice: this.content.detailPrice,
-                reservationDate: this.reservationDate,
+                orderPrice: this.price,
                 orderType: rsp.pay_method
               }
             })
@@ -212,17 +194,6 @@ export default {
         })
       }
     },
-    watch: {
-      reservationTel(val) {
-        const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-        if(reg.exec(val)!==null) {
-          this.reservationTel = this.reservationTel.slice(0,-1);
-          alert("숫자만 입력해주세요")
-        }
-        return this.reservationTel=this.reservationTel.replace(/[^-\.0-9]/g,'');
-      }
-    },
-
     cancelBtn () {
       window.location.href = 'http://localhost:8081/itemBuy'
     },
@@ -238,44 +209,44 @@ export default {
 </script>
 
 <style scoped>
-.infoterNow{
+.buyNow{
   margin: 1% 2%;
   width: 100%;
   height: 100%;
 }
-.infoterNow h3{
+.buyNow h3{
   margin: 1% 10%;
   width: 100%;
   height: 100%;
 }
-.infoter-now-td{
+.buy-now-td{
   text-align: center;
   width: 20%;
 }
-.infoterNow table {
+.buyNow table {
   margin: 1.5% 15%;
   width: 35%;
   border: 1px solid #444444;
   border-collapse: collapse;
 }
-.infoterNow td {
+.buyNow td {
   border: 1px solid #444444;
   padding: 2%;
 }
-.infoterNow h5{
+.buyNow h5{
   margin: 1% 10%;
 }
-.infoterNow h5 button{
+.buyNow h5 button{
   margin: 0% 2%;
 }
-.pay-infoter-now{
+.payNow{
   margin-left: 27%;
 }
-.infoter-now-info-check{
+.buy-now-info-check{
   margin: 3% 30%;
   padding: 1.5%;
 }
-.cancel-infoter-now{
+.cancel-buy-now{
   margin-left: 5%;
 }
 </style>

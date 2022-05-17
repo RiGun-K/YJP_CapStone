@@ -125,7 +125,6 @@ public class OrderController {
             System.out.println("buyData Order Error");
         }
 
-        // 129 - null 뜸
         Optional<CampingDetail> searchMenu = campingDetailRepository.findById(Integer.parseInt(buyData.get("menuId")));
         System.out.println("구매한 상품번호는" + searchMenu);
 
