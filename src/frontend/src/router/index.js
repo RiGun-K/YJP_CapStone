@@ -10,12 +10,12 @@ const routes = [
   {
     path: '/signup',
     name: 'SignUp',
-    component: () => import('@/components/user/Signup.vue')
+    component: () => import('@/components/user/singUp/Signup.vue')
   },
   {
     path: '/mAdmin',
     name: 'mAdmin',
-    component: () => import('@/components/user/Admin.vue')
+    component: () => import('@/components/user/adminManage/Admin.vue')
   },
   {
     path: '/company',
@@ -25,22 +25,22 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/components/user/Login.vue')
+    component: () => import('@/components/user/singUp/Login.vue')
   },
   {
     path: '/memberupdate',
     name: 'MemberData',
-    component: () => import('@/components/user/MemberData.vue')
+    component: () => import('@/components/user/singUp/MemberData.vue')
   },
   {
     path: '/horby',
     name: 'Horby',
-    component: () => import('@/components/user/Horby.vue')
+    component: () => import('@/components/user/Horby/Horby.vue')
   },
   {
     path:'/agreement',
     name:'Agreement',
-    component: () => import('@/components/user/Agreement.vue')
+    component: () => import('@/components/user/singUp/Agreement.vue')
   },
   {
     path:'/sellerAccept',
@@ -50,27 +50,27 @@ const routes = [
   {
     path:'/searchSelect',
     name:'SearchSelect',
-    component: () => import('@/components/user/SearchSelect.vue')
+    component: () => import('@/components/user/memberSearch/SearchSelect.vue')
   },
   {
     path:'/searchId',
     name:'SearchId',
-    component: () => import('@/components/user/IdSearch.vue')
+    component: () => import('@/components/user/memberSearch/IdSearch.vue')
   },
   {
     path:'/searchPass',
     name:'SearchPass',
-    component: () => import('@/components/user/PassSearch.vue')
+    component: () => import('@/components/user/memberSearch/PassSearch.vue')
   },
   {
     path:'/changePass',
     name:'changePass',
-    component: () => import('@/components/user/PassChange.vue')
+    component: () => import('@/components/user/singUp/PassChange.vue')
   },
   {
     path:'/myPage',
     name:'mypage',
-    component: () => import('@/components/user/MyPage.vue')
+    component: () => import('@/components/user/myPage/MyPage.vue')
   },
   {
     path:'/myPageEquip',
@@ -86,6 +86,16 @@ const routes = [
     path:'/myPageOrder',
     name:'myPageOrder',
     component: () => import('@/components/user/myPage/MyOrder.vue')
+  },
+  {
+    path:'/memberAdmin',
+    name:'memberAdmin',
+    component: () => import('@/components/user/adminManage/MemberManagementAdmin')
+  },
+  {
+    path:'/addEquipment',
+    name:'addEquipment',
+    component: () => import('@/components/user/myPage/AddEquip')
   },
 
     //////////////////////////////게시판////////////////////////////////////

@@ -19,5 +19,10 @@ export default {
 </script>
 
 <style scoped>
-
+.allBody{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  align-content: center;
+}
 </style>
