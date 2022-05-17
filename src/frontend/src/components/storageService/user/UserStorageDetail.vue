@@ -79,6 +79,7 @@ export default {
     this.userId = store.getters.getLoginState.loginState
     this.boxList = this.$store.state.storage
     this.name = this.boxList.storageName
+    console.log(this.userId)
   },
   data() {
     return {

@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="chk">
     <table>
       <tbody>
@@ -10,7 +9,9 @@
       <tr>
         <td>상태</td>
         <td v-if="box.boxState == 0">빈 상태</td>
-        <td v-else-if="box.boxState == 1">결제완료<button @click="updateState">보관완료</button></td>
+        <td v-else-if="box.boxState == 1">결제완료
+          <button @click="updateState">보관완료</button>
+        </td>
         <td v-else>사용중</td>
       </tr>
       <tr>
@@ -31,13 +32,26 @@
       <tr>
         <td>장비 이동</td>
         <td v-if="box.useStorageState == 4">
-          장비 이동 신청 <button>이동 시작</button>
+          이동지 :
+          <p v-if="boxCode.storageBoxState == '3'">
+            보낼곳
+            보관소 : {{ moveInfo.storageName }}
+            보관함 : {{ moveInfo.storageBoxName }}
+          </p>
+          <p v-else-if="boxCode.storageBoxState == '4'">
+            받을곳
+            보관소 : {{ moveInfo.storageName }}
+            보관함 : {{ moveInfo.storageBoxName }}
+          </p>
+          장비 이동 신청
+          <button @click="moveStateUpDate()">이동 시작</button>
         </td>
+        <td v-else-if="box.useStorageState == 7">이동 도착</td>
         <td v-else>없음</td>
       </tr>
       <tr>
         <td>장비 수리</td>
-        <td v-if="box.useStorageState == 7">장비 수리 신청</td>
+        <td v-if="box.useStorageState == 8">장비 수리 신청</td>
         <td v-else>없음</td>
       </tr>
     </table>
@@ -63,29 +77,40 @@ import axios from "axios";
 
 export default {
   name: "BoxMadalDetail",
-  props:{
-    boxCode:null
+  props: {
+    boxCode: null
   },
   mounted() {
     this.getd()
-
   },
-  methods:{
-    getd(){
-      this.box={}
-      axios.get('/api/getBox/'+ this.boxCode)
-          .then(res=>{
+  watch: {
+    boxCode() {
+      this.getd()
+    }
+  },
+  data() {
+    return {
+      chk: false,
+      box: {},
+      moveInfo: {},
+    }
+  },
+  methods: {
+    getd() {
+      this.box = {}
+      axios.get('/api/getBox/' + this.boxCode.storageBoxCode)
+          .then(res => {
             console.log('res.data')
             console.log(res.data)
-            if(res.data[0].length > 2){
-              const data={
-                userName:'',
-                boxCode:'',
-                boxName:'',
-                boxState:'',
-                storageCode:'',
-                useStorageCode:'',
-                useStorageState:''
+            if (res.data[0].length > 2) {
+              const data = {
+                userName: '',
+                boxCode: '',
+                boxName: '',
+                boxState: '',
+                storageCode: '',
+                useStorageCode: '',
+                useStorageState: ''
               }
               const datak = res.data[0]
               data.userName = datak[0]
@@ -95,43 +120,62 @@ export default {
               data.boxType = datak[5]
               data.storageCode = datak[6]
               data.useStorageCode = datak[7]
-              data.useStorageState = datak[8]
+              data.useStorageState = datak[8].charAt(0)
               this.box = data
+              this.box.updateusbCode = datak[8].substring(1, datak[8].length)
               this.chk = true
-            }else{
+
+              console.log(this.box.updateusbCode)
+
+              axios.get('/api/moveBoxInfo/' + this.box.updateusbCode)
+                  .then(res => {
+                    if (this.boxCode.storageBoxState == '3') {
+                      console.log("보낼곳 보관함정보")
+                      console.log(res.data)
+                    } else if (this.boxCode.storageBoxState == '4') {
+                      console.log("받을곳 보관함정보")
+                      console.log(res.data)
+                    }
+                    const data = res.data[0]
+                    this.moveInfo.storageCode = data[0]
+                    this.moveInfo.storageName = data[1]
+                    this.moveInfo.storageBoxCode = data[2]
+                    this.moveInfo.storageBoxName = data[3]
+                    console.log(this.moveInfo)
+                  })
+              .catch(err=>{
+                console.log(err)
+              })
+            } else {
               this.box = res.data[0]
               this.chk = false
             }
             console.log(this.box)
           })
-          .catch(err=>{
+          .catch(err => {
             console.log(err)
           })
     },
-    updateState(){
-      axios.put('/api/boxStateUpdate/'+this.box.useStorageCode)
-      .then(res=>{
-        console.log(res)
-        alert("사용자 보관 확인 되었습니다")
-        this.getd()
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+    updateState() {
+      axios.put('/api/boxStateUpdate/' + this.box.useStorageCode)
+          .then(res => {
+            console.log(res)
+            alert("사용자 보관 확인 되었습니다")
+            this.getd()
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    moveStateUpDate() {
+      //버튼은 이동중으로 변경하고 받는곳은 도착버튼으로 변경
+      console.log('여기')
+      console.log(this.box.useStorageCode)
+      console.log('받는곳')
+      console.log(this.box.updateusbCode)
+      axios.get('/api/moveStateUpdate/'+this.box.useStorageCode+'/'+this.box.updateusbCode)
     }
   },
-  watch: {
-    boxCode(){
-      this.getd()
-
-    }
-  },
-  data(){
-    return{
-      chk:false,
-      box:{}
-    }
-  }
 }
 </script>
 
