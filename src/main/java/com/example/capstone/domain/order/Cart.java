@@ -2,6 +2,7 @@ package com.example.capstone.domain.order;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Menu;
+import com.example.capstone.domain.Product.MenuBuy;
 
 import javax.persistence.*;
 
@@ -17,8 +18,8 @@ public class Cart {
     private int cartItemAllPrice;
 
     @ManyToOne
-    @JoinColumn(name = "menuid")
-    private Menu menu;
+    @JoinColumn(name = "buyId")
+    private MenuBuy menuBuy;
 
     @ManyToOne
     @JoinColumn(name = "MCode")
@@ -40,12 +41,12 @@ public class Cart {
         this.cartItemCount = cartItemCount;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public MenuBuy getMenuBuy() {
+        return menuBuy;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public void setMenuBuy(MenuBuy menuBuy) {
+        this.menuBuy = menuBuy;
     }
 
     public Member getMCode() {

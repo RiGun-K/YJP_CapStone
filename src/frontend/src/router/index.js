@@ -327,7 +327,8 @@ const routes = [
   {
     path: '/infoter/infoterComplete',
     name: 'InfoterComplete',
-    component: () => import('@/components/cart/Infoter/InfoterNow.vue')
+    component: () => import('@/components/cart/Infoter/InfoterNow.vue'),
+    props: true
   },
   {
     path: '/cart',

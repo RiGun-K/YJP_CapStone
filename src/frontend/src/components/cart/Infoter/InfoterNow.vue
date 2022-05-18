@@ -85,6 +85,7 @@ import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import axios from "axios";
 import store from "@/store";
+import dayjs from "dayjs";
 
 export default {
   name: 'InfoterNow',
@@ -146,7 +147,7 @@ export default {
             msg += '결제 금액 : ' + rsp.paid_amount
             msg += '카드 승인번호 : ' + rsp.apply_num
             alert(msg)
-            console.log(this.content.buyId);
+            console.log(this.content);
             this.axios.post('http://localhost:9002/api/CampingRoomData', {
               MID: this.user.mid,
               reservationName: this.reservationName,
@@ -160,6 +161,7 @@ export default {
               startDate: this.startDate,
               endDate: this.endDate,
               roomId: this.content.detailId,
+              campingId: this.content.campingId
             })
                 .then((res)=>{
                   console.log(res.data);
@@ -181,6 +183,7 @@ export default {
             let msg = '결제에 실패하였습니다.'
             msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
+
           }
         })
       }

@@ -1,12 +1,14 @@
 package com.example.capstone.controller.order;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Camping;
 import com.example.capstone.domain.Product.CampingDetail;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.CampingDetailRepository;
+import com.example.capstone.repository.Product.CampingRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
 import com.example.capstone.repository.orders.OrderMenuRepository;
 import com.example.capstone.repository.orders.OrdersRepository;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
 
 
 @RestController
@@ -43,6 +46,9 @@ public class OrderController {
 
     @Autowired
     private OrderMenuRepository orderMenuRepository;
+
+    @Autowired
+    private CampingRepository campingRepository;
 
 
     /* 구매상품 결제 */
@@ -139,13 +145,16 @@ public class OrderController {
             OrderMenu orderMenu = new OrderMenu();
 
             orderMenu.setOrders(order);
+            Camping camping = campingDetail.getCampingId();
+
             orderMenu.setCampingDetail(campingDetail);
+            orderMenu.setCamping(camping);
             orderMenu.setOrderMenuCount(Integer.parseInt(reservationData.get("orderMenuCount")));
 
             orderMenuRepository.save(orderMenu);
 
         } else {
-            System.out.println("buyData Menu Error");
+            System.out.println("reservationData Menu Error");
         }
         return "test";
     }
@@ -260,7 +269,6 @@ public class OrderController {
                     Orders orders = searchOrder.get();
 
                     OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
-
                     CampingDetail campingDetail = orderMenu.getCampingDetail();
 
                     if(campingDetail != null) {

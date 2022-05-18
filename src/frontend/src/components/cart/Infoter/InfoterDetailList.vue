@@ -36,20 +36,7 @@
           </div>
         </div>
       </b-card-text>
-      <b-card-text>
-        <div class="content-detail-list">
-          <div class="card" style="width: 18rem;">
-            <img :src="'/api/product_detail_images/' + content.campingDetails[1].filename" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">객실명: {{ this.content.campingDetails[1].detailName }}</h5>
-              <p class="card-text">설명: {{ this.content.campingDetails[1].detailFunction }}</p>
-              <p class="card-text">최대인원: {{ this.content.campingDetails[1].maximumNumber }}</p>
-              <p class="card-text">객실 가격: {{ this.content.campingDetails[1].detailPrice }}</p>
-              <a href="#" class="btn btn-primary" @click="buyData">예약 및 결제</a>
-            </div>
-          </div>
-        </div>
-      </b-card-text>
+
     </div>
 
 

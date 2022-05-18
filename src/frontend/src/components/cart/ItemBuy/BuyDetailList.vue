@@ -9,6 +9,7 @@
             <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
             <p class="card-text">가격: {{ this.content.buyPrice }}</p>
             <p class="card-text">설명: {{ this.content.buyEx }}</p>
+            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> - </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> + </button></p>
             <a href="#" class="btn btn-primary" @click="buyData">구매</a>
           </div>
         </div>
@@ -42,6 +43,7 @@ export default {
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
       images: '',
+      count: 1
     }
   },
   methods: {
@@ -73,9 +75,34 @@ export default {
       })
     },
     putData() {
-      this.$router.push({
-        path: "/cart"
+      this.putCart()
+      if (confirm('추가되었습니다, 장바구니에서 확인하시겠습니까?')) {
+        this.$router.push({
+          path: `/cart/buy/${this.content.mid.mcode}`
+        })
+      } else {
+
+      }
+    },
+    putCart() {
+      this.axios.post('http://localhost:9002/api/buyCartPut', {
+        buyId: this.content.buyId,
+        count: this.count
       })
+    },
+    subCount() {
+      if (this.count === 1) {
+        alert('더 이상 뺄 수 없습니다.')
+      } else {
+        this.count--
+      }
+    },
+    addCount(){
+      if(this.count === this.content.buyStock){
+        alert('더 이상 올릴 수 없습니다. (재고부족)')
+      }else{
+        this.count++
+      }
     }
   }
 }
@@ -98,6 +125,12 @@ export default {
   display: inline-block;
   text-align: center;
 }
-.card {
+.buy-count-sub{
+  color: #00a3de;
+  font-weight: bolder;
+}
+.buy-count-add{
+  color: #00a3de;
+  font-weight: bolder;
 }
 </style>
