@@ -354,8 +354,28 @@ public class MemberController {
     public List<Writer> myPageWritter(@RequestBody HashMap<String, String> body){
         Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
         List<Writer> writerList = boardRepository.findByMID(member.get());
+        if(writerList.isEmpty()){
+            return null;
+        }
 
         return writerList;
+    }
+
+    ///전체 게시글 조회///
+    @GetMapping("adminAllWriter")
+    public List<Writer> adminAllWriter(){
+        List<Writer> writerList = boardRepository.findAll();
+        return writerList;
+    }
+    ///게시글삭제///
+    @PostMapping("adminDeleteWriter")
+    public Boolean adminDeleteWriter(@RequestBody HashMap<String, String> body){
+        Optional<Writer> writer = boardRepository.findById(Integer.parseInt(body.get("wcode")));
+        if(writer.isEmpty()){
+            return false;
+        }
+        boardRepository.delete(writer.get());
+        return true;
     }
 
 

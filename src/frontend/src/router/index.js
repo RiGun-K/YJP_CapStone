@@ -90,7 +90,17 @@ const routes = [
   {
     path:'/memberAdmin',
     name:'memberAdmin',
-    component: () => import('@/components/user/adminManage/MemberManagementAdmin')
+    component: () => import('@/components/user/adminManage/MemberManagementAdmin.vue')
+  },
+  {
+    path:'/orderAdmin',
+    name:'orderAdmin',
+    component: () => import('@/components/user/adminManage/OrderManagement.vue')
+  },
+  {
+    path:'/writerAdmin',
+    name:'writerAdmin',
+    component: () => import('@/components/user/adminManage/WriterManagement.vue')
   },
   {
     path:'/addEquipment',

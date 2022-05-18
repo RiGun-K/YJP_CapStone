@@ -7,7 +7,7 @@
     <div class="inputDiv">
       <label class="labelTitle">장비분류</label>
       <select class="inputBody" v-model="equipKind">
-        <option v-for="obj in kindList">{{obj.kindname}}</option>
+        <option v-for="obj in kindList" :key="obj.kindid">{{obj.kindname}}</option>
       </select>
     </div>
     <div class="inputDiv">
@@ -55,7 +55,9 @@ export default {
         NAME:this.equipName,
         Count:this.equipcount
       }).then((res)=>{
-        console.log(res.data)
+        if(res.data){
+          this.$router.push("/myPageEquip")
+        }
       }).catch((err)=>{
         console.log(err)
       })

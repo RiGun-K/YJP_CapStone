@@ -39,6 +39,8 @@
             <li @click="memberAdmin" class="menu">멤버관리</li>
             <li @click="sellerAccept" class="menu">판매자관리</li>
             <li @click="storageAdmin" class="menu">보관소관리</li>
+            <li @click="orderAdmin" class="menu">주문관리</li>
+            <li @click="writerAdmin" class="menu">게시글관리</li>
             <li class="menu">문의관리</li>
           </ul>
         </li>
@@ -74,6 +76,12 @@ export default {
     },
     storageAdmin(){
       this.$router.push("/storageAdmin")
+    },
+    orderAdmin(){
+      this.$router.push("/orderAdmin")
+    },
+    writerAdmin(){
+      this.$router.push("/writerAdmin")
     },
     sellerAccept(){
       this.$router.push("/sellerAccept")
