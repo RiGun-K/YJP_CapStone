@@ -15,4 +15,6 @@ public interface CampingAreaRepository extends JpaRepository<CampingArea, Intege
 
     @Query(value = "select * from CAMPINGAREA where PARENTAREAID = :areaId", nativeQuery = true)
     List<CampingArea> findCampingAreaByParentcampingarea(@Param(value = "areaId") int areaId);
+
+    
 }
