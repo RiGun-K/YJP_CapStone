@@ -20,4 +20,13 @@ public interface CampingRepository extends JpaRepository<Camping, Integer> {
 
     @Query(value = "SELECT * FROM camping c WHERE c.infoterId = :infoterId", nativeQuery = true)
     public List<Camping> findByinfoterId(@Param("infoterId") int infoterId);
+
+    @Query(value = "SELECT * FROM camping c WHERE c.areaId = :areaId", nativeQuery = true)
+    public List<Camping> findByareaId(@Param("areaId") int areaId);
+
+    @Query(value = "SELECT * FROM camping c JOIN campingArea a ON c.AREAID = a.AREA_ID \n" +
+                   "WHERE a.PARENTAREAID = :areaId", nativeQuery = true)
+    public List<Camping> findByareaDetailId(@Param("areaId") int areaId);
+
+
 }

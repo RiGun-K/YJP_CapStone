@@ -51,6 +51,23 @@ public class CampingController {
     @Autowired
     ImagesRepository imagesRepository;
 
+
+    @GetMapping("/campingRound")
+    private List<CampingArea> getRound() {
+
+        List<CampingArea> campingAreaList = campingAreaRepository.findByParentAreaList();
+
+        return campingAreaList;
+    }
+
+    @GetMapping("/campingSmallRound/{parentId}")
+    private List<CampingArea> getSmallRound(@PathVariable(value = "parentId") int parentId) {
+
+        List<CampingArea> campingAreaList = campingAreaRepository.findCampingAreaByParentcampingarea(parentId);
+
+        return campingAreaList;
+    }
+
     /* 캠핑장 등록 페이지 */
     @PostMapping("/Camping_Signup")
     public Camping addMenuCamping(@RequestParam(value = "file", required = false) MultipartFile uploadFile, CampingDTO campingDTO) throws IllegalStateException, IOException {
