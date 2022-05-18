@@ -67,7 +67,7 @@
 
         <br>
         <h3 class="join_title">
-          <label for="pswd2">이미지 등록</label>
+          <label for="pswd2">썸네일 이미지 등록</label>
         </h3>
         <div class="input-group">
           <form>
@@ -83,6 +83,31 @@
                    drop-placeholder="Drop file here..." >
             <div id="image_container"/>
           </form>
+        </div>
+        <br>
+
+        <div v-if="stateCheck">
+          <h3 class="join_title">
+            <label for="pswd2">내부 이미지 등록</label>
+          </h3>
+          <div class="input-group">
+            <form>
+              <input multiple
+                     type="file"
+                     id="files"
+                     name="profile_files"
+                     ref="serveyImage"
+                     @change="handleImages"
+                     enctype="multipart/form-data"
+                     aria-describedby="inputGroupFileAddon04"
+                     aria-label="Upload"
+                     placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+                     accept="image/*"
+                     drop-placeholder="Drop file here..."
+              >
+              <div id="image_container"/>
+            </form>
+          </div>
         </div>
 
         <br>
@@ -119,13 +144,19 @@ export default {
       baseNumber: '',
       maximumNumber: '',
       detailFunction: '',
+
+
+      roomlist: [],
+      file: '',
+      files: '',
+      stateCheck: false,
     }
   },
   methods: {
     DataList() {
       this.campingName = this.$route.params.campingName;
       console.log(this.campingName);
-      axios.get('http://localhost:9002/api/CampingDetail_BeforeSignup/' + this.campingName)
+      axios.get('/api/CampingDetail_BeforeSignup/' + this.campingName)
           .then(res => {
             console.log("방금 등록한 캠핑장 이름 가져오기 성공 ! ");
             console.log(res.data);
@@ -158,12 +189,37 @@ export default {
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
+        this.stateCheck = true;
       }
       else {
         return false
       }
 
     },
+
+    handleImages(e) {
+      this.files = e.target.files
+      for(let i = 0; i < e.target.files.length; i++) {
+        const reader = new FileReader();
+        reader.readAsDataURL(this.files[i]);
+        // 파일 읽기가 완료되는 시점
+        reader.addEventListener('load', function(e1){
+          // 완료되는 시점!!!!!!!!!!!!!!!
+          self.imgsrc = e1.target.result;
+          // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
+
+
+        });
+      }
+
+    },
+
+
     BuySubmit() {
       const formData = new FormData();
 
@@ -176,22 +232,49 @@ export default {
       formData.append('campingId', this.content.campingId);
 
       console.log(this.detailName, this.detailPrice, this.baseNumber, this.maximumNumber, this.detailFunction, this.file, this.content.campingId);
-      const baseURI = 'http://localhost:9002';
 
-      if (confirm("캠핑장 객실을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/CampingDetail_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+
+        axios.post('/api/CampingDetail_Signup', formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
-              alert("캠핑장 및 객실이 등록되었습니다.");
-              this.$router.push({
-                name: 'ProductMain'
-              });
+              this.roomlist = res.data;
+              this.detailId = this.roomlist.detailId;
+              // 구매 상품 등록처리 후
+              // 다중 이미지 업로드
+              const formDatas = new FormData();
+
+              for (let i = 0; i < this.files.length; i++) {
+                formDatas.append('files', this.files[i]);
+              }
+
+              formDatas.append('detailId', this.detailId);
+
+              console.log(this.detailId);
+
+
+              if (confirm("객실을 등록하시겠습니까?")) {
+                axios.post('/api/CampingRoom_Signup_Files/', formDatas, {headers: {'Content-Type': 'multipart/form-data'}})
+                    .then(res => {
+                      console.log("성공" + res);
+                      alert("객실이 등록되었습니다.");
+                      this.$router.push({
+                        path: "ProductMain"
+                      });
+                    })
+                    .catch(function (error) {
+                      console.log("에러" + error);
+                      alert("상품이 등록되지않았습니다.");
+                    })
+
+              }
+
+
             })
             .catch(function (error) {
               console.log("에러" + error);
               alert("객실이 등록되지않았습니다.");
             })
-      }
+
 
     }
 

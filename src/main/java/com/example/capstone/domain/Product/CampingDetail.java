@@ -1,10 +1,13 @@
 package com.example.capstone.domain.Product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="campingdetail")
@@ -54,7 +57,25 @@ public class CampingDetail {
     @JoinColumn(name = "campingId")
     private Camping campingId;
 
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "detailId",cascade = {CascadeType.ALL})
+    private List<Images> images = new ArrayList<>();
+
     public CampingDetail() {}
+    public CampingDetail(String detailName, int detailPrice, Integer baseNumber, Integer maximumNumber, String detailFunction, String savedTime, String origFilename, String filename, String filePath, Camping campingId, List<Images> images) {
+        this.detailName = detailName;
+        this.detailPrice = detailPrice;
+        this.baseNumber = baseNumber;
+        this.maximumNumber = maximumNumber;
+        this.detailFunction =detailFunction;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.savedTime = savedTime;
+        this.campingId = campingId;
+        this.images = images;
+    }
+
     public CampingDetail(String detailName, int detailPrice, Integer baseNumber, Integer maximumNumber, String detailFunction, String savedTime, String origFilename, String filename, String filePath, Camping campingId) {
         this.detailName = detailName;
         this.detailPrice = detailPrice;

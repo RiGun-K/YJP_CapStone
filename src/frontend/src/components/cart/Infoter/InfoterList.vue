@@ -106,6 +106,7 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
+
             axios.get('/api/product_detail_images/' + this.product.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");

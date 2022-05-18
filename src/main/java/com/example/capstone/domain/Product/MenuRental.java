@@ -1,6 +1,7 @@
 package com.example.capstone.domain.Product;
 
 import com.example.capstone.domain.Member.Member;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,6 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -64,6 +67,12 @@ public class MenuRental {
     @JoinColumn(name = "MID")
     private Member MID;
 
+
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "rentalId",cascade = {CascadeType.ALL})
+    private List<Images> images = new ArrayList<>();
+
+
     public MenuRental() {}
     public MenuRental(String rentalName, int rentalPrice, String rentalEx, String savedTime, int rentalStock, String origFilename, String filename, String filePath, Kind kindid, Member MID) {
         this.rentalName = rentalName;
@@ -77,6 +86,21 @@ public class MenuRental {
         this.kindid = kindid;
         this.MID = MID;
     }
+
+    public MenuRental(String rentalName, int rentalPrice, String rentalEx, String savedTime, int rentalStock, String origFilename, String filename, String filePath, Kind kindid, Member MID, List<Images> images) {
+        this.rentalName = rentalName;
+        this.rentalPrice = rentalPrice;
+        this.rentalEx = rentalEx;
+        this.savedTime = savedTime;
+        this.rentalStock = rentalStock;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.kindid = kindid;
+        this.MID = MID;
+        this.images = images;
+    }
+
 
     public int getRentalId() {
         return rentalId;
