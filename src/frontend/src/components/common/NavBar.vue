@@ -50,7 +50,6 @@
 
 <script>
 import store from '@/store'
-
 export default {
   name: 'NavBar',
   data(){
@@ -122,10 +121,8 @@ export default {
   },
   watch:{
     loginCheck(){
-
     }
   }
-
 }
 </script>
 
@@ -150,6 +147,7 @@ router-link{
   text-align: center;
   list-style: none;
   position: relative;
+
 }
 .topMenu:hover > .subMenu{
   display: block;

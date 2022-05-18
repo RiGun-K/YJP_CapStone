@@ -17,19 +17,22 @@ public class Images {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long imageId;
 
-    @JsonBackReference
+    @JsonBackReference      // arrayList 연결 시 필수 !
     @ManyToOne()
     @JoinColumn(name = "buyId")
     private MenuBuy buyId;
 
+    @JsonBackReference
     @ManyToOne()
     @JoinColumn(name = "rentalId")
     private MenuRental rentalId;
 
+    @JsonBackReference
     @ManyToOne()
     @JoinColumn(name = "campingId")
     private Camping campingId;
 
+    @JsonBackReference
     @ManyToOne()
     @JoinColumn(name = "detailId")
     private CampingDetail detailId;
@@ -60,6 +63,28 @@ public class Images {
         this.filePath = filePath;
         this.buyId = buyId;
     }
+
+    public Images(String origFilename, String filename, String filePath,  MenuRental rentalId) {
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.rentalId = rentalId;
+    }
+
+    public Images(String origFilename, String filename, String filePath, Camping campingId) {
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.campingId = campingId;
+    }
+
+    public Images(String origFilename, String filename, String filePath, CampingDetail detailId) {
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.detailId = detailId;
+    }
+
 
     public Long getImageId() {
         return imageId;

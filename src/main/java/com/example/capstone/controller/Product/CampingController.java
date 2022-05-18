@@ -1,11 +1,9 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Camping;
-import com.example.capstone.domain.Product.CampingArea;
-import com.example.capstone.domain.Product.Infoter;
-import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.Product.*;
 import com.example.capstone.dto.Product.CampingDTO;
+import com.example.capstone.dto.Product.ImagesDTO;
 import com.example.capstone.dto.Product.MenuBuyDTO;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Member.MemberRepository;
@@ -16,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +48,8 @@ public class CampingController {
 
     @Autowired
     CampingService campingService;
+    @Autowired
+    ImagesRepository imagesRepository;
 
     /* 캠핑장 등록 페이지 */
     @PostMapping("/Camping_Signup")
@@ -119,6 +120,57 @@ public class CampingController {
         campingRepository.save(camping);
 
         return camping;
+    }
+
+    /* 캠핑장에 대한 이미지 등록 */
+    @PostMapping("/Camping_Signup_Files/")
+    public void addMenuCampingFiles(MultipartHttpServletRequest mhsq, ImagesDTO imagesDTO) throws IllegalStateException, IOException {
+
+        /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+        String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+        /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+        if (!new File(savePath).exists()) {
+            try {
+                new File(savePath).mkdir();
+            }
+            catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+
+        List<MultipartFile> mf = mhsq.getFiles("files");
+        System.out.println(mf.size());
+        if (mf.size() == 1 && mf.get(0).getOriginalFilename().equals("")) {
+
+        } else {
+            for (int i = 0; i < mf.size(); i++) {
+                // 파일명 중복처리
+                String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+                // 본래 파일명
+                String origFilename = mf.get(i).getOriginalFilename();
+                // DB에 저장되는 파일명
+                String filename = now + "_" + origFilename;
+
+                String filePath = savePath + "\\" + filename;
+                mf.get(i).transferTo(new File(filePath));
+
+                imagesDTO.setOrigFilename(origFilename);
+                imagesDTO.setFilename(filename);
+                imagesDTO.setFilePath(filePath);
+
+                System.out.println(imagesDTO.getCampingId());
+                Optional<Camping> camping = campingRepository.findById(imagesDTO.getCampingId());
+
+
+                Images images = new Images(imagesDTO.getOrigFilename(), imagesDTO.getFilename(), imagesDTO.getFilePath(), camping.get());
+                System.out.println(images);
+
+                imagesRepository.save(images);
+                System.out.println("파일이 저장되었습니다.");
+            }
+
+        }
+
     }
 
     /* 캠핑장 내 객실 등록전 캠핑아이디 받아오기 */
