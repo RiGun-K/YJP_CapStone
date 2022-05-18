@@ -85,10 +85,15 @@ public class Camping {
     @OneToMany(mappedBy = "campingId",cascade = {CascadeType.ALL})
     private List<CampingDetail> campingDetails = new ArrayList<>();
 
+
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "campingId",cascade = {CascadeType.ALL})
+    private List<Images> images = new ArrayList<>();
+
     public Camping() {}
 
     // 생성자 여러개 만들수 있음 DTO를 통해 INSERT 할경우
-    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID, List<CampingDetail> campingDetails) {
+    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID, List<CampingDetail> campingDetails, List<Images> images) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
         this.campingDetailState = campingDetailState;
@@ -103,6 +108,7 @@ public class Camping {
         this.areaId = areaId;
         this.MID = MID;
         this.campingDetails = campingDetails;
+        this.images = images;
     }
 
     public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID) {

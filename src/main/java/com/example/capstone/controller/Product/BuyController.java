@@ -54,20 +54,41 @@ public class BuyController {
 
     /* 구매상품 등록 페이지 */
     @PostMapping("/Buy_Signup")
-    public MenuBuy addMenuBuy(@RequestBody MenuBuyDTO menuBuyDTO) {
-        Optional<Member> member = memberRepository.findByMID(menuBuyDTO.getMid());
-        Optional<Kind> kind = kindRepository.findById(menuBuyDTO.getKindid());
+    public MenuBuy addMenuBuy(@RequestParam(value = "file", required = false) MultipartFile uploadFile, MenuBuyDTO MenuBuyDTO) throws IllegalStateException, IOException {
+        System.out.println("파일 이름" + uploadFile.getOriginalFilename());
+        System.out.println("파일 크기" + uploadFile.getSize());
+        try {
+            String origFilename = uploadFile.getOriginalFilename();
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+            String filename = now + "_" + origFilename;
 
-
-        if(menuBuyDTO.getSavedTime()==null)
-            menuBuyDTO.setSavedTime(LocalDate.now().toString());
-
-
-        MenuBuy menuBuy = new MenuBuy(menuBuyDTO.getBuyName(), menuBuyDTO.getBuyPrice(), menuBuyDTO.getBuyEx(), menuBuyDTO.getSavedTime(), menuBuyDTO.getBuyStock(), kind.get(), member.get());
+            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+            if (!new File(savePath).exists()) {
+                try {
+                    new File(savePath).mkdir();
+                }
+                catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            String filePath = savePath + "\\" + filename;
+            uploadFile.transferTo(new File(filePath));
+            MenuBuyDTO.setOrigFilename(origFilename);
+            MenuBuyDTO.setFilename(filename);
+            MenuBuyDTO.setFilePath(filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(MenuBuyDTO.getMid());
+        Optional<Member> member = memberRepository.findByMID(MenuBuyDTO.getMid());
+        Optional<Kind> kind = kindRepository.findById(MenuBuyDTO.getKindid());
+        if(MenuBuyDTO.getSavedTime()==null)
+            MenuBuyDTO.setSavedTime(LocalDate.now().toString());
+        MenuBuy menuBuy = new MenuBuy(MenuBuyDTO.getBuyName(), MenuBuyDTO.getBuyPrice(), MenuBuyDTO.getBuyEx(), MenuBuyDTO.getSavedTime(), MenuBuyDTO.getBuyStock(), MenuBuyDTO.getOrigFilename(), MenuBuyDTO.getFilename(), MenuBuyDTO.getFilePath(), kind.get(), member.get());
         System.out.println(menuBuy);
-
         menuBuyRepository.save(menuBuy);
-
         return menuBuy;
     }
 
@@ -88,7 +109,7 @@ public class BuyController {
             }
         }
 
-        List<MultipartFile> mf = mhsq.getFiles("file");
+        List<MultipartFile> mf = mhsq.getFiles("files");
         System.out.println(mf.size());
         if (mf.size() == 1 && mf.get(0).getOriginalFilename().equals("")) {
 
