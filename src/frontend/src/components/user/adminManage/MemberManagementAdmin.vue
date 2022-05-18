@@ -1,10 +1,10 @@
 <template>
   <table border="1px" align="center" style="margin-left: 5%; margin-right: 5%;
-                                            width: 90%" >
-    <tr>
-      <th colspan="9">회원 관리자</th>
+                                            width: 90%; margin-top: 1%">
+    <tr style="text-align: center;">
+      <th colspan="9"><h1 style="color: #111111">회원 관리자</h1></th>
     </tr>
-    <tr>
+    <tr style="text-align: center">
       <th>아이디</th>
       <th>닉네임</th>
       <th>이메일</th>
@@ -13,7 +13,8 @@
       <th>가입일자</th>
       <th>탈퇴일자</th>
     </tr>
-    <tr v-for="(member, index) in members" v-bind:key="member.mcode" v-show="showDisable(index)">
+    <tr v-for="(member, index) in members" v-bind:key="member.mcode" v-show="showDisable(index)"
+        style="text-align: center">
       <td >{{member.mid}}</td>
       <td>{{member.mnick}}</td>
       <td>{{member.mmail}}</td>
@@ -28,7 +29,8 @@
         </select>
       </td>
       <td>{{member.msd}}</td>
-      <td>{{member.mld}}</td>
+      <td v-if="member.mld">{{member.mld}}</td>
+      <td v-else>-</td>
     </tr>
   </table>
   <br/><br/>
@@ -36,9 +38,9 @@
 
 <script>
 import axios from "axios";
+
 export default {
-  //eslint-disable-next-line
-  name: "Admin",
+  name: "MemberManagementAdmin",
   data(){
     return{
       members:[]
@@ -82,5 +84,9 @@ export default {
 }
 </script>
 
+
 <style scoped>
+th, td{
+  border: 1px solid #111111;
+}
 </style>

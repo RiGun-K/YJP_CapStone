@@ -15,6 +15,7 @@
         <td>{{ body.memEquipmentCount}}</td>
       </tr>
     </table>
+    <button @click="addEquip" class="EquipBtn">장비추가</button>
   </div>
 </template>
 
@@ -37,6 +38,9 @@ export default {
         default:
           return "비정상"
       }
+    },
+    addEquip(){
+      this.$router.push("/addEquipment")
     }
   },
   created(){
@@ -54,7 +58,13 @@ export default {
 </script>
 
 <style scoped>
-
+th, td{
+  border: 1px solid black;
+}
+.EquipBtn{
+  float: right;
+  padding: 0.5px;
+}
 body {
   margin: 0;
   height: 100%;

@@ -117,6 +117,7 @@ export default {
     myOrder(){
       this.$router.push("ordersList")
     }
+
   },
   watch:{
     loginCheck(){
@@ -146,6 +147,7 @@ router-link{
   text-align: center;
   list-style: none;
   position: relative;
+
 }
 .topMenu:hover > .subMenu{
   display: block;
@@ -174,4 +176,5 @@ router-link{
 .menu:hover{
   background: #7ea6f6;
 }
+
 </style>

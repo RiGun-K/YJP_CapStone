@@ -44,7 +44,9 @@ export default {
 </script>
 
 <style scoped>
-
+th, td{
+  border: 1px solid black;
+}
 body {
   margin: 0;
   height: 100%;
