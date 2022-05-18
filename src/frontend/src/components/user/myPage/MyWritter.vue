@@ -7,12 +7,16 @@
         <th>제목</th>
         <th>작성일</th>
       </tr>
-      <tr v-for="(body) in writerList">
+      <tr v-for="(body) in viewList" :key="body.writer_code">
         <td>{{ body.writer_code}}</td>
         <td>{{ body.title}}</td>
         <td>공란</td>
       </tr>
     </table>
+    <div class="searchDiv">
+      <input type="text" v-model="searchWord">
+      <button class="searchBtn" @click="searchTitle">검색</button>
+    </div>
   </div>
 </template>
 
@@ -24,11 +28,24 @@ export default {
   name: "MyWritter",
   data(){
     return{
-      writerList:[]
+      writerList:[],
+      viewList:[],
+      searchWord:''
     }
   },
   methods:{
-
+    searchTitle(){
+      if(this.searchWord.length <= 0){
+        alert("검색어를 입력해주세요")
+      }else{
+        this.viewList = []
+        for(var i = 0; i < this.writerList.length; i++){
+          if(this.writerList[i].title.includes(this.searchWord)){
+            this.viewList.push(this.writerList[i])
+          }
+        }
+      }
+    }
   },
   created() {
     axios.post("/api/myWritter",{
@@ -36,6 +53,7 @@ export default {
     }).then((res)=>{
       console.log(res.data)
       this.writerList = res.data
+      this.viewList = this.writerList
     }).catch((err)=>{
       console.log(err)
     })
@@ -44,6 +62,14 @@ export default {
 </script>
 
 <style scoped>
+.searchBtn{
+  margin-left: 1%;
+  padding: 0.5%;
+}
+.searchDiv{
+  margin-top: 2%;
+  text-align: center;
+}
 th, td{
   border: 1px solid black;
 }

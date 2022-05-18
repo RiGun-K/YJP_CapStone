@@ -1,10 +1,9 @@
 <template>
-  <table border="1px" align="center" style="margin-left: 5%; margin-right: 5%;
-                                            width: 90%; margin-top: 1%">
-    <tr style="text-align: center;">
+  <table class="tableBody">
+    <tr>
       <th colspan="9"><h1 style="color: #111111">회원 관리자</h1></th>
     </tr>
-    <tr style="text-align: center">
+    <tr>
       <th>아이디</th>
       <th>닉네임</th>
       <th>이메일</th>
@@ -13,8 +12,7 @@
       <th>가입일자</th>
       <th>탈퇴일자</th>
     </tr>
-    <tr v-for="(member, index) in members" v-bind:key="member.mcode" v-show="showDisable(index)"
-        style="text-align: center">
+    <tr v-for="(member, index) in members" v-bind:key="member.mcode" v-show="showDisable(index)">
       <td >{{member.mid}}</td>
       <td>{{member.mnick}}</td>
       <td>{{member.mmail}}</td>
@@ -88,5 +86,16 @@ export default {
 <style scoped>
 th, td{
   border: 1px solid #111111;
+}
+tr, td{
+  text-align: center;
+}
+.tableBody{
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 1%;
+  width: 90%;
+  border: 1px solid black;
+  text-align: center;
 }
 </style>
