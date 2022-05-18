@@ -136,6 +136,23 @@ public class ProductController {
         return campings;
     }
 
+    /* 캠핑장 지역별 조회하기 ( 캠핑 ) */
+    @GetMapping("/product_detail_campingArea/{areaId}")
+    public List<Camping> campingAreas(@PathVariable("areaId") int areaId) {
+        List<Camping> campings = campingRepository.findByareaId(areaId);
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 지역별 조회하기 ( 캠핑 ) */
+    @GetMapping("/product_detail_campingDetailArea/{areaId}")
+    public List<Camping> campingAreaDetails(@PathVariable("areaId") int areaId) {
+        System.out.println(areaId);
+        List<Camping> campings = campingRepository.findByareaDetailId(areaId);
+        System.out.println(campings);
+        return campings;
+    }
+
 
     /* 나의상품 리스트 */
 //    @GetMapping("/myProduct_list/{userid}")

@@ -10,6 +10,7 @@
     <img src="@/assets/팬션.png" class="card-img-top" alt="..." @click="cam(4)">
     <img src="@/assets/차박.png" class="card-img-top" alt="..." @click="cam(5)">
     <img src="@/assets/당일피크닉.png" class="card-img-top" alt="..." @click="cam(6)">
+      <img src="@/assets/기타.png" class="card-img-top" alt="..." @click="cam(7)">
     </div>
     <br>
     <br>
@@ -21,6 +22,7 @@
       </div>
     </form>
     </section>
+
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
@@ -39,8 +41,19 @@
       <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
     </div>
 
-    <br>
-    <br>
+    <h3>지역분류</h3>
+    <div class="searchDiv">
+      <select v-model="bigPick" @change="bigCheck(bigPick)">
+        <option value="0">전국</option>
+        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+      </select>
+      <select v-model="smallPick">
+        <option value="0">전체</option>
+        <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+      </select>
+      <button @click="search()">검색</button>
+    </div>
+
     <span class="buy-list">
       <table class="table table-striped">
         <thead>
@@ -91,13 +104,27 @@ export default {
     ProductList
   },
   created() {
-    this.goData()
+    this.goData(),
+    axios.get('/api/campingRound')
+        .then(res => {
+          console.log(res.data)
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
   },
   data() {
     return {
       selected: false,
       list: [],
       product: '',
+
+      bigRound: [],
+      smallRound: [],
+      bigPick: 0,
+      smallPick: 0,
     }
   },
   methods: {
@@ -118,6 +145,52 @@ export default {
           .catch(e => {
             console.log(e)
           })
+    },
+
+    bigCheck(index) {
+      if (index == '0') {
+        this.smallRound = []
+        this.smallPick = 0
+      } else {
+        axios.get('/api/campingSmallRound/' + index)
+            .then(res => {
+              console.log(res.data)
+              this.smallRound = res.data
+              this.smallPick = 0
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+
+    },
+    search() {
+      if (this.bigPick == "0" && this.smallPick == "0") {
+        this.goData();
+      } else if (this.bigPick != "0" && this.smallPick == '0') {
+        console.log("AREA_ID 는" + this.bigPick + "입니다..");
+        axios.get('/api/product_detail_campingDetailArea/' + this.bigPick)
+            .then((res) => {
+              console.log(res.data);
+              this.list = res.data;
+            })
+            .catch(e => {
+              console.log(e)
+            })
+      } else if (this.bigPick != "0" && this.smallPick != '0' ) {
+        console.log("AREA_ID 는" + this.smallPick + "입니다.");
+        axios.get('/api/product_detail_campingArea/' + this.smallPick)
+            .then((res) => {
+              console.log(res.data);
+              this.list = res.data;
+            })
+            .catch(e => {
+              console.log(e)
+            })
+      }
+
+
+
     },
 
     // 상세페이지 접속
