@@ -15,11 +15,11 @@
         </ul>
       </div>
     </div>
-    <div v-if="stateCheck">
+    <div v-if="stateCheck" class="detailDiv">
       <div><h3>{{ boxName }}</h3></div>
       <div>
         <p style="margin-left: 3%; margin-top: 2%">대여기간 설정</p>
-        <Datepicker style="margin-left: 3%; margin-bottom: 5%; width: 20%"
+        <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
                     locale="ko-KR"
                     :min-date="today"
                     type="date"
@@ -44,13 +44,11 @@
       <div>
         결제금액 : {{ form.price }}원
       </div>
-      <div>
+      <div class="detailBtn">
         <button class="pay-btn" @click="pay">다음</button>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script asp-append-version=“true”>
@@ -114,9 +112,9 @@ export default {
       let arrayone = {}
       let k= 0;
       for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
-        arrayone[0 + i % 3]=this.boxList.storageBoxes[i]
+        arrayone[0 + i % 5]=this.boxList.storageBoxes[i]
 
-        if ((i + 1) % 3 == 0 || (i+1) == this.boxList.storageBoxes.length) {
+        if ((i + 1) % 5 == 0 || (i+1) == this.boxList.storageBoxes.length) {
           this.boxArray[0+k] = arrayone
           arrayone = {}
           k= k+1;
@@ -216,6 +214,19 @@ export default {
 </script>
 
 <style scoped>
+/*추가*/
+.detailDiv{
+  margin-top: 3%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.detailBtn{
+  text-align: left;
+  left: 25%;
+  position: relative;
+}
+
+/*기존*/
 .user-storage-view h3 {
   margin-top: 3%;
   margin-left: 7%;
@@ -223,15 +234,18 @@ export default {
 }
 
 .storage-box {
+  margin-right: 5%;
   border: solid 3px #00a3de;
   border-radius: 10px;
-  width: 30%;
+  width: 15%;
 }
 
 .storage-view {
+  margin-bottom: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
   display: -webkit-flex;
   display: flex;
-  margin-bottom: 3%;
 }
 
 .storage-back-btn {
@@ -268,7 +282,6 @@ export default {
 }
 
 .pay-btn {
-  margin-left: 85%;
   margin-bottom: 2%;
   text-align: center;
   width: 12%;

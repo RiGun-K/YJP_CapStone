@@ -146,6 +146,9 @@ export default {
   border-radius: 10px;
   width: 30%;
 }
+.storage-box-ck{
+  width: 15%;
+}
 .storage-view {
   display: -webkit-flex;
   display: flex;

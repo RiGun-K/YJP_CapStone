@@ -16,7 +16,7 @@
       <th>전화번호</th>
       <th>허가</th>
     </tr>
-    <tr v-for="(company, index) in request" v-bind:key="company.ccode">
+    <tr v-for="(company) in viewList" v-bind:key="company.ccode">
       <td >{{company.member.mid}}</td>
       <td>{{company.cst}}</td>
       <td>{{company.cname}}</td>
@@ -27,7 +27,7 @@
       <td>{{company.cph}}</td>
       <td>{{company.chp}}</td>
       <td v-if="company.csc == 1">
-        <button @click="accept(index)">승인</button>
+        <button @click="accept(company.ccode)">승인</button>
         <button>취소</button>
       </td>
       <td v-else>
@@ -35,7 +35,10 @@
       </td>
     </tr>
   </table>
-  <br/><br/>
+  <div class="searchDiv">
+    <input type="text" v-model="searchWord">
+    <button class="searchBtn" @click="searchId">검색</button>
+  </div>
 </template>
 
 <script>
@@ -44,18 +47,33 @@ export default {
   name: "SellerAccept",
   data(){
     return{
-      request:null
+      request:null,
+      viewList:[],
+      searchWord:''
     }
   },
   methods:{
     accept(index){
       axios.post("/api/acceptCompany",{
-        CCode:this.request[index].ccode
+        CCode:index
       }).then((res)=>{
         console.log(res)
+        this.$router.go()
       }).catch((err)=>{
         console.log(err)
       })
+    },
+    searchId(){
+      if(this.searchWord.length <= 0){
+        alert("검색어를 입력해주세요")
+      }else{
+        this.viewList = []
+        for(var i = 0; i < this.request.length; i++){
+          if(this.request[i].member.mid.includes(this.searchWord)){
+            this.viewList.push(this.request[i])
+          }
+        }
+      }
     },
     refuse(){
 
@@ -71,6 +89,7 @@ export default {
   created() {
     axios.get("/api/getRequestCompany").then((res)=>{
       this.request = res.data
+      this.viewList = this.request
     }).catch((err)=>{
       console.log(err)
     })
@@ -82,5 +101,13 @@ export default {
 th, td{
   text-align: center;
   border: 1px solid #111111;
+}
+.searchBtn{
+  margin-left: 1%;
+  padding: 0.5%;
+}
+.searchDiv{
+  margin-top: 2%;
+  text-align: center;
 }
 </style>
