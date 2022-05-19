@@ -1,23 +1,23 @@
 <template>
   <table class="tableBody">
     <tr>
-      <th colspan="9"><h1 style="color: #111111">회원 관리자</h1></th>
+      <th colspan="7"><h1 style="color: #111111">회원 관리자</h1></th>
     </tr>
     <tr>
-      <th>아이디</th>
-      <th>닉네임</th>
-      <th>이메일</th>
-      <th>주소</th>
-      <th>상태코드</th>
-      <th>가입일자</th>
-      <th>탈퇴일자</th>
+      <th class="idSet">아이디</th>
+      <th class="nickSet">닉네임</th>
+      <th class="emailSet">이메일</th>
+      <th class="addSet">주소</th>
+      <th class="stateSet">상태코드</th>
+      <th class="startSet">가입일자</th>
+      <th class="leaveSet">탈퇴일자</th>
     </tr>
-    <tr v-for="(member, index) in members" v-bind:key="member.mcode" v-show="showDisable(index)">
-      <td >{{member.mid}}</td>
-      <td>{{member.mnick}}</td>
-      <td>{{member.mmail}}</td>
-      <td>{{member.mradd}} <br/> {{member.madd}}</td>
-      <td>
+    <tr v-for="(member, index) in viewList" v-bind:key="member.mcode" v-show="showDisable(index)">
+      <td class="idSet">{{member.mid}}</td>
+      <td class="nickSet">{{member.mnick}}</td>
+      <td class="emailSet">{{member.mmail}}</td>
+      <td class="addSet">{{member.mradd}} <br/> {{member.madd}}</td>
+      <td class="stateSet">
         <select v-model="member.msc" @change="changeSelect(index)" :disabled="mscDisable(index)" >
           <option value="0" disabled="true">탈퇴회원</option>
           <option value="1">정지회원</option>
@@ -26,12 +26,15 @@
           <option value="4">판매자회원</option>
         </select>
       </td>
-      <td>{{member.msd}}</td>
-      <td v-if="member.mld">{{member.mld}}</td>
-      <td v-else>-</td>
+      <td class="startSet">{{member.msd}}</td>
+      <td v-if="member.mld" class="leaveSet">{{member.mld}}</td>
+      <td v-else class="leaveSet">-</td>
     </tr>
   </table>
-  <br/><br/>
+  <div class="searchDiv">
+    <input type="text" v-model="searchWord">
+    <button class="searchBtn" @click="searchList">검색</button>
+  </div>
 </template>
 
 <script>
@@ -41,19 +44,33 @@ export default {
   name: "MemberManagementAdmin",
   data(){
     return{
-      members:[]
+      members:[],
+      searchWord:'',
+      viewList:[]
     }
   },
   methods:{
+    searchList(){
+      if(this.searchWord.length <= 0){
+        alert("검색어를 입력해주세요")
+      }else{
+        this.viewList = []
+        for(var i = 0; i < this.members.length; i++){
+          if(this.members[i].mid.includes(this.searchWord)){
+            this.viewList.push(this.members[i])
+          }
+        }
+      }
+    },
     mscDisable(index){
-      if(this.members[index].msc == 0){
+      if(this.viewList[index].msc == 0){
         return true
       }else{
         return false
       }
     },
     showDisable(index){
-      if(this.members[index].msc == 5){
+      if(this.viewList[index].msc == 5){
         return false
       }else{
         return true
@@ -74,6 +91,7 @@ export default {
     axios.get("api/getAllmember")
         .then((res)=>{
           this.members = res.data
+          this.viewList = this.members
         })
         .catch((err)=>{
           console.log(err)
@@ -97,5 +115,26 @@ tr, td{
   width: 90%;
   border: 1px solid black;
   text-align: center;
+}
+.searchDiv{
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 1%;
+  width: 90%;
+  text-align: center;
+}
+.searchBtn{
+  margin-left: 1%;
+  padding: 0.2%;
+  text-align: center;
+}
+.idSet, .nickSet, .leaveSet, .startSet, .stateSet{
+  width: 10%;
+}
+.emailSet{
+  width: 20%;
+}
+.addSet{
+  width: 25%;
 }
 </style>
