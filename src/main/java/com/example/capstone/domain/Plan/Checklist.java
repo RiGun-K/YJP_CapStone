@@ -19,7 +19,7 @@ public class Checklist{
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private  Long checklistCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "DETAIL_CODE")
     private PlanDetail detailCode;

@@ -87,7 +87,7 @@
 					<button @click="insertChecklist(value.detailCode)">
 						checkList
 					</button>
-					<button @click="deleteDetailPlan()">일정 삭제</button>
+					<button @click="deleteDetailPlan(value)">일정 삭제</button>
 				</td>
 			</tr>
 		</table>
@@ -103,7 +103,7 @@ import axios from 'axios';
 export default {
 	created() {
 		this.loadDetailPlanOfDay(1);
-		this.loadAllCheckList();
+		// this.loadAllCheckList();
 	},
 	data() {
 		return {
@@ -125,6 +125,22 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		deleteDetailPlan: function (detailCode) {
+			const url = 'api/deleteDetailPlan';
+			const delConfirm = confirm('정말로 삭제 하시겠습니까?');
+			if (delConfirm) {
+				axios
+					.delete(url, {
+						params: { planDetailCode: detailCode.detailCode },
+					})
+					.then((response) => {
+						this.loadDetailPlanOfDay(this.dateIndex);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		},
 		loadAllCheckList: function () {
 			const url = 'api/loadAllCheckList';
 			axios

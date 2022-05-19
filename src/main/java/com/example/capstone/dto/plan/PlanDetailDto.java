@@ -13,13 +13,12 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlanDetailDto {
 
     private Long detailCode;
-
-    private List<Checklist> checklists = new ArrayList<Checklist>();
-
+    private List<Checklist> checklists = new ArrayList<>();
     private PlanDto planCode;
     private String detailName;
     private String detailMemo;

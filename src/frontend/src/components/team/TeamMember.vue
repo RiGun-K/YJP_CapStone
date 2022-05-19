@@ -55,6 +55,7 @@
 				<button @Click="updatePlanCode(value)">
 					{{ value.planName }}
 				</button>
+				<button @click="deletePlan(value)">플랜삭제</button>
 			</div>
 			<div v-if="showingDeleteTeamButton">
 				<button @click="openWindow('/selectCopy')">
@@ -87,6 +88,20 @@ export default {
 		};
 	},
 	methods: {
+		deletePlan: function (planCode) {
+			const delConfirm = confirm('정말로 삭제 하시겠습니까?');
+			const url = 'api/deletePlan';
+			if (delConfirm) {
+				axios
+					.delete(url, { params: { planCode: planCode.planCode } })
+					.then((response) => {
+						this.loadTeamPlans();
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		},
 		deleteContent: function (boardCode) {
 			const url = 'api/deleteContent';
 			axios
@@ -150,6 +165,7 @@ export default {
 		},
 		loadTeamPlans: function () {
 			const url = '/api/loadTeamPlans/';
+			this.planList.length = 0;
 			axios
 				.get(url + this.$store.state.teamCode.teamCode.teamCode)
 				.then((response) => {
@@ -218,17 +234,27 @@ export default {
 				});
 		},
 		deleteTeam: function () {
-			const url = 'api/deleteTeam';
-			axios
-				.post(url, this.$store.state.teamCode.teamCode)
-				.then((response) => {
-					console.log(this.$store.state.teamCode.teamCode);
-					console.log('삭제완료!!');
-				})
-				.catch((error) => {
-					alert('삭제에러');
-					console.log(error);
-				});
+			const url = '/api/deleteTeam';
+			const delConfirm = confirm('정말로 삭제 하시겠습니까?');
+			if (delConfirm) {
+				axios
+					.delete(url, {
+						params: {
+							teamCode:
+								this.$store.state.teamCode.teamCode.teamCode,
+						},
+					})
+					.then((response) => {
+						alert('팀이 삭제되었습니다');
+						this.$router.push({
+							name: 'teamManage',
+						});
+					})
+					.catch((error) => {
+						alert('삭제에러');
+						console.log(error);
+					});
+			}
 		},
 		updatePlanCode: function (planCode) {
 			this.$store.commit('updatePlanCode', planCode);
