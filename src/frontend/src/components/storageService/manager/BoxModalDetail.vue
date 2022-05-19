@@ -31,27 +31,32 @@
     <table>
       <tr>
         <td>장비 이동</td>
-        <td v-if="box.useStorageState == 4">
+        <td v-if="box.useStorageState == 3">
           이동지 :
           <p v-if="boxCode.storageBoxState == '3'">
             보낼곳
             보관소 : {{ moveInfo.storageName }}
             보관함 : {{ moveInfo.storageBoxName }}
+            장비 이동 신청
+            <button @click="moveStateUpDate()">이동 시작</button>
           </p>
           <p v-else-if="boxCode.storageBoxState == '4'">
             받을곳
             보관소 : {{ moveInfo.storageName }}
             보관함 : {{ moveInfo.storageBoxName }}
           </p>
-          장비 이동 신청
-          <button @click="moveStateUpDate()">이동 시작</button>
+
         </td>
-        <td v-else-if="box.useStorageState == 7">이동 도착</td>
+        <td v-else-if="box.useStorageState == 4">이동 중</td>
+        <td v-else-if="box.useStorageState == 5">이동 도착
+          도착 하면 버튼 클릭
+          <button @click="endMoveupdate()">도착</button>
+        </td>
         <td v-else>없음</td>
       </tr>
       <tr>
         <td>장비 수리</td>
-        <td v-if="box.useStorageState == 8">장비 수리 신청</td>
+        <td v-if="box.useStorageState == 7">장비 수리 신청</td>
         <td v-else>없음</td>
       </tr>
     </table>
@@ -174,7 +179,24 @@ export default {
       console.log('받는곳')
       console.log(this.box.updateusbCode)
       axios.get('/api/moveStateUpdate/'+this.box.useStorageCode+'/'+this.box.updateusbCode)
-    }
+      .then(res=>{
+        console.log(res.data.result)
+        alert("이동합니다")
+        this.getd()
+      })
+    },
+    endMoveupdate(){
+      // 도착하면 누르는 버튼
+      axios.get('/api/endmoveUpdate/'+this.box.useStorageCode)
+      .then(res=>{
+        console.log(res.data.result)
+        alert("보관되었습니다")
+        this.getd()
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
   },
 }
 </script>

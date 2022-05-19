@@ -172,6 +172,7 @@ export default {
       })
     },
     moveBox(useBox){
+      this.$store.commit('moveBoxInfo',useBox)
       this.$router.push({
         name: 'moveBox',
         params: {

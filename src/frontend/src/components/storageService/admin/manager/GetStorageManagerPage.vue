@@ -18,6 +18,7 @@
 <!--    </div>-->
 <!--  </div>-->
   <!-- 보관소별 관리자 리스트 -->
+
   <table>
     <thead>
     <tr>
@@ -37,7 +38,7 @@
         <td>{{index+1}}.</td>
         <td>{{manager.storageCode.storageName}}</td>
         <td>{{ manager.mcode.mnick }}</td>
-        <td><button>수정</button><button>삭제</button></td>
+        <td><button @click="edit(torageManagerCode)">수정</button><button @click="remove(torageManagerCode)">삭제</button></td>
       </tr>
     </tbody>
     <tbody v-else v-for="(manager,index) in managerList">
@@ -108,7 +109,13 @@ export default {
       .catch(err=>{
         console.log(err)
       })
-    }
+    },
+    edit(index){
+
+    },
+    remove(index){
+
+    },
   }
 }
 </script>
