@@ -1,78 +1,26 @@
 <template>
-  <button @click="$router.push('/storageAdmin')"> 목록</button>
   <div class="renewal-box">
     <h3>보관소 리스트 페이지</h3>
     <div class="card"  style="width: 70%; margin-bottom: 5%; font-weight: bolder; margin-left: 7%">
-      <div class="card-body">
-        <div v-for="(storage,index) in storageList" :key="index" @click="GetStorageDetail(storage.storageCode)">
-          <div>
-            <div class="card" style="display: flex; width: 85%; margin-top: 4%;margin-left: 7%; margin-bottom: 3%">
-              이름:{{ storage.storageName }}
-              <br>
-              주소:{{ storage.storageAddress }}
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>지역</th>
+            <th colspan="2">보관소명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(storage,index) in storageList" :key="index" >
+            <td>{{ index+1 }}</td>
+            <td>{{ storage.storageAddress }}</td>
+            <td>{{ storage.storageName }}</td>
+            <td><button @click="GetStorageDetail(storage.storageCode)">수정</button></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div v-if="check">
-      <div class="storage">
-        <div class="storage-box-name-btn">
-          <h5 style="width: 100%;">보관소 이름:{{ name }}</h5>
-          <button class="storage-close" @click="closeDetail">닫기</button>
-        </div>
-        <div>
-          <h5>보관소 매니저</h5>
-          <p>추가</p>
-          <div class="manager-add">
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
-              <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1" placeholder="매니저id">
-            </div>
-            <button class="storage-box-b" @click="CheckMember()">CHECK</button>
-            <p v-if="memberIdCheck">가능</p>
-            <button v-if="memberIdCheck" @click="postManager">ADD</button>
-          </div>
-          <table>
-            <thead>
-            <tr>
-              <td>이름</td>
-              <td>아이디</td>
-              <td>직급</td>
-            </tr>
-            </thead>
-            <tbody v-for="(manager, index) in managerList" :key="index">
-            <tr>
-              <td>{{ manager.mcode.mnick }}</td>
-              <td>{{ manager.mcode.mid }}</td>
-              <td>매니저</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
 
-        <div class="storage-view">
-          <table class="storage-box">
-            <thead>
-            <tr>
-              <th>보관함</th>
-              <th>상태</th>
-              <th>수정</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr  v-for="(box,index) in boxList.storageBoxes" :key="index">
-              <td>{{ box.storageBoxName }}</td>
-              <td><p v-if="box.storageBoxState == '0'">사용안함</p>
-                <p v-else-if="box.storageBoxState == '1' ">사용중</p></td>
-              <td><button>수정</button></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
   </div>
 
 </template>
@@ -109,8 +57,10 @@ export default {
           })
     },
     GetStorageDetail(storageCode) {
+
       console.log('storageCode')
       console.log(storageCode)
+      this.$router.push({name:'StorageRevise', params:{storageCode:storageCode}})
       this.detailCheck()
       axios.get('/api/storageView/' + storageCode)
           .then((resp) => {

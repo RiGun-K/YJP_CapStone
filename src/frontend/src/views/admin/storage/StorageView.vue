@@ -2,8 +2,8 @@
   <div class="allBody">
 
     <div v-if="get">
-      <GetStorage></GetStorage>
       <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
+      <GetStorage></GetStorage>
     </div>
     <div v-if="input">
       <button @click="getStorage" class="storage-back-btn">뒤로가기</button>
