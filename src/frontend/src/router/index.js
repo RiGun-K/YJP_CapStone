@@ -336,7 +336,7 @@ const routes = [
     component: () => import('@/components/cart/Cart/CartList.vue')
   },
   {
-    path: '/cart/buy',
+    path: '/cart/buy/:mcode',
     name: 'BuyCart',
     component: () => import('@/components/cart/Cart/BuyCart.vue')
   },

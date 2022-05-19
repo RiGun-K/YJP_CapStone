@@ -9,7 +9,7 @@
             <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
             <p class="card-text">가격: {{ this.content.buyPrice }}</p>
             <p class="card-text">설명: {{ this.content.buyEx }}</p>
-            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> - </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> + </button></p>
+            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
             <a href="#" class="btn btn-primary" @click="buyData">구매</a>
           </div>
         </div>
@@ -43,7 +43,8 @@ export default {
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
       images: '',
-      count: 1
+      count: 1,
+      buyMenuCheckPut: true
     }
   },
   methods: {
@@ -76,18 +77,26 @@ export default {
     },
     putData() {
       this.putCart()
-      if (confirm('추가되었습니다, 장바구니에서 확인하시겠습니까?')) {
-        this.$router.push({
-          path: `/cart/buy/${this.content.mid.mcode}`
-        })
-      } else {
 
+      if(this.buyMenuCheckPut === false) {
+        if (confirm('추가되었습니다, 장바구니에서 확인하시겠습니까?')) {
+          this.$router.push({
+            path: `/cart/buy/${this.content.mid.mcode}`
+          })
+        }
+      }else{
+        alert("이미 장바구니에 담겨있습니다.")
       }
     },
     putCart() {
       this.axios.post('http://localhost:9002/api/buyCartPut', {
         buyId: this.content.buyId,
-        count: this.count
+        count: this.count,
+        MID: this.content.mid.mid,
+      }).then(res => {
+        this.buyMenuCheckPut = res.data
+        console.log(typeof res.data)
+        console.log(typeof this.buyMenuCheckPut)
       })
     },
     subCount() {
@@ -127,10 +136,17 @@ export default {
 }
 .buy-count-sub{
   color: #00a3de;
-  font-weight: bolder;
+  background-color: white;
+  font-size: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .buy-count-add{
   color: #00a3de;
   font-weight: bolder;
+  background-color: white;
+  font-size: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 </style>
