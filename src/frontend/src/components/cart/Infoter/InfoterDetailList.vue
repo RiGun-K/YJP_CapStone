@@ -69,28 +69,15 @@
       </button>
     </div>
 
-    <br>
-    <!--    <div v-if="stateCheckB">-->
-    <h2>리뷰</h2>
-    <div class="content-detail-list-1">
+    <div v-if="areaCheck">
       <br>
-      <div class="my-box">
-        <div class="review">
-          <p class="review-title">d</p>
-          <p class="review-text">설명</p>
-
-        </div>
-
-        <!--        </div>-->
+      <h2>캠핑장 위치정보</h2>
+      <div class="mapDiv">
+        <div id="map"></div>
       </div>
-
     </div>
+
   </div>
-  <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-  <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-  <!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
 
 </template>
 
@@ -102,6 +89,9 @@ export default {
   created() {
     this.DataList();
   },
+  mounted() {
+
+  },
   data() {
     return {
       id: '',
@@ -110,9 +100,15 @@ export default {
       // file: this.content.origFilename
       images: '',
       stateCheck: false,
+
+      map: null,
+      markers: [],
+      markPositions1: [],
+      areaCheck: false,
     }
   },
   methods: {
+
     DataList() {
       this.id = this.$route.params.campingId;
       console.log(this.id);
@@ -146,7 +142,76 @@ export default {
             path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
         // path: `/infoter/infoterNow/${this.content.campingDetails[1].detailId}`
           })
+    },
+
+    detail_3() {
+      this.areaCheck = true
+
+      // const point = [this.content.longitude, this.content.latitude]
+      // console.log(point);
+      // this.displayMarker([point])
+
+      //  카카오맵
+      if (window.kakao && window.kakao.maps) {
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
+        document.head.appendChild(script);
+
+      }
+
+    },
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
+        level: 8,
+      };
+      console.log(options)
+      this.map = new kakao.maps.Map(container, options);
+
+      // 마커 만들기
+
+      let position = []
+      position = [this.content.longitude, this.content.latitude]
+      this.markPositions1.push(position)
+
+      this.displayMarker(this.markPositions1)
+    },
+
+    displayMarker(markerPositions) {
+      if (this.markers.length > 0) {
+        this.markers.forEach((marker) => marker.setMap(null));
+      }
+
+      const positions = markerPositions.map(
+          (position) => new kakao.maps.LatLng(...position)
+      );
+
+      console.log("길이는" + positions.length)
+      if (positions.length > 0) {
+        this.markers = positions.map(
+            (position) =>
+                new kakao.maps.Marker({
+                  map: this.map,
+                  position,
+                })
+        );
+
+        const bounds = positions.reduce(
+            (bounds, latlng) => bounds.extend(latlng),
+            new kakao.maps.LatLngBounds()
+        );
+
+        this.map.setBounds(bounds);
+      }
+
     }
+
 
   }
 }
@@ -170,5 +235,16 @@ export default {
   text-align: center;
 }
 .card {
+}
+
+.mapDiv{
+  margin-top: 1%;
+  width: 45%;
+  float: right;
+}
+#map {
+  width: 400px;
+  height: 400px;
+
 }
 </style>
