@@ -60,6 +60,11 @@ public class Camping {
     @Column()
     private String filePath;
 
+    @Column
+    private double latitude;//위도
+    @Column
+    private double longitude;//경도
+
     @Column()
     private int campingViews = 0;
 
