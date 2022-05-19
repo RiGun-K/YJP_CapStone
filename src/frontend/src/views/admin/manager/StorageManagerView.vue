@@ -1,6 +1,7 @@
 <!-- storage admin page(manager)-->
 <template>
   <div>
+    <button @click="$router.push('/storageAdmin')"> 목록</button>
     <div>
       <GetStorageManagerPage></GetStorageManagerPage>
     </div>

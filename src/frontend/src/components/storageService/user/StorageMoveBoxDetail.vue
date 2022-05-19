@@ -44,9 +44,11 @@ export default {
     this.form.boxCode = this.$route.params.boxCode
     this.form.useBoxCode = this.$route.params.useBoxCode
     this.userId = store.getters.getLoginState.loginState
+    this.moveBoxInfo = this.$store.state.moveBoxInfo
     console.log('this.userId')
     console.log(this.userId)
     console.log(this.form)
+    console.log(this.moveBoxInfo)
   },
   mounted() {
     axios.get('/api/storageView/' + this.id)
@@ -76,7 +78,8 @@ export default {
         storageBoxCode:'',
         price:''
       },
-      stateCheck:false
+      stateCheck:false,
+      moveBoxInfo:{},
     }
   },
   watch:{

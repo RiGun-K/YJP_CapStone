@@ -23,12 +23,21 @@
         <h3 class="join_title">
           <label for="id">지역분류</label>
         </h3>
-        <select v-model="areaid" placeholder="지역명을 입력하세요." class="form-select" aria-label="Default select example">
-          <option v-for="(area, index) in ares" :key="index" :value="area">
-            {{area.text}}
-          </option>
+        <select v-model="bigPick" @change="bigCheck(bigPick)">
+          <option value="0">전국</option>
+          <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
         </select>
-        <div class="mt-3">선택유형 : <strong>{{ areaid.text }}</strong></div>
+        <br>
+        <select v-model="smallPick">
+          <option value="0">전체</option>
+          <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+        </select>
+<!--        <select v-model="areaid" placeholder="지역명을 입력하세요." class="form-select" aria-label="Default select example">-->
+<!--          <option v-for="(area, index) in ares" :key="index" :value="area">-->
+<!--            {{area.text}}-->
+<!--          </option>-->
+<!--        </select>-->
+<!--        <div class="mt-3">선택유형 : <strong>{{ areaid.text }}</strong></div>-->
 
         <br>
         <span class="error_next_box"></span>
@@ -154,7 +163,14 @@ export default {
   name: "RegistrationBuy",
   components: { ProductPage },
   created() {
-
+    axios.get('/api/campingRound')
+        .then(res => {
+          console.log(res.data)
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
   },
   data() {
     return {
@@ -178,30 +194,40 @@ export default {
       stateCheck: false,
 
 
+      bigRound: [],
+      smallRound: [],
+      bigPick: 0,
+      smallPick: 0,
+
+
       options: [
         { value: '1', text: '오토캠핑'},
-        { value: '2', text: '글램핑'},
-        { value: '3', text: '카라반'},
-        { value: '4', text: '자전거캠핑'},
+        { value: '2', text: '카라반'},
+        { value: '3', text: '글램핑'},
+        { value: '4', text: '펜션'},
         { value: '5', text: '차박'},
-        { value: '6', text: '기타'},
+        { value: '6', text: '당일피크닉'},
+        { value: '7', text: '기타'},
       ],
-      ares: [
-        { value: '1', text: '강원도'},
-        { value: '2', text: '경기도'},
-        { value: '3', text: '경상도'},
-        { value: '4', text: '대구시'},
-        { value: '5', text: '부산시'},
-        { value: '6', text: '서울시'},
-        { value: '7', text: '울산시'},
-        { value: '8', text: '인천시'},
-        { value: '9', text: '전라도'},
-        { value: '10', text: '제주도'},
-        { value: '11', text: '충청도'},
-      ]
     }
   },
   methods: {
+    bigCheck(index) {
+      if (index == '0') {
+        this.smallRound = []
+      } else {
+        axios.get('/api/campingSmallRound/' + index)
+            .then(res => {
+              console.log(res.data)
+              this.smallRound = res.data
+              this.smallPick = 0
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+
+    },
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
@@ -255,6 +281,7 @@ export default {
     },
 
     zcGet() {
+      console.log(this.smallPick);
       new window.daum.Postcode({
         oncomplete: (data) => {
           this.postalAddress = data.zonecode;
@@ -269,7 +296,8 @@ export default {
       // const photoFile = document.getElementById("file_load");
 
       formData.append('infoterId', this.infoterid.value);
-      formData.append('areaId', this.areaid.value);
+      // formData.append('areaId', this.areaid.value);
+      formData.append('areaId', this.smallPick);
       formData.append('campingName', this.campingName);
       formData.append('campingInfo', this.campingInfo);
       formData.append('campingDetailState', this.campingDetailState);

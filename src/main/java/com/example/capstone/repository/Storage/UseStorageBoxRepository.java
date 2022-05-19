@@ -13,7 +13,8 @@ import java.util.Optional;
 public interface UseStorageBoxRepository extends JpaRepository<UseStorageBox, Long> {
     List<UseStorageBox> findByStorageBoxCode(StorageBox storageBox);
     List<UseStorageBox> findByOrderCode(Orders orders);
-    Optional<UseStorageBox> findByUseStorageState(String state);
+    @Query(value = "select * from USESTORAGEBOX where USE_STORAGE_STATE = :state",nativeQuery = true)
+    Optional<UseStorageBox> findByUseStorageState(@Param("state")String state);
 
     @Query(value = "select s.STORAGE_CODE, s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME\n" +
             "from STORAGE s\n" +
@@ -21,4 +22,5 @@ public interface UseStorageBoxRepository extends JpaRepository<UseStorageBox, Lo
             "join USESTORAGEBOX u on b.STORAGE_BOX_CODE = u.STORAGE_BOX_CODE\n" +
             "where u.USE_STORAGE_BOX_CODE = :usbCode",nativeQuery = true)
     public Object[] findByInFo(@Param("usbCode")long usbCode);
+
 }
