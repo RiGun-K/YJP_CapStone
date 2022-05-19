@@ -390,6 +390,13 @@ public class StorageController {
 
     }
 
+    // 보관함 가격 조회
+    @GetMapping("boxPrice/{boxCode}")
+    private int getBoxPrice(@PathVariable(value = "boxCode")long box){
+        Optional<StorageBox> storageBox= storageBoxRepository.findById(box);
+        return storageBox.get().getStorageBoxPrice();
+    }
+
     // 보관함 보관소 이동
     @PostMapping("boxToBoxPay")
     private Result boxToBoxPay(@RequestBody StorageMove move) {
@@ -419,16 +426,16 @@ public class StorageController {
         storageBoxRepository.save(afterBox.get());
 
         // 이동될 사용 보관함 상태코드(상태 + 이전 사용보관함코드)
-        UseStorageBox newUseStorageBox = new UseStorageBox(null,
+        UseStorageBox newUseStorageBox = new UseStorageBox(orderTime,
                 useStorageBox.get().getUseStorageEndTime(),
-                "3" + useStorageBox.get().getUseStorageBoxCode(),
+                "4" + useStorageBox.get().getUseStorageBoxCode(),
                 afterBox.get(), orders);
         newUseStorageBox.setMCode(member.get());
         useStorageBoxRepository.save(newUseStorageBox);
 
         // 이동할 사용중인 보관함 상태코드에서 이동될 사용중 보관함 코드 추가
         // 이동될 사용 보관함 찾기
-        String state = "4" + useStorageBox.get().getStorageBoxCode().getStorageBoxCode();
+        String state = "4" + useStorageBox.get().getUseStorageBoxCode();
         Optional<UseStorageBox> newUSB = useStorageBoxRepository.findByUseStorageState(state);
         useStorageBox.get().setUseStorageState("3" + newUSB.get().getUseStorageBoxCode());
         useStorageBoxRepository.save(useStorageBox.get());
@@ -448,10 +455,41 @@ public class StorageController {
     private Result moveStateUpdate(@PathVariable(value = "beforeBox")long beforeBox,@PathVariable(value = "afterBox")long afterBox ){
         Optional<UseStorageBox> beforeUSBox = useStorageBoxRepository.findById(beforeBox);
         Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUSBox.get());
 
-        beforeUSBox.get().setUseStorageState("6" + afterUSBox.get().getUseStorageBoxCode());
-        afterUSBox.get().setUseStorageState("6" + beforeUSBox.get().getUseStorageBoxCode());
+        for (int i = 0; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(afterUSBox.get());
+            memberEquipmentRepository.save(memberEquipmentList.get(i));
+        }
 
+        LocalDateTime nowTime = LocalDateTime.now();
+
+        UseStorageBox before = beforeUSBox.get();
+        before.setUseStorageState("1");
+        before.setUseStorageEndTime(nowTime);
+        afterUSBox.get().setUseStorageState("5" + beforeUSBox.get().getUseStorageBoxCode());
+
+        StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();
+        storageBox.setStorageBoxState("0");
+        storageBoxRepository.save(storageBox);
+        useStorageBoxRepository.save(before);
+        useStorageBoxRepository.save(afterUSBox.get());
+
+        return new Result("ok");
+    }
+
+    // 보관소 이동 도착
+    @GetMapping("endmoveUpdate/{afterBox}")
+    private Result endmoveUpdate(@PathVariable(value = "afterBox")long afterBox ){
+        Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
+
+        afterUSBox.get().setUseStorageState("2");
+
+        StorageBox storageBox = afterUSBox.get().getStorageBoxCode();
+        storageBox.setStorageBoxState("2");
+
+        storageBoxRepository.save(storageBox);
+        useStorageBoxRepository.save(afterUSBox.get());
 
         return new Result("ok");
     }

@@ -217,6 +217,7 @@ export default {
     },
     bigCheck(index) {
       if (index == '0') {
+        this.smallPick = 0
         this.smallRound = []
       } else {
         axios.get('/api/smallRound/' + index)
@@ -293,8 +294,8 @@ export default {
 
 /*기존*/
 #map {
-  width: 400px;
-  height: 400px;
+  width: 950px;
+  height: 700px;
 }
 
 .user-storage-view {

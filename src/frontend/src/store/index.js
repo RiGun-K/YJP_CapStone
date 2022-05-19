@@ -19,6 +19,7 @@ export default createStore({
 		payStorage: {},
 		CampingIdOfRooms: '',
 		member: '',
+		moveBoxInfo:{},
 	},
 	getters: {
 		getLoginState(state) {
@@ -82,6 +83,9 @@ export default createStore({
 		setCampingIdState(state, CampingIdOfRooms) {
 			state.CampingIdOfRooms = CampingIdOfRooms;
 		},
+		moveBoxInfo(state, box){
+			state.moveBoxInfo = box;
+		}
 	},
 	actions: {},
 

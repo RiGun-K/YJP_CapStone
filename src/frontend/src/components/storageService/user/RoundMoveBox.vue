@@ -1,5 +1,9 @@
 <template>
   <div>
+<!--    위치검색 하고 지도에 보여주고 확인하고 선택하면 주소 등록 되고 다음으로 가기-->
+<!--    아니면 집으로 선택하면 집주소로 주소 등록되고 다음으로 가기-->
+
+
     <input type="text" v-model="zipCode">우편주소
     <button @click="showApi()">우편번호 찾기</button>
     <input type="text" v-model="address">주소
@@ -13,7 +17,6 @@
 
   <div>
     집주소 가져오기
-
   </div>
 
 </template>

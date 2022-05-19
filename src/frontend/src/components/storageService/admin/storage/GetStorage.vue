@@ -1,4 +1,5 @@
 <template>
+  <button @click="$router.push('/storageAdmin')"> 목록</button>
   <div class="renewal-box">
     <h3>보관소 리스트 페이지</h3>
     <div class="card"  style="width: 70%; margin-bottom: 5%; font-weight: bolder; margin-left: 7%">
