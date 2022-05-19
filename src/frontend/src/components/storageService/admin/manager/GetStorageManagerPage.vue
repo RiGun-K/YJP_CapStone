@@ -1,24 +1,5 @@
 <template>
   <h3 style="margin-top: 5%; margin-left: 5%;">보관소 매니저 관리</h3>
-<!--  <div class="manager-get">-->
-<!--    <div v-for="(manager, index) in storageManagerList" :key="index" style="margin-top: 3%">-->
-<!--      <div class="card" style="width: 25%; font-weight: bolder; margin-left: 7%">-->
-<!--        <div class="card-body">-->
-<!--          보관소: {{ manager.storageCode.storageName }}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="card" style="display: flex; width: 25%; margin-left: 7%; margin-bottom: 3%">-->
-<!--        <div class="card-body">-->
-<!--          매니저이름: {{ manager.mcode.mnick }}-->
-<!--        </div>-->
-<!--        <div class="card-body">-->
-<!--          매니저아이디: {{ manager.mcode.mid }}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-  <!-- 보관소별 관리자 리스트 -->
-
   <table>
     <thead>
     <tr>
