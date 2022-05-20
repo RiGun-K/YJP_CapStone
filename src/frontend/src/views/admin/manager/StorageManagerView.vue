@@ -1,19 +1,21 @@
-<!-- storage admin page(manager)-->
 <template>
   <div>
     <div>
-      <GetStorageManagerPage></GetStorageManagerPage>
+      <button @click="$router.push({name:'InputStorageManager'})">추가</button>
+    </div>
+    <div>
+      <GetStorageManager></GetStorageManager>
     </div>
   </div>
 </template>
 
 <script>
-import GetStorageManagerPage from "@/components/storageService/admin/manager/GetStorageManagerPage.vue";
+import GetStorageManager from "@/components/storageService/admin/manager/GetStorageManager.vue";
 
 export default {
   name: "StorageManagerView",
   components:{
-    GetStorageManagerPage
+    GetStorageManager
   }
 }
 </script>

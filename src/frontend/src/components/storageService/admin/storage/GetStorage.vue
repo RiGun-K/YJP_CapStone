@@ -37,13 +37,8 @@ export default {
   data() {
     return {
       storageList: [],
-      check: false,
       boxList: [],
       name: '',
-      managerList: [],
-      memberId: '',
-      errorCheck: false,
-      memberIdCheck: false
     }
   },
   methods: {
@@ -76,84 +71,7 @@ export default {
             console.log(err)
           })
     },
-    GetManger(storageCode) {
-      axios.get('/api/getManager/' + storageCode)
-          .then((res) => {
-            console.log('res.data')
-            console.log(res.data)
-            this.managerList = res.data
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-    },
-    clearInput() {
-      this.memberId = ''
-    },
-    CheckMember() {
-      if (!this.memberId) {
-        alert('아이디를 입력하세요')
-      } else {
-        axios.get('api/checkManager/' + this.memberId)
-            .then((res) => {
-              console.log(res)
-              if (res.data.result == 'ok') {
-                console.log('가능')
-                alert('가능합니다')
-                this.memberIdCheck = true
 
-              } else if (res.data.result == 'overlap') {
-                console.log('불가능')
-                alert('이미 있습니다')
-                this.memberIdCheck = false
-              } else{
-                console.log('없음')
-                alert('입력하신 아이디가 없습니다')
-                this.memberIdCheck = false
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-      }
-    },
-    postManager() {
-      let memberId = this.memberId
-      let storageCode = this.boxList.storageCode
-      console.log('storageCode')
-      console.log(storageCode)
-      let manager ={
-        member : memberId,
-        storage : storageCode
-      }
-      if (this.memberIdCheck) {
-        axios.post('api/postManager', manager)
-            .then((res) => {
-              console.log(res.data.result)
-              if (res.data.result === 'ok') {
-                console.log('생성')
-                alert('추가되었습니다')
-                this.GetManger(storageCode)
-                this.clearInput()
-                this.memberIdCheck = false
-              } else {
-                alert('추가 되지 않음')
-              }
-            }).catch((err) => {
-          console.log(err)
-        })
-      }
-    },
-    detailCheck() {
-      if (!this.check) {
-        this.check = !this.check
-      }
-    },
-    closeDetail() {
-      if (this.check) {
-        this.check = !this.check
-      }
-    }
   }
 }
 
