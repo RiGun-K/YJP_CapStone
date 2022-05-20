@@ -1,25 +1,93 @@
 <template>
-  <div class="mt-4">
-    <h2> 캠핑장 예약 </h2>
-    <b-card-text>
-      <div class="content-detail-list">
-        <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
-        <div class="card" style="width: 18rem;">
-          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">상품명: {{ this.content.campingName }}</h5>
-            <p class="card-text">설명: {{ this.content.campingInfo }}</p>
-            <p class="card-text">주소: {{ this.content.address }}</p>
-            <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-            <a href="#" class="btn btn-primary" @click="detailData">객실선택</a>
-          </div>
-        </div>
+
+  <br>
+  <ul class="slides">
+    <input type="radio" name="radio-btn" id="img-1" checked />
+    <li class="slide-container">
+      <div class="slide">
+        <img :src="'/api/product_detail_images/' + content.filename"/>
       </div>
+      <div class="nav">
+        <label for="img-6" class="prev">&#x2039;</label>
+        <label for="img-2" class="next">&#x203a;</label>
+      </div>
+    </li>
 
-    </b-card-text>
+    <input type="radio" name="radio-btn" id="img-2" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-1" class="prev">&#x2039;</label>
+        <label for="img-3" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-3" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-2" class="prev">&#x2039;</label>
+        <label for="img-4" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-4" />
+    <li class="slide-container">
+      <div class="slide">
+        <img :src="'/api/product_detail_images/' + content.campingDetails[0].filename" />
+      </div>
+      <div class="nav">
+        <label for="img-3" class="prev">&#x2039;</label>
+        <label for="img-5" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-5" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-4" class="prev">&#x2039;</label>
+        <label for="img-6" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-6" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-5" class="prev">&#x2039;</label>
+        <label for="img-1" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <li class="nav-dots">
+      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
+      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
+      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
+      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
+      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
+      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
+    </li>
+  </ul>
+  <div class="mt-4">
+
+    <h4>{{ this.content.campingName }}</h4>
+    <p class="card-text">010-9699-4238</p>
+    <p class="card-text">{{ this.content.campingInfo }}</p>
+    <p class="card-text">{{ this.content.address }}</p>
+    <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
+    <a href="#" class="btn btn-primary" @click="detailData">객실선택</a>
+
+
     <br>
-
-
     <div v-if="stateCheck">
       <h2> 캠핑장 내 객실 선택 및 예약</h2>
       <b-card-text>
@@ -36,7 +104,20 @@
           </div>
         </div>
       </b-card-text>
-
+      <b-card-text>
+        <div class="content-detail-list">
+          <div class="card" style="width: 18rem;">
+            <img :src="'/api/product_detail_images/' + content.campingDetails[1].filename" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">객실명: {{ this.content.campingDetails[1].detailName }}</h5>
+              <p class="card-text">설명: {{ this.content.campingDetails[1].detailFunction }}</p>
+              <p class="card-text">최대인원: {{ this.content.campingDetails[1].maximumNumber }}</p>
+              <p class="card-text">객실 가격: {{ this.content.campingDetails[1].detailPrice }}</p>
+              <a href="#" class="btn btn-primary" @click="buyData">예약 및 결제</a>
+            </div>
+          </div>
+        </div>
+      </b-card-text>
     </div>
 
 
@@ -56,28 +137,15 @@
       </button>
     </div>
 
-    <br>
-    <!--    <div v-if="stateCheckB">-->
-    <h2>리뷰</h2>
-    <div class="content-detail-list-1">
+    <div v-if="areaCheck">
       <br>
-      <div class="my-box">
-        <div class="review">
-          <p class="review-title">d</p>
-          <p class="review-text">설명</p>
-
-        </div>
-
-        <!--        </div>-->
+      <h2>캠핑장 위치정보</h2>
+      <div class="mapDiv">
+        <div id="map"></div>
       </div>
-
     </div>
+
   </div>
-  <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-  <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-  <!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
 
 </template>
 
@@ -85,9 +153,10 @@
 import axios from "axios";
 export default {
   name: "BuyDetailList",
-
   created() {
     this.DataList();
+  },
+  mounted() {
   },
   data() {
     return {
@@ -97,6 +166,10 @@ export default {
       // file: this.content.origFilename
       images: '',
       stateCheck: false,
+      map: null,
+      markers: [],
+      markPositions1: [],
+      areaCheck: false,
     }
   },
   methods: {
@@ -121,20 +194,71 @@ export default {
           .catch(e => {
             console.log(e);
           })
-
     },
-
-
     detailData() {
       this.stateCheck = true;
     },
     buyData() {
       this.$router.push({
-            path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
+        path: `/infoter/infoterNow/${this.content.campingDetails[0].detailId}`
         // path: `/infoter/infoterNow/${this.content.campingDetails[1].detailId}`
-          })
+      })
+    },
+    detail_3() {
+      this.areaCheck = true
+      alert("한번 더 눌러줘~");
+      // const point = [this.content.longitude, this.content.latitude]
+      // console.log(point);
+      // this.displayMarker([point])
+      //  카카오맵
+      if (window.kakao && window.kakao.maps) {
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
+        document.head.appendChild(script);
+      }
+    },
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
+        level: 8,
+      };
+      console.log(options)
+      this.map = new kakao.maps.Map(container, options);
+      // 마커 만들기
+      let position = []
+      position = [this.content.longitude, this.content.latitude]
+      this.markPositions1.push(position)
+      this.displayMarker(this.markPositions1)
+    },
+    displayMarker(markerPositions) {
+      if (this.markers.length > 0) {
+        this.markers.forEach((marker) => marker.setMap(null));
+      }
+      const positions = markerPositions.map(
+          (position) => new kakao.maps.LatLng(...position)
+      );
+      console.log("길이는" + positions.length)
+      if (positions.length > 0) {
+        this.markers = positions.map(
+            (position) =>
+                new kakao.maps.Marker({
+                  map: this.map,
+                  position,
+                })
+        );
+        const bounds = positions.reduce(
+            (bounds, latlng) => bounds.extend(latlng),
+            new kakao.maps.LatLngBounds()
+        );
+        this.map.setBounds(bounds);
+      }
     }
-
   }
 }
 </script>
@@ -157,5 +281,104 @@ export default {
   text-align: center;
 }
 .card {
+}
+.mapDiv{
+  margin-top: 1%;
+  width: 45%;
+  float: right;
+}
+#map {
+  width: 400px;
+  height: 400px;
+}
+.slides {
+  padding: 0;
+  width: 609px;
+  height: 420px;
+  right: 2.5%;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+}
+/*.slides * {*/
+/*  user-select: none;*/
+/*  -ms-user-select: none;*/
+/*  -moz-user-select: none;*/
+/*  -khtml-user-select: none;*/
+/*  -webkit-user-select: none;*/
+/*  -webkit-touch-callout: none;*/
+/*}*/
+.slides input { display: none; }
+.slide-container { display: block; }
+.slide {
+  top: 0;
+  opacity: 0;
+  width: 609px;
+  height: 420px;
+  display: block;
+  position: absolute;
+  transform: scale(0);
+  transition: all .7s ease-in-out;
+}
+.slide img {
+  width: 120%;
+  height: 100%;
+}
+.nav label {
+  width: 150px;
+  height: 100%;
+  display: none;
+  position: absolute;
+  opacity: 0;
+  z-index: 9;
+  cursor: pointer;
+  transition: opacity .2s;
+  color: #FFF;
+  font-size: 156pt;
+  text-align: center;
+  line-height: 380px;
+  font-family: "Varela Round", sans-serif;
+  background-color: rgba(255, 255, 255, .3);
+  text-shadow: 0px 0px 15px rgb(119, 119, 119);
+}
+.slide:hover + .nav label { opacity: 0.5; }
+.nav label:hover { opacity: 1; }
+.nav .next { right: -20%; }
+input:checked + .slide-container  .slide {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1s ease-in-out;
+}
+input:checked + .slide-container .nav label { display: block; }
+.nav-dots {
+  width: 100%;
+  bottom: 9px;
+  height: 11px;
+  display: block;
+  position: absolute;
+  text-align: center;
+  left: 10%;
+}
+.nav-dots .nav-dot {
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin: 0 4px;
+  position: relative;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.nav-dots .nav-dot:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+input#img-1:checked ~ .nav-dots label#img-dot-1,
+input#img-2:checked ~ .nav-dots label#img-dot-2,
+input#img-3:checked ~ .nav-dots label#img-dot-3,
+input#img-4:checked ~ .nav-dots label#img-dot-4,
+input#img-5:checked ~ .nav-dots label#img-dot-5,
+input#img-6:checked ~ .nav-dots label#img-dot-6 {
+  background: rgba(0, 0, 0, 0.8);
 }
 </style>

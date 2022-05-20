@@ -30,7 +30,7 @@ public class CartController {
     private MenuBuyRepository menuBuyRepository;
 
     @PostMapping("/buyCartPut")
-    public Boolean postBuyCart(@RequestBody HashMap<String, String> buyCart){
+    public boolean postBuyCart(@RequestBody HashMap<String, String> buyCart){
         Cart cart = new Cart();
 
         Optional<Member> searchMember = memberRepository.findByMID(buyCart.get("MID"));
@@ -51,8 +51,7 @@ public class CartController {
                     MenuBuy searchMenuBuyList = cartList.get(i).getMenuBuy();
 
                     if(searchMenuBuyList == menuBuy){
-                        System.out.println("이미 카트에 있음");
-                        return true;
+                        return false;
                     }
                 }
 
@@ -61,6 +60,6 @@ public class CartController {
                 cartRepository.save(cart);
             }
         }
-        return false;
+        return true;
     }
 }

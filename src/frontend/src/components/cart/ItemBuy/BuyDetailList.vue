@@ -44,7 +44,7 @@ export default {
       // file: this.content.origFilename
       images: '',
       count: 1,
-      buyMenuCheckPut: true
+      buyMenuCheckPut: false
     }
   },
   methods: {
@@ -76,28 +76,31 @@ export default {
       })
     },
     putData() {
-      this.putCart()
-
-      if(this.buyMenuCheckPut === false) {
-        if (confirm('추가되었습니다, 장바구니에서 확인하시겠습니까?')) {
-          this.$router.push({
-            path: `/cart/buy/${this.content.mid.mcode}`
-          })
-        }
-      }else{
-        alert("이미 장바구니에 담겨있습니다.")
-      }
-    },
-    putCart() {
       this.axios.post('http://localhost:9002/api/buyCartPut', {
         buyId: this.content.buyId,
         count: this.count,
         MID: this.content.mid.mid,
       }).then(res => {
         this.buyMenuCheckPut = res.data
-        console.log(typeof res.data)
-        console.log(typeof this.buyMenuCheckPut)
+        if(this.buyMenuCheckPut === false) {
+          if (confirm('이미 담겨있습니다. \n장바구니에서 확인하시겠습니까?')) {
+            this.$router.push({
+              path: `/cart/buy/${this.content.mid.mcode}`
+            })
+          }
+        }else{
+          if (confirm('추가되었습니다. \n장바구니에서 확인하시겠습니까?')) {
+            this.$router.push({
+              path: `/cart/buy/${this.content.mid.mcode}`
+            })
+          }
+        }
+      }).catch((err)=>{
+        console.log(err)
       })
+    },
+    putCart() {
+
     },
     subCount() {
       if (this.count === 1) {
