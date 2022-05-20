@@ -1,6 +1,7 @@
 package com.example.capstone.controller.order;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Camping;
 import com.example.capstone.domain.Product.CampingDetail;
 import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
@@ -8,6 +9,7 @@ import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.CampingDetailRepository;
+import com.example.capstone.repository.Product.CampingRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
 import com.example.capstone.repository.orders.OrderMenuRepository;
 import com.example.capstone.repository.orders.OrdersRepository;
@@ -36,6 +38,9 @@ public class OrderController {
 
     @Autowired
     private MenuBuyRepository menuBuyRepository;
+
+    @Autowired
+    private CampingRepository campingRepository;
 
     @Autowired
     private CampingDetailRepository campingDetailRepository;
@@ -126,14 +131,21 @@ public class OrderController {
         }
 
         Optional<CampingDetail> searchMenu = campingDetailRepository.findById(Integer.parseInt(buyData.get("menuId")));
-        System.out.println("구매한 상품번호는" + searchMenu);
+        System.out.println("예약한 객실번호는" + searchMenu);
+
+
+        Optional<Camping> searchCamping = campingRepository.findById(Integer.parseInt(buyData.get("campingId")));
+        System.out.println("예약한 캠핑장번호는" + searchCamping);
+
 
         if (searchMenu.isPresent()) {
 
             CampingDetail campingDetail = searchMenu.get();
+            Camping camping = searchCamping.get();
             OrderMenu orderMenu = new OrderMenu();
 
             orderMenu.setOrders(order);
+            orderMenu.setCamping(camping);
             orderMenu.setCampingDetail(campingDetail);
             orderMenu.setOrderMenuCount(Integer.parseInt(buyData.get("orderMenuCount")));
             ;

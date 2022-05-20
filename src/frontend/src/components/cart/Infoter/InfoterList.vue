@@ -3,14 +3,14 @@
     <h2>캠핑장 예약</h2>
     <br>
     <div class="campingkindimage">
-    <img src="@/assets/전체.png" class="card-img-top" alt="..." @click="goData">
-    <img src="@/assets/캠핑.png" class="card-img-top" alt="..." @click="cam(1)">
-    <img src="@/assets/카라반.png" class="card-img-top" alt="..." @click="cam(2)">
-    <img src="@/assets/글램핑.png" class="card-img-top" alt="..." @click="cam(3)">
-    <img src="@/assets/팬션.png" class="card-img-top" alt="..." @click="cam(4)">
-    <img src="@/assets/차박.png" class="card-img-top" alt="..." @click="cam(5)">
-    <img src="@/assets/당일피크닉.png" class="card-img-top" alt="..." @click="cam(6)">
-      <img src="@/assets/기타.png" class="card-img-top" alt="..." @click="cam(7)">
+    <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
+    <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
+    <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
+    <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
+    <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
+    <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
+    <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
+    <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
     </div>
     <br>
     <br>
@@ -54,43 +54,31 @@
       <button @click="search()">검색</button>
     </div>
 
-    <span class="buy-list">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>분류</th>
-          <th>상품명</th>
-          <th>주소</th>
-          <th>등록일자</th>
-          <th>조회수</th>
-          <th>이미지</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="product in list"
-            :key="product.id"
-            :item="product" @click="toDetail(product)" style="cursor:pointer;">
 
-          <td>{{ product.infoterId.infoterName }}</td>
-          <td>{{ product.campingName }}</td>
-          <td>{{ product.address }}</td>
-          <td>{{ product.savedTime }}</td>
-          <td>{{ product.campingViews }}</td>
-          <td><img :src="'/api/product_detail_images/' + product.filename"> </td>
-        </tr>
-        <!-- PathVariable 을 위해서는 router-link 작성 -->
-        <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
-        </tbody>
-      </table>
-
-    </span>
-
-    <div class="infoter-btn-group">
-      <button class="infoter-list-btn" @click="ReservationNowBtn">Reservation Now</button>
-      <button class="infoter-list-btn" @click="ReservationAddCart">Add to Cart</button>
+    <div class="listBody">
+      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
+      <div v-for="(product,index) in list" :key="product.id"
+           :item="product" @click="toDetail(product)" class="listObj">
+        <div class="card">
+          <div class="card-body">
+            <img :src="'/api/product_detail_images/' + product.filename" alt="...">
+          </div>
+          <div class="card-body">
+            분류 - {{ product.infoterId.infoterName }}
+          </div>
+          <div class="card-body">
+            캠핑장명 - {{ product.campingName }}
+          </div>
+          <div class="card-body">
+            주소 - {{ product.address }}
+          </div>
+          <div class="card-body">
+            조회수 - {{ product.campingViews }}
+          </div>
+        </div>
+        <br>
+      </div>
     </div>
-
-<!--    <img src="@\assets\595cf686-1619-43f3-8b76-e32c9965c14e_camp2.jpg"/>-->
 
   </div>
 </template>
@@ -213,6 +201,11 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
+            if (this.list.length == 0) {
+              alert("캠핑장이 없습니다.")
+              return;
+            }
+
           })
           .catch(e => {
             console.log(e)
@@ -310,5 +303,19 @@ img {
   border-radius: 15px;
   color: #fff;
   cursor: pointer;
+}
+
+.campingkindimage {
+  width:380px;
+  height:320px;
+  margin:0 auto;  /* 양 사이즈 간격  */
+}
+.image-thumbnail{
+  float: left;
+}
+
+img {
+  width: 40%;
+  height: 40%;
 }
 </style>
