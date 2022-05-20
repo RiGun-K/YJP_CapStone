@@ -399,21 +399,26 @@ const routes = [
     component: ()=> import('@/views/admin/StorageAdminView.vue'),
     children: [
       {
-        path: "/storage",
+        path: "/storageAdmin/storage",
         name: "storage",
         component: ()=> import('@/views/admin/storage/StorageView.vue')
       },
       {
-        path: "/manager",
+        path: "/storageAdmin/manager",
         name: "manager",
         component: ()=> import('@/views/admin/manager/StorageManagerView.vue')
       },
     ]
   },
   {
-    path: "/storageRevise",
+    path: "/storageAdmin/storageRevise",
     name:"StorageRevise",
     component: ()=> import('@/components/storageService/admin/storage/StorageRevise.vue')
+  },
+  {
+    path: "/storageAdmin/inputManager",
+    name:"InputStorageManager",
+    component: ()=> import('@/components/storageService/admin/manager/InputStorageManager.vue')
   },
   {
     path: "/storageView",

@@ -6,11 +6,13 @@
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick">
+      <select v-model="smallPick" @change="search()">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <button @click="search()">검색</button>
+      <label for="storageName">보관소이름</label>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름">
+      <button @click="storageSearch()">검색</button>
     </div>
 
 
@@ -33,25 +35,6 @@
       <div id="map"></div>
     </div>
 
-<!--    <div v-if="check">-->
-<!--      <div class="storage">-->
-<!--        <div class="storage-name-btn">-->
-<!--          <h5 class="storage-name-h5">보관소 이름: {{ name }}</h5>-->
-<!--          <button @click="askBox(this.boxList)" class="storage-submit-btn">신청</button>-->
-<!--          <button @click="closeDetail" class="storage-submit-btn">닫기</button>-->
-<!--        </div>-->
-<!--        <div class="storage-view">-->
-<!--          <div class="storage-box" v-for="(box,index) in boxList.storageBoxes" :key="index">-->
-<!--            <ul>-->
-<!--              <li>보관함 이름: {{ box.storageBoxName }}</li>-->
-<!--              <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>-->
-<!--                <p v-else>사용불가능</p>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
 
 
@@ -103,6 +86,8 @@ export default {
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
+      stSearch:'',
+      searchStorageList:[],
     }
   },
   methods: {
@@ -209,31 +194,36 @@ export default {
 
             console.log('ALL this.storageList')
             console.log(this.storageList)
+            this.allMarker()
           })
           .catch((error) => {
             console.log(error)
           })
-      this.allMarker()
     },
     bigCheck(index) {
       if (index == '0') {
         this.smallPick = 0
         this.smallRound = []
+        this.allroundsearch()
+        this.allMarker()
       } else {
         axios.get('/api/smallRound/' + index)
             .then(res => {
               console.log(res.data)
               this.smallRound = res.data
               this.smallPick = 0
+              this.search()
             })
             .catch(err => {
               console.log(err)
             })
       }
+      this.allMarker()
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == '0') {
         this.allroundsearch()
+        this.allMarker()
       } else if (this.bigPick != "0" && this.smallPick == '0') {
         console.log(this.bigPick)
         axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
@@ -260,6 +250,9 @@ export default {
       }
       this.allMarker()
     },
+    storageSearch(){
+
+    }
   }
 }
 </script>
