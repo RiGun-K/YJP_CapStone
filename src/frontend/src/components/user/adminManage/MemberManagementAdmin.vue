@@ -34,6 +34,7 @@
   <div class="searchDiv">
     <input type="text" v-model="searchWord">
     <button class="searchBtn" @click="searchList">검색</button>
+    <button @click="reStart" class="resetBtn">목록 초기화</button>
   </div>
 </template>
 
@@ -85,6 +86,9 @@ export default {
       }).catch((err)=>{
         console.log(err)
       })
+    },
+    reStart(){
+      this.$router.go()
     }
   },
   created() {
@@ -114,6 +118,14 @@ tr, td{
   margin-top: 1%;
   width: 90%;
   border: 1px solid black;
+  text-align: center;
+}
+.resetBtn{
+  float: right;
+  position: relative;
+  padding: 0.5%;
+  background: #7ea6f6;
+  color: white;
   text-align: center;
 }
 .searchDiv{

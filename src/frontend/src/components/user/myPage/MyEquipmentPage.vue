@@ -1,7 +1,11 @@
 <template>
   <div id="content">
-    <p>내장비페이지</p>
-    <table border="1px">
+    <table border="1px" style="margin-top: 1%">
+      <tr>
+        <th colspan="4">
+          <h1 style="color: black; text-align: center">내 장비</h1>
+        </th>
+      </tr>
       <tr>
         <th>장비번호</th>
         <th>장비명</th>
