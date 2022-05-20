@@ -29,6 +29,7 @@
             <li @click="myWritterList" class="menu">게시글목록</li>
             <li @click="myEquip" class="menu">장비목록</li>
             <li @click="myOrder" class="menu">주문목록</li>
+            <li @click="orperCompany" class="menu" v-if="uiLogin==3">판매자신청</li>
             <li class="menu">고객센터</li>
           </ul>
         </li>
@@ -124,6 +125,9 @@ export default {
     },
     myOrder(){
       this.$router.push("ordersList")
+    },
+    orperCompany(){
+      this.$router.push("company")
     }
 
   },

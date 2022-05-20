@@ -45,7 +45,7 @@ const routes = [
   {
     path:'/sellerAccept',
     name:'SellerAccept',
-    component: () => import('@/components/user/SellerAccept.vue')
+    component: () => import('@/components/user/adminManage/SellerAccept.vue')
   },
   {
     path:'/searchSelect',

@@ -271,7 +271,7 @@ export default {
   margin-left: 5%;
   margin-top: 1%;
   margin-right: 1%;
-  width: 45%;
+  width: 40%;
   float: left;
 }
 .searchDiv{
@@ -283,7 +283,9 @@ export default {
 }
 .mapDiv{
   margin-top: 1%;
-  width: 45%;
+  margin-right: 1%;
+  margin-bottom: 1%;
+  width: 50%;
   float: right;
 }
 .card{
@@ -294,8 +296,8 @@ export default {
 
 /*기존*/
 #map {
-  width: 950px;
-  height: 700px;
+  width: 98%;
+  height: 600px;
 }
 
 .user-storage-view {
