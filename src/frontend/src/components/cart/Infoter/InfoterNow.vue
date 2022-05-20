@@ -109,10 +109,12 @@ export default {
   },
   methods: {
     DataList() {
+      this.campingId = this.$route.params.campingId;
       this.id = this.$route.params.detailId;
       this.user = store.getters.getLoginState.mcode;
-      console.log(this.id);
-      console.log(this.user);
+      console.log("캠핑장 번호는" + this.campingId);
+      console.log("객실 번호는" + this.id);
+      console.log("사용자 아이디는" + this.user);
       axios.get('http://localhost:9002/api/product_detailR/' + this.id)
           .then(res => {
             console.log(res.data);
@@ -170,6 +172,7 @@ export default {
               orderState: '2',
               orderMenuCount: 1,
               menuId: this.content.detailId,
+              campingId: this.campingId
             })
                 .then((res)=>{
                   console.log(res.data);
