@@ -213,7 +213,8 @@ export default {
 
     detail_3() {
       this.areaCheck = true
-      alert("한번 더 눌러줘~");
+      let check = prompt("1+1 은?");
+      alert("귀요미 ㅋ");
 
       // const point = [this.content.longitude, this.content.latitude]
       // console.log(point);
