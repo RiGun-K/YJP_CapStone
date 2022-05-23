@@ -2,13 +2,14 @@
   <div class="mt-4">
     <b-card-text>
       <div class="content-detail-list">
-<!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
+        <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
         <div class="card" style="width: 18rem;">
           <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
             <p class="card-text">가격: {{ this.content.buyPrice }}</p>
             <p class="card-text">설명: {{ this.content.buyEx }}</p>
+            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
             <a href="#" class="btn btn-primary" @click="buyData">구매</a>
           </div>
         </div>
@@ -19,11 +20,11 @@
       </div>
     </b-card-text>
   </div>
-<!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-<!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-<!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-<!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-<!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
+  <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
+  <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
+  <!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
+  <!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
+  <!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
 
 </template>
 
@@ -31,7 +32,6 @@
 import axios from "axios";
 export default {
   name: "BuyDetailList",
-
   created() {
     this.DataList();
   },
@@ -42,6 +42,8 @@ export default {
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
       images: '',
+      count: 1,
+      buyMenuCheckPut: false
     }
   },
   methods: {
@@ -65,7 +67,6 @@ export default {
           .catch(e => {
             console.log(e);
           })
-
     },
     buyData() {
       this.$router.push({
@@ -73,9 +74,44 @@ export default {
       })
     },
     putData() {
-      this.$router.push({
-        path: "/cart"
+      this.axios.post('http://localhost:9002/api/buyCartPut', {
+        buyId: this.content.buyId,
+        count: this.count,
+        MID: this.content.mid.mid,
+      }).then(res => {
+        this.buyMenuCheckPut = res.data
+        if(this.buyMenuCheckPut === false) {
+          if (confirm('이미 담겨있습니다. \n장바구니에서 확인하시겠습니까?')) {
+            this.$router.push({
+              path: `/cart/buy/${this.content.mid.mcode}`
+            })
+          }
+        }else{
+          if (confirm('추가되었습니다. \n장바구니에서 확인하시겠습니까?')) {
+            this.$router.push({
+              path: `/cart/buy/${this.content.mid.mcode}`
+            })
+          }
+        }
+      }).catch((err)=>{
+        console.log(err)
       })
+    },
+    putCart() {
+    },
+    subCount() {
+      if (this.count === 1) {
+        alert('더 이상 뺄 수 없습니다.')
+      } else {
+        this.count--
+      }
+    },
+    addCount(){
+      if(this.count === this.content.buyStock){
+        alert('더 이상 올릴 수 없습니다. (재고부족)')
+      }else{
+        this.count++
+      }
     }
   }
 }
@@ -98,6 +134,19 @@ export default {
   display: inline-block;
   text-align: center;
 }
-.card {
+.buy-count-sub{
+  color: #00a3de;
+  background-color: white;
+  font-size: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.buy-count-add{
+  color: #00a3de;
+  font-weight: bolder;
+  background-color: white;
+  font-size: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 </style>

@@ -9,7 +9,7 @@
           <a href="/storageView">보관함</a>
         </li>
         <li class="topMenu" v-if="uiLogin">
-          <a href="/infoter">인포터</a>
+          <a href="/infoter">캠핑장예약</a>
         </li>
         <li class="topMenu">
           <a href="/itemBuy">Item Buy</a>

@@ -76,26 +76,44 @@
       <label for="img-6" class="nav-dot" id="img-dot-6"></label>
     </li>
   </ul>
+
+  <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+  <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+  <!--  </div>-->
+  <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+  <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+  <!--  -->
+
+
   <div class="mt-4">
+
     <h4>{{ this.content.campingName }}</h4>
     <p class="card-text">010-9699-4238</p>
     <p class="card-text">{{ this.content.campingInfo }}</p>
     <p class="card-text">{{ this.content.address }}</p>
     <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-    <a href="#" class="btn btn-primary" @click="detailData">객실선택</a>
+    <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
+    <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
+
     <br>
-    <div v-if="stateCheck">
-      <h2> 캠핑장 내 객실 선택 및 예약</h2>
-      <b-card-text>
-        <div class="content-detail-list">
-          <div class="card" style="width: 18rem;">
-            <img :src="'/api/product_detail_images/' + content.campingDetails[0].filename" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">객실명: {{ this.content.campingDetails[0].detailName }}</h5>
-              <p class="card-text">설명: {{ this.content.campingDetails[0].detailFunction }}</p>
-              <p class="card-text">최대인원: {{ this.content.campingDetails[0].maximumNumber }}</p>
-              <p class="card-text">객실 가격: {{ this.content.campingDetails[0].detailPrice }}</p>
-              <a href="#" class="btn btn-primary" @click="buyData">예약 및 결제</a>
+
+
+    <div class="listBody">
+      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
+      <div v-for="(room,index) in roomContent" :key="index"
+           @click="" class="listObj">
+        <div class="card">
+          <div class="card-body">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="...">
+          </div>
+          <div class="card-body">
+            객실명 - {{ room.detailName }}
+          </div>
+          <div class="card-body">
+            설명 - {{ room.detailFunction }}
+          </div>
+          <div class="card-body">
+            최대인원 - {{ room.maximumNumber }}
           </div>
           <div class="card-body">
             객실 가격 - {{ room.detailPrice }}
@@ -110,7 +128,6 @@
     <br>
 
     <br>
-
     <div class="btn_area">
       <button type="button" @click="detail_1" class="btn_Bottom">
         <span>캠핑장 소개</span>
@@ -134,52 +151,31 @@
       </div>
     </div>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
-
-
     <h2>리뷰</h2>
     <div class="content-detail-list-1">
       <br>
       <div class="my-box">
         <div class="Recommend">
-        <button class="button" v-on:click="likecnt++">좋아요</button> <span>좋아요 : {{likecnt}}</span>
+          <button class="button" v-on:click="likecnt++">좋아요</button> <span>좋아요 : </span>
         </div>
-          <div class="review">
-            <tr>
-          <td class="review-mid">{{this.list[0].mcode.mnick}} | {{this.list[0].savedTime}}</td>
-             <br>
-<!--          <input type="text" class="form-control" name ="subject" id="subject" placeholder="">-->
-          <td class="review-title">캠핑장명 {{this.list[0].campingId.campingName}} </td><br>
-          <td class="review-text">설명 {{ this.list[0].recommended }}</td>
-            </tr>
+        <div class="review">
+          <tr>
+            <td class="review-mid"></td>
+            <br>
+            <!--          <input type="text" class="form-control" name ="subject" id="subject" placeholder="">-->
+            <td class="review-title">캠핑장명 </td><br>
+            <td class="review-text">설명</td>
+          </tr>
 
-            <div class="my-box-3">
+          <div class="my-box-3">
           </div>
           <p class="review-image">이미지</p>
-            <img :src="'/api/product_detail_images/' + this.list[1].filename" />
-<!--          <button type=""-->
+<!--          <img :src="'/api/product_detail_images/' + this.list[1].filename" />-->
+          <!--          <button type=""-->
 
-<!--        </div>-->
-          </div>
-<!--        <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">-->
+          <!--        </div>-->
+        </div>
+        <!--        <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">-->
       </div>
 
       <br>
@@ -191,28 +187,17 @@
       <br>
     </div>
 
-
   </div>
-
-<!--    <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-<!--    <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-<!--    <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-<!--    <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-<!--    <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
-
 </template>
 
 <script>
 import axios from "axios";
 export default {
   name: "BuyDetailList",
-
   created() {
     this.DataList();
-    this.fetchData();
   },
   mounted() {
-
   },
   data() {
     return {
@@ -223,11 +208,6 @@ export default {
       // file: this.content.origFilename
       images: '',
       stateCheck: false,
-      stateCheckB: false,
-      likecnt : 0,
-
-      list: [],
-      item: '',
       map: null,
       markers: [],
       markPositions1: [],
@@ -235,7 +215,6 @@ export default {
     }
   },
   methods: {
-
     DataList() {
       this.id = this.$route.params.campingId;
       console.log(this.id);
@@ -245,123 +224,28 @@ export default {
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
             console.log(this.roomContent);
-
             console.log(this.content.filePath);
             console.log(this.content.filename);
           })
           .catch(e => {
             console.log(e);
           })
-
     },
-    // buyData() {
-    //   this.$router.push({
-    //     path: `/itemBuy/buyNow/${this.content.buyId}`
-    //   })
-    // },
     detailData() {
       this.stateCheck = true;
     },
-    detail_3() {
-      this.areaCheck = true
-      alert("한번 더 눌러줘~");
-      // const point = [this.content.longitude, this.content.latitude]
-      // console.log(point);
-      // this.displayMarker([point])
-      //  카카오맵
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
-        script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
-        document.head.appendChild(script);
-      }
-    },
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
-        level: 8,
-      };
-      console.log(options)
-      this.map = new kakao.maps.Map(container, options);
-      // 마커 만들기
-      let position = []
-      position = [this.content.longitude, this.content.latitude]
-      this.markPositions1.push(position)
-      this.displayMarker(this.markPositions1)
-    },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
-      const positions = markerPositions.map(
-          (position) => new kakao.maps.LatLng(...position)
-      );
-      console.log("길이는" + positions.length)
-      if (positions.length > 0) {
-        this.markers = positions.map(
-            (position) =>
-                new kakao.maps.Marker({
-                  map: this.map,
-                  position,
-                })
-        );
-        const bounds = positions.reduce(
-            (bounds, latlng) => bounds.extend(latlng),
-            new kakao.maps.LatLngBounds()
-        );
-        this.map.setBounds(bounds);
-      }
-    },
-
-    buyData() {
-      this.stateCheck = true
-          axios.get('http://localhost:9002/api/product_detail_images/' + this.content.campingDetails[0].filename )
-              .then(res => {
-                console.log("이미지 불러오기 성공");
-              })
-              .catch(e => {
-                console.log("이미지 불러오기 실패" + e);
-              })
+    buyData(detailId) {
       this.$router.push({
-            path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`
-          })
+        path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`
+      })
     },
-    detail_4(){
-      this.stateCheckB = true
-
-    },
-
-    detail_5() {
-      window.location.href = 'http://localhost:8081/infoter/infoterBoard'
-
-    },
-    fetchData() {
-      axios.get('/api/CampingBoardlist/' + this.id)
-          .then((res) => {
-            console.log("게시글 조회 성공" + res.data);
-            console.log(res.data);
-            this.list = res.data;
-          })
-          .catch((ex) => {
-            console.log("게시글 조회 실패", ex)
-          })
-
-    },
-
     detail_3() {
       this.areaCheck = true
       let check = prompt("1+1 은?");
       alert("귀요미 ㅋ");
-
       // const point = [this.content.longitude, this.content.latitude]
       // console.log(point);
       // this.displayMarker([point])
-
       //  카카오맵
       if (window.kakao && window.kakao.maps) {
         this.initMap();
@@ -372,9 +256,7 @@ export default {
         script.src =
             "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
         document.head.appendChild(script);
-
       }
-
     },
     initMap() {
       const container = document.getElementById("map");
@@ -384,25 +266,19 @@ export default {
       };
       console.log(options)
       this.map = new kakao.maps.Map(container, options);
-
       // 마커 만들기
-
       let position = []
       position = [this.content.longitude, this.content.latitude]
       this.markPositions1.push(position)
-
       this.displayMarker(this.markPositions1)
     },
-
     displayMarker(markerPositions) {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
-
       const positions = markerPositions.map(
           (position) => new kakao.maps.LatLng(...position)
       );
-
       console.log("길이는" + positions.length)
       if (positions.length > 0) {
         this.markers = positions.map(
@@ -412,16 +288,38 @@ export default {
                   position,
                 })
         );
-
         const bounds = positions.reduce(
             (bounds, latlng) => bounds.extend(latlng),
             new kakao.maps.LatLngBounds()
         );
-
         this.map.setBounds(bounds);
       }
+    },
 
-    }
+    create() {
+      this.id = store.getters.getLoginState.loginState;
+      console.log(this.id);
+      const formData = new FormData();
+      formData.append('campingTitle', this.title);
+      formData.append('campingContent', this.content);
+      formData.append('mcode', this.id);
+      formData.append('boardMenuCode', '1');
+      formData.append('file', this.file);
+      axios.post('/api/CampingBoard', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+          .then((res) => {
+            console.log(res.data);
+            alert("게시글이 등록되었습니다.");
+          })
+          .catch((ex) => {
+            console.log("fail", ex)
+          })
+    },
+
+    detail_5() {
+      window.location.href = 'http://localhost:8081/infoter/infoterBoard'
+    },
+
+
   }
 }
 </script>
@@ -449,7 +347,6 @@ img {
 }
 .card {
   text-align: center;
-
 }
 .mapDiv{
   margin-top: 5%;
@@ -550,7 +447,6 @@ input#img-5:checked ~ .nav-dots label#img-dot-5,
 input#img-6:checked ~ .nav-dots label#img-dot-6 {
   background: rgba(0, 0, 0, 0.8);
 }
-
 .listBody{
   padding: 0.5%;
   margin-left: 30%;
@@ -558,7 +454,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   margin-right: 1%;
   width: 45%;
 }
-
 .btn_area {
   margin: 20px 0 91px;
 }
@@ -573,108 +468,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-weight: 400;
   margin-left: 10px;
 }
-.mapDiv{
-  margin-top: 1%;
-  width: 45%;
-  float: right;
-}
-#map {
-  width: 400px;
-  height: 400px;
-}
-.slides {
-  padding: 0;
-  width: 609px;
-  height: 420px;
-  right: 2.5%;
-  display: block;
-  margin: 0 auto;
-  position: relative;
-}
-/*.slides * {*/
-/*  user-select: none;*/
-/*  -ms-user-select: none;*/
-/*  -moz-user-select: none;*/
-/*  -khtml-user-select: none;*/
-/*  -webkit-user-select: none;*/
-/*  -webkit-touch-callout: none;*/
-/*}*/
-.slides input { display: none; }
-.slide-container { display: block; }
-.slide {
-  top: 0;
-  opacity: 0;
-  width: 609px;
-  height: 420px;
-  display: block;
-  position: absolute;
-  transform: scale(0);
-  transition: all .7s ease-in-out;
-}
-.slide img {
-  width: 120%;
-  height: 100%;
-}
-.nav label {
-  width: 150px;
-  height: 100%;
-  display: none;
-  position: absolute;
-  opacity: 0;
-  z-index: 9;
-  cursor: pointer;
-  transition: opacity .2s;
-  color: #FFF;
-  font-size: 156pt;
-  text-align: center;
-  line-height: 380px;
-  font-family: "Varela Round", sans-serif;
-  background-color: rgba(255, 255, 255, .3);
-  text-shadow: 0px 0px 15px rgb(119, 119, 119);
-}
-.slide:hover + .nav label { opacity: 0.5; }
-.nav label:hover { opacity: 1; }
-.nav .next { right: -20%; }
-input:checked + .slide-container  .slide {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 1s ease-in-out;
-}
-input:checked + .slide-container .nav label { display: block; }
-.nav-dots {
-  width: 100%;
-  bottom: 9px;
-  height: 11px;
-  display: block;
-  position: absolute;
-  text-align: center;
-  left: 10%;
-}
-.nav-dots .nav-dot {
-  top: -5px;
-  width: 11px;
-  height: 11px;
-  margin: 0 4px;
-  position: relative;
-  border-radius: 100%;
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-.nav-dots .nav-dot:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-input#img-1:checked ~ .nav-dots label#img-dot-1,
-input#img-2:checked ~ .nav-dots label#img-dot-2,
-input#img-3:checked ~ .nav-dots label#img-dot-3,
-input#img-4:checked ~ .nav-dots label#img-dot-4,
-input#img-5:checked ~ .nav-dots label#img-dot-5,
-input#img-6:checked ~ .nav-dots label#img-dot-6 {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-
-
 
 /* 버튼 */
 .btn_area {
@@ -725,7 +518,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   width: 57%;
   margin-left: 30%;
 }
-
 .my-box-3{
   border:1px solid;
   padding:30px 0 50%;
@@ -740,11 +532,4 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .Recommend{
   margin-left: 70%;
 }
-img {
-  margin-left: 100%;
-  width: 100%;
-  height: 100%;
-}
-
-
 </style>
