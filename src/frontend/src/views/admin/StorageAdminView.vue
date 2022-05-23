@@ -1,6 +1,5 @@
 <template>
-
-  <div>
+  <div class="allBody">
     <table class="menu-bar">
       <tbody>
       <tr>
@@ -44,6 +43,13 @@ export default {
 </script>
 
 <style scoped>
+.allBody{
+  width: 84%;
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-top: 1%;
+  align-content: center;
+}
 table.menu-bar {
   border-collapse: collapse;
   width: 100%;

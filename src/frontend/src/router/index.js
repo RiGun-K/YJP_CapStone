@@ -10,12 +10,12 @@ const routes = [
   {
     path: '/signup',
     name: 'SignUp',
-    component: () => import('@/components/user/Signup.vue')
+    component: () => import('@/components/user/singUp/Signup.vue')
   },
   {
     path: '/mAdmin',
     name: 'mAdmin',
-    component: () => import('@/components/user/Admin.vue')
+    component: () => import('@/components/user/adminManage/Admin.vue')
   },
   {
     path: '/company',
@@ -25,52 +25,52 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/components/user/Login.vue')
+    component: () => import('@/components/user/singUp/Login.vue')
   },
   {
     path: '/memberupdate',
     name: 'MemberData',
-    component: () => import('@/components/user/MemberData.vue')
+    component: () => import('@/components/user/singUp/MemberData.vue')
   },
   {
     path: '/horby',
     name: 'Horby',
-    component: () => import('@/components/user/Horby.vue')
+    component: () => import('@/components/user/Horby/Horby.vue')
   },
   {
     path:'/agreement',
     name:'Agreement',
-    component: () => import('@/components/user/Agreement.vue')
+    component: () => import('@/components/user/singUp/Agreement.vue')
   },
   {
     path:'/sellerAccept',
     name:'SellerAccept',
-    component: () => import('@/components/user/SellerAccept.vue')
+    component: () => import('@/components/user/adminManage/SellerAccept.vue')
   },
   {
     path:'/searchSelect',
     name:'SearchSelect',
-    component: () => import('@/components/user/SearchSelect.vue')
+    component: () => import('@/components/user/memberSearch/SearchSelect.vue')
   },
   {
     path:'/searchId',
     name:'SearchId',
-    component: () => import('@/components/user/IdSearch.vue')
+    component: () => import('@/components/user/memberSearch/IdSearch.vue')
   },
   {
     path:'/searchPass',
     name:'SearchPass',
-    component: () => import('@/components/user/PassSearch.vue')
+    component: () => import('@/components/user/memberSearch/PassSearch.vue')
   },
   {
     path:'/changePass',
     name:'changePass',
-    component: () => import('@/components/user/PassChange.vue')
+    component: () => import('@/components/user/singUp/PassChange.vue')
   },
   {
     path:'/myPage',
     name:'mypage',
-    component: () => import('@/components/user/MyPage.vue')
+    component: () => import('@/components/user/myPage/MyPage.vue')
   },
   {
     path:'/myPageEquip',
@@ -86,6 +86,26 @@ const routes = [
     path:'/myPageOrder',
     name:'myPageOrder',
     component: () => import('@/components/user/myPage/MyOrder.vue')
+  },
+  {
+    path:'/memberAdmin',
+    name:'memberAdmin',
+    component: () => import('@/components/user/adminManage/MemberManagementAdmin.vue')
+  },
+  {
+    path:'/orderAdmin',
+    name:'orderAdmin',
+    component: () => import('@/components/user/adminManage/OrderManagement.vue')
+  },
+  {
+    path:'/writerAdmin',
+    name:'writerAdmin',
+    component: () => import('@/components/user/adminManage/WriterManagement.vue')
+  },
+  {
+    path:'/addEquipment',
+    name:'addEquipment',
+    component: () => import('@/components/user/myPage/AddEquip')
   },
 
     //////////////////////////////게시판////////////////////////////////////
@@ -381,17 +401,29 @@ const routes = [
   {
     path: "/storageAdmin",
     name: "admin",
-    component: ()=> import('@/views/admin/StorageAdminView.vue')
+    component: ()=> import('@/views/admin/StorageAdminView.vue'),
+    children: [
+      {
+        path: "/storageAdmin/storage",
+        name: "storage",
+        component: ()=> import('@/views/admin/storage/StorageView.vue')
+      },
+      {
+        path: "/storageAdmin/manager",
+        name: "manager",
+        component: ()=> import('@/views/admin/manager/StorageManagerView.vue')
+      },
+    ]
   },
   {
-    path: "/storage",
-    name: "storage",
-    component: ()=> import('@/views/admin/storage/StorageView.vue')
+    path: "/storageAdmin/storageRevise",
+    name:"StorageRevise",
+    component: ()=> import('@/components/storageService/admin/storage/StorageRevise.vue')
   },
   {
-    path: "/manager",
-    name: "manager",
-    component: ()=> import('@/views/admin/manager/StorageManagerView.vue')
+    path: "/storageAdmin/inputManager",
+    name:"InputStorageManager",
+    component: ()=> import('@/components/storageService/admin/manager/InputStorageManager.vue')
   },
   {
     path: "/storageView",

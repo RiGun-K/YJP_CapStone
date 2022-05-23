@@ -60,7 +60,9 @@ export default {
     this.form.endTime = this.$route.params.endTime
     this.form.start = this.$route.params.start
     this.form.end = this.$route.params.end
+    console.log(this.$route.params.useBoxCode)
     this.form.useBoxCode = this.$route.params.useBoxCode
+
     //  연장 할 기간 보여주시
     const arrDayStr = ['일','월','화','수','목','금','토']
     const newStart = new Date(this.form.end)
@@ -101,6 +103,9 @@ export default {
         endTime:endTime,
         useBoxCode : this.form.useBoxCode
       }
+
+      console.log('data')
+      console.log(data)
       axios.post('/api/renewalPay', data)
           .then(res=>{
             console.log(res.data.result)

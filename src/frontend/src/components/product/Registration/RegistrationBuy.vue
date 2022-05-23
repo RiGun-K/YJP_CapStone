@@ -82,22 +82,49 @@
 
         <br>
         <h3 class="join_title">
-          <label for="pswd2">이미지 등록</label>
+          <label for="pswd2">썸네일 이미지 등록</label>
         </h3>
         <div class="input-group">
           <form>
-            <input type="file"
+            <input multiple
+                   type="file"
                    id="file"
+                   name="profile_files"
+                   ref="serveyImage"
                    @change="handleImage"
                    enctype="multipart/form-data"
                    aria-describedby="inputGroupFileAddon04"
                    aria-label="Upload"
                    placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                   multiple
                    accept="image/*"
-                   drop-placeholder="Drop file here..." >
+                   drop-placeholder="Drop file here..."
+                   >
             <div id="image_container"/>
           </form>
+        </div>
+        <br>
+        <div v-if="stateCheck">
+          <h3 class="join_title">
+            <label for="pswd2">내부 이미지 등록</label>
+          </h3>
+          <div class="input-group">
+            <form>
+              <input multiple
+                     type="file"
+                     id="files"
+                     name="profile_files"
+                     ref="serveyImage"
+                     @change="handleImages"
+                     enctype="multipart/form-data"
+                     aria-describedby="inputGroupFileAddon04"
+                     aria-label="Upload"
+                     placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+                     accept="image/*"
+                     drop-placeholder="Drop file here..."
+              >
+              <div id="image_container"/>
+            </form>
+          </div>
         </div>
 
         <br>
@@ -131,13 +158,16 @@ export default {
       buyStock: '',
       buyPrice: '',
       buyEx: '',
+
       file: '',
+      files: '',
+
       mid: store.getters.getLoginState.loginState,
 
       id: '',
       myContent: [],
-
-
+      clist: [],
+      stateCheck: false,
     }
   },
   methods: {
@@ -164,44 +194,90 @@ export default {
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
+        this.stateCheck = true;
       }
       else {
         return false
       }
 
     },
+
+    handleImages(e) {
+      this.files = e.target.files
+      for(let i = 0; i < e.target.files.length; i++) {
+        const reader = new FileReader();
+        reader.readAsDataURL(this.files[i]);
+        // 파일 읽기가 완료되는 시점
+        reader.addEventListener('load', function(e1){
+          // 완료되는 시점!!!!!!!!!!!!!!!
+          self.imgsrc = e1.target.result;
+          // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
+
+
+        });
+      }
+
+    },
+
     BuySubmit: function () {
+      console.log(this.file.length);  // undefined
+      console.log(this.files.length);
+
       const formData = new FormData();
-
-      // const photoFile = document.getElementById("file_load");
-
       formData.append('kindid', this.kindid);
       formData.append('buyName', this.buyName);
       formData.append('buyPrice', this.buyPrice);
       formData.append('buyStock', this.buyStock);
       formData.append('buyEx', this.buyEx);
-      formData.append('file', this.file);
       formData.append('mid', this.mid);
+      formData.append('file', this.file);
+
+      axios.post('/api/Buy_Signup', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+          .then(res => {
+            console.log("성공" + res);
+            console.log(res.data);
+            this.clist = res.data;
+            this.buyId = this.clist.buyId;
+
+            // 구매 상품 등록처리 후
+            // 다중 이미지 업로드
+            const formDatas = new FormData();
+
+            for (let i = 0; i < this.files.length; i++) {
+              formDatas.append('files', this.files[i]);
+            }
+
+            formDatas.append('buyId', this.buyId);
+
+            console.log(this.buyId);
 
 
+            if (confirm("상품을 등록하시겠습니까?")) {
+              axios.post('/api/Buy_Signup_Files/', formDatas, {headers: {'Content-Type': 'multipart/form-data'}})
+                  .then(res => {
+                    console.log("성공" + res);
+                    alert("상품이 등록되었습니다.");
+                    this.$router.push({
+                      name: "ProductMain"
+                    });
+                  })
+                  .catch(function (error) {
+                    console.log("에러" + error);
+                    alert("상품이 등록되지않았습니다.");
+                  })
+            }
 
-      console.log(this.kindid, this.buyName, this.buyStock, this.buyPrice, this.buyEx, this.file, this.mid);
-      const baseURI = 'http://localhost:9002';
+          })
+          .catch(function (error) {
+            console.log("에러" + error);
+          })
 
-      if (confirm("상품을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/Buy_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
-            .then(res => {
-              console.log("성공" + res);
-              alert("상품이 등록되었습니다.");
-              this.$router.push({
-                name: "ProductMain"
-              });
-            })
-            .catch(function (error) {
-              console.log("에러" + error);
-              alert("상품이 등록되지않았습니다.");
-            })
-      }
+
 
     },
   }

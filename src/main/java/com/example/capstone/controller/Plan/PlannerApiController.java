@@ -2,6 +2,7 @@ package com.example.capstone.controller.Plan;
 
 
 import com.example.capstone.domain.Plan.Plan;
+import com.example.capstone.domain.Plan.PlanDetail;
 import com.example.capstone.dto.plan.PlanDetailDto;
 import com.example.capstone.dto.plan.PlanTagDto;
 import com.example.capstone.service.PlanTagService;
@@ -48,6 +49,10 @@ public class PlannerApiController {
     @PostMapping("/api/loadDetailPlanOfDay")
     public List<PlanDetailDto> loadDetailPlanOfDay(@RequestBody PlanDetailDto plan_detail) {
         return planService.loadDetailPlan(plan_detail);
+    }
+    @DeleteMapping("api/deleteDetailPlan")
+    public void deleteDetailPlan(@RequestParam Long planDetailCode){
+        planService.deleteDetailPlan(planDetailCode);
     }
 
 }

@@ -2,13 +2,16 @@
   <div class="infoter">
     <h2>캠핑장 예약</h2>
     <br>
-    <img src="@/assets/캠핑.png" class="card-img-top" alt="..." @click="cam">
-    <img src="@/assets/카라반.png" class="card-img-top" alt="..." @click="cara">
-    <img src="@/assets/글램핑.png" class="card-img-top" alt="..." @click="gram">
-    <img src="@/assets/팬션.png" class="card-img-top" alt="..." @click="fan">
-    <img src="@/assets/차박.png" class="card-img-top" alt="..." @click="car">
-    <img src="@/assets/당일피크닉.png" class="card-img-top" alt="..." @click="today">
-
+    <div class="campingkindimage">
+    <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
+    <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
+    <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
+    <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
+    <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
+    <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
+    <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
+    <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
+    </div>
     <br>
     <br>
     <section>
@@ -20,15 +23,16 @@
     </form>
     </section>
 
+
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-      <label class="btn btn-outline-primary" for="btnradio1">전체</label>
+      <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio2">최신순</label>
+      <label class="btn btn-outline-primary" for="btnradio2" @click="orderBy('latest')">최신순</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio3">인기순</label>
+      <label class="btn btn-outline-primary" for="btnradio3" @click="orderBy('latestd')">인기순</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
       <label class="btn btn-outline-primary" for="btnradio4">낮은 가격순</label>
@@ -37,40 +41,45 @@
       <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
     </div>
 
-    <br>
-    <br>
-    <span class="buy-list">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>분류</th>
-          <th>상품명</th>
-          <th>주소</th>
-          <th>등록일자</th>
-          <th>조회수</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="product in list"
-            :key="product.id"
-            :item="product" @click="toDetail(product)" style="cursor:pointer;">
-
-          <td>{{ product.infoterId.infoterName }}</td>
-          <td>{{ product.campingName }}</td>
-          <td>{{ product.address }}</td>
-          <td>{{ product.savedTime }}</td>
-          <td>{{ product.campingViews }}</td>
-        </tr>
-        <!-- PathVariable 을 위해서는 router-link 작성 -->
-        <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
-        </tbody>
-      </table>
-    </span>
-
-    <div class="infoter-btn-group">
-      <button class="infoter-list-btn" @click="ReservationNowBtn">Reservation Now</button>
-      <button class="infoter-list-btn" @click="ReservationAddCart">Add to Cart</button>
+    <h3>지역분류</h3>
+    <div class="searchDiv">
+      <select v-model="bigPick" @change="bigCheck(bigPick)">
+        <option value="0">전국</option>
+        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+      </select>
+      <select v-model="smallPick">
+        <option value="0">전체</option>
+        <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+      </select>
+      <button @click="search()">검색</button>
     </div>
+
+
+    <div class="listBody">
+      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
+      <div v-for="(product,index) in list" :key="product.id"
+           :item="product" @click="toDetail(product)" class="listObj">
+        <div class="card">
+          <div class="card-body">
+            <img :src="'/api/product_detail_images/' + product.filename" alt="...">
+          </div>
+          <div class="card-body">
+            분류 - {{ product.infoterId.infoterName }}
+          </div>
+          <div class="card-body">
+            캠핑장명 - {{ product.campingName }}
+          </div>
+          <div class="card-body">
+            주소 - {{ product.address }}
+          </div>
+          <div class="card-body">
+            조회수 - {{ product.campingViews }}
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -83,33 +92,99 @@ export default {
     ProductList
   },
   created() {
-    this.goData()
+    this.goData(),
+    axios.get('/api/campingRound')
+        .then(res => {
+          console.log(res.data)
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
   },
   data() {
     return {
       selected: false,
       list: [],
       product: '',
+
+      bigRound: [],
+      smallRound: [],
+      bigPick: 0,
+      smallPick: 0,
     }
   },
   methods: {
     goData() {
-      axios.get('http://localhost:9002/api/product_CampingList')
+      axios.get('/api/product_CampingList')
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
+
+            axios.get('/api/product_detail_images/' + this.product.filename )
+                .then(res => {
+                  console.log("이미지 불러오기 성공");
+                })
+                .catch(e => {
+                  console.log("이미지 불러오기 실패" + e);
+                })
           })
           .catch(e => {
             console.log(e)
           })
     },
 
+    bigCheck(index) {
+      if (index == '0') {
+        this.smallRound = []
+        this.smallPick = 0
+      } else {
+        axios.get('/api/campingSmallRound/' + index)
+            .then(res => {
+              console.log(res.data)
+              this.smallRound = res.data
+              this.smallPick = 0
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+
+    },
+    search() {
+      if (this.bigPick == "0" && this.smallPick == "0") {
+        this.goData();
+      } else if (this.bigPick != "0" && this.smallPick == '0') {
+        console.log("AREA_ID 는" + this.bigPick + "입니다..");
+        axios.get('/api/product_detail_campingDetailArea/' + this.bigPick)
+            .then((res) => {
+              console.log(res.data);
+              this.list = res.data;
+            })
+            .catch(e => {
+              console.log(e)
+            })
+      } else if (this.bigPick != "0" && this.smallPick != '0' ) {
+        console.log("AREA_ID 는" + this.smallPick + "입니다.");
+        axios.get('/api/product_detail_campingArea/' + this.smallPick)
+            .then((res) => {
+              console.log(res.data);
+              this.list = res.data;
+            })
+            .catch(e => {
+              console.log(e)
+            })
+      }
+
+
+
+    },
+
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
-      axios.post('http://localhost:9002/api/Camping_countView', {
-        a: product.campingId
-    })
+      axios.post('/api/Camping_countView', { a: product.campingId })
           .then((res) => {
             console.log("조회수 증가됨" + res.data);
             this.$router.push({
@@ -121,24 +196,34 @@ export default {
           })
 
     },
-    cam() {
+    cam(index) {
+      axios.get('/api/product_detail_camping/' + index)
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+            if (this.list.length == 0) {
+              alert("캠핑장이 없습니다.")
+              return;
+            }
 
+          })
+          .catch(e => {
+            console.log(e)
+          })
     },
-    cara() {
 
-    },
-    gram() {
+    orderBy: function (orderBy) {
+      if(orderBy == 'latest') {
+        this.list.sort(function (a, b) {
+          return b.latest - a.latest;
+        });
 
-    },
-    fan() {
-
-    },
-    car() {
-
-    },
-    today() {
-
-    },
+      } else if (orderBy == 'latestd') {
+        this.list.sort(function (a, b) {
+          return b.latestd - a.latestd;
+        })
+      }
+    }
 
   }
 }
@@ -180,6 +265,18 @@ export default {
   background-color: #b2e2fd;
 }
 
+
+.table table-striped {
+  width : 30%;
+  height: 30%;
+}
+.buy-list {
+  width : 20%;
+  height: 20%;
+}
+
+
+
 img {
   width : 10%;
   height: 10%;
@@ -206,5 +303,19 @@ img {
   border-radius: 15px;
   color: #fff;
   cursor: pointer;
+}
+
+.campingkindimage {
+  width:380px;
+  height:320px;
+  margin:0 auto;  /* 양 사이즈 간격  */
+}
+.image-thumbnail{
+  float: left;
+}
+
+img {
+  width: 40%;
+  height: 40%;
 }
 </style>

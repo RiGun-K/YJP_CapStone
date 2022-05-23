@@ -17,7 +17,7 @@
             <tbody>
             <tr>
               <td>{{ order.orderCode }}</td>
-              <td>{{ this.menus[index].menuBuy.buyName }}</td>
+              <td>{{ this.menus[index].menu.menuname }}</td>
               <td>{{ this.menus[index].orderMenuCount }}개</td>
               <td>{{ order.orderPrice }}</td>
             </tr>
@@ -56,8 +56,8 @@ export default {
                   this.menus = res2.data;
                   console.log(this.menus);
                 }).catch(e2 =>{
-              console.log(e2)
-            })
+                  console.log(e2)
+                })
           })
           .catch(e => {
             console.log(e);

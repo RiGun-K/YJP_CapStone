@@ -153,27 +153,29 @@ export default {
       this.$store.commit('updateDiff', this.diff);
     },
 
-    createPlan: function () {
-      console.log(this.$store.state.teamCode.teamCode);
-      const oldPlanCode = this.$store.state.planCode;
-      const data = {
-        planName: this.planName,
-        teamCode: this.$store.state.teamCode.teamCode,
-        planStart: this.planStart,
-        planEnd: this.planEnd,
-        planDestination: this.planDestination,
-        planType: this.planType,
-        planNumber: this.planNumber,
-        planBudget: this.planBudget,
-        planTotalDate: this.diff,
-        planOpen: this.planOpen,
-      };
+		createPlan: function () {
+			console.log(this.$store.state.teamCode.teamCode);
+			const oldPlanCode = this.$store.state.planCode;
+			const data = {
+				planName: this.planName,
+				teamCode: this.$store.state.teamCode.teamCode,
+				planStart: this.planStart,
+				planEnd: this.planEnd,
+				planDestination: this.planDestination,
+				planType: this.planType,
+				planNumber: this.planNumber,
+				planBudget: this.planBudget,
+				planTotalDate: this.diff,
+				planOpen: this.planOpen,
+			};
 
-      const form = {
-        planDto: data,
-        oldPlanDto: oldPlanCode,
-        teamDto: this.$store.state.teamCode.teamCode,
-      };
+			const form = {
+				planDto: data,
+				oldPlanDto: oldPlanCode,
+				teamDto: this.$store.state.teamCode.teamCode,
+				planTagDto: { tagContentList: this.TagContentList },
+			};
+
 
 
       if (

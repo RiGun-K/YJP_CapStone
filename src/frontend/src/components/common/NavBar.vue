@@ -1,50 +1,58 @@
 <template>
-
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #9f0b27;">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/infoter" v-if="uiLogin">캠핑장</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/TeamManagementPage" v-if="uiLogin">캠핑플랜</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/storageView" v-if="uiLogin">보관함</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/itemBuy">Item Buy</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/itemShare">Item Share</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/board" v-if="uiLogin">게시판</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/ProductMain" v-if="uiLogin==4">판매자 전용</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/company" v-if="uiLogin==3">판매자 신청</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/myPage" v-if="uiLogin!='' && uiLogin!=5">마이페이지</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/mAdmin" v-if="uiLogin==5">관리자 페이지</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/sellerAccept" v-if="uiLogin==5">판매자승인</router-link>
-          </li>
-
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      </div>
+  <nav class="navBody">
+    <div class="divBody">
+      <ul>
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/TeamManagementPage">계획작성</a>
+        </li>
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/storageView">보관함</a>
+        </li>
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/infoter">인포터</a>
+        </li>
+        <li class="topMenu">
+          <a href="/itemBuy">Item Buy</a>
+        </li>
+        <li class="topMenu">
+          <a href="/itemShare">Item Share</a>
+        </li>
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/board">게시판</a>
+          <ul class="subMenu">
+            <li class="menu"><a href="/board">자유게시판</a></li>
+            <li class="menu"><a href="/board">리뷰게시판</a></li>
+          </ul>
+        </li>
+        <li class="topMenu" v-if="uiLogin==4">
+          <a href="/ProductMain">판매자전용</a>
+        </li>
+        <li class="topMenu" v-if="uiLogin!='' && uiLogin!=5">
+          <a href="/memberUpdate">마이페이지</a>
+          <ul class="subMenu">
+            <li class="menu"><a href="/memberUpdate">정보수정</a></li>
+            <li class="menu"><a href="/changePass">비밀번호변경</a></li>
+            <li class="menu"><a href="/myPageWritter"><a href="/myPageWritter">게시글목록</a></a></li>
+            <li class="menu"><a href="/myPageEquip">장비목록</a></li>
+            <li class="menu"><a href="/ordersList">주문목록</a></li>
+            <li class="menu" v-if="uiLogin==3"><a href="/company">판매자신청</a></li>
+          </ul>
+        </li>
+        <li class="topMenu" v-if="uiLogin==5" @click="storageManager">
+          <a href="/storageManager">보관소관리자</a>
+        </li>
+        <li class="topMenu" v-if="uiLogin==5">
+          <a href="/memberAdmin">관리자업무</a>
+          <ul class="subMenu">
+            <li class="menu"><a href="/memberAdmin">멤버관리</a></li>
+            <li class="menu"><a href="/sellerAccept">판매자관리</a></li>
+            <li class="menu"><a href="/storageAdmin">보관소관리</a></li>
+            <li class="menu"><a href="/orderAdmin">주문관리</a></li>
+            <li class="menu"><a href="/writerAdmin">게시글관리</a></li>
+            <li class="menu"><a href="/board">문의관리</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </nav>
   <store></store>
@@ -52,7 +60,6 @@
 
 <script>
 import store from '@/store'
-
 export default {
   name: 'NavBar',
   data(){
@@ -61,16 +68,6 @@ export default {
     }
   },
   methods:{
-    sellerCheck(){
-      switch (this.uiLogin){
-        case "4":
-        case "5":
-        case false:
-          return false
-        default:
-          return true
-      }
-    }
   },
   computed:{
     loginCheck(){
@@ -81,34 +78,74 @@ export default {
         this.uiLogin = false;
         return "로그인이 필요합니다"
       }
-    },
+    }
 
   },
   watch:{
     loginCheck(){
-
     }
   }
-
 }
 </script>
 
 <style scoped>
-@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
-
-.login {
+a{
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+a:hover{
+  color: white;
+  text-decoration: none;
+}
+router-link{
+  color: black;
+}
+.navBody{
+  background: #E6E6FA;
+  border: 1px solid black;
+  width: 100%;
+  text-align: left;
+}
+.divBody{
+}
+.topMenu{
+  margin-top: 1%;
+  margin-left: 1%;
+  padding: 0.5%;
+  width: 10%;
+  display: inline-block;
   text-align: center;
+  list-style: none;
+  position: relative;
+
 }
-.d-flex{
-  color: #b2e2fd;
+.topMenu:hover > .subMenu{
+  display: block;
 }
-.btn{
-  border-color: #009fff;
-  color: #00a3de;
+.topMenu:hover{
+  background: #00a3de;
 }
-.btn:hover{
-  border-color: #009fff;
-  background-color: #b2e2fd;
+.subMenu{
+  padding: 0.5%;
+  margin: 0.5%;
+  display: none;
+  list-style: none;
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: 100%;
+  text-align: center;
+  border: 1px solid black;
+  z-index: 1;
 }
+.menu{
+  margin-top: 1%;
+  background: #41b883;
+  border: 1px solid black;
+}
+.menu:hover{
+  background: #7ea6f6;
+}
+
 </style>
