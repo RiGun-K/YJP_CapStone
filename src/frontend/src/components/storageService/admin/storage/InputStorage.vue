@@ -130,12 +130,9 @@ export default {
       geocoder.addressSearch(index,
           (result, status) => {
             // 정상적으로 검색이 완료됐으면
-            if (status === kakao.maps.services.Status.OK){
+            if (status === kakao.maps.services.Status.OK) {
               this.a.latitude = result[0].x
               this.a.longitude = result[0].y
-            }else{
-              this.a.latitude = ''
-              this.a.longitude = ''
             }
           }
       );
@@ -277,25 +274,32 @@ export default {
 
 <style scoped>
 .allBody{
-  width: 100%;
+  width: 98%;
   margin-top: 1%;
-  text-align: center;
+  margin-left: 1%;
+  margin-right: 1%;
+  text-align: left;
 }
 
 .labelWidth{
-  text-align: left;
+  left: 40%;
   width: 10%;
+  position: relative;
+}
+input{
+  left: 40%;
+  position: relative;
 }
 
 .bodydiv{
-  text-align: left;
-  margin-left: 25%;
-  width: 70%;
+  width: 100%;
   margin-top: 1%;
+  position: relative;
 }
 
 .addressBtn{
-  width: 8%;
+  left: 40%;
+  width: 10%;
   height: 100%;
   margin-left: 1%;
   text-align: center;
@@ -303,8 +307,8 @@ export default {
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
+  position: relative;
 }
-
 .storageBtn{
   margin-top: 1%;
   padding: 1%;
@@ -320,6 +324,8 @@ export default {
 }
 
 .storage-add-btn {
+  left: 75%;
+  margin-top: 1%;
   width: 6%;
   height: 6%;
   text-align: center;
@@ -328,6 +334,7 @@ export default {
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
+  position: absolute;
 }
 
 .storage-add-btn:hover {

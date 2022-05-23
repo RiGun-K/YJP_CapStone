@@ -1,6 +1,7 @@
 package com.example.capstone.dto.plan;
 
 
+import com.example.capstone.domain.Plan.Team;
 import lombok.*;
 
 @Getter
@@ -19,5 +20,12 @@ public class TeamDto {
         this.teamName = teamName;
         this.teamState = teamState;
         this.teamMaster = teamMaster;
+    }
+
+    public TeamDto(Team teamCode) {
+        this.teamCode = teamCode.getTeamCode();
+        this.teamName = teamCode.getTeamName();
+        this.teamState = teamCode.getTeamState();
+        this.teamMaster = teamCode.getTeamMaster();
     }
 }

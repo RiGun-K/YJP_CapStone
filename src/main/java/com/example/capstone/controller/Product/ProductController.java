@@ -121,6 +121,9 @@ public class ProductController {
     /* 상품 결제 페이지 전 해당 상품이미지 불러오기 */
     @GetMapping(value = "/product_detail_images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
+
+        System.out.println(filename);
+        System.out.println("-------------------1----------------");
         String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\frontend\\src\\assets\\" + filename;
         InputStream imageStream = new FileInputStream(requestPath);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);

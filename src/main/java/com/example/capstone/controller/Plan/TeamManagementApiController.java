@@ -6,6 +6,7 @@ import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Plan.TeamRepository;
+import com.example.capstone.service.PlanService;
 import com.example.capstone.service.TeamMemberService;
 import com.example.capstone.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class TeamManagementApiController {
     private final TeamRepository teamRepository;
     private final TeamMemberService teamMemberService;
     private final TeamService teamService;
+    private final PlanService planService;
 
 
 
@@ -74,10 +76,10 @@ public class TeamManagementApiController {
         return "y";
     }
 
-    @PostMapping("/api/deleteTeam")
-    public String deleteTeam(@RequestBody Team team) {
-        teamService.deleteTeam(team);
-        return "y";
+    @DeleteMapping("/api/deleteTeam")
+    public void deleteTeam(@RequestParam Long teamCode) {
+        teamService.deleteTeam(teamCode);
+
     }
 
     @PostMapping("/api/loginedTeamCode")
@@ -88,6 +90,10 @@ public class TeamManagementApiController {
     @GetMapping("/api/loadTeamPlans/{teamCode}")
     public List<PlanDto> loadTeamPlans(@PathVariable("teamCode") Long team) {
         return teamMemberService.loadTeamPlans(team);
+    }
+    @DeleteMapping("api/deletePlan")
+    public void deletePlan(@RequestParam Long planCode){
+        planService.deletePlan(planCode);
     }
 
 }

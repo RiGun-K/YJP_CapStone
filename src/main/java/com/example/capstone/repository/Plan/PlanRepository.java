@@ -16,4 +16,5 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     Optional<Plan> findByPlanName(String planName);
     Optional<Plan> findByTeamCodeAndPlanName(Team team, String planName);
     List<Plan> findAllByTeamCodeTeamCode(Long team);
+    List<Plan> findByTeamCode(Team teamCode);
 }

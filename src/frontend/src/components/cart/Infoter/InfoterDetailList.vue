@@ -77,25 +77,25 @@
     </li>
   </ul>
 
-<!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
-<!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
-<!--  </div>-->
-<!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
-<!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
-<!--  -->
+  <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+  <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+  <!--  </div>-->
+  <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+  <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+  <!--  -->
 
 
   <div class="mt-4">
 
-  <h4>{{ this.content.campingName }}</h4>
-  <p class="card-text">010-9699-4238</p>
-  <p class="card-text">{{ this.content.campingInfo }}</p>
-  <p class="card-text">{{ this.content.address }}</p>
-  <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-  <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
-  <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
+    <h4>{{ this.content.campingName }}</h4>
+    <p class="card-text">010-9699-4238</p>
+    <p class="card-text">{{ this.content.campingInfo }}</p>
+    <p class="card-text">{{ this.content.address }}</p>
+    <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
+    <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
+    <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
 
-  <br>
+    <br>
 
 
     <div class="listBody">
@@ -150,6 +150,43 @@
         <div id="map"></div>
       </div>
     </div>
+
+    <h2>리뷰</h2>
+    <div class="content-detail-list-1">
+      <br>
+      <div class="my-box">
+        <div class="Recommend">
+          <button class="button" v-on:click="likecnt++">좋아요</button> <span>좋아요 : </span>
+        </div>
+        <div class="review">
+          <tr>
+            <td class="review-mid"></td>
+            <br>
+            <!--          <input type="text" class="form-control" name ="subject" id="subject" placeholder="">-->
+            <td class="review-title">캠핑장명 </td><br>
+            <td class="review-text">설명</td>
+          </tr>
+
+          <div class="my-box-3">
+          </div>
+          <p class="review-image">이미지</p>
+<!--          <img :src="'/api/product_detail_images/' + this.list[1].filename" />-->
+          <!--          <button type=""-->
+
+          <!--        </div>-->
+        </div>
+        <!--        <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">-->
+      </div>
+
+      <br>
+      <div class="btn_area_1">
+        <button type="button" @click="detail_5" class="btn_Bottom_1">
+          <span>리뷰 작성</span>
+        </button>
+      </div>
+      <br>
+    </div>
+
   </div>
 </template>
 
@@ -157,12 +194,10 @@
 import axios from "axios";
 export default {
   name: "BuyDetailList",
-
   created() {
     this.DataList();
   },
   mounted() {
-
   },
   data() {
     return {
@@ -173,7 +208,6 @@ export default {
       // file: this.content.origFilename
       images: '',
       stateCheck: false,
-
       map: null,
       markers: [],
       markPositions1: [],
@@ -181,7 +215,6 @@ export default {
     }
   },
   methods: {
-
     DataList() {
       this.id = this.$route.params.campingId;
       console.log(this.id);
@@ -191,35 +224,28 @@ export default {
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
             console.log(this.roomContent);
-
             console.log(this.content.filePath);
             console.log(this.content.filename);
           })
           .catch(e => {
             console.log(e);
           })
-
     },
-
-
     detailData() {
       this.stateCheck = true;
     },
     buyData(detailId) {
       this.$router.push({
-            path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`
-          })
+        path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`
+      })
     },
-
     detail_3() {
       this.areaCheck = true
       let check = prompt("1+1 은?");
       alert("귀요미 ㅋ");
-
       // const point = [this.content.longitude, this.content.latitude]
       // console.log(point);
       // this.displayMarker([point])
-
       //  카카오맵
       if (window.kakao && window.kakao.maps) {
         this.initMap();
@@ -230,9 +256,7 @@ export default {
         script.src =
             "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
         document.head.appendChild(script);
-
       }
-
     },
     initMap() {
       const container = document.getElementById("map");
@@ -242,25 +266,19 @@ export default {
       };
       console.log(options)
       this.map = new kakao.maps.Map(container, options);
-
       // 마커 만들기
-
       let position = []
       position = [this.content.longitude, this.content.latitude]
       this.markPositions1.push(position)
-
       this.displayMarker(this.markPositions1)
     },
-
     displayMarker(markerPositions) {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
-
       const positions = markerPositions.map(
           (position) => new kakao.maps.LatLng(...position)
       );
-
       console.log("길이는" + positions.length)
       if (positions.length > 0) {
         this.markers = positions.map(
@@ -270,16 +288,36 @@ export default {
                   position,
                 })
         );
-
         const bounds = positions.reduce(
             (bounds, latlng) => bounds.extend(latlng),
             new kakao.maps.LatLngBounds()
         );
-
         this.map.setBounds(bounds);
       }
+    },
 
-    }
+    create() {
+      this.id = store.getters.getLoginState.loginState;
+      console.log(this.id);
+      const formData = new FormData();
+      formData.append('campingTitle', this.title);
+      formData.append('campingContent', this.content);
+      formData.append('mcode', this.id);
+      formData.append('boardMenuCode', '1');
+      formData.append('file', this.file);
+      axios.post('/api/CampingBoard', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+          .then((res) => {
+            console.log(res.data);
+            alert("게시글이 등록되었습니다.");
+          })
+          .catch((ex) => {
+            console.log("fail", ex)
+          })
+    },
+
+    detail_5() {
+      window.location.href = 'http://localhost:8081/infoter/infoterBoard'
+    },
 
 
   }
@@ -309,7 +347,6 @@ img {
 }
 .card {
   text-align: center;
-
 }
 .mapDiv{
   margin-top: 5%;
@@ -410,7 +447,6 @@ input#img-5:checked ~ .nav-dots label#img-dot-5,
 input#img-6:checked ~ .nav-dots label#img-dot-6 {
   background: rgba(0, 0, 0, 0.8);
 }
-
 .listBody{
   padding: 0.5%;
   margin-left: 30%;
@@ -418,7 +454,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   margin-right: 1%;
   width: 45%;
 }
-
 .btn_area {
   margin: 20px 0 91px;
 }
@@ -432,5 +467,69 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-size: 20px;
   font-weight: 400;
   margin-left: 10px;
+}
+
+/* 버튼 */
+.btn_area {
+  margin: 20px 0 91px;
+}
+.btn_Bottom {
+  width: 20%;
+  padding: 21px 0 17px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #96adc0;
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+.my-box {
+  border:3px solid;
+  padding:50px 0 5%;
+  box-sizing: border-box;
+  width: 70%;
+  margin:0 auto;
+  margin-bottom: 1%;
+}
+.review{
+  font-size: 20px;
+  margin-right: 70%;
+}
+.btn_Bottom_1{
+  width: 10%;
+  padding: 15px 0 15px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #9dc7ea;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 70%;
+  margin-top: 20px;
+}
+.review-image{
+  margin-top: 10%;
+  margin-right: 5%;
+}
+.review-mid{
+  border:1px solid;
+  box-sizing: border-box;
+  width: 57%;
+  margin-left: 30%;
+}
+.my-box-3{
+  border:1px solid;
+  padding:30px 0 50%;
+  box-sizing: border-box;
+  width: 230%;
+  margin-left: 77%;
+  margin-top: 5%;
+}
+.button{
+  margin-left : 15px;
+}
+.Recommend{
+  margin-left: 70%;
 }
 </style>

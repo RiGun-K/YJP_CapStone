@@ -1,4 +1,11 @@
 package com.example.capstone.repository.orders;
 
-public interface CartRepository {
+import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.order.Cart;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CartRepository extends JpaRepository<Cart, Integer> {
+    Cart findByMenuBuy(MenuBuy menuBuy);
 }
