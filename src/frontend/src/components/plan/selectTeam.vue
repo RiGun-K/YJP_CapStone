@@ -2,61 +2,61 @@
 <!------------------------------------------------------------------------- -->
 
 <template>
-	<button @Click="showingAddTeamForm">팀 만들기</button>
-	<div v-if="addTeamForm">
-		<input
-			v-model="$store.state.insertName"
-			placeholder="insert team name"
-		/>
-		<select v-model="$store.state.open">
-			<option>전체공개</option>
-			<option>비공개</option>
-		</select>
-		<button @click="teamSave">제출</button>
-	</div>
-	<hr />
+  <button @Click="showingAddTeamForm">팀 만들기</button>
+  <div v-if="addTeamForm">
+    <input
+        v-model="$store.state.insertName"
+        placeholder="insert team name"
+    />
+    <select v-model="$store.state.open">
+      <option>전체공개</option>
+      <option>비공개</option>
+    </select>
+    <button @click="teamSave">제출</button>
+  </div>
+  <hr />
 
-	<!------------------------------------------------------------------------- -->
+  <!------------------------------------------------------------------------- -->
 
-	<h3>플랜을 작성할 팀을 선택하세요</h3>
+  <h3>플랜을 작성할 팀을 선택하세요</h3>
 
-	<p v-html="noTeam"></p>
-	<div v-if="showingTeamList">
-		<div v-for="(value, index) in teamList" :key="index">
-			<button @click="loadTeamMemberList(value.teamCode)">
-				{{ value.teamCode.teamName }}
-			</button>
-		</div>
-	</div>
+  <p v-html="noTeam"></p>
+  <div v-if="showingTeamList">
+    <div v-for="(value, index) in teamList" :key="index">
+      <button @click="loadTeamMemberList(value.teamCode)">
+        {{ value.teamCode.teamName }}
+      </button>
+    </div>
+  </div>
 
-	<div>
-		<p>팀원 요청 목록</p>
-		<div v-for="(value, index) in unacceptedTeamCode" :key="index">
-			팀<button>{{ value.teamCode.teamName }}</button>에서 요청이 왔습니다
-			<button @click="accept(value.teamCode.teamCode)">수락하기</button>
-			<button @click="refuse(value.teamCode.teamCode)">거절하기</button>
-		</div>
-	</div>
+  <div>
+    <p>팀원 요청 목록</p>
+    <div v-for="(value, index) in unacceptedTeamCode" :key="index">
+      팀<button>{{ value.teamCode.teamName }}</button>에서 요청이 왔습니다
+      <button @click="accept(value.teamCode.teamCode)">수락하기</button>
+      <button @click="refuse(value.teamCode.teamCode)">거절하기</button>
+    </div>
+  </div>
 
-	<!------------------------------------------------------------------------- -->
+  <!------------------------------------------------------------------------- -->
 
-	<div v-if="showingTeamMember">
-		<hr />
-		<h3>
-			TEAM NAME - {{ $store.state.teamCode.teamCode.teamName }}의 MEMBERS
-		</h3>
+  <div v-if="showingTeamMember">
+    <hr />
+    <h3>
+      TEAM NAME - {{ $store.state.teamCode.teamCode.teamName }}의 MEMBERS
+    </h3>
 
-		<button
-			v-for="(value, index) in $store.state.teamMemberList"
-			:key="index"
-		>
-			{{ value.mcode.mname }}
-		</button>
-		<router-link to="/insertCopy"
-			>{{ $store.state.teamCode.teamCode.teamName }}에 플랜 생성하기
-		</router-link>
-	</div>
-	<!------------------------------------------------------------------------- -->
+    <button
+        v-for="(value, index) in $store.state.teamMemberList"
+        :key="index"
+    >
+      {{ value.mcode.mname }}
+    </button>
+    <router-link to="/insertCopy"
+    >{{ $store.state.teamCode.teamCode.teamName }}에 플랜 생성하기
+    </router-link>
+  </div>
+  <!------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -225,6 +225,7 @@ export default {
 		// -----------------------------------------------------
 	},
 	loginedTeamCode: function () {},
+
 };
 </script>
 

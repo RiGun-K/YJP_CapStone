@@ -1,10 +1,10 @@
 package com.example.capstone.domain.Product;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.storage.StorageBox;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,6 +17,8 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@ToString
 @Table(name = "camping")
 public class Camping {
 
@@ -59,6 +61,14 @@ public class Camping {
     @Column()
     private String filePath;
 
+    @Column
+    private double latitude;//위도
+    @Column
+    private double longitude;//경도
+
+    @Column()
+    private int campingViews = 0;
+
 
     // 캠핑장 종류
     @ManyToOne()
@@ -78,13 +88,24 @@ public class Camping {
     // 현 테이블의 PK를 외래키로 받는 테이블에서 모든 리스트 조회
     // 따로 칼럼 추가되지 않고, List< > 로 뽑아올 수 있음 !!
     @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
-    @OneToMany(mappedBy = "campingId",cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "campingId", cascade = {CascadeType.ALL})
     private List<CampingDetail> campingDetails = new ArrayList<>();
+
+
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "campingId", cascade = {CascadeType.ALL})
+    private List<Images> images = new ArrayList<>();
+
+
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "camping", cascade = {CascadeType.ALL})
+    private List<OrderMenu> orderMenus = new ArrayList<>();
+
 
     public Camping() {}
 
     // 생성자 여러개 만들수 있음 DTO를 통해 INSERT 할경우
-    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID, List<CampingDetail> campingDetails) {
+    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID, List<CampingDetail> campingDetails, List<Images> images, List<OrderMenu> orderMenus) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
         this.campingDetailState = campingDetailState;
@@ -99,6 +120,8 @@ public class Camping {
         this.areaId = areaId;
         this.MID = MID;
         this.campingDetails = campingDetails;
+        this.images = images;
+        this.orderMenus = orderMenus;
     }
 
     public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID) {
@@ -252,5 +275,13 @@ public class Camping {
 
     public void setCampingDetails(List<CampingDetail> campingDetails) {
         this.campingDetails = campingDetails;
+    }
+
+    public int getCampingViews() {
+        return campingViews;
+    }
+
+    public void setCampingViews(int campingViews) {
+        this.campingViews = campingViews;
     }
 }

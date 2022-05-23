@@ -48,7 +48,7 @@ export default {
     DataList() {
       this.id = this.$route.params.buyId;
       console.log(this.id);
-      axios.get('http://localhost:9002/api/product_detail/' + this.id)
+      axios.get('http://localhost:9002/api/product_detailB/' + this.id)
           .then(res => {
             console.log(res.data);
             this.content = res.data;
@@ -69,7 +69,7 @@ export default {
     },
     buyData() {
       this.$router.push({
-        path: `/itemBuy/buyNow/${this.content.menuid}`
+        path: `/itemBuy/buyNow/${this.content.buyId}`
       })
     },
     putData() {

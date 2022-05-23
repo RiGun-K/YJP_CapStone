@@ -77,6 +77,8 @@ public class UseStorageBox {
         this.orderCode = orderCode;
     }
 
+
+
     public UseStorageBox(StorageBox storageBoxCode, Orders orderCode) {
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;

@@ -1,12 +1,16 @@
 package com.example.capstone.domain.Product;
 
 import com.example.capstone.domain.Member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="menubuy")
@@ -48,6 +52,10 @@ public class MenuBuy {
     @JoinColumn(name = "MID")
     private Member MID;
 
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "buyId",cascade = {CascadeType.ALL})
+    private List<Images> images = new ArrayList<>();
+
 
     // fetch = FetchType.LAZY 쓰면 외래키 조회 불가 !
 //    @JsonBackReference
@@ -66,6 +74,40 @@ public class MenuBuy {
         this.filePath = filePath;
         this.kindid = kindid;
         this.MID = MID;
+    }
+
+    public MenuBuy(int buyId, String buyName, int buyPrice, String buyEx, int buyStock, String origFilename, String filename, String filePath, String savedTime, String modifiedDate, Kind kindid, Member MID, List<Images> images) {
+        this.buyId = buyId;
+        this.buyName = buyName;
+        this.buyPrice = buyPrice;
+        this.buyEx = buyEx;
+        this.buyStock = buyStock;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.savedTime = savedTime;
+        this.modifiedDate = modifiedDate;
+        this.kindid = kindid;
+        this.MID = MID;
+        this.images = images;
+    }
+
+    public MenuBuy(String buyName, int buyPrice, String buyEx, String savedTime, int buyStock, Kind kindid, Member MID) {
+        this.buyName = buyName;
+        this.buyPrice = buyPrice;
+        this.buyEx = buyEx;
+        this.savedTime = savedTime;
+        this.buyStock = buyStock;
+        this.kindid = kindid;
+        this.MID = MID;
+    }
+
+    public List<Images> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Images> images) {
+        this.images = images;
     }
 
     public int getBuyId() {

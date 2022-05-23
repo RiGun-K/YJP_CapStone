@@ -23,12 +23,21 @@
         <h3 class="join_title">
           <label for="id">지역분류</label>
         </h3>
-        <select v-model="areaid" placeholder="지역명을 입력하세요." class="form-select" aria-label="Default select example">
-          <option v-for="(area, index) in ares" :key="index" :value="area">
-            {{area.text}}
-          </option>
+        <select v-model="bigPick" @change="bigCheck(bigPick)">
+          <option value="0">전국</option>
+          <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
         </select>
-        <div class="mt-3">선택유형 : <strong>{{ areaid.text }}</strong></div>
+        <br>
+        <select v-model="smallPick">
+          <option value="0">전체</option>
+          <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+        </select>
+<!--        <select v-model="areaid" placeholder="지역명을 입력하세요." class="form-select" aria-label="Default select example">-->
+<!--          <option v-for="(area, index) in ares" :key="index" :value="area">-->
+<!--            {{area.text}}-->
+<!--          </option>-->
+<!--        </select>-->
+<!--        <div class="mt-3">선택유형 : <strong>{{ areaid.text }}</strong></div>-->
 
         <br>
         <span class="error_next_box"></span>
@@ -89,7 +98,7 @@
 
         <br>
         <h3 class="join_title">
-          <label for="pswd2">이미지 등록</label>
+          <label for="pswd2">썸네일 이미지 등록</label>
         </h3>
         <div class="input-group">
           <form>
@@ -105,6 +114,31 @@
                    drop-placeholder="Drop file here..." >
             <div id="image_container"/>
           </form>
+        </div>
+        <br>
+
+        <div v-if="stateCheck">
+          <h3 class="join_title">
+            <label for="pswd2">내부 이미지 등록</label>
+          </h3>
+          <div class="input-group">
+            <form>
+              <input multiple
+                     type="file"
+                     id="files"
+                     name="profile_files"
+                     ref="serveyImage"
+                     @change="handleImages"
+                     enctype="multipart/form-data"
+                     aria-describedby="inputGroupFileAddon04"
+                     aria-label="Upload"
+                     placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+                     accept="image/*"
+                     drop-placeholder="Drop file here..."
+              >
+              <div id="image_container"/>
+            </form>
+          </div>
         </div>
 
       <br>
@@ -129,7 +163,14 @@ export default {
   name: "RegistrationBuy",
   components: { ProductPage },
   created() {
-
+    axios.get('/api/campingRound')
+        .then(res => {
+          console.log(res.data)
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
   },
   data() {
     return {
@@ -148,32 +189,45 @@ export default {
 
       id: '',
       myContent: [],
+      camlist: [],
+      files: '',
+      stateCheck: false,
+
+
+      bigRound: [],
+      smallRound: [],
+      bigPick: 0,
+      smallPick: 0,
 
 
       options: [
         { value: '1', text: '오토캠핑'},
-        { value: '2', text: '글램핑'},
-        { value: '3', text: '카라반'},
-        { value: '4', text: '자전거캠핑'},
+        { value: '2', text: '카라반'},
+        { value: '3', text: '글램핑'},
+        { value: '4', text: '펜션'},
         { value: '5', text: '차박'},
-        { value: '6', text: '기타'},
+        { value: '6', text: '당일피크닉'},
+        { value: '7', text: '기타'},
       ],
-      ares: [
-        { value: '1', text: '강원도'},
-        { value: '2', text: '경기도'},
-        { value: '3', text: '경상도'},
-        { value: '4', text: '대구시'},
-        { value: '5', text: '부산시'},
-        { value: '6', text: '서울시'},
-        { value: '7', text: '울산시'},
-        { value: '8', text: '인천시'},
-        { value: '9', text: '전라도'},
-        { value: '10', text: '제주도'},
-        { value: '11', text: '충청도'},
-      ]
     }
   },
   methods: {
+    bigCheck(index) {
+      if (index == '0') {
+        this.smallRound = []
+      } else {
+        axios.get('/api/campingSmallRound/' + index)
+            .then(res => {
+              console.log(res.data)
+              this.smallRound = res.data
+              this.smallPick = 0
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+
+    },
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
@@ -196,13 +250,38 @@ export default {
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
+        this.stateCheck = true;
       }
       else {
         return false
       }
 
     },
+
+    handleImages(e) {
+      this.files = e.target.files
+      for(let i = 0; i < e.target.files.length; i++) {
+        const reader = new FileReader();
+        reader.readAsDataURL(this.files[i]);
+        // 파일 읽기가 완료되는 시점
+        reader.addEventListener('load', function(e1){
+          // 완료되는 시점!!!!!!!!!!!!!!!
+          self.imgsrc = e1.target.result;
+          // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
+
+
+        });
+      }
+
+    },
+
     zcGet() {
+      console.log(this.smallPick);
       new window.daum.Postcode({
         oncomplete: (data) => {
           this.postalAddress = data.zonecode;
@@ -217,7 +296,8 @@ export default {
       // const photoFile = document.getElementById("file_load");
 
       formData.append('infoterId', this.infoterid.value);
-      formData.append('areaId', this.areaid.value);
+      // formData.append('areaId', this.areaid.value);
+      formData.append('areaId', this.smallPick);
       formData.append('campingName', this.campingName);
       formData.append('campingInfo', this.campingInfo);
       formData.append('campingDetailState', this.campingDetailState);
@@ -229,23 +309,46 @@ export default {
 
 
 
-      console.log(this.infoterid.value, this.areaid.value, this.campingName, this.campingInfo, this.campingDetailState, this.postalAddress, this.address, this.detailAddress, this.file, this.mid);
-      const baseURI = 'http://localhost:9002';
-
-      if (confirm("캠핑장을 등록하시겠습니까?")) {
-        axios.post(`${baseURI}/api/Camping_Signup`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        axios.post('/api/Camping_Signup', formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(res => {
               console.log("성공" + res);
-              alert("캠핑장이 등록되었습니다.");
-              this.$router.push({
-                path: `/RegistrationCampingDetail/${this.campingName}`
-              });
+              this.camlist = res.data;
+              this.campingId = this.camlist.campingId;
+
+              // 구매 상품 등록처리 후
+              // 다중 이미지 업로드
+              const formDatas = new FormData();
+
+              for (let i = 0; i < this.files.length; i++) {
+                formDatas.append('files', this.files[i]);
+              }
+
+              formDatas.append('campingId', this.campingId);
+
+              console.log(this.campingId);
+
+
+              if (confirm("캠핑장을 등록하시겠습니까?")) {
+                axios.post('/api/Camping_Signup_Files/', formDatas, {headers: {'Content-Type': 'multipart/form-data'}})
+                    .then(res => {
+                      console.log("성공" + res);
+                      alert("캠핑장이 등록되었습니다. 객실을 등록해주세요!");
+                      this.$router.push({
+                        path: `/RegistrationCampingDetail/${this.campingName}`
+                      });
+                    })
+                    .catch(function (error) {
+                      console.log("에러" + error);
+                      alert("상품이 등록되지않았습니다.");
+                    })
+              }
+
             })
             .catch(function (error) {
               console.log("에러" + error);
               alert("캠핑장이 등록되지않았습니다.");
             })
-      }
+
 
     },
   }
