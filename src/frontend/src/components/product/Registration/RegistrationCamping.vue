@@ -63,20 +63,6 @@
 
       </div>
 
-
-        <div>
-          <h3 class="join_title">
-            <label for="pswd1" >캠핑장 전화번호</label>
-          </h3>
-
-          <span class="box int_id">
-          <textarea type="text" v-model="campingPhone" id="id" placeholder="캠핑장 연락처를 입력하세요" class="int" maxlength="100"></textarea>
-                    </span>
-          <span class="error_next_box"></span>
-
-        </div>
-
-
         <br>
         <div>
           <h3 class="join_title">
@@ -193,7 +179,6 @@ export default {
       campingName: '',
       campingInfo: '',
       campingDetailState: '',
-      campingPhone: '',
       file: '',
       postalAddress: '',
       address: '',

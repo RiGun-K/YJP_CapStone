@@ -16,10 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -236,6 +233,15 @@ public class RentalController {
         menuRentalRepository.deleteById(rentalId);
 //         menuService.deleteById(menuid);
         return "메뉴가 삭제되었습니다.";
+    }
+
+    /* 렌탈상품 조회 시 조회수 증가 */
+    @PostMapping("/Rental_countView")
+    public void countCampingView(@RequestBody HashMap<String, String> rentalId){
+        System.out.println(rentalId.get("a"));
+        Optional<MenuRental> menuRental = menuRentalRepository.findById(Integer.parseInt(rentalId.get("a")));
+        menuRental.get().setRentalViews(menuRental.get().getRentalViews()+1);
+        menuRentalRepository.save(menuRental.get());
     }
     
 }

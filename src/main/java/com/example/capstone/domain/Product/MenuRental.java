@@ -29,6 +29,9 @@ public class MenuRental {
     @Column()
     private int rentalStock;
 
+    @Column()
+    private int rentalViews = 0;
+
     // 체크리스트를 통해서 n일,주,개월 당 m원 으로 생성해주기
     @Column()
     private int rentalPrice;
@@ -220,5 +223,13 @@ public class MenuRental {
 
     public void setMID(Member MID) {
         this.MID = MID;
+    }
+
+    public int getRentalViews() {
+        return rentalViews;
+    }
+
+    public void setRentalViews(int rentalViews) {
+        this.rentalViews = rentalViews;
     }
 }

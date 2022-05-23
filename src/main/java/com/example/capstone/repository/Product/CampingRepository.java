@@ -2,6 +2,7 @@ package com.example.capstone.repository.Product;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Camping;
+import com.example.capstone.domain.Product.MenuBuy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,6 +28,10 @@ public interface CampingRepository extends JpaRepository<Camping, Integer> {
     @Query(value = "SELECT * FROM camping c JOIN campingArea a ON c.AREAID = a.AREA_ID \n" +
                    "WHERE a.PARENTAREAID = :areaId", nativeQuery = true)
     public List<Camping> findByareaDetailId(@Param("areaId") int areaId);
+
+
+    @Query(value = "SELECT * FROM camping c WHERE c.CAMPING_NAME LIKE %:searchCamping%", nativeQuery = true)
+    List<Camping> findAllBysearchCampingContains(@Param("searchCamping") String searchCamping);
 
 
 }

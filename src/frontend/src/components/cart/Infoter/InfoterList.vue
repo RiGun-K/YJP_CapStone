@@ -14,15 +14,6 @@
     </div>
     <br>
     <br>
-    <section>
-    <form action="https://search.naver.com/search.naver">
-      <div class="search">
-        <input type="text" name="query" value="">
-        <button type="submit">검색</button>
-      </div>
-    </form>
-    </section>
-
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
@@ -55,6 +46,13 @@
     </div>
 
 
+    <section>
+      <div class="search">
+        <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
+        <button @click="campingFilter(this.searchCamping)">검색</button>
+      </div>
+    </section>
+
     <div class="listBody">
       <h2> 캠핑장 내 객실 선택 및 예약 </h2>
       <div v-for="(product,index) in list" :key="product.id"
@@ -73,7 +71,7 @@
             주소 - {{ product.address }}
           </div>
           <div class="card-body">
-            조회수 - {{ product.campingViews }}
+            조회수 - {{ product.buyViews }}
           </div>
         </div>
         <br>
@@ -81,6 +79,7 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -113,6 +112,7 @@ export default {
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
+      searchCamping: '',
     }
   },
   methods: {
@@ -184,16 +184,21 @@ export default {
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
-      axios.post('/api/Camping_countView', { a: product.campingId })
-          .then((res) => {
-            console.log("조회수 증가됨" + res.data);
-            this.$router.push({
-              path: `/infoter/infoterList/${product.campingId}`
+      if(product.campingDetails.length > 0) {
+        axios.post('/api/Camping_countView', {a: product.campingId})
+            .then((res) => {
+              console.log("조회수 증가됨" + res.data);
+              this.$router.push({
+                path: `/infoter/infoterList/${product.campingId}`
+              })
             })
-          })
-          .catch(e => {
-            console.log(e)
-          })
+            .catch(e => {
+              console.log(e)
+            })
+
+      } else {
+        alert("객실이 없습니다.")
+      }
 
     },
     cam(index) {
@@ -210,6 +215,21 @@ export default {
           .catch(e => {
             console.log(e)
           })
+    },
+
+    campingFilter(index) {
+      if (this.searchCamping == '') {
+        this.goData();
+      } else {
+        axios.get('/api/search_CampingList', { params: { searchCamping: index }})
+         .then((res) => {
+           this.list = res.data;
+           console.log(this.list);
+         })
+         .catch(e => {
+           console.log(e)
+         })
+      }
     },
 
     orderBy: function (orderBy) {
@@ -317,5 +337,15 @@ img {
 img {
   width: 40%;
   height: 40%;
+}
+
+.card-body {
+  overflow: hidden;
+}
+.card-body img {
+  transition: all 0.2s linear;
+}
+.card-body:hover img {
+  transform: scale(1.5);
 }
 </style>
