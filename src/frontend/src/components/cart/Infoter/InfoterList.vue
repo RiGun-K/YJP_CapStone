@@ -184,16 +184,21 @@ export default {
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
-      axios.post('/api/Camping_countView', { a: product.campingId })
-          .then((res) => {
-            console.log("조회수 증가됨" + res.data);
-            this.$router.push({
-              path: `/infoter/infoterList/${product.campingId}`
+      if(product.campingDetails.length > 0) {
+        axios.post('/api/Camping_countView', {a: product.campingId})
+            .then((res) => {
+              console.log("조회수 증가됨" + res.data);
+              this.$router.push({
+                path: `/infoter/infoterList/${product.campingId}`
+              })
             })
-          })
-          .catch(e => {
-            console.log(e)
-          })
+            .catch(e => {
+              console.log(e)
+            })
+
+      } else {
+        alert("객실이 없습니다.")
+      }
 
     },
     cam(index) {
