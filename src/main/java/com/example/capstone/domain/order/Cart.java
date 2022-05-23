@@ -19,7 +19,6 @@ public class Cart {
 
     @Column
     private int cartItemCount;
-    private int cartItemAllPrice;
 
     @ManyToOne
     @JoinColumn(name = "MCode")
@@ -55,11 +54,4 @@ public class Cart {
         this.MCode = MCode;
     }
 
-    public int getCartItemAllPrice() {
-        return cartItemAllPrice;
-    }
-
-    public void setCartItemAllPrice(int cartItemAllPrice) {
-        this.cartItemAllPrice = cartItemAllPrice;
-    }
 }

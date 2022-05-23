@@ -124,7 +124,7 @@ public class ProductController {
 
         System.out.println(filename);
         System.out.println("-------------------1----------------");
-        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\frontend\\src\\assets\\" + filename;
+        String requestPath = "C:\\Users\\bon300_05\\Desktop\\YJP_CapStone11\\src\\frontend\\src\\assets\\" + filename;
         InputStream imageStream = new FileInputStream(requestPath);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
