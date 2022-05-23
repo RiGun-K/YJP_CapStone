@@ -2,6 +2,7 @@ package com.example.capstone.domain.Board;
 
 import com.example.capstone.domain.Member.Member;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 
@@ -17,14 +18,28 @@ public class Writer {
     private String title;
     private String content;
 
+    @Column()
+    private String origFilename;
+    @Column()
+    private String filePath;
+
+    @Column
+    private Integer recommend = 0;
+    @CreatedDate
+    private String savedTime;
+
     @ManyToOne()
     @JoinColumn(name = "MID")
     private Member MID;
 
-    public Writer(String title, String content, Member MID) {
+    public Writer(String title, String content, Member MID, String origFilename, String filePath, Integer recommend, String savedTime) {
         this.title = title;
         this.content = content;
         this.MID = MID;
+        this.origFilename = origFilename;
+        this.filePath = filePath;
+        this.recommend = recommend;
+        this.savedTime = savedTime;
     }
 
     public Writer() {
@@ -61,6 +76,38 @@ public class Writer {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getOrigFilename() {
+        return origFilename;
+    }
+
+    public void setOrigFilename(String origFilename) {
+        this.origFilename = origFilename;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public Integer getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(Integer recommend) {
+        this.recommend = recommend;
+    }
+
+    public String getSavedTime() {
+        return savedTime;
+    }
+
+    public void setSavedTime(String savedTime) {
+        this.savedTime = savedTime;
     }
 }
 

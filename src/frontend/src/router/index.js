@@ -340,6 +340,11 @@ const routes = [
     props: true
   },
   {
+    path: '/infoter/infoterBoard',
+    name: 'InfoterDetailBoard',
+    component: () => import('@/components/cart/Infoter/InfoterDetailBoard.vue'),
+  },
+  {
     path: '/infoter/infoterNow/:campingId/:detailId',
     name: 'InfoterNow',
     component: () => import('@/components/cart/Infoter/InfoterNow.vue')
@@ -355,7 +360,7 @@ const routes = [
     component: () => import('@/components/cart/Cart/CartList.vue')
   },
   {
-    path: '/cart/buy',
+    path: '/cart/buy/:mcode',
     name: 'BuyCart',
     component: () => import('@/components/cart/Cart/BuyCart.vue')
   },

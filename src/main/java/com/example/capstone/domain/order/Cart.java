@@ -2,10 +2,15 @@ package com.example.capstone.domain.order;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Menu;
+import com.example.capstone.domain.Product.MenuBuy;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name="cart")
 public class Cart {
     @Id
@@ -17,12 +22,13 @@ public class Cart {
     private int cartItemAllPrice;
 
     @ManyToOne
-    @JoinColumn(name = "menuid")
-    private Menu menu;
-
-    @ManyToOne
     @JoinColumn(name = "MCode")
     private Member MCode;
+
+    @ManyToOne
+    @JoinColumn(name = "buyId")
+    private MenuBuy menuBuy;
+
 
     public int getCartCode() {
         return cartCode;
@@ -40,13 +46,6 @@ public class Cart {
         this.cartItemCount = cartItemCount;
     }
 
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
 
     public Member getMCode() {
         return MCode;
