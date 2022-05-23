@@ -532,4 +532,13 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .Recommend{
   margin-left: 70%;
 }
+
+
+
+.card-body img {
+  transition: all 0.2s linear;
+}
+.card-body:hover img {
+  transform: scale(1.5);
+}
 </style>
