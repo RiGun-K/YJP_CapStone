@@ -11,6 +11,7 @@
         <label for="img-2" class="next">&#x203a;</label>
       </div>
     </li>
+    
 
     <input type="radio" name="radio-btn" id="img-2" />
     <li class="slide-container">
