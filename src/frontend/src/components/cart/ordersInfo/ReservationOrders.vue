@@ -9,17 +9,20 @@
             <thead>
             <tr>
               <th>주문코드</th>
-              <th>상품명</th>
+              <th>캠핑장</th>
+              <th>객실명</th>
               <th>수량</th>
               <th>주문금액</th>
             </tr>
             </thead>
             <tbody>
             <tr>
+              <td>{{ order.orderCode }}</td>
               <td>{{  }}</td>
-              <td>{{ }}</td>
-              <td>{{  }}개</td>
-              <td>{{  }}</td>
+<!--              <td>{{ this.menus[index].camping.campingName }}</td>-->
+              <td>{{ this.menus[index].campingDetail.detailName }}</td>
+              <td>{{ this.menus[index].orderMenuCount }}개</td>
+              <td>{{ order.orderPrice }}</td>
             </tr>
             <!-- PathVariable 을 위해서는 router-link 작성 -->
             <!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -54,7 +57,7 @@ export default {
                 .then(res2 =>{
                   this.orders = res.data;
                   this.menus = res2.data;
-                  console.log(this.orders);
+                  console.log(this.menus);
                 }).catch(e2 =>{
               console.log(e2)
             })
