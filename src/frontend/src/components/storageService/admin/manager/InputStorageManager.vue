@@ -11,27 +11,28 @@
     <button class="storage-box-b" @click="CheckMember()">CHECK</button>
     <p v-if="memberIdCheck">가능</p>
 
-    보관소 체크
     <div>
       <labe for="storage-search">보관소</labe>
-      <input id="storage-search" type="text" v-model="f" placeholder="보관소명">
-      <button>검색</button>
+      <input id="storage-search" type="text" v-model="searchStorage" @keyup.enter="storageSearch()" placeholder="보관소명">
+      <button @click="storageSearch()">검색</button>
 
       <div>
         <table>
           <thead>
-            <tr>
-              <th calspan="2">지역</th>
-              <th calspan="2">보관소명</th>
-            </tr>
+          <tr>
+            <th calspan="2">지역</th>
+            <th calspan="2">보관소명</th>
+          </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td><button>선택</button></td>
-            </tr>
+          <tr v-for="(storage,index) in storageList">
+            <td>{{ index + 1 }}</td>
+            <td>{{ storage.storageAddress }}</td>
+            <td>{{ storage.storageName }}</td>
+            <td>
+              <button @click="checkStorage(storage.storageCode)">선택</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -52,9 +53,45 @@ export default {
       managerList: [],
       memberId: '',
       memberIdCheck: false,
+      searchStorage: '',
+      storageList: [],
+      searchList: [],
+      searchStorageList: [],
+      storage: {},
     }
   },
-  methods:{
+  mounted() {
+    this.allroundsearch()
+  },
+  methods: {
+    allroundsearch() {
+      axios.get('/api/getStorage')
+          .then((res) => {
+            this.storageList = res.data
+            this.searchList = res.data
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+    },
+    storageSearch() {
+      this.searchStorageList = []
+      if (this.searchStorage != '') {
+        for (let i = 0; i < this.searchList.length; i++) {
+          if (this.searchList[i].storageName.includes(this.searchStorage)) {
+            this.searchStorageList.push(this.searchList[i])
+          }
+        }
+        if (this.searchStorageList.length < 1) {
+          alert('검색하신 보관소은 없습니다')
+          return
+        }
+        this.storageList = this.searchStorageList
+      } else {
+        this.search()
+      }
+      this.allMarker()
+    },
     CheckMember() {
       if (!this.memberId) {
         alert('아이디를 입력하세요')
@@ -81,6 +118,9 @@ export default {
               console.log(error)
             })
       }
+    },
+    checkStorage(storageCode) {
+
     },
     postManager() {
       let manager = {
