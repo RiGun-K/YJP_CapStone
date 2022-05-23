@@ -56,7 +56,7 @@ public class CampingController {
     private List<CampingArea> getRound() {
 
         List<CampingArea> campingAreaList = campingAreaRepository.findByParentAreaList();
-
+        System.out.println(campingAreaList.size());
         return campingAreaList;
     }
 
