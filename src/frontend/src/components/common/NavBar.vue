@@ -18,9 +18,9 @@
           <a href="/itemShare">Item Share</a>
         </li>
         <li class="topMenu" v-if="uiLogin">
-          <a href="/board">게시판</a>
+          <a href="/Read">게시판</a>
           <ul class="subMenu">
-            <li class="menu"><a href="/board">자유게시판</a></li>
+            <li class="menu"><a href="/Read">자유게시판</a></li>
             <li class="menu"><a href="/board">리뷰게시판</a></li>
           </ul>
         </li>
@@ -32,6 +32,7 @@
           <ul class="subMenu">
             <li class="menu"><a href="/memberUpdate">정보수정</a></li>
             <li class="menu"><a href="/changePass">비밀번호변경</a></li>
+            <li class="menu"><a href="/myPreference">선호도관리</a></li>
             <li class="menu"><a href="/myPageWritter"><a href="/myPageWritter">게시글목록</a></a></li>
             <li class="menu"><a href="/myPageEquip">장비목록</a></li>
             <li class="menu"><a href="/ordersList">주문목록</a></li>
