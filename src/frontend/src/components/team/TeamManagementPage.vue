@@ -27,7 +27,6 @@
 			<button @click="loadTeamMemberList(value.teamCode)">
 				{{ value.teamCode.teamName }}
 			</button>
-			<button @click="refuse(value.teamCode.teamCode)">탈퇴하기</button>
 		</div>
 	</div>
 
@@ -49,10 +48,13 @@
 		</h3>
 
 		<button
+			id="teamMembers"
 			v-for="(value, index) in $store.state.teamMemberList"
 			:key="index"
 		>
-			{{ value.mcode.mname }}
+			이름:{{ value.mcode.mname }}
+			<hr />
+			이메일:{{ value.mcode.mmail }}
 		</button>
 		<a :href="$store.state.teamURL"
 			>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
@@ -176,18 +178,22 @@ export default {
 		},
 		// -----------------------------------------------------
 		refuse: function (teamCode) {
-			const url = 'http://localhost:9002/api/refuseTeam';
-			const member = { mcode: this.$store.state.member.mcode };
-			const tc = { teamCode: teamCode };
-			axios
-				.post(url, { mcode: member, teamCode: tc })
-				.then((response) => {
-					alert('거절하였습니다!');
-					this.TeamManage(this.$store.state.member.mcode);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			console.log(teamCode);
+			const delConfirm = confirm('정말로 거절 하시겠습니까?');
+			if (delConfirm) {
+				const url = 'http://localhost:9002/api/refuseTeam';
+				const member = { mcode: this.$store.state.member.mcode };
+				const tc = { teamCode: teamCode };
+				axios
+					.post(url, { mcode: member, teamCode: tc })
+					.then((response) => {
+						alert('거절성공');
+						this.TeamManage(this.$store.state.member.mcode);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
 		},
 		// -----------------------------------------------------
 
@@ -229,4 +235,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#teamMembers {
+	width: 200px;
+	height: 120px;
+	background-color: #f5d682;
+	border: 1px solid red;
+}
+</style>

@@ -63,6 +63,7 @@
 				</button>
 			</div>
 		</div>
+		<button @click="refuse()">탈퇴하기</button>
 	</div>
 </template>
 
@@ -232,6 +233,28 @@ export default {
 				.catch((error) => {
 					console.log(error);
 				});
+		},
+		refuse: function () {
+			const delConfirm = confirm('정말로 탈퇴 하시겠습니까?');
+			if (delConfirm) {
+				console.log(this.$store.state.teamCode.teamCode);
+				const url = 'http://localhost:9002/api/refuseTeam';
+				const member = { mcode: this.$store.state.member.mcode };
+				const tc = {
+					teamCode: this.$store.state.teamCode.teamCode.teamCode,
+				};
+				axios
+					.post(url, { mcode: member, teamCode: tc })
+					.then((response) => {
+						alert('탈퇴성공!');
+						this.$router.push({
+							name: 'teamManage',
+						});
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
 		},
 		deleteTeam: function () {
 			const url = '/api/deleteTeam';
