@@ -26,6 +26,9 @@
           <div class="card-body">
             주소: {{ storage.storageAddress }}
           </div>
+          <div class="card-body">
+            전화번호: {{ storage.storageTel }}
+          </div>
           <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
         </div>
       </div>

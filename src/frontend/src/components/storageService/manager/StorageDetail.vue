@@ -60,10 +60,7 @@ export default {
     }
     axios.get('/api/getManagerStorage/' + this.managerId)
         .then(res => {
-          console.log(res.data)
           this.storageList = res.data
-
-          console.log(this.storageList.storageName)
         })
         .catch(err => {
           console.log(err)
@@ -71,8 +68,6 @@ export default {
   },
   methods: {
     modalViewChk(storage) {
-      console.log('post storageCode')
-      console.log(storage)
       this.boxCode = storage
       if (!this.modalView) {
         this.modalView = !this.modalView

@@ -1,19 +1,19 @@
 package com.example.capstone.dto.storage;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class RenewalBox {
     private String userId;
     private String storageName;
     private String boxName;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
     private Long useBoxCode;
 
     public RenewalBox() {
     }
 
-    public RenewalBox(String userId, String storageName, String boxName, LocalDateTime startTime, LocalDateTime endTime) {
+    public RenewalBox(String userId, String storageName, String boxName, LocalDate startTime, LocalDate endTime) {
         this.userId = userId;
         this.storageName = storageName;
         this.boxName = boxName;
@@ -45,19 +45,19 @@ public class RenewalBox {
         this.boxName = boxName;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 
