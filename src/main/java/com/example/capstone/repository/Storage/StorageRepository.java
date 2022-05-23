@@ -2,6 +2,7 @@ package com.example.capstone.repository.Storage;
 
 
 import com.example.capstone.domain.storage.Storage;
+import com.example.capstone.domain.storage.StorageBox;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,10 +24,10 @@ public interface StorageRepository extends JpaRepository<Storage, Long> {
                     "order by s.STORAGE_NAME, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_START_TIME ", nativeQuery = true)
     public Object[] findByMember(@Param("memberId") String memberId );
 
-    @Modifying
+
     @Query( value = "select * from STORAGE where STORAGE_ADDRESS like :areaName%", nativeQuery = true)
     public List<Storage> findByStorageAddress(@Param("areaName")String areaName);
 
-//    public List<Storage> findByStorageAddressContaining(String areaName);
-//    public List<Storage> findByStorageAddressStartingWith(String areaName);
+    @Query(value = "select * from STORAGE s join STORAGEBOX b on s.STORAGE_CODE =b.STORAGE_CODE where STORAGE_BOX_CODE = :boxCode",nativeQuery = true)
+    Optional<Storage> findByStorageBoxCode(@Param("boxCode")long boxCode);
 }

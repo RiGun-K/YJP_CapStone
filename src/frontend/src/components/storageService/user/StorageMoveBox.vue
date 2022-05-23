@@ -115,13 +115,9 @@ export default {
         level: 9,
       };
       this.map = new kakao.maps.Map(container, options);
-      console.log('this.map')
-      console.log(this.map)
       this.allMarker();
     },
     allMarker() {
-      console.log('markers')
-      console.log(this.markers)
       // 마커 지우기
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
@@ -162,8 +158,6 @@ export default {
           item.setMap(null);
         })
       }
-      console.log('place')
-      console.log(place)
       const positions = place.map(
           (position) => new kakao.maps.LatLng(...position)
       );
@@ -209,9 +203,6 @@ export default {
       }
     },
     askBox(storageCode) {
-      console.log('보관소 코드')
-      console.log(storageCode)
-      console.log(this.form)
       this.$router.push({name: 'StorageMoveBoxDetail',
                          params: {
                            storageCode: storageCode.storageCode,
@@ -227,8 +218,6 @@ export default {
           .then((res) => {
             this.storageList = res.data
 
-            console.log('ALL this.storageList')
-            console.log(this.storageList)
           })
           .catch((error) => {
             console.log(error)
@@ -242,7 +231,6 @@ export default {
       } else {
         axios.get('/api/smallRound/' + index)
             .then(res => {
-              console.log(res.data)
               this.smallRound = res.data
               this.smallPick = 0
             })
@@ -258,8 +246,6 @@ export default {
         console.log(this.bigPick)
         axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
             .then(res => {
-              console.log(res.data)
-              console.log('this.storageList')
               this.storageList = res.data
               this.allMarker()
             })
@@ -269,8 +255,6 @@ export default {
       } else if (this.bigPick != "0" && this.smallPick != '0'){
         axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
             .then(res => {
-              console.log(res.data)
-              console.log('this.storageList')
               this.storageList = res.data
               this.allMarker()
             })
