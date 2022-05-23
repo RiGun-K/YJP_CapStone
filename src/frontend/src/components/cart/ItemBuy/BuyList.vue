@@ -183,6 +183,9 @@ export default {
             //   this.list.push(item);
             // })
             this.list = res.data;
+            if (this.list.length == 0) {
+              alert("해당 상품은 존재하지 않습니다.")
+            }
             console.log(this.list);
           })
           .catch(e => {
