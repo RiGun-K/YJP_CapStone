@@ -65,6 +65,9 @@ export default {
       }
     }
   },
+  created() {
+
+  },
   computed: {
     priceAll () {
       let priceAllAdd = 0
