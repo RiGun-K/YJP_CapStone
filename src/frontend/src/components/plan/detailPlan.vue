@@ -10,6 +10,20 @@
 		<button @click="datesButton(index)">{{ index }}</button>일차
 		<br />
 	</div>
+	<div>
+		<button
+			v-for="(value, index) in allCheckList"
+			:key="index"
+			:class="[
+				{ color_n: value.checkState == 'n' },
+				{ color_y: value.checkState == 'y' },
+			]"
+			@click="updateState(value, $event)"
+			@dblclick="deleteChecklist(value)"
+		>
+			{{ value.checkContent }}
+		</button>
+	</div>
 
 	<hr />
 	<h1>{{ dateIndex }}일차 계획</h1>
@@ -73,6 +87,7 @@
 					<button @click="insertChecklist(value.detailCode)">
 						checkList
 					</button>
+					<button @click="deleteDetailPlan(value)">일정 삭제</button>
 				</td>
 			</tr>
 		</table>
@@ -88,6 +103,7 @@ import axios from 'axios';
 export default {
 	created() {
 		this.loadDetailPlanOfDay(1);
+		// this.loadAllCheckList();
 	},
 	data() {
 		return {
@@ -104,10 +120,41 @@ export default {
 			isUnclicked: true,
 			isClicked: false,
 			planCode: '',
+			allCheckList: [],
 		};
 	},
 	mounted() {},
 	methods: {
+		deleteDetailPlan: function (detailCode) {
+			const url = 'api/deleteDetailPlan';
+			const delConfirm = confirm('정말로 삭제 하시겠습니까?');
+			if (delConfirm) {
+				axios
+					.delete(url, {
+						params: { planDetailCode: detailCode.detailCode },
+					})
+					.then((response) => {
+						this.loadDetailPlanOfDay(this.dateIndex);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		},
+		loadAllCheckList: function () {
+			const url = 'api/loadAllCheckList';
+			axios
+				.get(url, {
+					params: { planCode: this.$store.state.planCode.planCode },
+				})
+				.then((response) => {
+					response.data.map((item) => {
+						this.allCheckList.push(item);
+						console.log(this.allCheckList);
+					});
+				})
+				.catch((error) => {});
+		},
 		colorSetting: function () {
 			let a = document.body.getElementsByClassName('checkList');
 			Array.from(a).forEach(function (ele) {
@@ -140,7 +187,6 @@ export default {
 				.then((response) => {
 					console.log(response.data);
 					if (response.data.checkState === 'n') {
-						console.log('N입니다!!!!!!!!!!!!!');
 						event.target.style =
 							'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
 					} else {

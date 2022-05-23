@@ -11,7 +11,6 @@ import javax.persistence.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 @Entity
 public class Team {
 
@@ -20,15 +19,10 @@ public class Team {
     @Column(name="TEAMCODE")
     private Long teamCode;
 
-//    @OneToMany(mappedBy = "teamCode",cascade = {CascadeType.ALL},orphanRemoval = true)
-//    private List<TeamMember> teamMembers = new ArrayList<>();
-
     @Column
     private String teamName;
     @Column
     private char teamState;
-
-
     @Column
     private Long teamMaster;
 
