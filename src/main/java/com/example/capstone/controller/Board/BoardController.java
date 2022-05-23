@@ -8,7 +8,12 @@ import com.example.capstone.repository.Member.MemberRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +29,54 @@ public class BoardController {
     @Autowired
     private MemberRepository memberRepository;
 
-    @PostMapping("/Writing")
-    public Writer addWriter(@RequestBody BoardDTO boardDTO) {
-        System.out.println(boardDTO.getMid());
-        Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
-        Writer writer = new Writer(boardDTO.getTitle(), boardDTO.getContent(), member.get());
-        boardRepository.save(writer);
-        return writer;
-    }
+//    @PostMapping("/Writing")
+//    public Writer addWriter(@RequestBody BoardDTO boardDTO) {
+//        System.out.println(boardDTO.getMid());
+//        Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
+//        Writer writer = new Writer(boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getOrigFilename(), boardDTO.getFilePath(), member.get());
+//        boardRepository.save(writer);
+//        return writer;
+//    }
+
+//    @PostMapping("/Writing")
+//    public Writer addWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, BoardDTO boardDTO) throws IllegalStateException, IOException {
+//
+//        try {
+//            String origFilename = uploadFile.getOriginalFilename();
+//            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+//
+//            String filename = now + "_" + origFilename;
+//
+//            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+//
+//            if (!new File(savePath).exists()) {
+//                try {
+//                    new File(savePath).mkdir();
+//                }
+//                catch (Exception e) {
+//                    e.getStackTrace();
+//                }
+//            }
+//            String filePath = savePath + "\\" + filename;
+//            uploadFile.transferTo(new File(filePath));
+//
+//            boardDTO.setOrigFilename(origFilename);
+//            boardDTO.setFilePath(filePath);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
+//        System.out.println(member.get());
+//
+//        Optional<>
+//
+//        Writer writer = new Writer(boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getOrigFilename(), boardDTO.getFilePath(), member.get());
+//        boardRepository.save(writer);
+//        return writer;
+//
+//
+//    }
 
     @GetMapping("/list")
     public List<Writer> writerMyList() {

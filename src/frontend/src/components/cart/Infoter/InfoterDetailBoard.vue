@@ -11,15 +11,15 @@
       <div class="col-md-6">
         <form v-on:submit.prevent="formSubmit" method="post" enctype="multipart/form-data">
         <div class="form-group">
-          <label for="subject">제목</label>
+          <th for="subject">제목</th>
           <input type="text" class="form-control" v-model="title" name ="subject" id="subject" placeholder="제목을 입력해 주세요.">
         </div>
         <br>
         <div class="form-group">
-          <label for="name">작성자</label>
+          <th for="name">작성자</th>
           <input type="text" class="form-control" v-model="this.user" id="name" placeholder="이름을 입력해 주세요.">
           <br>
-      <label for="content">내용:</label>
+      <th for="content">내용:</th>
       <textarea class="form-control" rows="10" v-model="content" name="content" id="content"></textarea>
 <!--      //글 내용이 많으므로 <textarea>태그를 쓴다 rows는 textarea의 높이 조절-->
         </div>
@@ -144,7 +144,7 @@ export default {
   font-size: large;
 }
 .button_1{
-  width: 15%;
+  width: 17%;
   padding: 10px 0 10px;
   border: 0;
   cursor: pointer;
@@ -156,7 +156,7 @@ export default {
   margin-top: 20px;
 }
 .button_2{
-  width: 15%;
+  width: 17%;
   padding: 10px 0 10px;
   border: 0;
   cursor: pointer;

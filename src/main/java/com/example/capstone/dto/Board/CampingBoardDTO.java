@@ -16,6 +16,7 @@ public class CampingBoardDTO {
     private String campingTitle;
     private String campingContent;
     private String origFilename;
+    private String filename;
     private String filePath;
     private Integer recommend = 0;
     private String savedTime;

@@ -31,6 +31,8 @@ public class BoardCamping {
 
     @Column()
     private String origFilename;
+    @Column
+    private String filename;
     @Column()
     private String filePath;
 
@@ -66,13 +68,14 @@ public class BoardCamping {
         this.campingId = campingId;
     }
 
-    public BoardCamping(String campingTitle, String campingContent, Member mcode, BoardMenu boardMenuCode,  String savedTime, String origFilename, String filePath) {
+    public BoardCamping(String campingTitle, String campingContent, Member mcode, BoardMenu boardMenuCode,  String savedTime, String origFilename, String filename, String filePath) {
         this.campingTitle = campingTitle;
         this.campingContent = campingContent;
         this.mcode = mcode;
         this.boardMenuCode = boardMenuCode;
         this.savedTime = savedTime;
         this.origFilename = origFilename;
+        this.filename = filename;
         this.filePath = filePath;
     }
 }

@@ -10,6 +10,10 @@ public class BoardDTO {
     private String mid;
     private String title;
     private String content;
+    private String origFilename;
+    private String filePath;
+    private Integer recommend = 0;
+    private String savedTime;
 
 
 

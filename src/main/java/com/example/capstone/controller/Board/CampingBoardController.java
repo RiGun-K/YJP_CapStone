@@ -60,6 +60,7 @@ public class CampingBoardController {
             uploadFile.transferTo(new File(filePath));
 
             campingBoardDTO.setOrigFilename(origFilename);
+            campingBoardDTO.setFilename(filename);
             campingBoardDTO.setFilePath(filePath);
 
 
@@ -76,7 +77,7 @@ public class CampingBoardController {
         if(campingBoardDTO.getSavedTime()==null)
             campingBoardDTO.setSavedTime(LocalDate.now().toString());
 
-        BoardCamping boardCamping = new BoardCamping(campingBoardDTO.getCampingTitle(), campingBoardDTO.getCampingContent(), member.get(), boardMenu.get(), campingBoardDTO.getSavedTime(), campingBoardDTO.getOrigFilename(), campingBoardDTO.getFilePath());
+        BoardCamping boardCamping = new BoardCamping(campingBoardDTO.getCampingTitle(), campingBoardDTO.getCampingContent(), member.get(), boardMenu.get(), campingBoardDTO.getSavedTime(), campingBoardDTO.getOrigFilename(), campingBoardDTO.getOrigFilename(), campingBoardDTO.getFilePath());
         boardCampingRepository.save(boardCamping);
         return boardCamping;
 

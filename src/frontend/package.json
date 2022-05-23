@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
+    "@tiptap/core": "^2.0.0-beta.176",
+    "@tiptap/starter-kit": "^2.0.0-beta.185",
+    "@tiptap/vue-3": "^2.0.0-beta.91",
     "@vuepic/vue-datepicker": "^3.0.0",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
@@ -21,6 +24,8 @@
     "vue": "^3.2.13",
     "vue-lazyload": "^1.3.3",
     "vue-router": "^4.0.14",
+    "vue-tiptap": "^2.2.1",
+    "vue-tiptap-katex": "^2.3.15",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0"
   },
