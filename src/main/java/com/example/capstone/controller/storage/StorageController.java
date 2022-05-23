@@ -1,11 +1,13 @@
 package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.CampingArea;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.*;
 import com.example.capstone.dto.storage.*;
 import com.example.capstone.repository.Member.MemberRepository;
+import com.example.capstone.repository.Product.CampingAreaRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Storage.*;
 import com.example.capstone.repository.orders.OrdersRepository;
@@ -44,6 +46,9 @@ public class StorageController {
 
     @Autowired
     MemberEquipmentRepository memberEquipmentRepository;
+
+    @Autowired
+    CampingAreaRepository campingAreaRepository;
 
     @PostMapping("/postStorage")
     public Result postStorage(@RequestBody StorageData storageData) {
@@ -156,14 +161,14 @@ public class StorageController {
         return storage.get();
     }
 
-//    보관함 이름 조회
+    //    보관함 이름 조회
     @GetMapping("/storageBoxGet/{boxCode}")
     public String getBoxName(@PathVariable(value = "boxCode") long boxCode) {
         Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
         return storageBox.get().getStorageBoxName();
     }
 
-//  모든  매니저조회
+    //  모든  매니저조회
     @GetMapping("/getStorageManger")
     public List<StorageManager> getStorageManger() {
         List<StorageManager> managerList = storageManagerRepository.findAll();
@@ -171,7 +176,7 @@ public class StorageController {
         return managerList;
     }
 
-//    보관함 매니저 조회
+    //    보관함 매니저 조회
     @GetMapping("/getManager/{storageCode}")
     public List<StorageManager> getManager(@PathVariable(value = "storageCode") long storageCode) {
         Optional<Storage> storage = storageRepository.findById(storageCode);
@@ -192,12 +197,17 @@ public class StorageController {
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
         System.out.println(renewalBox.getBoxName());
         System.out.println(renewalBox.getStorageName());
+        System.out.println(renewalBox.getUseBoxCode());
 
         Optional<Member> user = memberRepository.findByMID(renewalBox.getUserId());
         Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
+        System.out.println(storage.get().getStorageCode());
         Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
         Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
-
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
+        for (int i = 0; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(null);
+        }
         LocalDateTime start = renewalBox.getStartTime();
         LocalDateTime end = renewalBox.getEndTime();
 
@@ -207,8 +217,11 @@ public class StorageController {
         beforeUseStorageBox.get().setUseStorageState("1");
         useStorageBoxRepository.save(beforeUseStorageBox.get());
 
-        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList);
+        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList, user.get());
         useStorageBox.setUseStorageState("2");
+        for (int i = 0; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(useStorageBox);
+        }
         useStorageBoxRepository.save(useStorageBox);
 
 //         박스 상태 변화
@@ -244,17 +257,18 @@ public class StorageController {
         Orders orders = new Orders(user.get(), payStorageBox.getPrice());
         ordersRepository.save(orders);
 
-        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orders, user.get());
+        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orders);
+        useStorageBox.setMCode(user.get());
         useStorageBoxRepository.save(useStorageBox);
 
-        if(payStorageBox.getItem().size() > 0){
+        if (payStorageBox.getItem().size() > 0) {
             System.out.println(payStorageBox.getItem().get(0));
             for (int i = 0; i < payStorageBox.getItem().size(); i++) {
                 Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItem().get(i));
                 memberEquipment.get().setUseStorageBoxCode(useStorageBox);
                 memberEquipmentRepository.save(memberEquipment.get());
             }
-        }else{
+        } else {
             System.out.println("없다");
         }
         // 박스 상태 변화
@@ -281,9 +295,10 @@ public class StorageController {
         return new Result("ok");
     }
 
-    //    로그인 없이 보관함 사용중인 사용자 조회
+    //    보관함 사용중인 사용자 조회
     @GetMapping("checkMember/{memberId}")
     public Object[] checkMember(@PathVariable("memberId") String memberId) throws NoSuchElementException {
+        System.out.println("멤버아이디는" + memberId);
         try {
             Object[] useStorageBoxes = storageRepository.findByMember(memberId);
 
@@ -296,20 +311,7 @@ public class StorageController {
         }
     }
 
-
-    //    로그인 없이 사용자 지정 할 때 사용
-    @GetMapping("memberCheck/{memberId}")
-    public Result getMemberId(@PathVariable(value = "memberId") String memberId) {
-        Optional<Member> member = memberRepository.findByMID(memberId);
-        return new Result("ok");
-//        if(member.){
-//            return new Result("ok");
-//        }else{
-//            return new Result("no");
-//        }
-    }
-
-    //    로그인 없이 매니저 확인 할 때 사용
+    //   매니저 확인 할 때 사용
     @GetMapping("managerCheck/{managerId}")
     public Result getManagerCheck(@PathVariable(value = "managerId") String managerId) throws NoSuchElementException {
         try {
@@ -346,13 +348,22 @@ public class StorageController {
 
         Object[] object = storageBoxRepository.findByBoxInformation(box.get().getStorageBoxCode());
         for (int i = 0; i < object.length; i++) {
-            System.out.println(object[i]);
+            System.out.println(object[i].toString());
         }
         if (object.length < 1) {
             return new Optional[]{storageBoxRepository.findById(box.get().getStorageBoxCode())};
         }
 
         return object;
+    }
+
+    //보관소 매니저 리스트 조회
+    @GetMapping("stGetManager/{storageCode}")
+    private List<StorageManager> getPickManager(@PathVariable(value = "storageCode") long storageCode) {
+        Optional<Storage> storage = storageRepository.findById(storageCode);
+        List<StorageManager> storageManagerList = storageManagerRepository.findByStorageCode(storage.get());
+
+        return storageManagerList;
     }
 
     // 보관함 장소 이동
@@ -379,57 +390,180 @@ public class StorageController {
 
     }
 
+    // 보관함 가격 조회
+    @GetMapping("boxPrice/{boxCode}")
+    private int getBoxPrice(@PathVariable(value = "boxCode")long box){
+        Optional<StorageBox> storageBox= storageBoxRepository.findById(box);
+        return storageBox.get().getStorageBoxPrice();
+    }
+
     // 보관함 보관소 이동
     @PostMapping("boxToBoxPay")
     private Result boxToBoxPay(@RequestBody StorageMove move) {
+        // 결제 시간
+        LocalDateTime orderTime = LocalDateTime.now();
+
+        // 사용자 조회
         Optional<Member> member = memberRepository.findByMID(move.getUserId());
+
+        // 이동할 사용중인 보관함
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(move.getUse());
-        useStorageBox.get().setUseStorageState("4");
-        useStorageBoxRepository.save(useStorageBox.get());
-        Optional<StorageBox> beforeBox = storageBoxRepository.findById(move.getBefore());
-        beforeBox.get().setStorageBoxState("3");
-        storageBoxRepository.save(beforeBox.get());
-        Optional<StorageBox> afterBox = storageBoxRepository.findById(move.getAfter());
-        afterBox.get().setStorageBoxState("4");
-        storageBoxRepository.save(afterBox.get());
 
+        // 결제,
         Orders orders = new Orders(member.get());
-
+        orders.setPaymentDate(orderTime);
+        orders.setMCode(member.get());
         ordersRepository.save(orders);
 
-        UseStorageBox newUseStorageBox = new UseStorageBox(useStorageBox.get().getUseStorageStartTime(),
+        // 보관함 상태 코드 변경경
+        Optional<StorageBox> beforeBox = storageBoxRepository.findById(move.getBefore());
+        beforeBox.get().setStorageBoxState("3"); // 장비 이동 신청옴 출발지
+        storageBoxRepository.save(beforeBox.get());
+
+        // 이동될 보관함 상태 코드 변경
+        Optional<StorageBox> afterBox = storageBoxRepository.findById(move.getAfter());
+        afterBox.get().setStorageBoxState("4");  // 장비 이동 신청 옴 도착지
+        storageBoxRepository.save(afterBox.get());
+
+        // 이동될 사용 보관함 상태코드(상태 + 이전 사용보관함코드)
+        UseStorageBox newUseStorageBox = new UseStorageBox(orderTime,
                 useStorageBox.get().getUseStorageEndTime(),
-                "4",
+                "4" + useStorageBox.get().getUseStorageBoxCode(),
                 afterBox.get(), orders);
+        newUseStorageBox.setMCode(member.get());
         useStorageBoxRepository.save(newUseStorageBox);
+
+        // 이동할 사용중인 보관함 상태코드에서 이동될 사용중 보관함 코드 추가
+        // 이동될 사용 보관함 찾기
+        String state = "4" + useStorageBox.get().getUseStorageBoxCode();
+        Optional<UseStorageBox> newUSB = useStorageBoxRepository.findByUseStorageState(state);
+        useStorageBox.get().setUseStorageState("3" + newUSB.get().getUseStorageBoxCode());
+        useStorageBoxRepository.save(useStorageBox.get());
+
         return new Result("ok");
+    }
+
+    // 보관소 에서 보관소로 이동시 어디로 가는 지에 대한 정보
+    @GetMapping("moveBoxInfo/{userBoxCode}")
+    private Object[] moveBoxInfo(@PathVariable(value = "userBoxCode") long userBoxCode) {
+        Object[] useStorageBox = useStorageBoxRepository.findByInFo(userBoxCode);
+        return useStorageBox;
+    }
+
+    //  보관소 보관소 이동 시작 -> 이동중으로 변경
+    @GetMapping("moveStateUpdate/{beforeBox}/{afterBox}")
+    private Result moveStateUpdate(@PathVariable(value = "beforeBox")long beforeBox,@PathVariable(value = "afterBox")long afterBox ){
+        Optional<UseStorageBox> beforeUSBox = useStorageBoxRepository.findById(beforeBox);
+        Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUSBox.get());
+
+        for (int i = 0; i < memberEquipmentList.size(); i++) {
+            memberEquipmentList.get(i).setUseStorageBoxCode(afterUSBox.get());
+            memberEquipmentRepository.save(memberEquipmentList.get(i));
+        }
+
+        LocalDateTime nowTime = LocalDateTime.now();
+
+        UseStorageBox before = beforeUSBox.get();
+        before.setUseStorageState("1");
+        before.setUseStorageEndTime(nowTime);
+        afterUSBox.get().setUseStorageState("5" + beforeUSBox.get().getUseStorageBoxCode());
+
+        StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();
+        storageBox.setStorageBoxState("0");
+        storageBoxRepository.save(storageBox);
+        useStorageBoxRepository.save(before);
+        useStorageBoxRepository.save(afterUSBox.get());
+
+        return new Result("ok");
+    }
+
+    // 보관소 이동 도착
+    @GetMapping("endmoveUpdate/{afterBox}")
+    private Result endmoveUpdate(@PathVariable(value = "afterBox")long afterBox ){
+        Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
+
+        afterUSBox.get().setUseStorageState("2");
+
+        StorageBox storageBox = afterUSBox.get().getStorageBoxCode();
+        storageBox.setStorageBoxState("2");
+
+        storageBoxRepository.save(storageBox);
+        useStorageBoxRepository.save(afterUSBox.get());
+
+        return new Result("ok");
+    }
+
+    // 내장비 조회
+    @GetMapping("myItem/{userId}")
+    private List<MemberEquipment> myItem(@PathVariable(value = "userId") String userId) {
+        Optional<Member> member = memberRepository.findByMID(userId);
+        long mCode = member.get().getMCode();
+        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByMemEquipment(mCode);
+
+        return memberEquipmentList;
     }
 
     //사용자 사용하는 보관함의 장비 조회
     @GetMapping("getBoxInItem/{useBoxCode}")
-    private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode")Long useBoxCode){
+    private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode") Long useBoxCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
         List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(useStorageBox.get());
-
 
         return memberEquipmentList;
     }
 
     //사용자주소 조회
     @GetMapping("myAddress/{mid}")
-    private Member getMemberAddress(@PathVariable(value = "mid")String mid){
+    private Member getMemberAddress(@PathVariable(value = "mid") String mid) {
         Optional<Member> member = memberRepository.findByMID(mid);
 
         return member.get();
     }
-    ////////////////////////// 상품조회  //////////////////////////
-    @GetMapping("myItem/{userId}")
-    private List<MemberEquipment> getMyItem(@PathVariable(value = "userId")String userId){
-        Optional<Member> member = memberRepository.findByMID(userId);
+    ////////////////////////// 지역 조회  //////////////////////////
 
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findAllByMCode(member.get());
+    @GetMapping("aRound")
+    private List<CampingArea> getRound() {
 
-        return memberEquipmentList;
+        List<CampingArea> campingAreaList = campingAreaRepository.findByParentAreaList();
+
+        return campingAreaList;
     }
 
+    @GetMapping("smallRound/{parentId}")
+    private List<CampingArea> getSmallRound(@PathVariable(value = "parentId") int parentId) {
+
+        List<CampingArea> campingAreaList = campingAreaRepository.findCampingAreaByParentcampingarea(parentId);
+
+        return campingAreaList;
+    }
+
+    @GetMapping("roundPick/{bigName}/{smallName}")
+    private List<Storage> getStoragePick(@PathVariable(value = "bigName") int bigName, @PathVariable(value = "smallName") int smallName) throws IllegalArgumentException {
+        try {
+            Optional<CampingArea> cbigName = campingAreaRepository.findById(bigName);
+            if (smallName != 0) {
+                Optional<CampingArea> csmallName = campingAreaRepository.findById(smallName);
+                String sName = csmallName.get().getAreaName();
+                String bName = cbigName.get().getAreaName();
+                System.out.println(bName + " " + sName);
+                String search = bName.substring(0, 2) + " " + sName;
+                System.out.println(search);
+                List<Storage> storageList = storageRepository.findByStorageAddress(search);
+
+                return storageList;
+            } else {
+                String bName = cbigName.get().getAreaName();
+                System.out.println(bName.substring(0, 2));
+                String search = bName.substring(0, 2);
+                List<Storage> storageList = storageRepository.findByStorageAddress(search);
+
+                return storageList;
+            }
+        } catch (IllegalArgumentException i) {
+            System.out.println(i);
+            System.out.println("에러");
+            return null;
+        }
+    }
 }

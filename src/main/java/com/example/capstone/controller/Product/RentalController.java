@@ -1,10 +1,8 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Camping;
-import com.example.capstone.domain.Product.Kind;
-import com.example.capstone.domain.Product.MenuBuy;
-import com.example.capstone.domain.Product.MenuRental;
+import com.example.capstone.domain.Product.*;
+import com.example.capstone.dto.Product.ImagesDTO;
 import com.example.capstone.dto.Product.MenuRentalDTO;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
@@ -12,10 +10,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,6 +41,8 @@ public class RentalController {
     InfoterRepository infoterRepository;
     @Autowired
     CampingDetailRepository campingDetailRepository;
+    @Autowired
+    ImagesRepository imagesRepository;
 
     /* 렌탈상품 등록 페이지 */
     @PostMapping("/Rental_Signup")
@@ -50,8 +53,11 @@ public class RentalController {
         try {
             String origFilename = uploadFile.getOriginalFilename();
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+
+
+//            UUID uuid = UUID.randomUUID();
+            String filename = now + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
@@ -95,6 +101,57 @@ public class RentalController {
         return menuRental;
     }
 
+    /* 구매상품에 대한 이미지 등록 */
+    @PostMapping("/Rental_Signup_Files/")
+    public void addMenuRentalFiles(MultipartHttpServletRequest mhsq, ImagesDTO imagesDTO) throws IllegalStateException, IOException {
+
+        /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+        String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+        /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+        if (!new File(savePath).exists()) {
+            try {
+                new File(savePath).mkdir();
+            }
+            catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+
+        List<MultipartFile> mf = mhsq.getFiles("files");
+        System.out.println(mf.size());
+        if (mf.size() == 1 && mf.get(0).getOriginalFilename().equals("")) {
+
+        } else {
+            for (int i = 0; i < mf.size(); i++) {
+                // 파일명 중복처리
+                String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+                // 본래 파일명
+                String origFilename = mf.get(i).getOriginalFilename();
+                // DB에 저장되는 파일명
+                String filename = now + "_" + origFilename;
+
+                String filePath = savePath + "\\" + filename;
+                mf.get(i).transferTo(new File(filePath));
+
+                imagesDTO.setOrigFilename(origFilename);
+                imagesDTO.setFilename(filename);
+                imagesDTO.setFilePath(filePath);
+
+                System.out.println(imagesDTO.getRentalId());
+                Optional<MenuRental> menuRental = menuRentalRepository.findById(imagesDTO.getRentalId());
+
+
+                Images images = new Images(imagesDTO.getOrigFilename(), imagesDTO.getFilename(), imagesDTO.getFilePath(), menuRental.get());
+                System.out.println(images);
+
+                imagesRepository.save(images);
+                System.out.println("파일이 저장되었습니다.");
+            }
+
+        }
+
+    }
+
     /* 렌탈상품 조회 페이지 */
     @GetMapping("/Rental_List/{user}")
     public List<MenuRental> myMenuList(@PathVariable("user") String user) {
@@ -119,9 +176,11 @@ public class RentalController {
 
         try {
             String origFilename = uploadFile.getOriginalFilename();
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
 
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + origFilename;
+
+//            UUID uuid = UUID.randomUUID();
+            String filename = now + "_" + origFilename;
 
             /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
             String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";

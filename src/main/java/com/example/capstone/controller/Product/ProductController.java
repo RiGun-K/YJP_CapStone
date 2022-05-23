@@ -1,11 +1,13 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Camping;
+import com.example.capstone.domain.Product.CampingDetail;
 import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.Product.MenuRental;
 import com.example.capstone.dto.Product.MenuDTO;
 import com.example.capstone.repository.Member.MemberRepository;
-import com.example.capstone.repository.Product.KindRepository;
-import com.example.capstone.repository.Product.MenuBuyRepository;
+import com.example.capstone.repository.Product.*;
 import com.example.capstone.service.ProductService;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -48,66 +50,107 @@ public class ProductController {
     MenuBuyRepository menuBuyRepository;
 
     @Autowired
+    MenuRentalRepository menuRentalRepository;
+
+    @Autowired
+    CampingRepository campingRepository;
+
+    @Autowired
+    CampingDetailRepository campingDetailRepository;
+
+    @Autowired
     KindRepository kindRepository;
 
     @Autowired
     ProductService productService;
 
 
-    /* 전체상품 리스트 */
-    @GetMapping("/product_list")
-    public List<MenuBuy> menuList() {
+    /* 구매상품 리스트 */
+    @GetMapping("/product_BuyList")
+    public List<MenuBuy> menuBuysList() {
         List<MenuBuy> menus = menuBuyRepository.findAll();
         System.out.println(menus);
         return menus;
     }
 
-    /* 구매상품 결제 페이지 */
-    @GetMapping("/product_detail/{buyId}")
-    public Optional<MenuBuy> getProduct_Detail(@PathVariable("buyId") int buyId) {
-        System.out.println("메뉴번호 는" + buyId + "입니다.");
-
-        Optional<MenuBuy> menuDetailList = menuBuyRepository.findById(buyId);
-        return menuDetailList;
-
+    /* 렌탈상품 리스트 */
+    @GetMapping("/product_RentalList")
+    public List<MenuRental> menuRentalsList() {
+        List<MenuRental> menus = menuRentalRepository.findAll();
+        System.out.println(menus);
+        return menus;
     }
 
-//    /* 구매상품 결제 페이지 내 해당 상품이미지 불러오기 */
-//    @GetMapping(value = "/product_detail_images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
-//    public ResponseEntity<byte[]> imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
-//        System.out.println(filename);
-//        System.out.println("-------------------1----------------");
-//
-//        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\main\\resources\\static\\images\\" + filename;
-//        InputStream imageStream = new FileInputStream(requestPath);
-//        System.out.println(imageStream);
-//        System.out.println("-------------------2----------------");
-//
-//        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-//        System.out.println(imageByteArray);
-//        System.out.println("-------------------3----------------");
-//        imageStream.close();
-//        return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
-//    }
+    /* 캠핑상품 리스트 */
+    @GetMapping("/product_CampingList")
+    public List<Camping> menuCampingsList() {
+        List<Camping> menus = campingRepository.findAll();
+        System.out.println(menus);
+        return menus;
+    }
 
 
+    /* 구매상품 결제전 상세 페이지 */
+    @GetMapping("/product_detailB/{buyId}")
+    public Optional<MenuBuy> getProduct_DetailB(@PathVariable("buyId") int buyId) {
+        Optional<MenuBuy> menuDetailList = menuBuyRepository.findById(buyId);
+        return menuDetailList;
+    }
 
-    /* 구매상품 결제 페이지 내 해당 상품이미지 불러오기 */
+    /* 캠핑장 결제전 상세 페이지 */
+    @GetMapping("/product_detailC/{campingId}")
+    public Optional<Camping> getProduct_DetailC(@PathVariable("campingId") int campingId) {
+        Optional<Camping> campingDetailList = campingRepository.findById(campingId);
+        return campingDetailList;
+    }
+
+    /* 캠핑장 결제전 상세 페이지에서 객실조회 후 예약 및 결제 페이지 */
+    @GetMapping("/product_detailR/{detailId}")
+    public Optional<CampingDetail> getProduct_DetailR(@PathVariable("detailId") int detailId) {
+        Optional<CampingDetail> campingDetailList = campingDetailRepository.findById(detailId);
+        return campingDetailList;
+    }
+
+    /* 캠핑장 결제전 상세 페이지에서 객실조회 후 예약 및 결제 페이지 내 현재 사용자 정보 */
+    @GetMapping("/product_detailU/{MCode}")
+    public Optional<Member> getProduct_DetailU(@PathVariable("MCode") long MCode) {
+        Optional<Member> campingDetailList = memberRepository.findById(MCode);
+        return campingDetailList;
+    }
+
+    /* 상품 결제 페이지 전 해당 상품이미지 불러오기 */
     @GetMapping(value = "/product_detail_images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
-        System.out.println(filename);
-        System.out.println("-------------------1----------------");
-
-        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\frontend\\public\\upload\\" + filename + ".jpg";
+        String requestPath = "C:\\Users\\RiGun\\IdeaProjects\\Capstone\\src\\frontend\\src\\assets\\" + filename;
         InputStream imageStream = new FileInputStream(requestPath);
-        System.out.println(imageStream);
-        System.out.println("-------------------2----------------");
-
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-        System.out.println(imageByteArray);
-        System.out.println("-------------------3----------------");
         imageStream.close();
         return imageByteArray;
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 캠핑 ) */
+    @GetMapping("/product_detail_camping/{infoterId}")
+    public List<Camping> campings(@PathVariable("infoterId") int infoterId) {
+        List<Camping> campings = campingRepository.findByinfoterId(infoterId);
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 지역별 조회하기 ( 캠핑 ) */
+    @GetMapping("/product_detail_campingArea/{areaId}")
+    public List<Camping> campingAreas(@PathVariable("areaId") int areaId) {
+        List<Camping> campings = campingRepository.findByareaId(areaId);
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 지역별 조회하기 ( 캠핑 ) */
+    @GetMapping("/product_detail_campingDetailArea/{areaId}")
+    public List<Camping> campingAreaDetails(@PathVariable("areaId") int areaId) {
+        System.out.println(areaId);
+        List<Camping> campings = campingRepository.findByareaDetailId(areaId);
+        System.out.println(campings);
+        return campings;
     }
 
 

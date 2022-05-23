@@ -1,18 +1,27 @@
 <template>
   <div id="content">
-    <p>내게시글</p>
     <table border="1px">
+      <tr>
+        <th colspan="3">
+          <h1 style="color: black; text-align: center">내 게시글</h1>
+        </th>
+      </tr>
       <tr>
         <th>게시글번호</th>
         <th>제목</th>
         <th>작성일</th>
       </tr>
-      <tr v-for="(body) in writerList">
+      <tr v-for="(body) in viewList" :key="body.writer_code">
         <td>{{ body.writer_code}}</td>
         <td>{{ body.title}}</td>
         <td>공란</td>
       </tr>
     </table>
+    <div class="searchDiv">
+      <input type="text" v-model="searchWord">
+      <button class="searchBtn" @click="searchTitle">검색</button>
+      <button @click="reStart" class="resetBtn">목록 초기화</button>
+    </div>
   </div>
 </template>
 
@@ -24,11 +33,27 @@ export default {
   name: "MyWritter",
   data(){
     return{
-      writerList:[]
+      writerList:[],
+      viewList:[],
+      searchWord:''
     }
   },
   methods:{
-
+    searchTitle(){
+      if(this.searchWord.length <= 0){
+        alert("검색어를 입력해주세요")
+      }else{
+        this.viewList = []
+        for(var i = 0; i < this.writerList.length; i++){
+          if(this.writerList[i].title.includes(this.searchWord)){
+            this.viewList.push(this.writerList[i])
+          }
+        }
+      }
+    },
+    reStart(){
+      this.$router.go()
+    }
   },
   created() {
     axios.post("/api/myWritter",{
@@ -36,6 +61,7 @@ export default {
     }).then((res)=>{
       console.log(res.data)
       this.writerList = res.data
+      this.viewList = this.writerList
     }).catch((err)=>{
       console.log(err)
     })
@@ -44,94 +70,33 @@ export default {
 </script>
 
 <style scoped>
-
-body {
-  margin: 0;
-  height: 100%;
-  background-color: #E6E6FA;
+.searchBtn{
+  margin-left: 1%;
+  padding: 0.5%;
 }
-#wrapper {
+.searchDiv{
+  margin-left: 10%;
+  margin-right: 5%;
+  margin-top: 1%;
+  width: 90%;
+  text-align: center;
+}
+th, td{
+  border: 1px solid black;
+}
+.resetBtn{
+  float: right;
   position: relative;
-  height: 100%;
+  padding: 0.5%;
+  background: #7ea6f6;
+  color: white;
+  text-align: center;
 }
 #content {
   position: absolute;
   left: 50%;
   transform: translate(-50%);
   width: 560px;
-}
-/* 입력폼 */
-h3 {
-  margin: 19px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.box {
-  display: block;
-  width: 100%;
-  height: 51px;
-  border: solid 1px #dadada;
-  padding: 10px 14px;
-  box-sizing: border-box;
-  background: #fff;
-  position: relative;
-}
-.int {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 29px;
-  border: none;
-  background: #fff;
-  font-size: 15px;
-}
-.box.int_id {
-  padding-right: 110px;
-}
-.box.int_pass {
-  padding-right: 40px;
-}
-.box.int_pass_check {
-  padding-right: 40px;
-}
-select {
-  width: 100%;
-  height: 29px;
-  font-size: 15px;
-  background-size: 20px 8px;
-  -webkit-appearance: none;
-  display: inline-block;
-  text-align: start;
-  border: none;
-  cursor: default;
-}
-.error_next_box {
-  margin-top: 9px;
-  font-size: 12px;
-  color: red;
-  display: none;
-}
-#alertTxt {
-  position: absolute;
-  top: 19px;
-  right: 38px;
-  font-size: 12px;
-  color: red;
-  display: none;
-}
-/* 버튼 */
-.btn_area {
-  margin: 30px 0 91px;
-}
-#btnJoin {
-  width: 100%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #52a3ef;
-  font-size: 20px;
-  font-weight: 400;
 }
 </style>
 

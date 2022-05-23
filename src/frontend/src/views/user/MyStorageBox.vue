@@ -16,7 +16,7 @@
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.storageName }}</td>
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.boxName }}</td>
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.startTime }}</td>
-                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }} {{useBox.none}}</td>
+                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }}</td>
                 <td v-if="useBox.none">
                   <button v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button><button v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
                   <button class="mystoragebox-re" v-if="useBox.BoxState == '3' || useBox.useBoxState=='2'" @click="renewalPay(useBox)">보관함 연장 / 해지</button>
@@ -106,7 +106,6 @@ export default {
               // box.boxState 가 1 이면 연장 버튼 on 0이면 연장 버튼 off
               if (i > 0) {
                 // 이전 보관함이름 = 지금 보관함이름 && 이전 보관소 이름 = 지금 보관소 이름
-                console.log(boxes[i - 1][3] + '&'+ box.boxName+'//'+box.storageName + '&'+ boxes[i - 1][5])
                 if (boxes[i - 1][3] == box.boxName && box.storageName == boxes[i - 1][5]) {
                   console.log(box.boxState)
                   if (box.boxState == '1') {
@@ -173,6 +172,7 @@ export default {
       })
     },
     moveBox(useBox){
+      this.$store.commit('moveBoxInfo',useBox)
       this.$router.push({
         name: 'moveBox',
         params: {
@@ -196,6 +196,8 @@ export default {
       })
     },
     renewalPay(useBox) {
+      console.log('useBox.useBoxCode')
+      console.log(useBox.useBoxCode)
       this.$router.push({
         name: 'renewalBox',
         params: {
