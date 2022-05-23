@@ -85,8 +85,6 @@ export default {
       axios.get('/api/storageView/' + storageCode)
           .then((resp) => {
             this.boxList = resp.data
-            console.log('resp.data')
-            console.log(resp.data)
             let storageName = this.boxList.storageName
             this.name = storageName
             this.GetManger(storageCode)
@@ -99,8 +97,6 @@ export default {
     GetManger(storageCode) {
       axios.get('/api/getManager/' + storageCode)
           .then((res) => {
-            console.log('res.data')
-            console.log(res.data)
             this.managerList = res.data
           })
           .catch((err) => {
@@ -140,8 +136,6 @@ export default {
     postManager() {
       let memberId = this.memberId
       let storageCode = this.boxList.storageCode
-      console.log('storageCode')
-      console.log(storageCode)
       let manager = {
         member: memberId,
         storage: storageCode
@@ -151,7 +145,6 @@ export default {
             .then((res) => {
               console.log(res.data.result)
               if (res.data.result === 'ok') {
-                console.log('생성')
                 alert('추가되었습니다')
                 this.GetManger(storageCode)
                 this.clearInput()

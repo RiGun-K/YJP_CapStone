@@ -11,7 +11,7 @@
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
       <label for="storageName">보관소이름</label>
-      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름">
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()">
       <button @click="storageSearch()">검색</button>
     </div>
 
@@ -51,7 +51,6 @@ export default {
     this.allroundsearch()
     axios.get('/api/aRound')
         .then(res => {
-          console.log(res.data)
           this.bigRound = res.data
         })
         .catch(err => {
@@ -86,8 +85,9 @@ export default {
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
-      stSearch:'',
-      searchStorageList:[],
+      stSearch: '',
+      searchStorageList: [],
+      searchList: [],
     }
   },
   methods: {
@@ -98,13 +98,9 @@ export default {
         level: 9,
       };
       this.map = new kakao.maps.Map(container, options);
-      console.log('this.map')
-      console.log(this.map)
       this.allMarker();
     },
     allMarker() {
-      console.log('markers')
-      console.log(this.markers)
       // 마커 지우기
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
@@ -117,7 +113,6 @@ export default {
           this.storageList[i].longitude, this.storageList[i].latitude
         ]);
       }
-      console.log(pos)
       const positions = pos.map(
           (position) => new kakao.maps.LatLng(...position)
       );
@@ -145,12 +140,9 @@ export default {
           item.setMap(null);
         })
       }
-      console.log('place')
-      console.log(place)
       const positions = place.map(
           (position) => new kakao.maps.LatLng(...position)
       );
-      console.log(positions)
       if (positions.length > 0) {
         this.markers = positions.map(
             (position) =>
@@ -170,7 +162,6 @@ export default {
     GetStorageDetail(storageCode) {
       axios.get('/api/storageView/' + storageCode)
           .then((res) => {
-            console.log(res.data)
             this.boxList = res.data
             this.name = this.boxList.storageName
             const point = [this.boxList.longitude, this.boxList.latitude]
@@ -182,8 +173,6 @@ export default {
     },
 
     askBox(storage) {
-      console.log('보관소')
-      console.log(storage)
       this.$store.commit('storageCheck', storage)
       this.$router.push({name: 'userStorageDetail'})
     },
@@ -191,9 +180,7 @@ export default {
       axios.get('/api/getStorage')
           .then((res) => {
             this.storageList = res.data
-
-            console.log('ALL this.storageList')
-            console.log(this.storageList)
+            this.searchList = res.data
             this.allMarker()
           })
           .catch((error) => {
@@ -209,7 +196,6 @@ export default {
       } else {
         axios.get('/api/smallRound/' + index)
             .then(res => {
-              console.log(res.data)
               this.smallRound = res.data
               this.smallPick = 0
               this.search()
@@ -225,23 +211,20 @@ export default {
         this.allroundsearch()
         this.allMarker()
       } else if (this.bigPick != "0" && this.smallPick == '0') {
-        console.log(this.bigPick)
-        axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
+        axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
-              console.log(res.data)
-              console.log('this.storageList')
               this.storageList = res.data
+              this.searchList = res.data
               this.allMarker()
             })
             .catch(err => {
               console.log(err)
             })
-      } else if (this.bigPick != "0" && this.smallPick != '0'){
-        axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
+      } else if (this.bigPick != "0" && this.smallPick != '0') {
+        axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
-              console.log(res.data)
-              console.log('this.storageList')
               this.storageList = res.data
+              this.searchList = res.data
               this.allMarker()
             })
             .catch(err => {
@@ -250,38 +233,59 @@ export default {
       }
       this.allMarker()
     },
-    storageSearch(){
-
-    }
+    storageSearch() {
+      this.searchStorageList = []
+      if (this.stSearch != '') {
+        for (let i = 0; i < this.searchList.length; i++) {
+            if (this.searchList[i].storageName.includes(this.stSearch)) {
+              this.searchStorageList.push(this.searchList[i])
+            }
+        }
+        if (this.searchStorageList.length < 1){
+          alert('검색하신 보관소은 없습니다')
+          return
+        }
+        this.storageList = this.searchStorageList
+      } else {
+        this.search()
+      }
+      this.allMarker()
+    },
   }
 }
 </script>
 
 <style scoped>
 /*추가*/
-.listBody{
+.listBody {
   padding: 0.5%;
   margin-left: 5%;
   margin-top: 1%;
   margin-right: 1%;
   width: 40%;
   float: left;
+  overflow:auto;
+  height:550px;
 }
-.searchDiv{
+
+.searchDiv {
   margin-left: 2%;
   margin-top: 1%;
 }
-.listObj{
+
+.listObj {
   width: 100%;
 }
-.mapDiv{
+
+.mapDiv {
   margin-top: 1%;
   margin-right: 1%;
   margin-bottom: 1%;
   width: 50%;
   float: right;
 }
-.card{
+
+.card {
   margin-top: 1%;
   width: 100%;
   text-align: right;

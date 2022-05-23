@@ -60,8 +60,6 @@ export default {
       axios.get('/api/storageView/' + storageCode)
           .then((resp) => {
             this.boxList = resp.data
-            console.log('resp.data')
-            console.log(resp.data)
             let storageName = this.boxList.storageName
             this.name = storageName
             this.GetManger(storageCode)
