@@ -35,6 +35,7 @@
             <li class="menu"><a href="/myPreference">선호도관리</a></li>
             <li class="menu"><a href="/myPageWritter"><a href="/myPageWritter">게시글목록</a></a></li>
             <li class="menu"><a href="/myPageEquip">장비목록</a></li>
+            <li class="menu"><a href="/myBox">보관함관리</a></li>
             <li class="menu"><a href="/ordersList">주문목록</a></li>
             <li class="menu" v-if="uiLogin==3"><a href="/company">판매자신청</a></li>
           </ul>
