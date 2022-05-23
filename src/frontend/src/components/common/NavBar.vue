@@ -2,47 +2,54 @@
   <nav class="navBody">
     <div class="divBody">
       <ul>
-        <li class="topMenu" v-if="uiLogin" @click="teamManagementPage">캠핑플랜
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/TeamManagementPage">계획작성</a>
         </li>
-        <li class="topMenu" v-if="uiLogin" @click="storageView">보관함
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/storageView">보관함</a>
         </li>
-        <li class="topMenu" v-if="uiLogin" @click="infoter">인포터
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/infoter">인포터</a>
         </li>
-        <li class="topMenu" @click="itemBuy">Item Buy
+        <li class="topMenu">
+          <a href="/itemBuy">Item Buy</a>
         </li>
-        <li class="topMenu" @click="itemShare">Item Share
+        <li class="topMenu">
+          <a href="/itemShare">Item Share</a>
         </li>
-        <li class="topMenu" v-if="uiLogin" @click="board">게시판
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/board">게시판</a>
           <ul class="subMenu">
-            <li class="menu">자유게시판</li>
-            <li class="menu">리뷰게시판</li>
-            <li class="menu">게시판1</li>
-            <li class="menu">게시판2</li>
+            <li class="menu"><a href="/board">자유게시판</a></li>
+            <li class="menu"><a href="/board">리뷰게시판</a></li>
           </ul>
         </li>
-        <li class="topMenu" v-if="uiLogin==4" @click="ProductMain">판매자전용
+        <li class="topMenu" v-if="uiLogin==4">
+          <a href="/ProductMain">판매자전용</a>
         </li>
-        <li class="topMenu" v-if="uiLogin!='' && uiLogin!=5">마이페이지
+        <li class="topMenu" v-if="uiLogin!='' && uiLogin!=5">
+          <a href="/memberUpdate">마이페이지</a>
           <ul class="subMenu">
-            <li @click="memberUpadte" class="menu">정보수정</li>
-            <li @click="changePass" class="menu">비밀번호변경</li>
-            <li @click="myWritterList" class="menu">게시글목록</li>
-            <li @click="myEquip" class="menu">장비목록</li>
-            <li @click="myOrder" class="menu">주문목록</li>
-            <li @click="orperCompany" class="menu" v-if="uiLogin==3">판매자신청</li>
-            <li class="menu">고객센터</li>
+            <li class="menu"><a href="/memberUpdate">정보수정</a></li>
+            <li class="menu"><a href="/changePass">비밀번호변경</a></li>
+            <li class="menu"><a href="/myPageWritter"><a href="/myPageWritter">게시글목록</a></a></li>
+            <li class="menu"><a href="/myPageEquip">장비목록</a></li>
+            <li class="menu"><a href="/ordersList">주문목록</a></li>
+            <li class="menu" v-if="uiLogin==3"><a href="/company">판매자신청</a></li>
           </ul>
         </li>
-        <li class="topMenu" v-if="uiLogin==5" @click="storageManager">보관소관리자
+        <li class="topMenu" v-if="uiLogin==5" @click="storageManager">
+          <a href="/storageManager">보관소관리자</a>
         </li>
-        <li class="topMenu" v-if="uiLogin==5">관리자업무
+        <li class="topMenu" v-if="uiLogin==5">
+          <a href="/memberAdmin">관리자업무</a>
           <ul class="subMenu">
-            <li @click="memberAdmin" class="menu">멤버관리</li>
-            <li @click="sellerAccept" class="menu">판매자관리</li>
-            <li @click="storageAdmin" class="menu">보관소관리</li>
-            <li @click="orderAdmin" class="menu">주문관리</li>
-            <li @click="writerAdmin" class="menu">게시글관리</li>
-            <li class="menu">문의관리</li>
+            <li class="menu"><a href="/memberAdmin">멤버관리</a></li>
+            <li class="menu"><a href="/sellerAccept">판매자관리</a></li>
+            <li class="menu"><a href="/storageAdmin">보관소관리</a></li>
+            <li class="menu"><a href="/orderAdmin">주문관리</a></li>
+            <li class="menu"><a href="/writerAdmin">게시글관리</a></li>
+            <li class="menu"><a href="/board">문의관리</a></li>
           </ul>
         </li>
       </ul>
@@ -71,63 +78,6 @@ export default {
         this.uiLogin = false;
         return "로그인이 필요합니다"
       }
-    },
-    memberAdmin(){
-      this.$router.push("/memberAdmin")
-    },
-    storageAdmin(){
-      this.$router.push("/storageAdmin")
-    },
-    orderAdmin(){
-      this.$router.push("/orderAdmin")
-    },
-    writerAdmin(){
-      this.$router.push("/writerAdmin")
-    },
-    sellerAccept(){
-      this.$router.push("/sellerAccept")
-    },
-    storageManager(){
-      this.$router.push("/storageManager")
-    },
-    teamManagementPage(){
-      this.$router.push("/TeamManagementPage")
-    },
-    storageView(){
-      this.$router.push("/storageView")
-    },
-    infoter(){
-      this.$router.push("/infoter")
-    },
-    itemBuy(){
-      this.$router.push("/itemBuy")
-    },
-    itemShare(){
-      this.$router.push("/itemShare")
-    },
-    board(){
-      this.$router.push("/board")
-    },
-    ProductMain(){
-      this.$router.push("/ProductMain")
-    },
-    memberUpadte(){
-      this.$router.push("memberUpdate")
-    },
-    changePass(){
-      this.$router.push("changePass")
-    },
-    myWritterList(){
-      this.$router.push("myPageWritter")
-    },
-    myEquip(){
-      this.$router.push("myPageEquip")
-    },
-    myOrder(){
-      this.$router.push("ordersList")
-    },
-    orperCompany(){
-      this.$router.push("company")
     }
 
   },
@@ -139,6 +89,15 @@ export default {
 </script>
 
 <style scoped>
+a{
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+a:hover{
+  color: white;
+  text-decoration: none;
+}
 router-link{
   color: black;
 }
