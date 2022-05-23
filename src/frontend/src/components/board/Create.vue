@@ -20,6 +20,21 @@
       </table>
 
     </form>
+  <br>
+  <form>
+    <input type="file"
+           id="file"
+           @change="handleImage"
+           enctype="multipart/form-data"
+           aria-describedby="inputGroupFileAddon04"
+           aria-label="Upload"
+           placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+           multiple
+           accept="image/*"
+           drop-placeholder="Drop file here..." >
+    <div id="image_container"/>
+  </form>
+
   </div>
   <div class="btnWrap">
     <button @click="main" class="btn" style="float: left;">취소</button>
@@ -76,7 +91,37 @@ export default {
       this.$router.push({
         path: '/'
       })
-    }
+    },
+
+    handleImage(e) {
+      this.file = e.target.files[0];
+      let self = this;
+      if(e.target.files[0]) {
+        // 파일 읽는 라이브러리
+        const reader = new FileReader();
+
+        // 파일 읽기가 완료되는 시점
+        reader.addEventListener('load', function(e1){
+          // 완료되는 시점!!!!!!!!!!!!!!!
+          self.imgsrc = e1.target.result;
+          // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
+        });
+
+
+        // 파일 읽기 시작
+        reader.readAsDataURL(e.target.files[0]);
+      }
+      else {
+        return false
+      }
+
+    },
+
 
   }
 }
