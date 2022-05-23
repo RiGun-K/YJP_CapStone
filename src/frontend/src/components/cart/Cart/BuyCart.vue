@@ -44,7 +44,6 @@
 </template>
 
 <script>
-// s
 export default {
   name: 'BuyCart',
   data () {
