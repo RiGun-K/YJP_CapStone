@@ -19,7 +19,9 @@ export default createStore({
 		payStorage: {},
 		CampingIdOfRooms: '',
 		member: '',
-		moveBoxInfo:{},
+		moveBoxInfo: {},
+		myReservation: '',
+		camping: '',
 	},
 	getters: {
 		getLoginState(state) {
@@ -30,6 +32,9 @@ export default createStore({
 		},
 	},
 	mutations: {
+		setMyReservation(state, myReservation) {
+			state.myReservation = myReservation;
+		},
 		setLoginState(state, loginState, stateCode, mcode) {
 			state.loginState = loginState;
 			state.stateCode = stateCode;
@@ -39,6 +44,9 @@ export default createStore({
 			state.loginState = null;
 			state.stateCode = null;
 			state.mcode = null;
+		},
+		setCamping(state, camping) {
+			state.camping = camping;
 		},
 		updateTeamList(state, teamMember) {
 			state.teamList.push(teamMember);
@@ -74,7 +82,7 @@ export default createStore({
 			console.log(state.storage);
 		},
 		putCartStorage(state, form) {
-			console.log(form)
+			console.log(form);
 			state.payStorage = form;
 		},
 		cartStorageClear(state) {
@@ -83,9 +91,9 @@ export default createStore({
 		setCampingIdState(state, CampingIdOfRooms) {
 			state.CampingIdOfRooms = CampingIdOfRooms;
 		},
-		moveBoxInfo(state, box){
+		moveBoxInfo(state, box) {
 			state.moveBoxInfo = box;
-		}
+		},
 	},
 	actions: {},
 

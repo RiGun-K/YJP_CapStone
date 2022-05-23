@@ -97,9 +97,9 @@ public class Camping {
     private List<Images> images = new ArrayList<>();
 
 
-    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
-    @OneToMany(mappedBy = "camping", cascade = {CascadeType.ALL})
-    private List<OrderMenu> orderMenus = new ArrayList<>();
+//    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+//    @OneToMany(mappedBy = "camping", cascade = {CascadeType.ALL})
+//    private List<OrderMenu> orderMenus = new ArrayList<>();
 
 
     public Camping() {}
@@ -121,7 +121,7 @@ public class Camping {
         this.MID = MID;
         this.campingDetails = campingDetails;
         this.images = images;
-        this.orderMenus = orderMenus;
+//        this.orderMenus = orderMenus;
     }
 
     public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID) {

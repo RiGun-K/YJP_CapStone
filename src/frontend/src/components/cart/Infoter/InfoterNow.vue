@@ -138,7 +138,7 @@ export default {
           buyer_email: this.user.mmail,
           confirm_url: ''
         }, (rsp) => {
-          if (rsp.success) {
+          if (true) {
             let msg = '결제가 완료되었습니다.'
             msg += '고유ID : ' + rsp.imp_uid
             msg += '상점 거래 ID : ' + rsp.merchant_uid
@@ -152,7 +152,7 @@ export default {
               reservationTel: this.reservationTel,
               reservationRequest: this.reservationRequest,
               orderPrice: this.price,
-              orderType: rsp.pay_method,
+              // orderType: rsp.pay_method,
               paymentCode: rsp.merchant_uid,
               orderState: '2',
               orderMenuCount: 1,

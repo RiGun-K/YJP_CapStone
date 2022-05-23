@@ -93,7 +93,7 @@
     <p class="card-text">{{ this.content.address }}</p>
     <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
     <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
-    <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
+<!--    <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>-->
 
     <br>
 

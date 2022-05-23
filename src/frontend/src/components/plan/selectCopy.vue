@@ -16,7 +16,8 @@ export default {
 			this.$router.push({ name: 'planList' });
 		},
 		individual: function () {
-			this.$router.push({ name: 'basicPlan' });
+			const mcode = this.$store.getters.getLoginState.mcode;
+			this.$router.push('/myReservation/' + mcode);
 		},
 	},
 };

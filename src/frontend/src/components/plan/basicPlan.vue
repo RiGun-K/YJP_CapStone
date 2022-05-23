@@ -8,13 +8,15 @@
 		:enable-time-picker="false"
 		:min-date="today"
 		range
-		placeholder="Select share date range"
+		placeholder="Select camping  date range"
 		v-on="toString()"
 		format="yyyy/MM/dd"
 		autoApply
 		:closeOnAutoApply="false"
 	></Datepicker>
 	<h2>{{ this.$store.state.diff - 1 }}박{{ this.$store.state.diff }}일</h2>
+	<h3>캠핑장이름: {{ this.$store.state.camping.camping.campingName }}</h3>
+	<h3>주소:{{ this.$store.state.camping.camping.address }}</h3>
 	<input
 		type="text"
 		@keyup="checkPlanName"
@@ -35,20 +37,17 @@
 		장소
 		<select v-model="planDestination">
 			<option disabled value="">지역선택</option>
-			<option>강원</option>
-			<option>경기</option>
-			<option>경남</option>
-			<option>경북</option>
-			<option>광주</option>
-			<option>대구</option>
-			<option>대전</option>
-			<option>부산</option>
-			<option>서울</option>
-			<option>인천</option>
-			<option>전남</option>
-			<option>전북</option>
-			<option>제주</option>
-			<option>충북</option>
+			<option>강원도</option>
+			<option>경기도</option>
+			<option>경상도</option>
+			<option>대구시</option>
+			<option>부산시</option>
+			<option>서울시</option>
+			<option>인천시</option>
+			<option>전라도</option>
+			<option>제주도</option>
+			<option>충청도</option>
+			<option>울산시</option>
 		</select>
 	</h3>
 
@@ -92,11 +91,14 @@ export default {
 	components: { Datepicker },
 	data() {
 		return {
-			shareDate: [],
+			shareDate: [
+				this.$store.state.myReservation.startDate,
+				this.$store.state.myReservation.endDate,
+			],
 			today: new Date(),
 			planStart: '',
 			planEnd: '',
-			planDestination: '',
+			planDestination: this.$store.state.camping.camping.areaId.areaName,
 			planType: '',
 			planNumber: 0,
 			planBudget: '0',
@@ -111,6 +113,11 @@ export default {
 	},
 	methods: {
 		addTags: function (value) {
+			console.log(this.$store.state.myReservation);
+			console.log(this.shareDate);
+			console.log(this.$store.state.myReservation.startDate);
+			console.log(this.$store.state.myReservation.startDate);
+			console.log(this.$store.state.myReservation.startDate);
 			if (this.TagContentList.indexOf(value) !== -1) {
 				alert('중복된 Tag설정은 불가능합니다');
 			} else {
@@ -151,9 +158,7 @@ export default {
 			this.diff = secondValue.diff(firstValue, 'd') + 1;
 			this.$store.commit('updateDiff', this.diff);
 		},
-		// addTags: function () {
-		// 	const url = '/api/addTags';
-		// },
+
 		createPlan: function () {
 			const data = {
 				planName: this.planName,
