@@ -45,18 +45,12 @@ export default {
     this.form.useBoxCode = this.$route.params.useBoxCode
     this.userId = store.getters.getLoginState.loginState
     this.moveBoxInfo = this.$store.state.moveBoxInfo
-    console.log('this.userId')
-    console.log(this.userId)
-    console.log(this.form)
-    console.log(this.moveBoxInfo)
   },
   mounted() {
     axios.get('/api/storageView/' + this.id)
         .then((res) => {
           console.log(res.data)
           this.boxList = res.data
-          console.log('this.boxList')
-          console.log(this.boxList)
           this.name = this.boxList.storageName
         })
         .catch((err) => {
@@ -91,7 +85,6 @@ export default {
     boxPrice(newBoxCode){
       axios.get('/api/boxPrice/'+newBoxCode)
           .then(res=>{
-            console.log(res.data)
             this.newForm.price = res.data
           })
     },

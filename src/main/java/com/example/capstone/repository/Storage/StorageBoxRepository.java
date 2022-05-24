@@ -1,5 +1,6 @@
 package com.example.capstone.repository.Storage;
 
+import com.example.capstone.domain.storage.Storage;
 import com.example.capstone.domain.storage.StorageBox;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,8 @@ public interface StorageBoxRepository extends JpaRepository<StorageBox, Long> {
             "where b.STORAGE_BOX_CODE = :storageBoxCode and not u.USE_STORAGE_STATE = 1", nativeQuery = true)
     public Object[] findByBoxInformation(@Param("storageBoxCode")long storageBoxCode);
 
+    @Query(value = "select * from STORAGE s\n"+
+            "join STORAGEBOX b on s.STORAGE_CODE = b.STORAGE_CODE \n" +
+            "where s.STORAGE_NAME = :storageName and b.STORAGE_BOX_NAME = :boxName",nativeQuery = true)
+    public Optional<StorageBox> findByStorageNameAndStorageBoxName(@Param("storageName")String storageName, @Param("boxName")String boxName);
 }

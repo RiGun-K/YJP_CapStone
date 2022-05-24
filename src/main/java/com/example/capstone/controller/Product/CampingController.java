@@ -329,4 +329,14 @@ public class CampingController {
         campingRepository.save(campingF.get());
     }
 
+    /* 캠핑장 검색 */
+    @GetMapping("/search_CampingList")
+    public List<Camping> searchCampingList(@RequestParam("searchCamping") String searchCamping) {
+//        List<MenuBuy> menuBuys = productService.searchBuy(searchBuy);
+        List<Camping> campings = campingRepository.findAllBysearchCampingContains(searchCamping);
+        System.out.println("결과는" + campings);
+        return campings;
+
+    }
+
 }

@@ -29,6 +29,9 @@ public class MenuBuy {
     @Column()
     private int buyStock;
 
+    @Column()
+    private int buyViews = 0;
+
     // 파일e
     @Column()
     private String origFilename;
@@ -204,5 +207,13 @@ public class MenuBuy {
 
     public void setMID(Member MID) {
         this.MID = MID;
+    }
+
+    public int getBuyViews() {
+        return buyViews;
+    }
+
+    public void setBuyViews(int buyViews) {
+        this.buyViews = buyViews;
     }
 }

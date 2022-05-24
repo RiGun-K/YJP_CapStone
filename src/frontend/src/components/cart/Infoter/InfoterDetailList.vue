@@ -118,11 +118,32 @@
           <div class="card-body">
             객실 가격 - {{ room.detailPrice }}
           </div>
+          <div>
+            <p style="margin-left: 3%; margin-top: 2%">예약기간 설정</p>
+            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+                        locale="ko-KR"
+                        :min-date="today"
+                        :max-date="end"
+                        type="date"
+                        range
+                        format="yyyy/MM/dd"
+                        value-format="yyyyMMdd"
+                        :enableTimePicker="false"
+                        autoApply
+                        v-on="toString()"
+                        :closeOnAutoApply="false"
+                        placeholder="예약 날짜를 선택해주세요."
+                        v-model="reservationDate"
+                        @click="DayList(room.orderMenus.orders)"
+                        :disabledDates="disabledDates"/>
+          </div>
           <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
         </div>
         <br>
       </div>
     </div>
+  </div>
+
 
     <br>
     <br>
@@ -186,18 +207,21 @@
       </div>
       <br>
     </div>
-
-  </div>
 </template>
 
 <script>
 import axios from "axios";
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import dayjs from "dayjs"
+
 export default {
   name: "BuyDetailList",
   created() {
     this.DataList();
   },
   mounted() {
+    this.DayList();
   },
   data() {
     return {
@@ -212,9 +236,49 @@ export default {
       markers: [],
       markPositions1: [],
       areaCheck: false,
+
+      disabledDates: [],
+      reservationDate: [],
+      // date: [],
+
+      // end: new Data(this.today.setDate(this.today.getDate() + 7))
+      startDate: new Date(),
+      endDate: new Date(),
+    }
+  },
+  setup() {
+    const today = new Date()
+    const todayEnd = new Date()
+    const end = new Date(todayEnd.setDate(todayEnd.getDate() + 30))
+    return {
+      today,
+      end
     }
   },
   methods: {
+    DayList() {
+      for (var i = 0; i < this.content.orderMenus.length; i++) {
+        let startDate = new Date(
+            this.content.orderMenus[i].orders.startDate[0],
+            this.content.orderMenus[i].orders.startDate[1] - 1,
+            this.content.orderMenus[i].orders.startDate[2])
+
+        let endDate = new Date(
+            this.content.orderMenus[i].orders.endDate[0],
+            this.content.orderMenus[i].orders.endDate[1] - 1,
+            this.content.orderMenus[i].orders.endDate[2])
+
+        var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
+        const tomorrow = startDate
+        this.disabledDates.push(tomorrow.toString())
+
+        for (var j = 0; j < length; j++) {
+          tomorrow.setDate(tomorrow.getDate() + 1)
+          this.disabledDates.push(tomorrow.toString())
+        }
+      }
+
+    },
     DataList() {
       this.id = this.$route.params.campingId;
       console.log(this.id);
@@ -224,8 +288,6 @@ export default {
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
             console.log(this.roomContent);
-            console.log(this.content.filePath);
-            console.log(this.content.filename);
           })
           .catch(e => {
             console.log(e);
@@ -234,11 +296,24 @@ export default {
     detailData() {
       this.stateCheck = true;
     },
+
     buyData(detailId) {
-      this.$router.push({
-        path: `/infoter/infoterNow/${detailId}`
-      })
-    },
+
+      console.log(this.startDate)
+      console.log(this.endDate)
+      if (this.startDate == this.endDate) {
+        alert('예약 날짜를 선택해주세요.')
+        return
+      } else {
+        this.$router.push({
+          path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
+          query: {
+            startDate: this.startDate,
+            endDate: this.endDate
+          }
+        })
+
+    }},
     detail_3() {
       this.areaCheck = true
       let check = prompt("1+1 은?");
@@ -313,6 +388,12 @@ export default {
           .catch((ex) => {
             console.log("fail", ex)
           })
+    },
+    toString() {
+      const start = dayjs(this.reservationDate[0]);
+      this.startDate = start.format('YYYYMMDD');
+      const end = dayjs(this.reservationDate[1]);
+      this.endDate = end.format('YYYYMMDD');
     },
 
     detail_5() {
@@ -531,5 +612,14 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 }
 .Recommend{
   margin-left: 70%;
+}
+
+
+
+.card-body img {
+  transition: all 0.2s linear;
+}
+.card-body:hover img {
+  transform: scale(1.5);
 }
 </style>

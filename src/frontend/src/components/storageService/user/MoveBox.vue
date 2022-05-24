@@ -32,13 +32,9 @@ export default {
   },
   mounted() {
     this.form.userId = this.$route.params.userId
-    console.log(this.$route.params.userId)
     this.form.storageName = this.$route.params.storageName
-    console.log(this.$route.params.storageName)
     this.form.boxName = this.$route.params.boxName
-    console.log(this.$route.params.boxName)
     this.form.useBoxCode = this.$route.params.useBoxCode
-    console.log(this.$route.params.useBoxCode)
     this.form.boxCode = this.$route.params.boxCode
   }
 }

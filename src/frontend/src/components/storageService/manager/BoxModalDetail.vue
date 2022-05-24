@@ -86,11 +86,11 @@ export default {
     boxCode: null
   },
   mounted() {
-    this.getd()
+    this.getBoxInfo()
   },
   watch: {
     boxCode() {
-      this.getd()
+      this.getBoxInfo()
     }
   },
   data() {
@@ -101,12 +101,10 @@ export default {
     }
   },
   methods: {
-    getd() {
+    getBoxInfo() {
       this.box = {}
       axios.get('/api/getBox/' + this.boxCode.storageBoxCode)
           .then(res => {
-            console.log('res.data')
-            console.log(res.data)
             if (res.data[0].length > 2) {
               const data = {
                 userName: '',
@@ -134,19 +132,11 @@ export default {
 
               axios.get('/api/moveBoxInfo/' + this.box.updateusbCode)
                   .then(res => {
-                    if (this.boxCode.storageBoxState == '3') {
-                      console.log("보낼곳 보관함정보")
-                      console.log(res.data)
-                    } else if (this.boxCode.storageBoxState == '4') {
-                      console.log("받을곳 보관함정보")
-                      console.log(res.data)
-                    }
                     const data = res.data[0]
                     this.moveInfo.storageCode = data[0]
                     this.moveInfo.storageName = data[1]
                     this.moveInfo.storageBoxCode = data[2]
                     this.moveInfo.storageBoxName = data[3]
-                    console.log(this.moveInfo)
                   })
               .catch(err=>{
                 console.log(err)
@@ -155,7 +145,6 @@ export default {
               this.box = res.data[0]
               this.chk = false
             }
-            console.log(this.box)
           })
           .catch(err => {
             console.log(err)
@@ -166,7 +155,7 @@ export default {
           .then(res => {
             console.log(res)
             alert("사용자 보관 확인 되었습니다")
-            this.getd()
+            this.getBoxInfo()
           })
           .catch(err => {
             console.log(err)
@@ -174,15 +163,11 @@ export default {
     },
     moveStateUpDate() {
       //버튼은 이동중으로 변경하고 받는곳은 도착버튼으로 변경
-      console.log('여기')
-      console.log(this.box.useStorageCode)
-      console.log('받는곳')
-      console.log(this.box.updateusbCode)
       axios.get('/api/moveStateUpdate/'+this.box.useStorageCode+'/'+this.box.updateusbCode)
       .then(res=>{
         console.log(res.data.result)
         alert("이동합니다")
-        this.getd()
+        this.getBoxInfo()
       })
     },
     endMoveupdate(){
@@ -191,7 +176,7 @@ export default {
       .then(res=>{
         console.log(res.data.result)
         alert("보관되었습니다")
-        this.getd()
+        this.getBoxInfo()
       })
       .catch(err=>{
         console.log(err)
