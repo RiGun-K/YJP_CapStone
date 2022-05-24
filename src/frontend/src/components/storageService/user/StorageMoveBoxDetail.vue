@@ -4,18 +4,19 @@
 
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
-    <div class="storage-view">
-      <h5 style="margin-left: 3%" >사용하실 보관함을 선택하세요</h5>
-      <div class="storage-box" v-for="(box,index) in boxList.storageBoxes" :key="index">
-        <ul class="storage-box-ck" @click="nextTab(box.storageBoxCode, box.storageBoxState, box.storageBoxName)">
+    <div class="storage-view" v-for="(obj, index) in boxArray">
+      <div class="storage-box" v-for="box in boxArray[index]" @click="nextTab(box.storageBoxCode, box.storageBoxState, box.storageBoxName)">
+        <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
           <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
             <p v-else>사용불가능</p>
           </li>
+          <li>가격 : {{ box.storageBoxPrice }}원</li>
         </ul>
       </div>
     </div>
     <div v-if="stateCheck">
+      <h5>{{boxName}}</h5>
       <div>
         이동 금액
         +
@@ -49,9 +50,9 @@ export default {
   mounted() {
     axios.get('/api/storageView/' + this.id)
         .then((res) => {
-          console.log(res.data)
           this.boxList = res.data
           this.name = this.boxList.storageName
+          this.boxArrayR()
         })
         .catch((err) => {
           console.log(err)
@@ -65,6 +66,7 @@ export default {
       name: '',
       userId:'',
       boxCode:'선택',
+      boxName:'',
       newForm:{
         userId:'',
         storageName:'',
@@ -74,6 +76,7 @@ export default {
       },
       stateCheck:false,
       moveBoxInfo:{},
+      boxArray: {},
     }
   },
   watch:{
@@ -82,6 +85,19 @@ export default {
     }
   },
   methods:{
+    boxArrayR() {
+      let arrayone = {}
+      let k = 0;
+      for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
+        arrayone[0 + i % 5] = this.boxList.storageBoxes[i]
+
+        if ((i + 1) % 5 == 0 || (i + 1) == this.boxList.storageBoxes.length) {
+          this.boxArray[0 + k] = arrayone
+          arrayone = {}
+          k = k + 1;
+        }
+      }
+    },
     boxPrice(newBoxCode){
       axios.get('/api/boxPrice/'+newBoxCode)
           .then(res=>{
@@ -95,6 +111,7 @@ export default {
         this.stateCheck = true
         this.boxCode = boxCode
         this.newForm.boxName = name
+        this.boxName = name
       }
 
     },
@@ -129,25 +146,29 @@ export default {
 </script>
 
 <style scoped>
-.user-storage-view h3{
+/*기존*/
+.user-storage-view h3 {
   margin-top: 3%;
   margin-left: 7%;
   margin-bottom: 7%;
 }
+
 .storage-box {
+  margin-right: 5%;
   border: solid 3px #00a3de;
   border-radius: 10px;
-  width: 30%;
-}
-.storage-box-ck{
   width: 15%;
 }
+
 .storage-view {
+  margin-bottom: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
   display: -webkit-flex;
   display: flex;
-  margin-bottom: 3%;
 }
-.storage-back-btn{
+
+.storage-back-btn {
   margin-top: 1%;
   margin-left: 1%;
   margin-bottom: 1.5%;
@@ -159,25 +180,28 @@ export default {
   color: #00a3de;
   border-color: #00a3de;
 }
-.storage-back-btn:hover{
+
+.storage-back-btn:hover {
   color: white;
   background-color: #b2e2fd;
 }
+
 .storage {
   border: solid 3px #000a69;
   margin-left: 7%;
   width: 87%;
   margin-top: 5%;
 }
-.storage-name-h5{
+
+.storage-name-h5 {
   margin-left: 2%;
   margin-top: 2%;
   margin-bottom: 2%;
   font-weight: bolder;
   width: 40%;
 }
-.pay-btn{
-  margin-left: 85%;
+
+.pay-btn {
   margin-bottom: 2%;
   text-align: center;
   width: 12%;
@@ -187,7 +211,8 @@ export default {
   color: #00a3de;
   border-color: #00a3de;
 }
-.pay-btn:hover{
+
+.pay-btn:hover {
   color: white;
   background-color: #b2e2fd;
 }

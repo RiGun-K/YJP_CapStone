@@ -99,20 +99,18 @@ export default {
       useTimeList: [],
       disabledDates: [],
       stateCheck: false,
-      boxArray: {},
+      boxArray: [],
     }
   },
   methods: {
     boxArrayR() {
-      let arrayone = {}
-      let k = 0;
+      let arrayone = []
       for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
         arrayone[0 + i % 5] = this.boxList.storageBoxes[i]
 
         if ((i + 1) % 5 == 0 || (i + 1) == this.boxList.storageBoxes.length) {
-          this.boxArray[0 + k] = arrayone
-          arrayone = {}
-          k = k + 1;
+          this.boxArray.push(arrayone)
+          arrayone = []
         }
       }
     },

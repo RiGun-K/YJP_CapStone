@@ -12,7 +12,12 @@
         <td v-else-if="box.boxState == 1">결제완료
           <button @click="updateState">보관완료</button>
         </td>
+        <td v-else-if="box.boxState == 6">
+          해지
+          <button @click="clearBox()">빈상태</button>
+        </td>
         <td v-else>사용중</td>
+
       </tr>
       <tr>
         <td>사용중인 사용자</td>
@@ -182,6 +187,19 @@ export default {
         console.log(err)
       })
     },
+    clearBox(){
+      axios.get('/api/clearBox/'+this.box.boxCode)
+      .then(res=>{
+        if(res.data.result == 'ok'){
+          alert('보관함이 비었습니다')
+        }else{
+          alert('에러')
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
   },
 }
 </script>
