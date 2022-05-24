@@ -1,14 +1,14 @@
 <template>
   <div class="storage">
     <button @click="backPage" class="storage-back-btn">되돌아가기</button>
-
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
-    <div class="storage-view" v-for="(obj, index) in boxArray">
-      <div class="storage-box" v-for="box in boxArray[index]" @click="findTime(box)">
+    <div class="storage-view" v-for="(obj, index) in boxArray" >
+      <div class="storage-box" v-for="(box) in boxArray[index]" @click="findTime(box)" >
         <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
-          <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
+          <li>보관함 상태:
+            <p v-if="box.storageBoxState == '0'">사용가능</p>
             <p v-else>사용불가능</p>
           </li>
           <li>가격 : {{ box.storageBoxPrice }}원</li>
@@ -67,7 +67,6 @@ export default {
   mounted() {
     axios.get('/api/myItem/' + this.userId)
         .then(res => {
-          console.log(res.data)
           this.myItem = res.data
         }).catch(err => {
       console.log(err)
@@ -78,7 +77,6 @@ export default {
     this.userId = store.getters.getLoginState.loginState
     this.boxList = this.$store.state.storage
     this.name = this.boxList.storageName
-    console.log(this.boxList.storageBoxes)
   },
   data() {
     return {
@@ -104,7 +102,7 @@ export default {
       useTimeList: [],
       disabledDates: [],
       stateCheck: false,
-      boxArray: {},
+      boxArray: {}
     }
   },
   methods: {
@@ -120,8 +118,6 @@ export default {
           k= k+1;
         }
       }
-      console.log('this.boxArray')
-      console.log(this.boxArray)
     },
     backPage() {
       this.$router.push('/storageView')
@@ -133,7 +129,6 @@ export default {
       axios.get('/api/findUseTime/' + boxCode.storageBoxCode)
           .then(res => {
             this.useTimeList = res.data
-            console.log(res.data)
 
             for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
               if (boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode) {
@@ -156,7 +151,7 @@ export default {
                   this.useTimeList[i].useStorageEndTime[2])
 
               var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
-              console.log(length)
+
               const tomorrow = startDate
               this.disabledDates.push(tomorrow.toString())
 
@@ -171,13 +166,7 @@ export default {
           })
       this.boxName = boxCode.storageBoxName
       this.form.price = boxCode.storageBoxPrice
-      console.log('this.form.price')
-      console.log(this.form.price)
       this.form.storageBoxCode = boxCode.storageBoxCode
-      console.log('this.form.storageBoxCode')
-      console.log(this.form.storageBoxCode)
-      console.log('this.form234234234')
-      console.log(this.form)
     },
     pay() {
       if (this.date == null) {
@@ -192,8 +181,6 @@ export default {
       this.form.useStorageStartTime = this.startDay
       this.form.useStorageEndTime = this.endDay
       this.form.item = this.checkItem
-      console.log('14234235144444444444235e')
-      console.log(this.form)
 
       this.$store.commit('putCartStorage', this.form)
       this.form.item = []
@@ -209,7 +196,6 @@ export default {
       this.form.useStorageEndTime = ''
     }
   }
-
 }
 </script>
 
