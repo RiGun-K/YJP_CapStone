@@ -38,7 +38,6 @@
   <div class="searchDiv">
     <input type="text" v-model="searchWord">
     <button class="searchBtn" @click="searchId">검색</button>
-    <button @click="reStart" class="resetBtn">목록 초기화</button>
   </div>
 </template>
 
@@ -65,16 +64,12 @@ export default {
       })
     },
     searchId(){
-      if(this.searchWord.length <= 0){
-        alert("검색어를 입력해주세요")
-      }else{
         this.viewList = []
         for(var i = 0; i < this.request.length; i++){
           if(this.request[i].member.mid.includes(this.searchWord)){
             this.viewList.push(this.request[i])
           }
         }
-      }
     },
     refuse(){
 
@@ -115,14 +110,6 @@ th, td{
   margin-right: 5%;
   margin-top: 1%;
   width: 90%;
-  text-align: center;
-}
-.resetBtn{
-  float: right;
-  position: relative;
-  padding: 0.5%;
-  background: #7ea6f6;
-  color: white;
   text-align: center;
 }
 </style>
