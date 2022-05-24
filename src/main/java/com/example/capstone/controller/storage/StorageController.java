@@ -14,6 +14,7 @@ import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -161,14 +162,14 @@ public class StorageController {
         return storage.get();
     }
 
-    //    보관함 이름 조회
-    @GetMapping("/storageBoxGet/{boxCode}")
-    public String getBoxName(@PathVariable(value = "boxCode") long boxCode) {
-        Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
-        return storageBox.get().getStorageBoxName();
+    //    보관함 코드 조회
+    @GetMapping("/storageBoxGet/{storageName}/{boxName}")
+    public long getBoxName(@PathVariable(value = "storageName") String storageName,@PathVariable(value = "boxName") String boxName) {
+        Optional<StorageBox> storageBox = storageBoxRepository.findByStorageNameAndStorageBoxName(storageName,boxName);
+        return storageBox.get().getStorageBoxCode();
     }
 
-    //  모든  매니저조회
+    //  모든 매니저조회
     @GetMapping("/getStorageManger")
     public List<StorageManager> getStorageManger() {
         List<StorageManager> managerList = storageManagerRepository.findAll();
@@ -195,21 +196,16 @@ public class StorageController {
     //보관함 연장 결제
     @PostMapping("/renewalPay")
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
-        System.out.println(renewalBox.getBoxName());
-        System.out.println(renewalBox.getStorageName());
-        System.out.println(renewalBox.getUseBoxCode());
-
         Optional<Member> user = memberRepository.findByMID(renewalBox.getUserId());
         Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
-        System.out.println(storage.get().getStorageCode());
         Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
         Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
         List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
         for (int i = 0; i < memberEquipmentList.size(); i++) {
             memberEquipmentList.get(i).setUseStorageBoxCode(null);
         }
-        LocalDateTime start = renewalBox.getStartTime();
-        LocalDateTime end = renewalBox.getEndTime();
+        LocalDate start = renewalBox.getStartTime();
+        LocalDate end = renewalBox.getEndTime();
 
         Orders orderList = new Orders(user.get());
         ordersRepository.save(orderList);
@@ -249,20 +245,28 @@ public class StorageController {
     public Result payStorageBox(@RequestBody payStorageBox payStorageBox) {
         Optional<Member> user = memberRepository.findByMID(payStorageBox.getUserId());
         Optional<StorageBox> storageBox = storageBoxRepository.findById(payStorageBox.getStorageBoxCode());
+        Optional<Storage> storage = storageRepository.findByStorageBoxCode(storageBox.get().getStorageBoxCode());
+        LocalDate start = payStorageBox.getUseStorageStartTime();
 
-        LocalDateTime start = payStorageBox.getUseStorageStartTime();
-
-        LocalDateTime end = payStorageBox.getUseStorageEndTime();
+        LocalDate end = payStorageBox.getUseStorageEndTime();
 
         Orders orders = new Orders(user.get(), payStorageBox.getPrice());
+        orders.setPaymentDate(LocalDateTime.now());
+        orders.setDeliveryAddress(storage.get().getStorageAddress());
+        orders.setDeliveryZipcode(storage.get().getStorageZipcode());
+        orders.setDeliveryGetterTel(storage.get().getStorageTel());
+        orders.setOrderState("2");
         ordersRepository.save(orders);
 
-        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orders);
+        UseStorageBox useStorageBox = new UseStorageBox();
+        useStorageBox.setUseStorageStartTime(start);
+        useStorageBox.setUseStorageEndTime(end);
+        useStorageBox.setStorageBoxCode(storageBox.get());
+        useStorageBox.setOrderCode(orders);
         useStorageBox.setMCode(user.get());
         useStorageBoxRepository.save(useStorageBox);
 
         if (payStorageBox.getItem().size() > 0) {
-            System.out.println(payStorageBox.getItem().get(0));
             for (int i = 0; i < payStorageBox.getItem().size(); i++) {
                 Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItem().get(i));
                 memberEquipment.get().setUseStorageBoxCode(useStorageBox);
@@ -298,7 +302,6 @@ public class StorageController {
     //    보관함 사용중인 사용자 조회
     @GetMapping("checkMember/{memberId}")
     public Object[] checkMember(@PathVariable("memberId") String memberId) throws NoSuchElementException {
-        System.out.println("멤버아이디는" + memberId);
         try {
             Object[] useStorageBoxes = storageRepository.findByMember(memberId);
 
@@ -342,14 +345,9 @@ public class StorageController {
     //    매니저가 관리하고 있는 보관소의 각 보관함 찾기
     @GetMapping("getBox/{storageBoxCode}")
     public Object[] getBox(@PathVariable(value = "storageBoxCode") long boxCode) {
-        System.out.println(boxCode);
         Optional<StorageBox> box = storageBoxRepository.findById(boxCode);
-        System.out.println(box.get().getStorageBoxCode());
 
         Object[] object = storageBoxRepository.findByBoxInformation(box.get().getStorageBoxCode());
-        for (int i = 0; i < object.length; i++) {
-            System.out.println(object[i].toString());
-        }
         if (object.length < 1) {
             return new Optional[]{storageBoxRepository.findById(box.get().getStorageBoxCode())};
         }
@@ -369,9 +367,7 @@ public class StorageController {
     // 보관함 장소 이동
     @PostMapping("roundMoveBox")
     private Result roundmovePay(@RequestBody RoundMove roundMove) {
-        System.out.println(roundMove.getUseBoxCode());
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(roundMove.getUseBoxCode());
-        System.out.println(useStorageBox.get().getUseStorageState());
         if (useStorageBox.get().getUseStorageState().equals("2")) {
             useStorageBox.get().setUseStorageState("4");
             useStorageBoxRepository.save(useStorageBox.get());
@@ -426,7 +422,7 @@ public class StorageController {
         storageBoxRepository.save(afterBox.get());
 
         // 이동될 사용 보관함 상태코드(상태 + 이전 사용보관함코드)
-        UseStorageBox newUseStorageBox = new UseStorageBox(orderTime,
+        UseStorageBox newUseStorageBox = new UseStorageBox(orderTime.toLocalDate(),
                 useStorageBox.get().getUseStorageEndTime(),
                 "4" + useStorageBox.get().getUseStorageBoxCode(),
                 afterBox.get(), orders);
@@ -466,7 +462,7 @@ public class StorageController {
 
         UseStorageBox before = beforeUSBox.get();
         before.setUseStorageState("1");
-        before.setUseStorageEndTime(nowTime);
+        before.setUseStorageEndTime(nowTime.toLocalDate());
         afterUSBox.get().setUseStorageState("5" + beforeUSBox.get().getUseStorageBoxCode());
 
         StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();

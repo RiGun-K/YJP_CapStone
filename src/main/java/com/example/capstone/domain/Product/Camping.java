@@ -97,10 +97,10 @@ public class Camping {
     private List<Images> images = new ArrayList<>();
 
 
-    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
-    @OneToMany(mappedBy = "camping", cascade = {CascadeType.ALL})
-    private List<OrderMenu> orderMenus = new ArrayList<>();
-
+//    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+//    @OneToMany(mappedBy = "camping", cascade = {CascadeType.ALL})
+//    private List<OrderMenu> orderMenus = new ArrayList<>();
+//
 
     public Camping() {}
 

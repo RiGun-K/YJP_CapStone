@@ -18,6 +18,10 @@
       <input type="text" v-model="form.storageDetailAddress" placeholder="상세주소">
     </div>
     <div class="bodydiv">
+      <label class="labelWidth">전화번호</label>
+      <input type="text" v-model="form.storageTel" placeholder="전화번호">
+    </div>
+    <div class="bodydiv">
       <label class="labelWidth">이미지</label>
           <input type="file"
                  id="file"
@@ -87,6 +91,7 @@ export default {
         storageZipcode: '',
         storageAddress: '',
         storageDetailAddress: '',
+        storageTel:'',
         latitude:'',
         longitude:'',
       },
