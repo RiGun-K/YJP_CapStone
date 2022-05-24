@@ -114,10 +114,7 @@ export default {
 	methods: {
 		addTags: function (value) {
 			console.log(this.$store.state.myReservation);
-			console.log(this.shareDate);
-			console.log(this.$store.state.myReservation.startDate);
-			console.log(this.$store.state.myReservation.startDate);
-			console.log(this.$store.state.myReservation.startDate);
+			console.log(this.$store.state.camping.camping);
 			if (this.TagContentList.indexOf(value) !== -1) {
 				alert('중복된 Tag설정은 불가능합니다');
 			} else {

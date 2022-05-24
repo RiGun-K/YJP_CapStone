@@ -64,7 +64,7 @@
 					</table>
 				</div>
 			</div>
-			<button>건너뛰기</button>
+			<button @click="skip">건너뛰기</button>
 		</div>
 	</div>
 </template>
@@ -87,12 +87,25 @@ export default {
 		this.DataList();
 	},
 	methods: {
+		skip: function () {
+			const confirmData = confirm(
+				'예약된 캠핑장을 선택하지 않고 계획을 작성합니다',
+			);
+			if (confirmData) {
+				this.$store.state.myReservation = new Object();
+				this.$store.state.camping.camping.address = '';
+				this.$store.state.camping.camping.areaId = '';
+				this.$store.state.camping.camping.campingName = '';
+				this.$store.commit(
+					'setMyReservation',
+					this.$store.state.myReservation,
+				);
+				this.$store.commit('setCamping', this.$store.state.camping);
+				this.$router.push({ name: 'basicPlan' });
+			}
+		},
 		selectMyOrder(myOrder, index) {
 			this.$store.commit('setCamping', this.menus[index]);
-			console.log(this.$store.state.camping.camping.campingName);
-			console.log(this.$store.state.camping.camping.campingName);
-			console.log(this.$store.state.camping);
-			console.log(1);
 			this.endDate =
 				myOrder.endDate[0].toString() +
 				'/' +

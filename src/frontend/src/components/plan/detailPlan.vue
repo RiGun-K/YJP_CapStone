@@ -1,4 +1,34 @@
 <template>
+	<div class="sidebar" :style="{ width: sidebarWidth }">
+		<h2>
+			<span v-if="collapsed">
+				<div>C</div>
+			</span>
+			<span v-else>체크리스트</span>
+		</h2>
+		<div>
+			<button
+				v-for="(value, index) in allCheckList"
+				:key="index"
+				title="더블클릭하면 삭제됩니다"
+				:class="[
+					{ color_n: value.checkState == 'n' },
+					{ color_y: value.checkState == 'y' },
+				]"
+				@click="updateState(index)"
+				@dblclick="deleteChecklist(value)"
+			>
+				{{ value.checkContent }}
+			</button>
+		</div>
+		<span
+			class="collapse-icon"
+			:class="{ 'rotate-180': collapsed }"
+			@click="toggleSidebar"
+		>
+			<i class="fas fa-angle-double-left"> 〈〈 </i>
+		</span>
+	</div>
 	<h2>일정작성</h2>
 	<h2>
 		{{ this.$store.state.planCode.planTotalDate - 1 }}박{{
@@ -9,20 +39,6 @@
 	<div v-for="index in this.$store.state.planCode.planTotalDate" :key="index">
 		<button @click="datesButton(index)">{{ index }}</button>일차
 		<br />
-	</div>
-	<div>
-		<button
-			v-for="(value, index) in allCheckList"
-			:key="index"
-			:class="[
-				{ color_n: value.checkState == 'n' },
-				{ color_y: value.checkState == 'y' },
-			]"
-			@click="updateState(value, $event)"
-			@dblclick="deleteChecklist(value)"
-		>
-			{{ value.checkContent }}
-		</button>
 	</div>
 
 	<hr />
@@ -61,27 +77,26 @@
 			<th>메모</th>
 			<th>체크리스트</th>
 			<tr v-for="(value, index) in detailPlanOfDayList" :key="index">
-				<td></td>
+				<td>{{ value.detailCode }}</td>
 				<td>{{ value.detailStart }}</td>
 				<td>{{ value.detailEnd }}</td>
 				<td>{{ value.detailName }}</td>
 				<td>{{ value.detailMemo }}</td>
 				<td>
-					<div>
+					<span v-for="(value1, index) in allCheckList" :key="index">
 						<button
-							v-for="(value1, index) in value.checklists"
-							:key="index"
+							v-if="value1.detailCode == value.detailCode"
 							title="더블클릭하면 삭제됩니다"
 							:class="[
 								{ color_n: value1.checkState == 'n' },
 								{ color_y: value1.checkState == 'y' },
 							]"
-							@click="updateState(value1, $event)"
+							@click="updateState(index)"
 							@dblclick="deleteChecklist(value1)"
 						>
 							{{ value1.checkContent }}
 						</button>
-					</div>
+					</span>
 				</td>
 				<td>
 					<button @click="insertChecklist(value.detailCode)">
@@ -100,10 +115,20 @@
 
 <script>
 import axios from 'axios';
+import {
+	collapsed,
+	toggleSidebar,
+	sidebarWidth,
+} from '@/components/cart/Sidebar/state';
+import SidebarLink from '@/components/cart/Sidebar/SidebarLink';
 export default {
+	components: { SidebarLink },
+	setup() {
+		return { collapsed, toggleSidebar, sidebarWidth };
+	},
 	created() {
 		this.loadDetailPlanOfDay(1);
-		// this.loadAllCheckList();
+		this.loadAllCheckList();
 	},
 	data() {
 		return {
@@ -122,6 +147,15 @@ export default {
 			planCode: '',
 			allCheckList: [],
 		};
+	},
+	watch: {
+		allCheckList: {
+			deep: true,
+			handler() {
+				this.colorSetting();
+				console.log(this.allCheckList);
+			},
+		},
 	},
 	mounted() {},
 	methods: {
@@ -148,17 +182,18 @@ export default {
 					params: { planCode: this.$store.state.planCode.planCode },
 				})
 				.then((response) => {
+					console.log(response);
 					response.data.map((item) => {
+						console.log(item);
 						this.allCheckList.push(item);
-						console.log(this.allCheckList);
 					});
 				})
 				.catch((error) => {});
+			this.colorSetting();
 		},
 		colorSetting: function () {
 			let a = document.body.getElementsByClassName('checkList');
 			Array.from(a).forEach(function (ele) {
-				console.log('hi there');
 				if (ele.checkState === 'n') {
 					ele.style =
 						'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
@@ -166,7 +201,6 @@ export default {
 					ele.style = 'color: white; background-color: skyblue;';
 				}
 			});
-			console.log(a);
 		},
 		deleteChecklist: function (checkListCode) {
 			const url = '/api/deleteChecklist';
@@ -178,21 +212,16 @@ export default {
 				.catch((error) => {});
 		},
 
-		updateState(checkListCode, event) {
-			console.log(event.target);
-			this.test = checkListCode;
+		updateState(index) {
+			const temp = this.allCheckList[index].detailCode;
+			delete this.allCheckList[index].detailCode;
 			const url = '/api/updateState';
 			axios
-				.put(url, checkListCode)
+				.put(url, this.allCheckList[index])
 				.then((response) => {
+					console.log(response);
+					this.allCheckList[index] = response.data;
 					console.log(response.data);
-					if (response.data.checkState === 'n') {
-						event.target.style =
-							'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
-					} else {
-						event.target.style =
-							'color: white; background-color: skyblue;';
-					}
 				})
 				.catch((error) => {
 					console.log(error);
@@ -214,9 +243,7 @@ export default {
 				})
 				.then((response) => {
 					response.data.map((item) => {
-						console.log(item.checklists);
 						this.detailPlanOfDayList.push(item);
-						return console.log(item);
 					});
 				});
 			this.colorSetting();
@@ -284,5 +311,45 @@ th {
 }
 td {
 	border: 2px solid black;
+}
+:root {
+	--sidebar-bg-color: #e6f4ff;
+	--sidebar-item-hover: #b2e2fd;
+}
+</style>
+
+<style scoped>
+.sidebar {
+	color: black;
+	background-color: var(--sidebar-bg-color);
+	float: left;
+	z-index: 1;
+	height: 100%;
+	left: 0;
+	bottom: 0;
+	padding-bottom: 50%;
+	margin-right: 3%;
+	transition: 0.3s ease;
+	display: flex;
+	flex-direction: column;
+}
+.sidebar h5 {
+	margin-left: 10%;
+	margin-top: 15%;
+	margin-bottom: 3%;
+}
+.sidebar-link {
+	color: black;
+}
+.collapse-icon {
+	position: absolute;
+	top: 80%;
+	padding: 0.75em;
+	color: black;
+	transition: 0.2s linear;
+}
+.rotate-180 {
+	transform: rotate(180deg);
+	transition: 0.2s linear;
 }
 </style>

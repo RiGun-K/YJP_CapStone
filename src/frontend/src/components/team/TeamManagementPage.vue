@@ -2,50 +2,37 @@
 <!------------------------------------------------------------------------- -->
 
 <template>
-	<h3>MY TEAM</h3>
-	<button @Click="showingAddTeamForm">팀 만들기</button>
+	<h3>MY TEAM <button @Click="showingAddTeamForm">+</button></h3>
+
 	<div v-if="addTeamForm">
 		<input
 			v-model="$store.state.insertName"
 			placeholder="insert team name"
 		/>
-		<select v-model="$store.state.open">
+		<select v-model="open">
 			<option>전체공개</option>
 			<option>비공개</option>
 		</select>
 		<button @click="teamSave">제출</button>
 	</div>
-	<hr />
-
-	<!------------------------------------------------------------------------- -->
-
-	<h3>{{ $store.state.member.mname }} 님의 소속팀</h3>
-
-	<p v-html="noTeam"></p>
 	<div v-if="showingTeamList">
+		<p v-html="noTeam"></p>
 		<div v-for="(value, index) in teamList" :key="index">
 			<button @click="loadTeamMemberList(value.teamCode)">
 				{{ value.teamCode.teamName }}
 			</button>
 		</div>
-	</div>
 
-	<div>
-		<p>팀원 요청 목록</p>
 		<div v-for="(value, index) in unacceptedTeamCode" :key="index">
 			팀<button>{{ value.teamCode.teamName }}</button>에서 요청이 왔습니다
 			<button @click="accept(value.teamCode.teamCode)">수락하기</button>
 			<button @click="refuse(value.teamCode.teamCode)">거절하기</button>
 		</div>
 	</div>
-
-	<!------------------------------------------------------------------------- -->
-
+	<hr />
 	<div v-if="showingTeamMember">
 		<hr />
-		<h3>
-			TEAM NAME - {{ $store.state.teamCode.teamCode.teamName }}의 MEMBERS
-		</h3>
+		<h3>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</h3>
 
 		<button
 			id="teamMembers"
@@ -60,7 +47,6 @@
 			>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
 		>
 	</div>
-	<!------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -80,6 +66,7 @@ export default {
 			teamCodeList: [],
 			teamList: [],
 			mcode: '',
+			open: '전체공개',
 		};
 	},
 	created() {
@@ -117,6 +104,7 @@ export default {
 							);
 
 							this.$store.state.insertName = '';
+							this.addTeamForm = false;
 						} else {
 							alert('이미 존재하는 팀 이름입니다');
 						}

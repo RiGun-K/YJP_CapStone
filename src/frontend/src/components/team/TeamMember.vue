@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>{{ $store.state.teamCode.teamCode.teamName }}팀의 상세정보</h2>
+	<div>
+		<h2>{{ $store.state.teamCode.teamCode.teamName }}팀의 상세정보</h2>
 
 		<h3>팀 관리자 -{{ $store.state.teamCode.teamCode.teamMaster }}-</h3>
 		<h1>팀게시판</h1>
@@ -65,14 +65,13 @@
 		</div>
 		<button @click="refuse()">탈퇴하기</button>
 	</div>
-
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-	name: 'TeamDetail',
+	name: 'TeamMemberVue',
 	created() {
 		this.showingDeleteTeam();
 		this.loadTeamPlans();
@@ -287,11 +286,10 @@ export default {
 			});
 		},
 
-
-    openWindow: function (url) {
-      window.open(url);
-    },
-  },
+		openWindow: function (url) {
+			window.open(url);
+		},
+	},
 };
 </script>
 
