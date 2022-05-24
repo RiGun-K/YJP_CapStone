@@ -33,6 +33,7 @@ public class OrderMenu {
     @JoinColumn(name = "campingId")
     private Camping camping;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "detailId")
     private CampingDetail campingDetail;

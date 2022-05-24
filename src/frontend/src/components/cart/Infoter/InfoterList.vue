@@ -71,7 +71,10 @@
             주소 - {{ product.address }}
           </div>
           <div class="card-body">
-            조회수 - {{ product.buyViews }}
+            조회수 - {{ product.campingViews }}
+          </div>
+          <div class="card-body">
+            객실수 - {{ product.campingDetails.length }}
           </div>
         </div>
         <br>
