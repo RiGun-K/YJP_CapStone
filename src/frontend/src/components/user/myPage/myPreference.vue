@@ -1,56 +1,71 @@
 <template>
   <div class="divBody">
-    <div class="btnOuter" v-for="(obj, index) in aaa">
+    <div class="btnOuter" v-for="(obj, index) in largeList">
       <div class="labelDiv">
-        <label style="margin-right: 20px"><h1>태그</h1></label>
+        <label style="margin-right: 20px"><h1>{{obj.kindname}}</h1></label>
         <label @click="viewCheck(index)">보이기</label>
       </div>
-      <div v-for="(obj2, index2) in aaa[index]" class="btnDiv"  v-show="checkList[index]">
-        <button class="btn" @click="chBack(index, index2)">{{obj2.a}}</button>
+      <div v-for="(obj2, index2) in smallList[index]" class="btnDiv"  v-show="checkList[index]">
+        <button class="btn" @click="chBack(index, index2)">{{obj2.kindname}}</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "myPreference",
   data(){
     return{
-      allList:[],
-      viewList:[],
+      largeList:[],
+      smallList:[],
       checkList:[],
-      aaa:[[{a:'aa', b:1 },{a:'aa1', b:1 },{a:'aa2', b:0 }],
-           [{a:'aa', b:0  },{a:'aa1', b:1 },{a:'aa2', b:0 },{a:'aa3', b:1 }],
-           [{a:'aa', b:0  },{a:'aa1', b:1 },{a:'aa2', b:0 },{a:'aa3', b:1 }, {a:'aa', b:0  }, {a:'aa', b:0  }, {a:'aa', b:0  }, {a:'aa', b:0  }],
-           [{a:'aa', b:0  },{a:'aa1', b:1 },{a:'aa2', b:0 },{a:'aa3', b:1 }]]
+      flag:false
     }
   },
   created() {
-    for (var i = 0; i < this.aaa.length; i++){
-      this.checkList[i] = true;
-    }
+    axios.get("/api/allKindGet")
+        .then((res)=>{
+          for(var x = 0; x < res.data.length; x++){
+            if(res.data[x].parentkind == null) {
+              this.largeList.push(res.data[x])
+              this.checkList.push(true);
+            }
+          }
+
+          for(var x = 0; x < this.largeList.length; x++){
+            var list = []
+            for(var y = 0; y < res.data.length; y++){
+              if(res.data[y].parentkind == null){
+              }else if(this.largeList[x].kindname == res.data[y].parentkind.kindname){
+                list.push(res.data[y])
+              }
+            }
+            this.smallList.push(list)
+          }
+
+          setTimeout(()=>{
+            this.flag = true
+          },100)
+        }).catch((err)=>{
+      console.log(err)
+    })
   },
   mounted() {
-    var btn = document.getElementsByClassName("btn")
-    var index = 0;
-    for (var i = 0; i < this.aaa.length; i++){
-      for(var y = 0; y < this.aaa[i].length; y++){
-        if(this.aaa[i][y].b==0){
-          btn[index].classList.add("clicked")
-        }
-        index++;
-      }
-    }
   },
   methods:{
     chBack(index, index2){
       var btn = document.getElementsByClassName("btn")
+      console.log(btn[0])
       var i = index2;
-      for(var a = 0; a < index; a++){
-        i += this.aaa[a].length
-      }
 
+      if(index != 0){
+        for(var x = 0; x < index; x++){
+          i += this.smallList[x].length
+        }
+      }
       if(btn[i].classList.item(1) == "clicked"){
         btn[i].classList.remove("clicked")
       }else{
@@ -62,6 +77,34 @@ export default {
         this.checkList[index] = false
       }else{
         this.checkList[index] = true
+      }
+    }
+  },
+  watch:{
+    flag(){
+      var list = ["소분류11", "소분류12"]
+      var check = false
+      var index = 0
+      var btn = document.getElementsByClassName("btn")
+      console.log(this.smallList)
+      console.log(this.smallList.length)
+
+      for(var x = 0; x < 2; x++){
+        for(var y = 0; y < this.smallList.length; y++){
+          for(var z = 0; z < this.smallList[y].length; z++){
+            if(this.smallList[y][z].kindname == list[x]){
+              btn[index].classList.add("clicked")
+              check = true
+              index = 0
+              break
+            }
+            index++
+          }
+          if(check){
+            check = false
+            break
+          }
+        }
       }
     }
   }
@@ -108,5 +151,8 @@ export default {
 }
 .clicked{
   background: red;
+}
+h1{
+  color: #5f8c98;
 }
 </style>

@@ -72,6 +72,9 @@ export default {
       console.log(err)
     });
     this.boxArrayR()
+    setTimeout(()=>{
+      this.backFlag = true
+    },100)
   },
   created() {
     this.userId = store.getters.getLoginState.loginState
@@ -102,19 +105,20 @@ export default {
       useTimeList: [],
       disabledDates: [],
       stateCheck: false,
-      boxArray: {}
+      boxArray: [],
+      backFlag : false
     }
   },
   methods: {
     boxArrayR() {
-      let arrayone = {}
+      let arrayone = []
       let k= 0;
       for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
         arrayone[0 + i % 5]=this.boxList.storageBoxes[i]
 
         if ((i + 1) % 5 == 0 || (i+1) == this.boxList.storageBoxes.length) {
           this.boxArray[0+k] = arrayone
-          arrayone = {}
+          arrayone = []
           k= k+1;
         }
       }
@@ -195,12 +199,36 @@ export default {
       this.form.useStorageStartTime = ''
       this.form.useStorageEndTime = ''
     }
+  },
+  watch:{
+    backFlag(){
+      var divItem = document.getElementsByClassName("storage-box")
+      var index = 0
+      for(var x = 0; x < this.boxArray.length; x++){
+        for(var y = 0; y < this.boxArray[x].length; y++){
+          if(this.boxArray[x][y].storageBoxState == 1){
+            divItem[index].classList.add("disabledDiv")
+          }else if(this.boxArray[x][y].storageBoxState == 2){
+            divItem[index].classList.add("playOutDiv")
+          }
+          index++
+        }
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
 /*추가*/
+.disabledDiv{
+  background: black;
+  color: white;
+}
+.playOutDiv{
+  background: black;
+  color: red;
+}
 .detailDiv{
   margin-top: 3%;
   margin-right: 5%;

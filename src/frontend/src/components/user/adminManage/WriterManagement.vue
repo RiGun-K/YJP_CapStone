@@ -16,7 +16,7 @@
       </tr>
       <tr v-for="(obj, index) in viewList" :key="obj.writer_code">
         <td>{{obj.writer_code}}</td>
-        <td>{{obj.title}}</td>
+        <td  @click="toWriter(obj.writer_code)">{{obj.title}}</td>
         <td>{{obj.mid.mnick}}</td>
         <td></td>
         <td></td>
@@ -73,6 +73,9 @@ export default {
     },
     reStart(){
       this.$router.go()
+    },
+    toWriter(index){
+      this.$router.push("/view/"+index)
     }
   },
   created() {
