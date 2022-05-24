@@ -93,6 +93,7 @@ export default {
     this.DataList();
     console.log("날짜 받아오기 시작")
     console.log(this.$route.query.startDate)
+    console.log(this.$route.query.endDate)
   },
   data () {
     return {

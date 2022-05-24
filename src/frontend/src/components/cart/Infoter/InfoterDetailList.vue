@@ -118,11 +118,32 @@
           <div class="card-body">
             객실 가격 - {{ room.detailPrice }}
           </div>
+          <div>
+            <p style="margin-left: 3%; margin-top: 2%">예약기간 설정</p>
+            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+                        locale="ko-KR"
+                        :min-date="today"
+                        :max-date="end"
+                        type="date"
+                        range
+                        format="yyyy/MM/dd"
+                        value-format="yyyyMMdd"
+                        :enableTimePicker="false"
+                        autoApply
+                        v-on="toString()"
+                        :closeOnAutoApply="false"
+                        placeholder="예약 날짜를 선택해주세요."
+                        v-model="reservationDate"
+                        @click="DayList(room.orderMenus.orders)"
+                        :disabledDates="disabledDates"/>
+          </div>
           <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
         </div>
         <br>
       </div>
     </div>
+  </div>
+
 
     <br>
     <br>
@@ -186,25 +207,6 @@
       </div>
       <br>
     </div>
-    <div>
-      <p style="margin-left: 3%; margin-top: 2%">대여기간 설정</p>
-      <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
-                  locale="ko-KR"
-                  :min-date="today"
-                  :max-date="end"
-                  type="date"
-                  range
-                  format="yyyy/MM/dd"
-                  value-format="yyyyMMdd"
-                  :enableTimePicker="false"
-                  autoApply
-                  v-on="toString()"
-                  :closeOnAutoApply="false"
-                  placeholder="예약 날짜를 선택해주세요."
-                  v-model="reservationDate"
-                  :disabledDates="disabledDates"/>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -286,8 +288,6 @@ export default {
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
             console.log(this.roomContent);
-            console.log(this.content.filePath);
-            console.log(this.content.filename);
           })
           .catch(e => {
             console.log(e);
@@ -296,6 +296,7 @@ export default {
     detailData() {
       this.stateCheck = true;
     },
+
     buyData(detailId) {
       console.log(this.startDate)
       console.log(this.endDate)
@@ -310,8 +311,8 @@ export default {
             endDate: this.endDate
           }
         })
-      }
-    },
+
+    }},
     detail_3() {
       this.areaCheck = true
       let check = prompt("1+1 은?");
