@@ -150,6 +150,13 @@ public class StorageController {
         return storageList;
     }
 
+//    보관함코드로 보관함 정보 찾기
+    @GetMapping("/getStorageToBox/{boxCode}")
+    public Storage getStorageToBox(@PathVariable(value = "boxCode")long boxCode){
+        Optional<Storage> storage = storageRepository.findByStorageBoxCode(boxCode);
+        return storage.get();
+    }
+
     //    보관소 상세보기
     @GetMapping("/storageView/{storageCode}")
     public Storage getStorageDetail(@PathVariable(value = "storageCode") Long storageCode) {
@@ -168,6 +175,7 @@ public class StorageController {
         Optional<StorageBox> storageBox = storageBoxRepository.findByStorageNameAndStorageBoxName(storageName,boxName);
         return storageBox.get().getStorageBoxCode();
     }
+
 
     //  모든 매니저조회
     @GetMapping("/getStorageManger")
@@ -191,6 +199,18 @@ public class StorageController {
         Optional<StorageBox> box = storageBoxRepository.findById(storageBoxCode);
         List<UseStorageBox> useBox = useStorageBoxRepository.findByStorageBoxCode(box.get());
         return useBox;
+    }
+
+    // 보관소 관리자가 보관함이 비어졋음을 알리는거
+    @GetMapping("/clearBox/{boxCode}")
+    public Result clearBox(@PathVariable(value = "boxCode")long boxCode){
+        Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
+        if (storageBox.isEmpty()){
+            return new Result("no");
+        }
+        storageBox.get().setStorageBoxState("0");
+        storageBoxRepository.save(storageBox.get());
+        return new Result("ok");
     }
 
     //보관함 연장 결제
@@ -229,13 +249,20 @@ public class StorageController {
     }
 
     //보관함 계약 해지
-    @PostMapping("/closeBox")
-    public Result closeBox(@RequestBody RenewalBox renewalBox) {
-        Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
-        Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
+    @PostMapping("/closeBox/{useBoxCode}")
+    public Result closeBox(@PathVariable(value = "useBoxCode")long useBoxCode) {
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
+        long boxCode = useStorageBox.get().getStorageBoxCode().getStorageBoxCode();
+        Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
 
-        storageBox.get().setStorageBoxState("0");
-        storageBoxRepository.save(storageBox.get());
+        UseStorageBox useBox = useStorageBox.get();
+        StorageBox box = storageBox.get();
+
+        useBox.setUseStorageState("1");
+        box.setStorageBoxState("6");
+
+        useStorageBoxRepository.save(useBox);
+        storageBoxRepository.save(box);
 
         return new Result("ok");
     }
@@ -488,6 +515,14 @@ public class StorageController {
         useStorageBoxRepository.save(afterUSBox.get());
 
         return new Result("ok");
+    }
+
+    // 내가 사용중인 보관함 조회
+    @GetMapping("getUseBox/{useBoxCode}")
+    private UseStorageBox getUseBox(@PathVariable(value = "useBoxCode")long useBoxCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
+
+        return useStorageBox.get();
     }
 
     // 내장비 조회

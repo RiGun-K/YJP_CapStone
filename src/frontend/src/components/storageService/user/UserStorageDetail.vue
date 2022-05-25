@@ -108,13 +108,12 @@ export default {
   methods: {
     boxArrayR() {
       let arrayone = []
-      let k = 0;
       for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
         arrayone[0 + i % 5] = this.boxList.storageBoxes[i]
-        if ((i + 1) % 5 == 0 || (i+1) == this.boxList.storageBoxes.length) {
-          this.boxArray[0+k] = arrayone
+
+        if ((i + 1) % 5 == 0 || (i + 1) == this.boxList.storageBoxes.length) {
+          this.boxArray.push(arrayone)
           arrayone = []
-          k= k+1;
         }
       }
     },
