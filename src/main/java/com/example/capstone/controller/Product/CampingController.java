@@ -329,6 +329,7 @@ public class CampingController {
         campingRepository.save(campingF.get());
     }
 
+
     /* 캠핑장 검색 */
     @GetMapping("/search_CampingList")
     public List<Camping> searchCampingList(@RequestParam("searchCamping") String searchCamping) {

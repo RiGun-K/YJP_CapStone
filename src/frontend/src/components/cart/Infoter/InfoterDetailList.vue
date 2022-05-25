@@ -118,8 +118,9 @@
           <div class="card-body">
             객실 가격 - {{ room.detailPrice }}
           </div>
-          <div>
-            <p style="margin-left: 3%; margin-top: 2%">예약기간 설정</p>
+            <br>
+            <p>예약기간 설정</p>
+            <div class="reservation">
             <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
                         locale="ko-KR"
                         :min-date="today"
@@ -134,7 +135,7 @@
                         :closeOnAutoApply="false"
                         placeholder="예약 날짜를 선택해주세요."
                         v-model="reservationDate"
-                        @click="DayList(room.orderMenus.orders)"
+                        @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
           </div>
           <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
@@ -147,6 +148,13 @@
 
     <br>
     <br>
+  <div v-if="areaCheck">
+    <br>
+    <h2>캠핑장 위치정보</h2>
+    <div class="mapDiv">
+      <div id="map"></div>
+    </div>
+  </div>
 
     <br>
     <div class="btn_area">
@@ -164,13 +172,7 @@
       </button>
     </div>
 
-    <div v-if="areaCheck">
-      <br>
-      <h2>캠핑장 위치정보</h2>
-      <div class="mapDiv">
-        <div id="map"></div>
-      </div>
-    </div>
+    <br>
 
     <h2>리뷰</h2>
     <div class="content-detail-list-1">
@@ -221,7 +223,6 @@ export default {
     this.DataList();
   },
   mounted() {
-    this.DayList();
   },
   data() {
     return {
@@ -256,17 +257,19 @@ export default {
     }
   },
   methods: {
-    DayList() {
-      for (var i = 0; i < this.content.orderMenus.length; i++) {
+    // orderMenus 가 있으면 예약일자가 있음 , 없으면 예약없다는 뜻
+    DayList(orderMenus) {
+      this.disabledDates = []
+      for (var i = 0; i < orderMenus.length; i++) {
         let startDate = new Date(
-            this.content.orderMenus[i].orders.startDate[0],
-            this.content.orderMenus[i].orders.startDate[1] - 1,
-            this.content.orderMenus[i].orders.startDate[2])
+            orderMenus[i].orders.startDate[0],
+            orderMenus[i].orders.startDate[1] - 1,
+            orderMenus[i].orders.startDate[2])
 
         let endDate = new Date(
-            this.content.orderMenus[i].orders.endDate[0],
-            this.content.orderMenus[i].orders.endDate[1] - 1,
-            this.content.orderMenus[i].orders.endDate[2])
+            orderMenus[i].orders.endDate[0],
+            orderMenus[i].orders.endDate[1] - 1,
+            orderMenus[i].orders.endDate[2])
 
         var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
         const tomorrow = startDate
@@ -301,6 +304,7 @@ export default {
 
       console.log(this.startDate)
       console.log(this.endDate)
+      const period = this.endDate - this.startDate
       if (this.startDate == this.endDate) {
         alert('예약 날짜를 선택해주세요.')
         return
@@ -309,7 +313,8 @@ export default {
           path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
           query: {
             startDate: this.startDate,
-            endDate: this.endDate
+            endDate: this.endDate,
+            period: period
           }
         })
 
@@ -430,9 +435,10 @@ img {
   text-align: center;
 }
 .mapDiv{
-  margin-top: 5%;
+  margin-top: -17%;
   width: 63%;
   float: right;
+  margin-right: -47%;
 }
 #map {
   width: 400px;
@@ -612,6 +618,10 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 }
 .Recommend{
   margin-left: 70%;
+}
+.reservation {
+  width: 285%;
+  margin-left: 80px
 }
 
 
