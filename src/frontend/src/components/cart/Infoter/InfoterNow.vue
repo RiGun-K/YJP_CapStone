@@ -166,7 +166,7 @@ export default {
               startDate: this.startDate,
               endDate: this.endDate,
               roomId: this.content.detailId,
-              campingId: this.campingId
+              campingId: this.content.campingId
             })
                 .then((res)=>{
                   console.log(res.data);

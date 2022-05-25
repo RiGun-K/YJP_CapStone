@@ -11,17 +11,17 @@
               <th>주문코드</th>
               <th>캠핑장</th>
               <th>객실명</th>
-              <th>수량</th>
+              <th>예약날짜</th>
               <th>주문금액</th>
             </tr>
             </thead>
             <tbody>
             <tr>
               <td>{{ order.orderCode }}</td>
-              <td>{{  }}</td>
-<!--              <td>{{ this.menus[index].camping.campingName }}</td>-->
+              <td>{{ this.menus[index].camping.campingName }}</td>
               <td>{{ this.menus[index].campingDetail.detailName }}</td>
-              <td>{{ this.menus[index].orderMenuCount }}개</td>
+              <td>{{ this.menus[index].orders.startDate[0] }}년 {{ this.menus[index].orders.startDate[1] }}월 {{ this.menus[index].orders.startDate[2] }}일 ~
+                {{ this.menus[index].orders.endDate[0] }}년 {{ this.menus[index].orders.endDate[1] }}월 {{ this.menus[index].orders.endDate[2] }}일</td>
               <td>{{ order.orderPrice }}</td>
             </tr>
             <!-- PathVariable 을 위해서는 router-link 작성 -->
@@ -57,7 +57,7 @@ export default {
                 .then(res2 =>{
                   this.orders = res.data;
                   this.menus = res2.data;
-                  console.log(this.menus);
+                  console.log(res2.data);
                 }).catch(e2 =>{
               console.log(e2)
             })
@@ -92,7 +92,7 @@ export default {
   border-left: none;
 }
 .order-card-list{
-  width: 40%;
+  width: 70%;
   height: 100%;
   margin-top: 2%;
   margin-left: 3%;

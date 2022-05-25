@@ -93,10 +93,11 @@ th, td{
   text-align: center;
 }
 #content {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 560px;
+  margin-left: 25%;
+  margin-top: 1%;
+  margin-right: 25%;
+  width: 50%;
+  text-align: center;
 }
 </style>
 

@@ -88,6 +88,11 @@ const routes = [
     component: () => import('@/components/user/myPage/MyOrder.vue')
   },
   {
+    path:'/myPreference',
+    name:'myPreference',
+    component: () => import('@/components/user/myPage/myPreference.vue')
+  },
+  {
     path:'/memberAdmin',
     name:'memberAdmin',
     component: () => import('@/components/user/adminManage/MemberManagementAdmin.vue')
@@ -345,7 +350,7 @@ const routes = [
     component: () => import('@/components/cart/Infoter/InfoterDetailBoard.vue'),
   },
   {
-    path: '/infoter/infoterNow/:campingId/:detailId',
+    path: '/infoter/infoterNow/:detailId',
     name: 'InfoterNow',
     component: () => import('@/components/cart/Infoter/InfoterNow.vue')
   },

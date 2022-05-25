@@ -78,7 +78,7 @@ export default {
     this.userId = store.getters.getLoginState.loginState
     this.boxList = this.$store.state.storage
     this.name = this.boxList.storageName
-    console.log(this.boxList.storageBoxes)
+    this.form.storageName = this.name
   },
   data() {
     return {
@@ -89,16 +89,11 @@ export default {
       name: '',
       boxName: '',
       date: null,
-      startDay: '',
-      endDay: '',
       userId: '',
       form: {
-        storageName: '',
         storageBoxCode: '',
-        useStorageStartTime: '',
-        useStorageEndTime: '',
+        storageName: '',
         price: '',
-        item: []
       },
       today: new Date(),
       useTimeList: [],
@@ -110,99 +105,86 @@ export default {
   methods: {
     boxArrayR() {
       let arrayone = {}
-      let k= 0;
+      let k = 0;
       for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
-        arrayone[0 + i % 5]=this.boxList.storageBoxes[i]
+        arrayone[0 + i % 5] = this.boxList.storageBoxes[i]
 
-        if ((i + 1) % 5 == 0 || (i+1) == this.boxList.storageBoxes.length) {
-          this.boxArray[0+k] = arrayone
+        if ((i + 1) % 5 == 0 || (i + 1) == this.boxList.storageBoxes.length) {
+          this.boxArray[0 + k] = arrayone
           arrayone = {}
-          k= k+1;
+          k = k + 1;
         }
       }
-      console.log('this.boxArray')
-      console.log(this.boxArray)
     },
     backPage() {
       this.$router.push('/storageView')
     },
     // 각 보관함별 사용일 찾기
     findTime(boxCode) {
+      this.boxName = boxCode.storageBoxName
+      this.form.storageBoxName = boxCode.storageBoxName
+      this.form.storageBoxCode = boxCode.storageBoxCode
       this.date = null
       this.disabledDates = []
       axios.get('/api/findUseTime/' + boxCode.storageBoxCode)
           .then(res => {
             this.useTimeList = res.data
-            console.log(res.data)
-
-            for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
-              if (boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode) {
-                if (this.boxList.storageBoxes[i].storageBoxState == '0') {
-                  this.stateCheck = true
-                } else {
-                  this.stateCheck = false
-                }
-              }
-            }
-            for (var i = 0; i < this.useTimeList.length; i++) {
-              let startDate = new Date(
-                  this.useTimeList[i].useStorageStartTime[0],
-                  this.useTimeList[i].useStorageStartTime[1] - 1,
-                  this.useTimeList[i].useStorageStartTime[2])
-
-              let endDate = new Date(
-                  this.useTimeList[i].useStorageEndTime[0],
-                  this.useTimeList[i].useStorageEndTime[1] - 1,
-                  this.useTimeList[i].useStorageEndTime[2])
-
-              var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
-              console.log(length)
-              const tomorrow = startDate
-              this.disabledDates.push(tomorrow.toString())
-
-              for (var j = 0; j < length; j++) {
-                tomorrow.setDate(tomorrow.getDate() + 1)
-                this.disabledDates.push(tomorrow.toString())
-              }
-            }
           })
           .catch(err => {
             console.log(err)
           })
-      this.boxName = boxCode.storageBoxName
+      for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
+        if (boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode) {
+          if (this.boxList.storageBoxes[i].storageBoxState == '0') {
+            this.stateCheck = true
+          } else {
+            this.stateCheck = false
+          }
+        }
+      }
+      // 달력에 날짜 비활성화
+      for (var i = 0; i < this.useTimeList.length; i++) {
+        let startDate = new Date(
+            this.useTimeList[i].useStorageStartTime[0],
+            this.useTimeList[i].useStorageStartTime[1] - 1,
+            this.useTimeList[i].useStorageStartTime[2])
+
+        let endDate = new Date(
+            this.useTimeList[i].useStorageEndTime[0],
+            this.useTimeList[i].useStorageEndTime[1] - 1,
+            this.useTimeList[i].useStorageEndTime[2])
+
+        var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
+        const tomorrow = startDate
+        this.disabledDates.push(tomorrow.toString())
+
+        for (var j = 0; j < length; j++) {
+          tomorrow.setDate(tomorrow.getDate() + 1)
+          this.disabledDates.push(tomorrow.toString())
+        }
+      }
       this.form.price = boxCode.storageBoxPrice
-      console.log('this.form.price')
-      console.log(this.form.price)
-      this.form.storageBoxCode = boxCode.storageBoxCode
-      console.log('this.form.storageBoxCode')
-      console.log(this.form.storageBoxCode)
-      console.log('this.form234234234')
-      console.log(this.form)
     },
     pay() {
       if (this.date == null) {
         alert('날짜 선택하세요')
         return
       }
-      this.startDay = this.date
-      const start = new Date(this.startDay)
-      this.endDay = new Date(start.setDate(start.getDate() + 29))
 
-      this.form.storageName = this.name
-      this.form.useStorageStartTime = this.startDay
-      this.form.useStorageEndTime = this.endDay
-      this.form.item = this.checkItem
-      console.log('14234235144444444444235e')
-      console.log(this.form)
-
-      this.$store.commit('putCartStorage', this.form)
+      const start = new Date(this.date)
+      let timeStorage = {}
+      timeStorage.useStorageStartTime = this.date
+      timeStorage.useStorageEndTime = new Date(start.setDate(start.getDate() + 29))
+      console.log('12222123144134')
+      console.log(this.form.storageBoxCode)
+      this.$store.commit('putItemStorage', this.checkItem)
+      this.$store.commit('putTimeStorage', timeStorage)
+      this.$store.commit('putInfoStorage', this.form)
       this.form.item = []
-      this.$router.push({name: "storagePay", params: this.form})
+      this.$router.push({name: "storagePay"})
 
       this.checkItem = []
       this.date = []
-      this.startDay = ''
-      this.endDay = ''
       this.form.storageBoxCode = ''
       this.form.userId = ''
       this.form.useStorageStartTime = ''
@@ -215,12 +197,13 @@ export default {
 
 <style scoped>
 /*추가*/
-.detailDiv{
+.detailDiv {
   margin-top: 3%;
   margin-right: 5%;
   margin-left: 5%;
 }
-.detailBtn{
+
+.detailBtn {
   text-align: left;
   left: 25%;
   position: relative;
