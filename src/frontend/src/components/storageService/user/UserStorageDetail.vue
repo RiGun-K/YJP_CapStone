@@ -212,7 +212,7 @@ export default {
       this.form.useStorageEndTime = this.endDay
       this.form.item = this.checkItem
 
-      const start = new Date(this.date)
+      // const start = new Date(this.date)
       let timeStorage = {}
       timeStorage.useStorageStartTime = this.date
       timeStorage.useStorageEndTime = new Date(start.setDate(start.getDate() + 29))

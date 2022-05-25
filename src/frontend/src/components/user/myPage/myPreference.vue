@@ -9,6 +9,10 @@
         <button class="btn" @click="chBack(index, index2)">{{obj2.kindname}}</button>
       </div>
     </div>
+    <div>
+      <button class="btnBottom">수정</button>
+      <button style="margin-left: 20px" class="btnBottom">취소</button>
+    </div>
   </div>
 </template>
 
@@ -153,5 +157,16 @@ export default {
 }
 h1{
   color: #5f8c98;
+}
+.btnBottom{
+  padding: 25px;
+}
+.btnBottom:hover{
+  background: black;
+  color: white;
+}
+.btnBottom:active{
+  background: blue;
+  color: white;
 }
 </style>
