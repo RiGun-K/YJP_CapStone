@@ -15,7 +15,6 @@
       <button @click="storageSearch()">검색</button>
     </div>
 
-
     <div class="listBody">
       <div v-for="(storage,index) in storageList" :key="index"
            @click="GetStorageDetail(storage.storageCode)" class="listObj">

@@ -456,6 +456,11 @@ const routes = [
     component:()=>import('@/components/storageService/user/RenewalBox.vue')
   },
   {
+    path: "/myBox/closeBox",
+    name: "closeBox",
+    component:()=>import('@/components/storageService/user/CloseBox.vue')
+  },
+  {
     path: "/myBox/moveBox",
     name: "moveBox",
     component:()=>import('@/components/storageService/user/MoveBox.vue')

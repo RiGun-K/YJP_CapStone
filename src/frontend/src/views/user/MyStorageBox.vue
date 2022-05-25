@@ -18,8 +18,10 @@
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.startTime }}</td>
                 <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }}</td>
                 <td v-if="useBox.none">
-                  <button v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button><button v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
-                  <button class="mystoragebox-re" v-if="useBox.BoxState == '3' || useBox.useBoxState=='2'" @click="renewalPay(useBox)">보관함 연장 / 해지</button>
+                  <button class="mystoragebox-re" v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button>
+                  <button class="mystoragebox-re" v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
+                  <button class="mystoragebox-re" v-if="useBox.BoxState == '3' || useBox.useBoxState=='2'" @click="renewalPay(useBox)">연장</button>
+                  <button class="mystoragebox-re" @click="closeBox(useBox)">해지</button>
                 </td>
               </tr>
             </tbody>
@@ -188,7 +190,6 @@ export default {
       this.$router.push({
         name: 'repairBox',
         params: {
-          userId: this.memberId,  // 사용자 아이디
           storageName: useBox.storageName,    // 보관소 이름
           boxName: useBox.boxName,       // 보관함 이름
           useBoxCode : useBox.useBoxCode  // 사용 보관함 코드
@@ -213,6 +214,9 @@ export default {
         }
       })
     },
+    closeBox(useBox){
+      this.$router.push({name:'closeBox',params:{useBoxCode:useBox.useBoxCode}})
+    }
   }
 }
 </script>

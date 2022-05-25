@@ -2,13 +2,19 @@
   <div>
 <!--    위치검색 하고 지도에 보여주고 확인하고 선택하면 주소 등록 되고 다음으로 가기-->
 <!--    아니면 집으로 선택하면 집주소로 주소 등록되고 다음으로 가기-->
-
-
-    <input type="text" v-model="zipCode">우편주소
+    <div>
+      <label for="search">검색</label>
+      <input type="text" id="search" v-model="searchPlace">
+      <button @click="search(searchPlace)">검색</button>
+    </div>
+    <label for="zipCode">우편주소</label>
+    <input type="text" id="zipCode" v-model="zipCode">
     <button @click="showApi()">우편번호 찾기</button>
-    <input type="text" v-model="address">주소
-    <input type="text" v-model="detailAddress">상세주소
-    <button @click="search">검색</button>
+    <label for="address" >주소</label>
+    <input type="text" id="address" v-model="address">
+    <label for="detailAddress">상세주소</label>
+    <input type="text" id="detailAddress" v-model="detailAddress">
+    <button @click="search(address + detailAddress)">검색</button>
     <hr>
     <div id="map"></div>
     <hr>
@@ -35,6 +41,7 @@ export default {
       zipCode: '',
       address: '',
       detailAddress: '',
+      searchPlace:'',
     }
   },
   mounted() {
@@ -50,15 +57,16 @@ export default {
       document.head.appendChild(script);
     }
 
-    axios.get('/api/myAddress/'+ this.form.userId)
-    .then(res=>{
-      console.log(res.data)
-    }).catch(err=>{
-      console.log(err)
-    })
-
   },
   methods: {
+    myAddress(){
+      axios.get('/api/myAddress/'+ this.form.userId)
+          .then(res=>{
+            console.log(res.data)
+          }).catch(err=>{
+        console.log(err)
+      })
+    },
     boxMovePay() {
       if (this.address == '' || this.zipCode == '') {
         alert('이동할 주소를 입력하세요')
@@ -76,7 +84,6 @@ export default {
           detailAddress: this.detailAddress
         }
       })
-
     },
     showApi() {
       new window.daum.Postcode({
@@ -94,15 +101,12 @@ export default {
         level: 8,
       };
       this.map = new kakao.maps.Map(container, options);
-
-
     },
-    search() {
+    search(input) {
       // 장소 검색 객체를 생성합니다
       var ps = new kakao.maps.services.Places();
       // 키워드로 장소를 검색합니다
-      var keyword = this.address + this.detailAddress
-      ps.keywordSearch(keyword, this.placesSearchCB);
+      ps.keywordSearch(input, this.placesSearchCB);
 
     },
     // 키워드 검색 완료 시 호출되는 콜백함수 입니다
@@ -122,7 +126,6 @@ export default {
         this.map.setBounds(bounds);
       }
     },
-
     displayMarker(place) {
       // 마커를 생성하고 지도에 표시합니다
       var marker = new kakao.maps.Marker({
@@ -138,7 +141,10 @@ export default {
         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>')
         infowindow.open(this.map, marker)
       })
-    }
+    },
+    roundSearch(){
+
+    },
   }
 }
 </script>
