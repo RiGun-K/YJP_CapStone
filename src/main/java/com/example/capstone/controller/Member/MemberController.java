@@ -47,6 +47,9 @@ public class MemberController {
     @Autowired
     private MPRRepository mprRepository;
 
+    @Autowired
+    private final MailCheck mailCheck;
+
     //////로그인 부분///////
     @PostMapping("/login")
     public Member login(@RequestBody HashMap<String, String> loginMem){
@@ -250,16 +253,43 @@ public class MemberController {
     }
 
     @PostMapping("acceptCompany")
-    public void acceptCompany(@RequestBody HashMap<String, String> check){
+    public Boolean acceptCompany(@RequestBody HashMap<String, String> check){
         Optional<Company> company = companyRepository.findCompanyByCCode(check.get("CCode"));
         company.get().setCsc("2");
         Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
         members.get().setMSC("4");
         companyRepository.save(company.get());
         memberRepository.save(members.get());
+        return true;
     }
-    @Autowired
-    private final MailCheck mailCheck;
+
+    @PostMapping("refuseCompany")
+    public Boolean refuseCompany(@RequestBody HashMap<String, String> body){
+        Optional<Company> company = companyRepository.findCompanyByCCode(body.get("CCode"));
+        company.get().setCsc("0");
+        Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
+        members.get().setMSC("3");
+        companyRepository.save(company.get());
+        memberRepository.save(members.get());
+        return true;
+    }
+
+    ///판매자 상태 변경///
+    @PostMapping("chcscCompany")
+    public Boolean chcscCompany(@RequestBody HashMap<String, String> body){
+        Optional<Company> company = companyRepository.findCompanyByCCode(body.get("CCode"));
+        Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
+        if(Integer.parseInt(company.get().getCsc()) == 0){
+            company.get().setCsc("2");
+            members.get().setMSC("4");
+        }else{
+            company.get().setCsc("0");
+            members.get().setMSC("3");
+        }
+        companyRepository.save(company.get());
+        memberRepository.save(members.get());
+        return true;
+    }
 
     ///인증메일 처리///
     @PostMapping("mailCheck")

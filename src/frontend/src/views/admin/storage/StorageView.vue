@@ -60,7 +60,7 @@ export default {
   margin-left: 2%;
   margin-top: 2%;
   text-align: center;
-  width: 6%;
+  width: 100px;
   padding: 0.5%;
   background-color: #ffffff;
   font-weight: bolder;

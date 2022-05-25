@@ -14,7 +14,7 @@
       <th>이메일</th>
       <th>홈페이지</th>
       <th>전화번호</th>
-      <th>허가</th>
+      <th>상태</th>
     </tr>
     <tr v-for="(company) in viewList" v-bind:key="company.ccode">
       <td >{{company.member.mid}}</td>
@@ -28,9 +28,9 @@
       <td>{{company.chp}}</td>
       <td v-if="company.csc == 1">
         <button @click="accept(company.ccode)">승인</button>
-        <button>취소</button>
+        <button @click="refuse(company.ccode)">취소</button>
       </td>
-      <td v-else>
+      <td v-else @click="chScs(company.ccode)">
         {{acceptCheck(company.csc)}}
       </td>
     </tr>
@@ -57,8 +57,9 @@ export default {
       axios.post("/api/acceptCompany",{
         CCode:index
       }).then((res)=>{
-        console.log(res)
-        this.$router.go()
+        if(res.data){
+          this.$router.go()
+        }
       }).catch((err)=>{
         console.log(err)
       })
@@ -71,14 +72,37 @@ export default {
           }
         }
     },
-    refuse(){
-
+    refuse(index){
+      axios.post("/api/refuseCompany",{
+        CCode:index
+      }).then((res)=>{
+        if(res.data){
+          this.$router.go()
+        }
+      }).catch((err)=>{
+        console.log(err)
+      })
     },
     acceptCheck(index){
-      if(index ==0){
-        return "정지됨"
-      }else{
-        return "승인됨"
+      switch (index){
+        case "0":
+          return "자격정지"
+        case "2":
+          return "자격승인"
+      }
+    },
+    chScs(index){
+      if(confirm("판매자의 상태를 변경합니까?")){
+        axios.post("/api/chcscCompany",{
+          CCode:index
+        }).then((res)=>{
+          if(res.data){
+            alert("판매자의 상태가 변경됩니다")
+            this.$router.go()
+          }
+        }).catch((err)=>{
+          console.log(err)
+        })
       }
     },
     reStart(){

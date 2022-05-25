@@ -1,6 +1,5 @@
 <template>
   <h3 style="margin-top: 5%; margin-left: 5%;">보관소 매니저 관리</h3>
-
   <div>
     <table>
       <thead>

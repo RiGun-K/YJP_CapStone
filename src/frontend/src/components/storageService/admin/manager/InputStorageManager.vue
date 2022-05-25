@@ -1,45 +1,45 @@
 <template>
-  <button @click="$router.push({name:'manager'})">뒤로가기</button>
-
-  <h5>보관소 매니저</h5>
-  <div class="manager-add">
-    <div class="mb-3">
-      <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
-      <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
-             placeholder="매니저id">
+  <div class="divBody">
+    <div class="divTitle">
+      <h1 style="color: black">보관소 매니저</h1>
     </div>
-    <button class="storage-box-b" @click="CheckMember()">CHECK</button>
-    <p v-if="memberIdCheck">가능</p>
-
-    <div>
-      <labe for="storage-search">보관소</labe>
-      <input id="storage-search" type="text" v-model="searchStorage" @keyup.enter="storageSearch()" placeholder="보관소명">
-      <button @click="storageSearch()">검색</button>
-
-      <div>
+    <div class="divAdd">
+        <label for="exampleFormControlInput1" class="labelTitle">매니저아이디</label>
+        <input type="text" v-model="memberId" id="exampleFormControlInput1"
+               placeholder="매니저id" class="inputSearch">
+        <button @click="CheckMember()" class="btnCheck">CHECK</button>
+        <p v-if="memberIdCheck" style="margin-top: 1%">상태확인 : 사용가능</p>
+    </div>
+    <div class="divSearch">
+      <label class="labelTitle">보관소</label>
+      <input id="storage-search" type="text" v-model="searchStorage"
+             @keyup.enter="storageSearch()" placeholder="보관소명"
+             class="inputSearch">
+      <button @click="storageSearch()" class="btnSearch">검색</button>
+    </div>
+    <div class="divManager">
         <table>
           <thead>
-          <tr>
-            <th calspan="2">지역</th>
-            <th calspan="2">보관소명</th>
-          </tr>
+            <tr>
+              <th>지역</th>
+              <th>보관소명</th>
+            </tr>
           </thead>
           <tbody>
-          <tr v-for="(storage,index) in storageList">
-            <td>{{ index + 1 }}</td>
-            <td>{{ storage.storageAddress }}</td>
-            <td>{{ storage.storageName }}</td>
-            <td>
-              <button @click="checkStorage(storage.storageCode)">선택</button>
-            </td>
-          </tr>
+            <tr v-for="(storage,index) in storageList">
+              <td>{{ storage.storageAddress }}</td>
+              <td>{{ storage.storageName }}</td>
+              <td>
+                <button @click="checkStorage(storage.storageCode)">선택</button>
+              </td>
+            </tr>
           </tbody>
         </table>
-      </div>
     </div>
-
-
-    <button v-if="memberIdCheck" @click="postManager">ADD</button>
+      <button v-if="memberIdCheck" @click="postManager">ADD</button>
+    <div class="divReturn">
+      <button @click="$router.push({name:'manager'})">뒤로가기</button>
+    </div>
   </div>
 </template>
 
@@ -96,7 +96,7 @@ export default {
       if (!this.memberId) {
         alert('아이디를 입력하세요')
       } else {
-        axios.get('api/checkManager/' + this.memberId)
+        axios.get('/api/checkManager/' + this.memberId)
             .then((res) => {
               console.log(res)
               if (res.data.result == 'ok') {
@@ -152,5 +152,36 @@ export default {
 </script>
 
 <style scoped>
-
+.divBody{
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+}
+.divTitle, .divAdd, .divSearch, .divManager{
+  margin-top: 1.5%;
+}
+.btnCheck, .btnSearch{
+  margin-left: 10px;
+  width: 100px;
+}
+.btnCheck:hover, .btnSearch:hover{
+  background: black;
+  color: white;
+}
+.inputSearch{
+  margin-left: 10px;
+}
+table{
+  width: 100%;
+}
+th, td{
+  width: 30%;
+}
+.divReturn{
+  margin-top: 1%;
+  text-align: center;
+}
+.labelTitle{
+  width: 100px;
+}
 </style>
