@@ -91,9 +91,12 @@ export default {
   components: { Datepicker },
   created() {
     this.DataList();
-    console.log("날짜 받아오기 시작")
+    console.log("예약 시작기간")
     console.log(this.$route.query.startDate)
+    console.log("예약 종료기간")
     console.log(this.$route.query.endDate)
+    console.log("예약 총 기간")
+    console.log(this.$route.query.period)
   },
   data () {
     return {
