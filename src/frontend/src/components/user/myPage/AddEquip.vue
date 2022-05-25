@@ -31,7 +31,7 @@ export default {
       equipName:'',
       equipKind:'',
       equipcount:1,
-      kindList:''
+      kindList:[]
     }
   },
   methods:{
@@ -66,7 +66,11 @@ export default {
   created() {
     axios.get("/api/allKindGet")
     .then((res)=>{
-      this.kindList = res.data
+      for(var x = 0; x < res.data.length;x++){
+        if(res.data[x].parentkind != null){
+          this.kindList.push(res.data[x])
+        }
+      }
       this.equipKind = this.kindList[0].kindname
     }).catch((err)=>{
       console.log(err)

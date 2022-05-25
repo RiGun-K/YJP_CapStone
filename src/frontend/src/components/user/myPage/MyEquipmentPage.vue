@@ -2,19 +2,21 @@
   <div id="content">
     <table border="1px" style="margin-top: 1%">
       <tr>
-        <th colspan="4">
+        <th colspan="5">
           <h1 style="color: black; text-align: center">내 장비</h1>
         </th>
       </tr>
       <tr>
         <th>장비번호</th>
         <th>장비명</th>
+        <th>장비분류</th>
         <th>장비상태</th>
         <th>장비수량</th>
       </tr>
       <tr v-for="(body) in EquipList" :key="body.memEquipmentCode">
         <td>{{ body.memEquipmentCode}}</td>
         <td>{{ body.memEquipmentName}}</td>
+        <td>{{ body.kindid.kindname}}</td>
         <td>{{ stateCheck(body.memEquipmentState)}}</td>
         <td>{{ body.memEquipmentCount}}</td>
       </tr>
@@ -52,7 +54,6 @@ export default {
       MID:store.getters.getLoginState.mcode
     })
     .then((res)=>{
-      console.log(res.data)
       this.EquipList = res.data
     }).catch((err)=>{
       console.log(err)

@@ -1,6 +1,6 @@
 <template>
   <div class="reservation-orders">
-    <h1>Reservation Orders</h1>
+    <h1>Reservation Orderss</h1>
   </div>
 </template>
 

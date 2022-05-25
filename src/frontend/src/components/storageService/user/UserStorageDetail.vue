@@ -1,14 +1,14 @@
 <template>
   <div class="storage">
     <button @click="backPage" class="storage-back-btn">되돌아가기</button>
-
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
-    <div class="storage-view" v-for="(obj, index) in boxArray">
-      <div class="storage-box" v-for="box in boxArray[index]" @click="findTime(box)">
+    <div class="storage-view" v-for="(obj, index) in boxArray" >
+      <div class="storage-box" v-for="(box) in boxArray[index]" @click="findTime(box)" >
         <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
-          <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
+          <li>보관함 상태:
+            <p v-if="box.storageBoxState == '0'">사용가능</p>
             <p v-else>사용불가능</p>
           </li>
           <li>가격 : {{ box.storageBoxPrice }}원</li>
@@ -67,12 +67,14 @@ export default {
   mounted() {
     axios.get('/api/myItem/' + this.userId)
         .then(res => {
-          console.log(res.data)
           this.myItem = res.data
         }).catch(err => {
       console.log(err)
     });
     this.boxArrayR()
+    setTimeout(()=>{
+      this.backFlag = true
+    },100)
   },
   created() {
     this.userId = store.getters.getLoginState.loginState
@@ -100,6 +102,7 @@ export default {
       disabledDates: [],
       stateCheck: false,
       boxArray: [],
+      backFlag : false
     }
   },
   methods: {
@@ -127,6 +130,36 @@ export default {
       axios.get('/api/findUseTime/' + boxCode.storageBoxCode)
           .then(res => {
             this.useTimeList = res.data
+            for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
+              if (boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode) {
+                if (this.boxList.storageBoxes[i].storageBoxState == '0') {
+                  this.stateCheck = true
+                } else {
+                  this.stateCheck = false
+                }
+              }
+            }
+            for (var i = 0; i < this.useTimeList.length; i++) {
+              let startDate = new Date(
+                  this.useTimeList[i].useStorageStartTime[0],
+                  this.useTimeList[i].useStorageStartTime[1] - 1,
+                  this.useTimeList[i].useStorageStartTime[2])
+
+              let endDate = new Date(
+                  this.useTimeList[i].useStorageEndTime[0],
+                  this.useTimeList[i].useStorageEndTime[1] - 1,
+                  this.useTimeList[i].useStorageEndTime[2])
+
+              var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
+
+              const tomorrow = startDate
+              this.disabledDates.push(tomorrow.toString())
+
+              for (var j = 0; j < length; j++) {
+                tomorrow.setDate(tomorrow.getDate() + 1)
+                this.disabledDates.push(tomorrow.toString())
+              }
+            }
           })
           .catch(err => {
             console.log(err)
@@ -162,12 +195,21 @@ export default {
         }
       }
       this.form.price = boxCode.storageBoxPrice
+      this.form.storageBoxCode = boxCode.storageBoxCode
     },
     pay() {
       if (this.date == null) {
         alert('날짜 선택하세요')
         return
       }
+      this.startDay = this.date
+      const start = new Date(this.startDay)
+      this.endDay = new Date(start.setDate(start.getDate() + 29))
+
+      this.form.storageName = this.name
+      this.form.useStorageStartTime = this.startDay
+      this.form.useStorageEndTime = this.endDay
+      this.form.item = this.checkItem
 
       const start = new Date(this.date)
       let timeStorage = {}
@@ -188,14 +230,37 @@ export default {
       this.form.useStorageStartTime = ''
       this.form.useStorageEndTime = ''
     }
+  },
+  watch:{
+    backFlag(){
+      var divItem = document.getElementsByClassName("storage-box")
+      var index = 0
+      for(var x = 0; x < this.boxArray.length; x++){
+        for(var y = 0; y < this.boxArray[x].length; y++){
+          if(this.boxArray[x][y].storageBoxState == 1){
+            divItem[index].classList.add("disabledDiv")
+          }else if(this.boxArray[x][y].storageBoxState == 2){
+            divItem[index].classList.add("playOutDiv")
+          }
+          index++
+        }
+      }
+    }
   }
-
 }
 </script>
 
 <style scoped>
 /*추가*/
-.detailDiv {
+.disabledDiv{
+  background: black;
+  color: white;
+}
+.playOutDiv{
+  background: black;
+  color: red;
+}
+.detailDiv{
   margin-top: 3%;
   margin-right: 5%;
   margin-left: 5%;

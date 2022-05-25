@@ -105,7 +105,7 @@ public class Camping {
     public Camping() {}
 
     // 생성자 여러개 만들수 있음 DTO를 통해 INSERT 할경우
-    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID, List<CampingDetail> campingDetails, List<Images> images, List<OrderMenu> orderMenus) {
+    public Camping(String campingName, String campingInfo, String campingDetailState, String postalAddress, String address, String detailAddress, String savedTime, String origFilename, String filename, String filePath, Infoter infoterId, CampingArea areaId, Member MID, List<CampingDetail> campingDetails, List<Images> images) {
         this.campingName = campingName;
         this.campingInfo = campingInfo;
         this.campingDetailState = campingDetailState;
