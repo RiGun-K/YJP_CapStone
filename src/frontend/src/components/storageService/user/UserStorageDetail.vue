@@ -202,16 +202,11 @@ export default {
         alert('날짜 선택하세요')
         return
       }
-      this.startDay = this.date
-      const start = new Date(this.startDay)
-      this.endDay = new Date(start.setDate(start.getDate() + 29))
 
       this.form.storageName = this.name
-      this.form.useStorageStartTime = this.startDay
-      this.form.useStorageEndTime = this.endDay
       this.form.item = this.checkItem
 
-      // const start = new Date(this.date)
+      const start = new Date(this.date)
       let timeStorage = {}
       timeStorage.useStorageStartTime = this.date
       timeStorage.useStorageEndTime = new Date(start.setDate(start.getDate() + 29))
