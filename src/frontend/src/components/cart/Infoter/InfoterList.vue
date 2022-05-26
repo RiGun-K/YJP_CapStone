@@ -3,26 +3,17 @@
     <h2>캠핑장 예약</h2>
     <br>
     <div class="campingkindimage">
-    <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
-    <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
-    <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
-    <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
-    <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
-    <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
-    <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
-    <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
+      <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
+      <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
+      <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
+      <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
+      <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
+      <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
+      <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
+      <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
     </div>
     <br>
     <br>
-    <section>
-    <form action="https://search.naver.com/search.naver">
-      <div class="search">
-        <input type="text" name="query" value="">
-        <button type="submit">검색</button>
-      </div>
-    </form>
-    </section>
-
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
@@ -55,6 +46,13 @@
     </div>
 
 
+    <section>
+      <div class="search">
+        <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
+        <button @click="campingFilter(this.searchCamping)">검색</button>
+      </div>
+    </section>
+
     <div class="listBody">
       <h2> 캠핑장 내 객실 선택 및 예약 </h2>
       <div v-for="(product,index) in list" :key="product.id"
@@ -75,12 +73,16 @@
           <div class="card-body">
             조회수 - {{ product.campingViews }}
           </div>
+          <div class="card-body">
+            객실수 - {{ product.campingDetails.length }}
+          </div>
         </div>
         <br>
       </div>
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -93,26 +95,25 @@ export default {
   },
   created() {
     this.goData(),
-    axios.get('/api/campingRound')
-        .then(res => {
-          console.log(res.data)
-          this.bigRound = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-
+        axios.get('/api/campingRound')
+            .then(res => {
+              console.log(res.data)
+              this.bigRound = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
   },
   data() {
     return {
       selected: false,
       list: [],
       product: '',
-
       bigRound: [],
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
+      searchCamping: '',
     }
   },
   methods: {
@@ -121,7 +122,6 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
-
             axios.get('/api/product_detail_images/' + this.product.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");
@@ -134,7 +134,6 @@ export default {
             console.log(e)
           })
     },
-
     bigCheck(index) {
       if (index == '0') {
         this.smallRound = []
@@ -150,7 +149,6 @@ export default {
               console.log(err)
             })
       }
-
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == "0") {
@@ -176,25 +174,24 @@ export default {
               console.log(e)
             })
       }
-
-
-
     },
-
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
-      axios.post('/api/Camping_countView', { a: product.campingId })
-          .then((res) => {
-            console.log("조회수 증가됨" + res.data);
-            this.$router.push({
-              path: `/infoter/infoterList/${product.campingId}`
+      if(product.campingDetails.length > 0) {
+        axios.post('/api/Camping_countView', {a: product.campingId})
+            .then((res) => {
+              console.log("조회수 증가됨" + res.data);
+              this.$router.push({
+                path: `/infoter/infoterList/${product.campingId}`
+              })
             })
-          })
-          .catch(e => {
-            console.log(e)
-          })
-
+            .catch(e => {
+              console.log(e)
+            })
+      } else {
+        alert("객실이 없습니다.")
+      }
     },
     cam(index) {
       axios.get('/api/product_detail_camping/' + index)
@@ -205,26 +202,36 @@ export default {
               alert("캠핑장이 없습니다.")
               return;
             }
-
           })
           .catch(e => {
             console.log(e)
           })
     },
-
+    campingFilter(index) {
+      if (this.searchCamping == '') {
+        this.goData();
+      } else {
+        axios.get('/api/search_CampingList', { params: { searchCamping: index }})
+            .then((res) => {
+              this.list = res.data;
+              console.log(this.list);
+            })
+            .catch(e => {
+              console.log(e)
+            })
+      }
+    },
     orderBy: function (orderBy) {
       if(orderBy == 'latest') {
         this.list.sort(function (a, b) {
           return b.latest - a.latest;
         });
-
       } else if (orderBy == 'latestd') {
         this.list.sort(function (a, b) {
           return b.latestd - a.latestd;
         })
       }
     }
-
   }
 }
 </script>
@@ -264,8 +271,6 @@ export default {
   color: white;
   background-color: #b2e2fd;
 }
-
-
 .table table-striped {
   width : 30%;
   height: 30%;
@@ -274,14 +279,10 @@ export default {
   width : 20%;
   height: 20%;
 }
-
-
-
 img {
   width : 10%;
   height: 10%;
 }
-
 .search {
   width: 300px;
   height: 100px;
@@ -293,7 +294,6 @@ img {
   border: none;
   border-bottom: 1px black solid;
 }
-
 .search button {
   font-size: 18px;
   border: none;
@@ -304,7 +304,6 @@ img {
   color: #fff;
   cursor: pointer;
 }
-
 .campingkindimage {
   width:380px;
   height:320px;
@@ -313,9 +312,17 @@ img {
 .image-thumbnail{
   float: left;
 }
-
 img {
   width: 40%;
   height: 40%;
+}
+.card-body {
+  overflow: hidden;
+}
+.card-body img {
+  transition: all 0.2s linear;
+}
+.card-body:hover img {
+  transform: scale(1.5);
 }
 </style>

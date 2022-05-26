@@ -35,16 +35,7 @@
       </tr>
       <tr>
         <td class="infoter-now-td">예약일</td>
-        <td><Datepicker v-model="reservationDate"
-                        :enable-time-picker="false"
-                        :min-date="today"
-                        :max-date="end"
-                        range
-                        placeholder="Select date range"
-                        v-on="toString()"
-                        format="yyyy/MM/dd"
-                        autoApply
-                        :closeOnAutoApply="false"></Datepicker></td>
+        <td>{{ this.$route.query.startDate }} ~ {{ this.$route.query.endDate }}</td>
 
       </tr>
     </table>
@@ -58,11 +49,11 @@
       <tr>
 
         <td class="buy-now-td">객실 금액</td>
-        <td>{{ this.content.detailPrice }}</td>
+        <td>{{ this.content.detailPrice }} 원</td>
       </tr>
       <tr>
         <td class="infoter-now-td">총 결제 금액</td>
-        <td>{{price}}</td>
+        <td>{{ this.content.detailPrice * this.$route.query.period }} 원</td>
       </tr>
     </table>
 
@@ -91,10 +82,16 @@ export default {
   components: { Datepicker },
   created() {
     this.DataList();
+    console.log("예약 시작기간")
+    console.log(this.$route.query.startDate)
+    console.log("예약 종료기간")
+    console.log(this.$route.query.endDate)
+    console.log("예약 총 기간")
+    console.log(this.$route.query.period)
   },
   data () {
     return {
-      price: 1000,
+      price: this.$route.query.period * 1000,
       reservationName: '',
       reservationTel: '',
       reservationRequest: '',
@@ -132,7 +129,7 @@ export default {
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
           name: this.content.detailName,
-          amount: this.price,
+          amount: this.content.detailPrice * this.$route.query.period,
           buyer_tel: this.reservationTel,
           buyer_name: this.user.mid,
           buyer_email: this.user.mmail,
@@ -151,7 +148,8 @@ export default {
               reservationName: this.reservationName,
               reservationTel: this.reservationTel,
               reservationRequest: this.reservationRequest,
-              orderPrice: this.price,
+              // orderPrice: this.price,
+              orderPrice: this.content.detailPrice * this.$route.query.period,
               orderType: rsp.pay_method,
               paymentCode: rsp.merchant_uid,
               orderState: '2',
@@ -159,7 +157,7 @@ export default {
               startDate: this.startDate,
               endDate: this.endDate,
               roomId: this.content.detailId,
-              campingId: this.campingId
+              campingId: this.content.campingId
             })
                 .then((res)=>{
                   console.log(res.data);
@@ -172,7 +170,7 @@ export default {
               params: {
                 orderMenuCount: 1,
                 menuName: this.content.detailName,
-                orderPrice: this.content.detailPrice,
+                orderPrice: this.content.detailPrice * this.$route.query.period,
                 reservationDate: this.reservationDate,
                 orderType: rsp.pay_method
               }

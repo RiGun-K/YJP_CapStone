@@ -29,4 +29,6 @@ public interface CampingRepository extends JpaRepository<Camping, Integer> {
     public List<Camping> findByareaDetailId(@Param("areaId") int areaId);
 
 
+    @Query(value = "SELECT * FROM camping c WHERE c.CAMPING_NAME LIKE %:searchCamping%", nativeQuery = true)
+    List<Camping> findAllBysearchCampingContains(@Param("searchCamping") String searchCamping);
 }
