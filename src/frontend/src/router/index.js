@@ -590,6 +590,11 @@ const routes = [
 		name: 'myReservation',
 		component: () => import('@/components/plan/myReservation'),
 	},
+	{
+		path: '/editBasicPlan',
+		name: 'editBasicPlan',
+		component: () => import('@/components/plan/editBasicPlan'),
+	},
 ];
 
 export const router = createRouter({

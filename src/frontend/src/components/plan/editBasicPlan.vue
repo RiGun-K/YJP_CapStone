@@ -1,7 +1,4 @@
-/* eslint-disable */
-
 <template>
-	<h1>아래 정보는 AI추천기능을 위해 사용됩니다</h1>
 	<h1>날짜 선택</h1>
 	<Datepicker
 		v-model="shareDate"
@@ -60,7 +57,6 @@
 				placeholder="상세주소"
 			/>
 		</span>
-		<span class="error_next_box">상세주소를 다시 확인해주세요.</span>
 	</div>
 	<input type="text" placeholder="플랜이름" v-model="planName" />
 	<h6>{{ checkResult }}</h6>
@@ -107,19 +103,9 @@
 	<button v-on:click="planNumber -= 1">-</button>
 	<h3>예상 경비</h3>
 	<input type="number" placeholder="0" v-model="planBudget" />
-	<h3>TAG 설정</h3>
-	<input type="text" v-model="tag" />
-	<button @click="addTags(this.tag)">추가</button>
-	<button
-		title="더블클릭하면 삭제됩니다"
-		v-for="(value, index) in TagContentList"
-		:key="index"
-		@dblclick="deleteTag(index)"
-	>
-		{{ value }}
-	</button>
+
 	<div>
-		<button @click="createPlan()">다음</button>
+		<button @click="editPlan()">수정하기</button>
 	</div>
 </template>
 
@@ -130,34 +116,49 @@ import dayjs from 'dayjs';
 import '@vuepic/vue-datepicker/dist/main.css';
 export default {
 	components: { Datepicker },
+	created() {
+		this.toDate(
+			this.$store.state.planCode.planStart,
+			this.$store.state.planCode.planEnd,
+		);
+	},
 	data() {
 		return {
-			shareDate: [
-				this.$store.state.myReservation.startDate,
-				this.$store.state.myReservation.endDate,
-			],
+			shareDate: [],
 			today: new Date(),
 			planStart: '',
 			planEnd: '',
-			planDestination: this.$store.state.camping.camping.areaId.areaName,
-			planType: '',
+			planDestination: this.$store.state.planCode.planDestination,
+			planType: this.$store.state.planCode.planType,
 			planNumber: 0,
-			planBudget: '0',
-			planName: '',
+			planBudget: 0,
+			planName: this.$store.state.planCode.planName,
 			checkResult: '',
 			planCode: '',
 			diff: '',
-			planOpen: '전체공개',
-			tag: '',
-			TagContentList: [],
-			campingName: this.$store.state.camping.camping.campingName,
-			address: '',
+			planOpen: this.$store.state.planCode.planOpen,
+			campingName: this.$store.state.planCode.campingName,
+			address: this.$store.state.planCode.address,
 			postalAddress: '',
-			detailAdress: '',
-			address: this.$store.state.camping.camping.address,
+			detailAddress: this.$store.state.planCode.detailAddress,
 		};
 	},
 	methods: {
+		toDate(first, second) {
+			var first = String(first);
+			var firstYear = first.substring(0, 4);
+			var firstMonth = first.substring(4, 6);
+			var firstDate = first.substring(6, 8);
+			this.shareDate.push(firstYear + '/' + firstMonth + '/' + firstDate);
+
+			var second = String(second);
+			var secondYear = second.substring(0, 4);
+			var secondMonth = second.substring(4, 6);
+			var secondDate = second.substring(6, 8);
+			this.shareDate.push(
+				secondYear + '/' + secondMonth + '/' + secondDate,
+			);
+		},
 		zcGet() {
 			new window.daum.Postcode({
 				oncomplete: (data) => {
@@ -165,17 +166,6 @@ export default {
 					this.address = data.roadAddress;
 				},
 			}).open({ popupKey: '주소검색' });
-		},
-		addTags: function (value) {
-			if (this.TagContentList.indexOf(value) !== -1) {
-				alert('중복된 Tag설정은 불가능합니다');
-			} else {
-				this.TagContentList.push(value);
-			}
-			this.tag = '';
-		},
-		deleteTag: function (index) {
-			this.TagContentList.splice(index, 1);
 		},
 		checkPlanName: function () {
 			const url = 'api/checkPlanName';
@@ -207,8 +197,9 @@ export default {
 			this.$store.commit('updateDiff', this.diff);
 		},
 
-		createPlan: function () {
+		editPlan: function () {
 			const data = {
+				planCode: this.$store.state.planCode.planCode,
 				planName: this.planName,
 				teamCode: this.$store.state.teamCode.teamCode,
 				planStart: this.planStart,
@@ -223,7 +214,6 @@ export default {
 				detailAddress: this.detailAddress,
 				campingName: this.campingName,
 			};
-			const form = { plan: data, tagContentList: this.TagContentList };
 			if (
 				this.planName !== '' &&
 				this.planBudget !== '' &&
@@ -234,24 +224,21 @@ export default {
 				this.planStart !== '' &&
 				this.planOpen !== ''
 			) {
-				if (this.TagContentList.length < 3) {
-					alert('테그를 3개 이상 입력해야합니다');
-				} else {
-					const url = '/api/createPlan';
-					axios
-						.post(url, form)
-						.then((response) => {
-							this.planCode = response.data;
-							this.$store.commit('updatePlanCode', response.data);
-							this.$router.push({
-								name: 'detailPlan',
-							});
-						})
-						.catch((error) => {
-							alert('에러');
-							console.log(error);
+				const url = '/api/editPlan';
+				axios
+					.put(url, data)
+					.then((response) => {
+						console.log(response.data);
+						this.planCode = response.data;
+						this.$store.commit('updatePlanCode', response.data);
+						this.$router.push({
+							name: 'detailPlan',
 						});
-				}
+					})
+					.catch((error) => {
+						alert('에러');
+						console.log(error);
+					});
 			} else {
 				alert('모든 입력값을 입력하세요');
 			}

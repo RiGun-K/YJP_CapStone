@@ -18,7 +18,10 @@
 				<td>{{ value.boardDateDto }}</td>
 				<td
 					v-if="
-						value.memberDto.mname === this.$store.state.member.mname
+						value.memberDto.mname ===
+							this.$store.state.member.mname ||
+						this.$store.state.teamCode.teamCode.teamMaster ===
+							this.$store.state.member.mcode
 					"
 				>
 					<button @click="editContent(value.teamBoardCodeDto)">
@@ -30,6 +33,7 @@
 				</td>
 			</tr>
 		</table>
+
 		<textarea v-model="content">게시글을 작성하세요</textarea>
 		<button @click="insertContent(content)">작성</button>
 		<hr />
@@ -41,6 +45,12 @@
 		<div v-for="(value, index) in $store.state.teamMemberList" :key="index">
 			<button>
 				{{ value.mcode.mname }}
+			</button>
+			<button
+				v-if="showingDeleteTeamButton"
+				@click="banishment(value.teamMemberCode, index)"
+			>
+				추방하기
 			</button>
 		</div>
 		<div>
@@ -89,6 +99,17 @@ export default {
 		};
 	},
 	methods: {
+		banishment: function (teamMemberCode, index) {
+			const url = 'api/banishment';
+			axios
+				.delete(url, { params: { teamMemberCode: teamMemberCode } })
+				.then((response) => {
+					this.$store.state.teamMemberList.splice(index);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 		deletePlan: function (planCode) {
 			const delConfirm = confirm('정말로 삭제 하시겠습니까?');
 			const url = 'api/deletePlan';
@@ -140,7 +161,6 @@ export default {
 				.then((response) => {
 					response.data.map((item) => {
 						this.contentList.push(item);
-						console.log(this.contentList);
 					});
 				})
 				.catch((error) => {
@@ -227,7 +247,6 @@ export default {
 					teamCode: this.$store.state.teamCode.teamCode,
 				})
 				.then((response) => {
-					console.log(response.data);
 					this.$store.commit('updateLoginedTeamCode', response.data);
 				})
 				.catch((error) => {
@@ -237,7 +256,6 @@ export default {
 		refuse: function () {
 			const delConfirm = confirm('정말로 탈퇴 하시겠습니까?');
 			if (delConfirm) {
-				console.log(this.$store.state.teamCode.teamCode);
 				const url = 'http://localhost:9002/api/refuseTeam';
 				const member = { mcode: this.$store.state.member.mcode };
 				const tc = {

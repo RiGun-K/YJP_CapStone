@@ -110,15 +110,12 @@ export default {
 						}
 					})
 					.catch((error) => {
-						console.log('에러!');
-						console.log(this.$store.state.member);
 						console.log(error);
 					});
 			}
 		},
 		// -----------------------------------------------------
 		TeamManage: function (mcode) {
-			console.log(mcode);
 			this.mcode = mcode;
 			this.showingTeamList = true;
 			this.teamList.length = 0;
@@ -127,9 +124,7 @@ export default {
 			axios
 				.post(`${url}/api/TeamManagementPage/` + this.mcode)
 				.then((response) => {
-					console.log(response);
 					this.noTeam = '';
-					console.log(response.data);
 					response.data.map((item) => {
 						this.$store.commit('updateMyTeam', item.mcode);
 						this.teamCodeList = item;
@@ -138,12 +133,10 @@ export default {
 						} else {
 							this.unacceptedTeamCode.push(item);
 						}
-						return console.log('teamName' + item.teamCode.teamName);
 					});
 				})
 				.catch((error) => {
 					this.noTeam = '<h1>소속 팀이 없습니다</h1>';
-					console.log('실패');
 					console.log(error);
 				});
 		},
@@ -166,7 +159,6 @@ export default {
 		},
 		// -----------------------------------------------------
 		refuse: function (teamCode) {
-			console.log(teamCode);
 			const delConfirm = confirm('정말로 거절 하시겠습니까?');
 			if (delConfirm) {
 				const url = 'http://localhost:9002/api/refuseTeam';
@@ -196,19 +188,14 @@ export default {
 			axios
 				.get(url)
 				.then((response) => {
-					console.log('성공');
-
 					response.data.map((item) => {
-						console.log(item);
 						this.$store.commit('updateTeamCode', item);
 						if (item.acception === 'y') {
 							this.$store.commit('updateTeamMemberList', item);
 						}
-						return console.log('teamMembers' + item.mcode.mname);
 					});
 				})
 				.catch((error) => {
-					console.log('실패');
 					console.log(error);
 				});
 		},

@@ -29,7 +29,11 @@
 			<i class="fas fa-angle-double-left"> 〈〈 </i>
 		</span>
 	</div>
-	<h2>일정작성</h2>
+	<h1>
+		{{ this.$store.state.planCode.address }}
+		<h4>{{ this.$store.state.planCode.detailAddress }}</h4>
+	</h1>
+
 	<h2>
 		{{ this.$store.state.planCode.planTotalDate - 1 }}박{{
 			this.$store.state.planCode.planTotalDate
@@ -40,6 +44,7 @@
 		<button @click="datesButton(index)">{{ index }}</button>일차
 		<br />
 	</div>
+	<button @click="editPlan">플랜수정</button>
 
 	<hr />
 	<h1>{{ dateIndex }}일차 계획</h1>
@@ -77,7 +82,6 @@
 			<th>메모</th>
 			<th>체크리스트</th>
 			<tr v-for="(value, index) in detailPlanOfDayList" :key="index">
-				<td>{{ value.detailCode }}</td>
 				<td>{{ value.detailStart }}</td>
 				<td>{{ value.detailEnd }}</td>
 				<td>{{ value.detailName }}</td>
@@ -176,6 +180,7 @@ export default {
 			}
 		},
 		loadAllCheckList: function () {
+			this.allCheckList.length = 0;
 			const url = 'api/loadAllCheckList';
 			axios
 				.get(url, {
@@ -260,7 +265,7 @@ export default {
 					checkContent: checkContent,
 				})
 				.then((response) => {
-					console.log('성공');
+					this.loadAllCheckList();
 					this.loadDetailPlanOfDay(this.dateIndex);
 				})
 				.catch((error) => {
@@ -289,6 +294,10 @@ export default {
 		},
 		savePlan: function () {
 			this.$router.push({ name: 'teamMember' });
+		},
+		editPlan: function () {
+			this.$router.push({ name: 'editBasicPlan' });
+			console.log(this.$store.state.planCode);
 		},
 	},
 };

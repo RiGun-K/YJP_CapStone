@@ -96,4 +96,8 @@ public class TeamManagementApiController {
         planService.deletePlan(planCode);
     }
 
+    @DeleteMapping("api/banishment")
+    public void banishment(@RequestParam Long teamMemberCode){
+        teamMemberService.banishment(teamMemberCode);
+    }
 }

@@ -88,7 +88,12 @@ public class TeamMemberService {
         teamMember.setTeamCode(tm);
         teamMember.setMcode(member.get());
         teamMember.setAcception("y");
+        teamMember.setTeamMemberAuthority('y');
         System.out.println(teamMember.getTeamCode());
         teamMemberRepository.save(teamMember);
+    }
+    public void banishment(Long teamMemberCode){
+        Optional<TeamMember> teamMember = teamMemberRepository.findById(teamMemberCode);
+        teamMemberRepository.delete(teamMember.get());
     }
 }
