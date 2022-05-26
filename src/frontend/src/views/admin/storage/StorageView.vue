@@ -1,6 +1,5 @@
 <template>
   <div class="allBody">
-
     <div v-if="get">
       <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
       <GetStorage></GetStorage>
