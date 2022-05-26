@@ -309,9 +309,10 @@ export default {
 
 .storage {
   border: solid 3px #000a69;
-  margin-left: 7%;
-  width: 87%;
-  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
+  margin-top: 3%;
 }
 
 .storage-name-h5 {
