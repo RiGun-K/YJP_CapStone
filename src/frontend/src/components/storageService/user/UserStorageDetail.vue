@@ -3,48 +3,50 @@
     <button @click="backPage" class="storage-back-btn">되돌아가기</button>
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
-    <div class="storage-view" v-for="(obj, index) in boxArray" >
-      <div class="storage-box" v-for="(box) in boxArray[index]" @click="findTime(box)" >
+    <div class="storage-view" v-for="(obj, index) in boxArray">
+      <div class="storage-box" v-for="(box) in boxArray[index]" @click="findTime(box)">
         <ul>
-          <li>보관함 이름: {{ box.storageBoxName }}</li>
-          <li>보관함 상태:
-            <p v-if="box.storageBoxState == '0'">사용가능</p>
-            <p v-else>사용불가능</p>
-          </li>
+          <li>{{ box.storageBoxName }}</li>
+          <li v-if="box.storageBoxState == '0'">사용가능</li>
+          <li v-else-if="box.storageBoxState == '6'">사용가능 <br>(바로사용불가)</li>
+          <li v-else>사용불가능</li>
           <li>가격 : {{ box.storageBoxPrice }}원</li>
         </ul>
       </div>
     </div>
     <div v-if="stateCheck" class="detailDiv">
       <div><h3>{{ boxName }}</h3></div>
-      <div>
-        <p style="margin-left: 3%; margin-top: 2%">대여기간 설정</p>
-        <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
-                    locale="ko-KR"
-                    :min-date="today"
-                    type="date"
-                    format="yyyy/MM/dd"
-                    value-format="yyyyMMdd"
-                    :enableTimePicker="false"
-                    autoApply
-                    :closeOnAutoApply="false"
-                    placeholder="Select Date"
-                    v-model="date"
-                    :disabledDates="disabledDates"/>
-      </div>
-      <div>
-        넣을 장비 선택
-        내 캠핑장비
-        <div>
-          <ul v-for="(item, index) in myItem" :key="index">
-            <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
-          </ul>
+      <div style="display: inline">
+        <div class="setting-date">
+          <h5 style="margin-left: 3%; margin-top: 2%">대여기간 설정</h5>
+          <hr>
+          <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 80%"
+                      locale="ko-KR"
+                      :min-date="today"
+                      type="date"
+                      format="yyyy/MM/dd"
+                      value-format="yyyyMMdd"
+                      :enableTimePicker="false"
+                      autoApply
+                      :closeOnAutoApply="false"
+                      placeholder="Select Date"
+                      v-model="date"
+                      :disabledDates="disabledDates"/>
+        </div>
+        <div class="setting-item">
+          <h5 style="margin-left: 3%; margin-top: 2%">내 캠핑장비 선택</h5>
+          <hr>
+          <div>
+            <ul v-for="(item, index) in myItem" :key="index">
+              <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div>
+      <div style="display: inline">
         결제금액 : {{ form.price }}원
       </div>
-      <div class="detailBtn">
+      <div class="detailBtn" >
         <button class="pay-btn" @click="pay">다음</button>
       </div>
     </div>
@@ -72,9 +74,9 @@ export default {
       console.log(err)
     });
     this.boxArrayR()
-    setTimeout(()=>{
+    setTimeout(() => {
       this.backFlag = true
-    },100)
+    }, 100)
   },
   created() {
     this.userId = store.getters.getLoginState.loginState
@@ -102,7 +104,7 @@ export default {
       disabledDates: [],
       stateCheck: false,
       boxArray: [],
-      backFlag : false
+      backFlag: false
     }
   },
   methods: {
@@ -127,6 +129,7 @@ export default {
       this.form.storageBoxCode = boxCode.storageBoxCode
       this.date = null
       this.disabledDates = []
+
       axios.get('/api/findUseTime/' + boxCode.storageBoxCode)
           .then(res => {
             this.useTimeList = res.data
@@ -134,7 +137,9 @@ export default {
               if (boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode) {
                 if (this.boxList.storageBoxes[i].storageBoxState == '0') {
                   this.stateCheck = true
-                } else {
+                } else if (this.boxList.storageBoxes[i].storageBoxState == '6') {
+                  this.stateCheck = true
+                } else{
                   this.stateCheck = false
                 }
               }
@@ -202,13 +207,8 @@ export default {
         alert('날짜 선택하세요')
         return
       }
-      this.startDay = this.date
-      const start = new Date(this.startDay)
-      this.endDay = new Date(start.setDate(start.getDate() + 29))
 
       this.form.storageName = this.name
-      this.form.useStorageStartTime = this.startDay
-      this.form.useStorageEndTime = this.endDay
       this.form.item = this.checkItem
 
       const start = new Date(this.date)
@@ -231,15 +231,15 @@ export default {
       this.form.useStorageEndTime = ''
     }
   },
-  watch:{
-    backFlag(){
+  watch: {
+    backFlag() {
       var divItem = document.getElementsByClassName("storage-box")
       var index = 0
-      for(var x = 0; x < this.boxArray.length; x++){
-        for(var y = 0; y < this.boxArray[x].length; y++){
-          if(this.boxArray[x][y].storageBoxState == 1){
+      for (var x = 0; x < this.boxArray.length; x++) {
+        for (var y = 0; y < this.boxArray[x].length; y++) {
+          if (this.boxArray[x][y].storageBoxState == 2) {
             divItem[index].classList.add("disabledDiv")
-          }else if(this.boxArray[x][y].storageBoxState == 2){
+          } else if (this.boxArray[x][y].storageBoxState == 6) {
             divItem[index].classList.add("playOutDiv")
           }
           index++
@@ -252,15 +252,33 @@ export default {
 
 <style scoped>
 /*추가*/
-.disabledDiv{
-  background: black;
+.disabledDiv {
+  background: rgba(161, 156, 156, 0.97);
+  border: solid 3px rgba(16, 33, 145, 0.99);
   color: white;
 }
-.playOutDiv{
-  background: black;
-  color: red;
+
+.playOutDiv {
+  background: #c3c3c3;
+  color: #000000;
 }
-.detailDiv{
+
+.setting-date {
+  width: 30%;
+  float: left;
+  display: inline-block;
+}
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+.setting-item {
+  width: 30%;
+  float: right;
+  display: inline-block;
+}
+
+.detailDiv {
   margin-top: 3%;
   margin-right: 5%;
   margin-left: 5%;

@@ -5,7 +5,7 @@
     보관소 이름: {{ this.storageList.storageName }}
     <div class="storage-view">
       <div class="storage-box" v-for="(storage,index) in storageList.storageBoxes" :key="index"
-           @click="modalViewChk(storage)">
+           @click="modalViewChk(storage.storageBoxCode)">
         <div>
           <ul>
             <li>보관함 이름: {{ storage.storageBoxName }}</li>
@@ -14,6 +14,9 @@
               <p v-else-if="storage.storageBoxState == '2' ">사용중</p>
               <p v-else-if="storage.storageBoxState == '3' ">사용중 - 장비 이동 신청</p>
               <p v-else-if="storage.storageBoxState == '4' ">사용중 - 장비 이동 신청</p>
+              <p v-else-if="storage.storageBoxState == '5' ">수리신청</p>
+              <p v-else-if="storage.storageBoxState == '6' ">사용중</p>
+              <p v-else-if="storage.storageBoxState == 'x' ">비활성화</p>
             </li>
           </ul>
         </div>
@@ -26,7 +29,7 @@
   <div v-if="modalView">
     <button @click="modalView = false">X</button>
     <div>
-      <BoxModalDetail :boxCode="boxCode" ></BoxModalDetail>
+      <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"></BoxModalDetail>
     </div>
   </div>
 </template>
@@ -57,41 +60,27 @@ export default {
     if(store.getters.getLoginState.stateCode != 5){
       this.$router.push('/')
       alert('보관소 매니저만 확인이 가능합니다')
+    }else{
+      this.getBackData()
     }
-    axios.get('/api/getManagerStorage/' + this.managerId)
-        .then(res => {
-          this.storageList = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
   },
   methods: {
+    getBackData(){
+      axios.get('/api/getManagerStorage/' + this.managerId)
+          .then(res => {
+            this.storageList = res.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     modalViewChk(storage) {
       this.boxCode = storage
+      console.log(storage + '/' + this.boxCode)
       if (!this.modalView) {
         this.modalView = !this.modalView
       }
-
     },
-    inputMamager() {
-
-    },
-    openModal() {
-      this.modal = true
-    },
-    closeModal() {
-      this.modal = false
-    },
-    doSend() {
-      if (this.message.length > 0) {
-        alert(this.message)
-        this.message = ''
-        this.closeModal()
-      } else {
-        alert('메시지를 입력해주세요.')
-      }
-    }
   }
 }
 </script>

@@ -5,7 +5,7 @@
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
     <div class="storage-view" v-for="(obj, index) in boxArray">
-      <div class="storage-box" v-for="box in boxArray[index]" @click="nextTab(box.storageBoxCode, box.storageBoxState, box.storageBoxName)">
+      <div class="storage-box" v-for="box in boxArray[index]" @click="nextTab(box)">
         <ul>
           <li>보관함 이름: {{ box.storageBoxName }}</li>
           <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
@@ -104,14 +104,20 @@ export default {
             this.newForm.price = res.data
           })
     },
-    nextTab(boxCode, state, name){
-      if(state != "0"){
-        this.stateCheck = false
-      }else {
+    nextTab(box){
+      let code = box.storageBoxCode
+      let state = box.storageBoxState
+      let name = box.storageBoxName
+
+      console.log(code +'/'+state+'/'+name)
+
+      if(state == '0'){
         this.stateCheck = true
-        this.boxCode = boxCode
+        this.boxCode = code
         this.newForm.boxName = name
         this.boxName = name
+      }else {
+        this.stateCheck = false
       }
 
     },
