@@ -6,6 +6,7 @@ public class RoundMove {
     private String zipCode;
     private String address;
     private String detailAddress;
+    private int price;
 
     public RoundMove() {
     }
@@ -56,5 +57,13 @@ public class RoundMove {
 
     public void setDetailAddress(String detailAddress) {
         this.detailAddress = detailAddress;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

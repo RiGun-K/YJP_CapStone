@@ -8,7 +8,9 @@
       </tr>
       <tr>
         <td>상태</td>
-        <td v-if="box.boxState == 0">빈 상태</td>
+        <td v-if="box.boxState == 0">
+          <p>빈 상태</p>
+        </td>
         <td v-else-if="box.boxState == 1">결제완료
           <button @click="updateState">보관완료</button>
         </td>
@@ -16,6 +18,7 @@
           해지
           <button @click="clearBox()">빈상태</button>
         </td>
+
         <td v-else>사용중</td>
 
       </tr>
@@ -57,11 +60,21 @@
           도착 하면 버튼 클릭
           <button @click="endMoveupdate()">도착</button>
         </td>
+        <td v-else-if="box.useStorageState == 1">
+          남은 기간
+
+          <button>배송시작</button>
+        </td>
+        <td v-else-if="box.useStorageState == 9">
+          주소지
+
+          <button>배송시작</button>
+        </td>
         <td v-else>없음</td>
       </tr>
       <tr>
         <td>장비 수리</td>
-        <td v-if="box.useStorageState == 7">장비 수리 신청</td>
+        <td v-if="box.useStorageState == 6">장비 수리 신청</td>
         <td v-else>없음</td>
       </tr>
     </table>
@@ -75,7 +88,14 @@
       </tr>
       <tr>
         <td>상태</td>
-        <td>사용안함</td>
+        <td v-if="box.storageBoxState == 'x'">
+          <h5>비활성화</h5>
+          <button @click="onBox()">활성화</button>
+        </td>
+        <td v-else>
+          <h5>사용안함</h5>
+          <button @click="offBox()">비활성화</button>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -88,13 +108,13 @@ import axios from "axios";
 export default {
   name: "BoxMadalDetail",
   props: {
-    boxCode: null
+    boxCode: ''
   },
   mounted() {
     this.getBoxInfo()
   },
   watch: {
-    boxCode() {
+    boxCode: function () {
       this.getBoxInfo()
     }
   },
@@ -102,13 +122,12 @@ export default {
     return {
       chk: false,
       box: {},
-      moveInfo: {},
     }
   },
   methods: {
     getBoxInfo() {
       this.box = {}
-      axios.get('/api/getBox/' + this.boxCode.storageBoxCode)
+      axios.get('/api/getBox/' + this.boxCode)
           .then(res => {
             if (res.data[0].length > 2) {
               const data = {
@@ -133,19 +152,19 @@ export default {
               this.box.updateusbCode = datak[8].substring(1, datak[8].length)
               this.chk = true
 
-              console.log(this.box.updateusbCode)
-
-              axios.get('/api/moveBoxInfo/' + this.box.updateusbCode)
-                  .then(res => {
-                    const data = res.data[0]
-                    this.moveInfo.storageCode = data[0]
-                    this.moveInfo.storageName = data[1]
-                    this.moveInfo.storageBoxCode = data[2]
-                    this.moveInfo.storageBoxName = data[3]
-                  })
-              .catch(err=>{
-                console.log(err)
-              })
+              if (this.box.updateusbCode != '') {
+                axios.get('/api/moveBoxInfo/' + this.box.updateusbCode)
+                    .then(res => {
+                      const data = res.data[0]
+                      this.moveInfo.storageCode = data[0]
+                      this.moveInfo.storageName = data[1]
+                      this.moveInfo.storageBoxCode = data[2]
+                      this.moveInfo.storageBoxName = data[3]
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
+              }
             } else {
               this.box = res.data[0]
               this.chk = false
@@ -158,9 +177,9 @@ export default {
     updateState() {
       axios.put('/api/boxStateUpdate/' + this.box.useStorageCode)
           .then(res => {
-            console.log(res)
             alert("사용자 보관 확인 되었습니다")
             this.getBoxInfo()
+            this.$emit('updata')
           })
           .catch(err => {
             console.log(err)
@@ -168,38 +187,71 @@ export default {
     },
     moveStateUpDate() {
       //버튼은 이동중으로 변경하고 받는곳은 도착버튼으로 변경
-      axios.get('/api/moveStateUpdate/'+this.box.useStorageCode+'/'+this.box.updateusbCode)
-      .then(res=>{
-        console.log(res.data.result)
-        alert("이동합니다")
-        this.getBoxInfo()
-      })
+      axios.get('/api/moveStateUpdate/' + this.box.useStorageCode + '/' + this.box.updateusbCode)
+          .then(res => {
+            if (res.data.result = 'ok') {
+              alert("이동합니다")
+              this.getBoxInfo()
+              this.$emit('updata')
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
     },
-    endMoveupdate(){
+    endMoveupdate() {
       // 도착하면 누르는 버튼
-      axios.get('/api/endmoveUpdate/'+this.box.useStorageCode)
-      .then(res=>{
-        console.log(res.data.result)
-        alert("보관되었습니다")
-        this.getBoxInfo()
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+      axios.get('/api/endmoveUpdate/' + this.box.useStorageCode)
+          .then(res => {
+            alert("보관되었습니다")
+            this.getBoxInfo()
+            this.$emit('updata')
+          })
+          .catch(err => {
+            console.log(err)
+          })
     },
-    clearBox(){
-      axios.get('/api/clearBox/'+this.box.boxCode)
-      .then(res=>{
-        if(res.data.result == 'ok'){
-          alert('보관함이 비었습니다')
-        }else{
-          alert('에러')
-        }
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-    }
+    clearBox() {
+      axios.get('/api/clearBox/' + this.boxCode)
+          .then(res => {
+            if (res.data.result == 'ok') {
+              alert('보관함이 비었습니다')
+            } else {
+              alert('에러')
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    onBox() {
+      axios.get('/api/onBox/' + this.boxCode)
+          .then(res => {
+            if (res.data.result == 'ok') {
+              alert('보관함이 활성화 되었습니다.')
+              this.getBoxInfo()
+              this.$emit('updata')
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    offBox() {
+      axios.get('/api/offBox/' + this.boxCode)
+          .then(res => {
+            if (res.data.result == 'ok') {
+              alert('보관함이 비활성화 되었습니다.')
+              this.getBoxInfo()
+              this.$emit('updata')
+            }else {
+              alert('에러')
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
   },
 }
 </script>
