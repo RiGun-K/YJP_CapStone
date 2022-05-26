@@ -27,7 +27,9 @@ import java.util.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @NoArgsConstructor
 @RequestMapping("/api")
-public class BuyController {
+public class
+
+BuyController {
 
     @Autowired
     MemberRepository memberRepository;

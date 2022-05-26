@@ -6,15 +6,15 @@
     <table>
       <tr>
         <td class="share-now-td">이름</td>
-        <td>땡땡땡</td>
+        <td>{{ this.content.mid.mnick }}</td>
       </tr>
       <tr>
         <td class="share-now-td">이메일</td>
-        <td>Tang@naver.com</td>
+        <td>{{ this.content.mid.mmail }}</td>
       </tr>
       <tr>
         <td class="share-now-td">휴대폰 번호</td>
-        <td>01012345678</td>
+        <td>{{ this.content.mid.mph }}</td>
       </tr>
     </table>
 
@@ -42,15 +42,19 @@
       </tr>
     </table>
 
-    <h3>대여상품 정보</h3>
+    <h3>구매상품 정보</h3>
     <table>
       <tr>
         <td class="share-now-td">상품 이름</td>
-        <td>땡땡땡땡땡상품</td>
+        <td>{{ this.content.buyName }}</td>
+      </tr>
+      <tr>
+        <td class="share-now-td">상품 수량</td>
+        <td>{{ this.$route.query.count }}</td>
       </tr>
       <tr>
         <td class="share-now-td">상품 금액</td>
-        <td>200000</td>
+        <td>{{ this.content.buyPrice }}</td>
       </tr>
       <tr>
         <td class="share-now-td">배송비</td>
@@ -60,17 +64,13 @@
         <td class="share-now-td">배송 요청사항</td>
         <td><input size="40" type="text"></td>
       </tr>
-      <tr>
-        <td class="share-now-td">대여일</td>
-        <td><Datepicker v-model="shareDate" :enable-time-picker="false" :min-date="today" range placeholder="Select share date range"></Datepicker></td>
-      </tr>
     </table>
 
     <h3>결제 정보</h3>
     <table>
       <tr>
-        <td class="share-now-td">총 대여상품 금액</td>
-        <td>200000</td>
+        <td class="share-now-td">총 구매상품 금액</td>
+        <td>{{ this.content.buyPrice * this.$route.query.count }}</td>
       </tr>
       <tr>
         <td class="share-now-td">배송비</td>
@@ -78,7 +78,7 @@
       </tr>
       <tr>
         <td class="share-now-td">총 결제 금액</td>
-        <td>{{price}}</td>
+        <td>{{ this.content.buyPrice * this.$route.query.count }} + 10000</td>
       </tr>
     </table>
 
@@ -95,6 +95,7 @@
 <script>
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import axios from "axios";
 export default {
   name: 'ShareNow',
   components: { Datepicker },
@@ -106,14 +107,32 @@ export default {
       price: 1000,
       value: '',
       shareDate: null,
-      today: new Date()
+      today: new Date(),
+
+      content: []
     }
+  },
+  created() {
+    this.DataBuy()
   },
   mounted () {
     const IMP = window.IMP
     IMP.init('imp35975601')
+    console.log(this.$route.query.count)
   },
   methods: {
+    DataBuy() {
+      this.id = this.$route.params.buyId;
+      console.log(this.id)
+      axios.get('http://localhost:9002/api/product_detailB/' + this.id)
+          .then(res => {
+            console.log(res.data)
+            this.content = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
     showApi () {
       new window.daum.Postcode({
         oncomplete: (data) => {

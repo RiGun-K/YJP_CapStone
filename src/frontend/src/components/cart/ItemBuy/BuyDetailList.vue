@@ -70,7 +70,10 @@ export default {
     },
     buyData() {
       this.$router.push({
-        path: `/itemBuy/buyNow/${this.content.buyId}`
+        path: `/itemBuy/buyNow/${this.content.buyId}`,
+        query: {
+          count: this.count
+        }
       })
     },
     putData() {
