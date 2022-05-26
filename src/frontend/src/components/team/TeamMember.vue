@@ -12,7 +12,15 @@
 			<th>작성자</th>
 			<th>내용</th>
 			<th>작성일</th>
-			<tr v-for="(value, index) in contentList" :key="index">
+			<tr
+				:class="{
+					master:
+						this.$store.state.teamCode.teamCode.teamMaster ==
+						value.memberDto.mcodeDto,
+				}"
+				v-for="(value, index) in contentList"
+				:key="index"
+			>
 				<td>{{ value.memberDto.mname }}</td>
 				<td>{{ value.contentDto }}</td>
 				<td>{{ value.boardDateDto }}</td>
@@ -46,6 +54,22 @@
 			<button>
 				{{ value.mcode.mname }}
 			</button>
+			<form>
+				<input
+					v-model="value.teamMemberAuthority"
+					type="radio"
+					name="manager"
+					value="y"
+					@click="changeManager(value)"
+				/>운영자
+				<input
+					v-model="value.teamMemberAuthority"
+					type="radio"
+					name="manager"
+					value="n"
+					@click="changeManager(value)"
+				/>일반회원
+			</form>
 			<button
 				v-if="showingDeleteTeamButton"
 				@click="banishment(value.teamMemberCode, index)"
@@ -99,6 +123,16 @@ export default {
 		};
 	},
 	methods: {
+		changeManager: function (teamMember) {
+			console.log(teamMember);
+			const url = 'api/changeManager';
+			axios
+				.put(url, teamMember)
+				.then((response) => {})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 		banishment: function (teamMemberCode, index) {
 			const url = 'api/banishment';
 			axios
@@ -328,5 +362,8 @@ export default {
 .tbAdd td.txt_cont {
 	height: 300px;
 	vertical-align: top;
+}
+.master {
+	color: red;
 }
 </style>

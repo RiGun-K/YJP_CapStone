@@ -3,8 +3,10 @@ package com.example.capstone.service;
 
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.Team;
+import com.example.capstone.domain.Plan.TeamBoard;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.repository.Plan.PlanRepository;
+import com.example.capstone.repository.Plan.TeamBoardRepository;
 import com.example.capstone.repository.Plan.TeamMemberRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +25,17 @@ public class TeamService {
     private final PlanRepository planRepository;
     private final PlanService planService;
     private final TeamMemberRepository teamMemberRepository;
+    private final TeamBoardRepository teamBoardRepository;
 
     public void deleteTeam(Long teamCode) {
         Optional<Team> team = teamRepository.findById(teamCode);
         List<Plan> planList = planRepository.findByTeamCode(team.get());
         List<TeamMember> teamMembers = teamMemberRepository.findByteamCode(team.get());
+        List<TeamBoard> teamBoards = teamBoardRepository.findByTeamCode(team.get());
+
+        for(TeamBoard tb :teamBoards){
+            teamBoardRepository.delete(tb);
+        }
 
         for (Plan p : planList) {
             planService.deletePlan(p.getPlanCode());

@@ -24,12 +24,20 @@
 		</div>
 
 		<div v-for="(value, index) in unacceptedTeamCode" :key="index">
-			팀<button>{{ value.teamCode.teamName }}</button>에서 요청이 왔습니다
-			<button @click="accept(value.teamCode.teamCode)">수락하기</button>
-			<button @click="refuse(value.teamCode.teamCode)">거절하기</button>
+			<button
+				class="unacceptedTeam"
+				@click="selectUnacceptedTeam(value.teamCode)"
+			>
+				{{ value.teamCode.teamName }}
+			</button>
 		</div>
 	</div>
 	<hr />
+	<div v-if="showingRequest">
+		<h3>팀{{ this.requestTeamCode.teamName }} 에서 요청이 왔습니다</h3>
+		<button @click="accept(requestTeamCode.teamCode)">수락하기</button>
+		<button @click="refuse(requestTeamCode.teamCode)">거절하기</button>
+	</div>
 	<div v-if="showingTeamMember">
 		<hr />
 		<h3>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</h3>
@@ -67,14 +75,19 @@ export default {
 			teamList: [],
 			mcode: '',
 			open: '전체공개',
+			requestTeamCode: '',
+			showingRequest: false,
 		};
 	},
 	created() {
 		this.TeamManage(this.$store.getters.getLoginState.mcode);
 	},
 	methods: {
-		// -----------------------------------------------------
-
+		selectUnacceptedTeam: function (teamCode) {
+			this.showingTeamMember = false;
+			this.requestTeamCode = teamCode;
+			this.showingRequest = true;
+		},
 		teamSave: function () {
 			if (
 				this.$store.state.open === '' ||
@@ -132,6 +145,7 @@ export default {
 							this.teamList.push(item);
 						} else {
 							this.unacceptedTeamCode.push(item);
+							console.log(item);
 						}
 					});
 				})
@@ -178,6 +192,7 @@ export default {
 		// -----------------------------------------------------
 
 		loadTeamMemberList: function (teamCode) {
+			this.showingRequest = false;
 			this.$store.commit('updateTeamName', teamCode.teamCode.teamName);
 			this.$store.state.teamMemberList.length = 0;
 			this.showingTeamMember = true;
@@ -216,5 +231,8 @@ export default {
 	height: 120px;
 	background-color: #f5d682;
 	border: 1px solid red;
+}
+.unacceptedTeam {
+	background-color: red;
 }
 </style>
