@@ -50,7 +50,6 @@ export default {
     this.allroundsearch()
     axios.get('/api/aRound')
         .then(res => {
-          console.log(res.data)
           this.bigRound = res.data
         })
         .catch(err => {

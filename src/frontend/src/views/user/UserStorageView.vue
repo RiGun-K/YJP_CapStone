@@ -185,7 +185,13 @@ export default {
       axios.get('/api/getStorage')
           .then((res) => {
             this.storageList = res.data
-            this.searchList = res.data
+            for (let i = 0; i < this.storageList.length; i++) {
+              if(this.storageList[i].storageState == '1'){
+                this.storageList.splice(i,1)
+              }
+            }
+            this.searchList = this.storageList
+
             this.allMarker()
           })
           .catch((error) => {
@@ -219,7 +225,12 @@ export default {
         axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
               this.storageList = res.data
-              this.searchList = res.data
+              for (let i = 0; i < this.storageList.length; i++) {
+                if(this.storageList[i].storageState == '1'){
+                  this.storageList.splice(i,1)
+                }
+              }
+              this.searchList = this.storageList
               this.allMarker()
             })
             .catch(err => {
@@ -229,7 +240,12 @@ export default {
         axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
               this.storageList = res.data
-              this.searchList = res.data
+              for (let i = 0; i < this.storageList.length; i++) {
+                if(this.storageList[i].storageState == '1'){
+                  this.storageList.splice(i,1)
+                }
+              }
+              this.searchList = this.storageList
               this.allMarker()
             })
             .catch(err => {

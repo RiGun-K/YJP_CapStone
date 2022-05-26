@@ -16,4 +16,5 @@ public interface MemberEquipmentRepository extends JpaRepository<MemberEquipment
 
     @Query(value = "select * from MEMEQUIPMENT where MCODE = :mCode and USE_STORAGE_BOX_CODE is null", nativeQuery = true)
     List<MemberEquipment> findByMemEquipment(@Param("mCode")long mCode);
+
 }

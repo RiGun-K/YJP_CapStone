@@ -1,45 +1,50 @@
 <template>
-  <div class="divBody">
-    <div class="divTitle">
-      <h1 style="color: black">보관소 매니저</h1>
-    </div>
-    <div class="divAdd">
-        <label for="exampleFormControlInput1" class="labelTitle">매니저아이디</label>
-        <input type="text" v-model="memberId" id="exampleFormControlInput1"
-               placeholder="매니저id" class="inputSearch">
-        <button @click="CheckMember()" class="btnCheck">CHECK</button>
-        <p v-if="memberIdCheck" style="margin-top: 1%">상태확인 : 사용가능</p>
-    </div>
-    <div class="divSearch">
-      <label class="labelTitle">보관소</label>
-      <input id="storage-search" type="text" v-model="searchStorage"
-             @keyup.enter="storageSearch()" placeholder="보관소명"
-             class="inputSearch">
-      <button @click="storageSearch()" class="btnSearch">검색</button>
-    </div>
-    <div class="divManager">
+  <button @click="$router.push({name:'manager'})">뒤로가기</button>
+
+  <h5>보관소 매니저</h5>
+  <div class="manager-add">
+    <div>
+      <div>
+        <labe for="storage-search">보관소</labe>
+        <input id="storage-search" type="text" v-model="searchStorage" @keyup.enter="storageSearch()" placeholder="보관소명">
+        <button @click="storageSearch()">검색</button>
+      </div>
+      <div>
         <table>
           <thead>
-            <tr>
-              <th>지역</th>
-              <th>보관소명</th>
-            </tr>
+          <tr>
+            <th calspan="2">지역</th>
+            <th calspan="2">보관소명</th>
+          </tr>
           </thead>
           <tbody>
             <tr v-for="(storage,index) in storageList">
+              <td>{{ index + 1 }}</td>
               <td>{{ storage.storageAddress }}</td>
               <td>{{ storage.storageName }}</td>
               <td>
-                <button @click="checkStorage(storage.storageCode)">선택</button>
+                <input type="checkbox" name="aaa" :id="storage.storageCode"
+                       @click="checkStorage(storage.storageCode)">
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
     </div>
-      <button v-if="memberIdCheck" @click="postManager">ADD</button>
-    <div class="divReturn">
-      <button @click="$router.push({name:'manager'})">뒤로가기</button>
+    <div>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
+        <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
+               placeholder="매니저id">
+      </div>
+      <button class="storage-box-b" @click="CheckMember()">확인</button>
+      <p v-if="memberIdCheck">가능</p>
     </div>
+
+    <div>
+      <button v-if="memberIdCheck" @click="postManager">추가</button>
+    </div>
+
   </div>
 </template>
 
@@ -58,6 +63,7 @@ export default {
       searchList: [],
       searchStorageList: [],
       storage: {},
+      storageCode: '',
     }
   },
   mounted() {
@@ -120,15 +126,20 @@ export default {
       }
     },
     checkStorage(storageCode) {
-
+      this.storageCode = storageCode
+      document.getElementsByName("aaa")
+          .forEach(el => {
+        el.checked = false
+      });
+      document.getElementById(storageCode).checked = true;
     },
     postManager() {
       let manager = {
-        member: memberId,
-        storage: storageCode
+        member: this.memberId,
+        storage: this.storageCode
       }
       if (this.memberIdCheck) {
-        axios.post('api/postManager', manager)
+        axios.post('/api/postManager', manager)
             .then((res) => {
               console.log(res.data.result)
               if (res.data.result === 'ok') {
@@ -136,6 +147,7 @@ export default {
                 alert('추가되었습니다')
                 this.clearInput()
                 this.memberIdCheck = false
+                this.$router.push({name:'manager'})
               } else {
                 alert('추가 되지 않음')
               }
@@ -152,36 +164,5 @@ export default {
 </script>
 
 <style scoped>
-.divBody{
-  margin-left: 25%;
-  margin-right: 25%;
-  width: 50%;
-}
-.divTitle, .divAdd, .divSearch, .divManager{
-  margin-top: 1.5%;
-}
-.btnCheck, .btnSearch{
-  margin-left: 10px;
-  width: 100px;
-}
-.btnCheck:hover, .btnSearch:hover{
-  background: black;
-  color: white;
-}
-.inputSearch{
-  margin-left: 10px;
-}
-table{
-  width: 100%;
-}
-th, td{
-  width: 30%;
-}
-.divReturn{
-  margin-top: 1%;
-  text-align: center;
-}
-.labelTitle{
-  width: 100px;
-}
+
 </style>
