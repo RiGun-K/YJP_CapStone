@@ -1,8 +1,9 @@
 <template>
-
   <!--  관리하는 보관함 보기 -->
   <div class="storage">
-    보관소 이름: {{ this.storageList.storageName }}
+    <div style="width: 100%">
+      <h3 style="margin: 10px">보관소 이름: {{ this.storageList.storageName }}</h3>
+    </div>
     <div class="storage-view">
       <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
            @click="modalViewChk(box.storageBoxCode)">
@@ -25,10 +26,11 @@
     </div>
   </div>
 
-
   <!-- 모달-->
   <div v-if="modalView">
-    <button @click="modalView = false">X</button>
+    <div style="width: 100%; text-align: right">
+      <button @click="modalView = false" class="cancleBtn">X</button>
+    </div>
     <div>
       <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"></BoxModalDetail>
     </div>
@@ -90,21 +92,31 @@ export default {
 
 <style lang="css" scoped>
 .storage-box {
+  margin: 10px;
   border: solid 3px #DAA520;
   border-radius: 10px;
-  width: 200px;
-
+  width: 15%;
 }
 
 .storage-view {
-  border: solid 1px #2c3e50;
   display: -webkit-flex;
   display: flex;
+  width: 100%;
 }
 
 .storage {
+  margin-left: 5%;
+  margin-right: 5%;
   border: solid 3px #42b983;
+  width: 90%;
 }
-
-
+.cancleBtn{
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 1%;
+}
+.cancleBtn:hover{
+  background: black;
+  color: white;
+}
 </style>

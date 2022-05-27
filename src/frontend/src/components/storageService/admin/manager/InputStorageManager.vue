@@ -1,20 +1,25 @@
 <template>
-  <button @click="$router.push({name:'manager'})">뒤로가기</button>
+  <div style="margin-left: 5%; margin-right: 5%; margin-top: 1%;width: 90%;">
+    <button @click="$router.push({name:'manager'})">뒤로가기</button>
+  </div>
 
-  <h5>보관소 매니저</h5>
   <div class="manager-add">
+    <h5>보관소 매니저</h5>
     <div>
       <div>
         <labe for="storage-search">보관소</labe>
-        <input id="storage-search" type="text" v-model="searchStorage" @keyup.enter="storageSearch()" placeholder="보관소명">
+        <input id="storage-search" type="text" v-model="searchStorage"
+               @keyup.enter="storageSearch()" placeholder="보관소명"
+               style="margin: 1%;">
         <button @click="storageSearch()">검색</button>
       </div>
       <div>
         <table>
           <thead>
           <tr>
-            <th calspan="2">지역</th>
-            <th calspan="2">보관소명</th>
+            <th>보관소번호</th>
+            <th>지역</th>
+            <th>보관소명</th>
           </tr>
           </thead>
           <tbody>
@@ -32,19 +37,16 @@
       </div>
     </div>
     <div>
-      <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
+      <div class="managerBottom">
+        <label for="exampleFormControlInput1" class="form-label" style="width: 10%">매니저아이디</label>
         <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
-               placeholder="매니저id">
+               placeholder="매니저id" style="width: 20%;display: inline">
+        <button class="storage-box-b" @click="CheckMember()"
+                style="width: 60px; margin-left: 10px">확인</button>
+        <p v-if="memberIdCheck" style="margin-right: 10px;margin-left: 10px;display: inline">가능</p>
+        <button v-if="memberIdCheck" @click="postManager" style="width: 60px;">추가</button>
       </div>
-      <button class="storage-box-b" @click="CheckMember()">확인</button>
-      <p v-if="memberIdCheck">가능</p>
     </div>
-
-    <div>
-      <button v-if="memberIdCheck" @click="postManager">추가</button>
-    </div>
-
   </div>
 </template>
 
@@ -164,5 +166,16 @@ export default {
 </script>
 
 <style scoped>
-
+th,td{
+  width: 25%;
+}
+.manager-add{
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 1%;
+  width: 90%;
+}
+.managerBottom{
+  margin-top: 1%;
+}
 </style>

@@ -1,7 +1,6 @@
 <template>
-  <h3 style="margin-top: 5%; margin-left: 5%;">보관소 매니저 관리</h3>
-
-  <div>
+  <div style="margin-right: 8%; margin-left: 8%; margin-top: 1%;width: 84%">
+    <h3>보관소 매니저 관리</h3>
     <table>
       <thead>
         <tr>
@@ -57,7 +56,6 @@ export default {
   },
   mounted() {
     this.GetStorageManager()
-
   },
   watch: {
     storagePick: function () {

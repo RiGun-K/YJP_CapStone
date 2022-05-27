@@ -6,15 +6,16 @@
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick" @change="search()">
+      <select v-model="smallPick" @change="search()" style="margin-left: 10px">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <label for="storageName">보관소이름</label>
-      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()">
-      <button @click="storageSearch()">검색</button>
+      <label for="storageName" style="margin-left: 10px">보관소이름</label>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
+      style="margin-left: 10px">
+      <button @click="storageSearch()" style="margin-left: 10px">검색</button>
     </div>
-    <div>
+    <div class="bottomDiv">
       <table>
         <thead>
           <tr>
@@ -26,7 +27,7 @@
         <tbody>
           <tr v-for="(storage,index) in storageList" :key="index" @click="GetStorageDetail(storage.storageCode)">
             <td>{{ index+1 }}</td>
-            <td>{{ storage.storageAddress }}</td>
+            <td style="width: 300px;">{{ storage.storageAddress }}</td>
             <td>{{ storage.storageName }}</td>
           </tr>
         </tbody>
@@ -162,79 +163,18 @@ export default {
 </script>
 
 <style scoped>
-.storage-box {
-  border: solid 3px #00a3de;
-  border-radius: 10px;
-  width: 200px;
-
+.searchDiv{
+  margin-top: 1%;
 }
-.storage-view {
-  display: -webkit-flex;
-  display: flex;
+.bottomDiv{
+  margin-top: 1%;
 }
 .renewal-box{
   width: 70%;
 }
-.storage {
-  padding-top: 1%;
-  border: solid 3px #000a69;
-  width: 80%;
-  justify-content: center;
-  align-items: center;
-  margin-left: 7%;
-  margin-top: 2%;
-  padding-bottom: 1%;
-}
-
 .renewal-box h3{
   margin-top: 3%;
   margin-left: 7%;
   margin-bottom: 3%;
 }
-
-.form-control{
-  width: 20%;
-}
-
-.storage-box-b{
-  margin-left: 1%;
-  margin-bottom: 1%;
-  text-align: center;
-  width: 10%;
-  padding: 0.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-}
-.storage-box-b:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-.form-label{
-  font-weight: normal;
-  font-size: large;
-}
-.card{
-  margin-top: -1%;
-}
-.storage-box-name-btn{
-  display: flex;
-}
-.storage-close{
-  margin-left: 50%;
-  margin-bottom: 1%;
-  text-align: center;
-  width: 40%;
-  padding: 0.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-}
-.storage-close:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-
 </style>

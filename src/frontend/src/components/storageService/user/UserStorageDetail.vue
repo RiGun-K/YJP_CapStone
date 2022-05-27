@@ -15,36 +15,37 @@
       </div>
     </div>
     <div v-if="stateCheck" class="detailDiv">
-      <div>
-        <h3>{{ boxName }}</h3>
-      </div>
-      <div style="display: inline">
-        <div class="setting-date" >
-          <h5 style="margin-left: 3%; margin-top: 2%">대여기간 설정</h5>
-          <hr>
-          <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 80%"
-                      locale="ko-KR"
-                      :min-date="today"
-                      type="date"
-                      format="yyyy/MM/dd"
-                      value-format="yyyyMMdd"
-                      :enableTimePicker="false"
-                      autoApply
-                      :closeOnAutoApply="false"
-                      placeholder="Select Date"
-                      v-model="date"
-                      :disabledDates="disabledDates"/>
-        </div>
-        <div class="setting-item">
-          <h5 style="margin-left: 3%; margin-top: 2%">내 캠핑장비 선택</h5>
-          <hr>
-          <div>
-            <ul v-for="(item, index) in myItem" :key="index">
-              <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
-            </ul>
+      <div><h3>{{ boxName }}</h3></div>
+      <div class="storageBody">
+        <div class="storageUpDiv">
+          <div class="storageTime">
+            <h5>대여기간 설정</h5>
+            <hr>
+            <Datepicker
+                locale="ko-KR"
+                :min-date="today"
+                type="date"
+                format="yyyy/MM/dd"
+                value-format="yyyyMMdd"
+                :enableTimePicker="false"
+                autoApply
+                :closeOnAutoApply="false"
+                placeholder="Select Date"
+                v-model="date"
+                :disabledDates="disabledDates"/>
+          </div>
+          <div class="storageEquip">
+            <h5>내 캠핑장비 선택</h5>
+            <hr>
+            <div>
+              <ul v-for="(item, index) in myItem" :key="index">
+                <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="storageBottomDiv">
+          
       <div >
         결제금액 : {{ form.price }}원
       </div>
@@ -254,6 +255,27 @@ export default {
 
 <style scoped>
 /*추가*/
+.storageUpDiv{
+  display: flex;
+  width: 100%;
+}
+.storageTime{
+  width: 30%;
+  position: relative;
+}
+.storageEquip{
+  margin-left: 5%;
+  width: 30%;
+  position: relative;
+}
+.storageBottomDiv{
+  margin-top: 2%;
+  margin-right: 5%;
+  left: 70%;
+  position: relative;
+  width: 25%;
+  text-align: left;
+}
 .disabledDiv {
   background: rgba(161, 156, 156, 0.97);
   border: solid 3px rgba(16, 33, 145, 0.99);
@@ -276,12 +298,6 @@ ul {
   padding-left: 0px;
 }
 
-.setting-item {
-  width: 30%;
-  float: right;
-  display: inline-block;
-}
-
 .detailDiv {
   margin-top: 3%;
   margin-right: 5%;
@@ -289,9 +305,8 @@ ul {
 }
 
 .detailBtn {
-  text-align: left;
-  left: 25%;
-  position: relative;
+  text-align: right;
+  width: 100%;
 }
 
 /*기존*/
@@ -336,9 +351,10 @@ ul {
 
 .storage {
   border: solid 3px #000a69;
-  margin-left: 7%;
-  width: 87%;
-  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
+  margin-top: 3%;
 }
 
 .storage-name-h5 {
@@ -352,7 +368,7 @@ ul {
 .pay-btn {
   margin-bottom: 2%;
   text-align: center;
-  width: 12%;
+  width: 50px;
   padding: 1%;
   background-color: #ffffff;
   font-weight: bolder;

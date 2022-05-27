@@ -120,7 +120,6 @@ router-link{
   text-align: center;
   list-style: none;
   position: relative;
-
 }
 .topMenu:hover > .subMenu{
   display: block;
@@ -139,7 +138,7 @@ router-link{
   top: 100%;
   text-align: center;
   border: 1px solid black;
-  z-index: 1;
+  z-index: 3;
 }
 .menu{
   margin-top: 1%;
@@ -149,5 +148,4 @@ router-link{
 .menu:hover{
   background: #7ea6f6;
 }
-
 </style>
