@@ -14,14 +14,13 @@ import java.util.Optional;
 public interface StorageRepository extends JpaRepository<Storage, Long> {
     Optional<Storage> findByStorageName(String storageName);
 
-    @Query(value = "select s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_STATE \n" +
+    @Query(value = "select s.STORAGE_CODE, s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_BOX_CODE, u.USE_STORAGE_STATE \n" +
                     "from STORAGE s\n" +
                     "join STORAGEBOX b on  s.STORAGE_CODE = b.STORAGE_CODE \n" +
                     "left outer join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +
                     "left outer join MEMBER m on m.MCODE = u.MCODE \n" +
                     "WHERE m.MID = :memberId and not u.USE_STORAGE_STATE = '1' \n" +
-                    "group by s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_STATE \n" +
-                    "order by s.STORAGE_NAME ", nativeQuery = true)
+                    "order by s.STORAGE_NAME, b.STORAGE_BOX_CODE ", nativeQuery = true)
     public Object[] findByMember(@Param("memberId") String memberId );
 
 

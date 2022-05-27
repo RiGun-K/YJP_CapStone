@@ -2,7 +2,6 @@ package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.CampingArea;
-import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.*;
 import com.example.capstone.dto.storage.*;
@@ -15,9 +14,10 @@ import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -500,6 +500,39 @@ public class StorageController {
 
     }
 
+//    사용중인 보관함 시간 조회
+    @GetMapping("findUseBoxTimes/{stCode}/{boxCode}/{mid}")
+    public LocalDateTime[][] findUseBoxTimes(@PathVariable(value = "stCode")long stCode,
+                                               @PathVariable(value = "boxCode")long boxCode,
+                                               @PathVariable(value = "mid")String mid) throws ParseException {
+        Optional<Member> member = memberRepository.findByMID(mid);
+
+        List<List<String>> useStorageBoxList = useStorageBoxRepository.findByUseTimes(stCode,boxCode, member.get().getMCode());
+
+        int x = useStorageBoxList.size();
+        int y = 0;
+        for (int i = 0; i < useStorageBoxList.size(); i++) {
+            for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
+                if (i == 0){
+                    y = useStorageBoxList.get(i).size();
+                }
+                if (i>0 && useStorageBoxList.get(i).size() > useStorageBoxList.get(i-1).size()){
+                    y = useStorageBoxList.get(i).size();
+                }
+            }
+        }
+
+        LocalDateTime[][] array = new LocalDateTime[x][y];
+        for (int i = 0; i < useStorageBoxList.size(); i++) {
+            for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.s");
+                LocalDateTime dateTime = LocalDateTime.parse(useStorageBoxList.get(i).get(j), formatter);
+                array[i][j] = dateTime;
+            }
+        }
+        return array;
+    }
+
     // 보관함 가격 조회
     @GetMapping("boxPrice/{boxCode}")
     private int getBoxPrice(@PathVariable(value = "boxCode")long box){
@@ -572,11 +605,11 @@ public class StorageController {
             memberEquipmentRepository.save(memberEquipmentList.get(i));
         }
 
-        LocalDateTime nowTime = LocalDateTime.now();
+        LocalDate nowTime = LocalDate.now();
 
         UseStorageBox before = beforeUSBox.get();
         before.setUseStorageState("1");
-        before.setUseStorageEndTime(nowTime.toLocalDate());
+        before.setUseStorageEndTime(nowTime);
         afterUSBox.get().setUseStorageState("5" + beforeUSBox.get().getUseStorageBoxCode());
 
         StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();
