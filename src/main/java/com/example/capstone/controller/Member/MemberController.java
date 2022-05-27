@@ -370,7 +370,7 @@ public class MemberController {
     ///게시글삭제///
     @PostMapping("adminDeleteWriter")
     public Boolean adminDeleteWriter(@RequestBody HashMap<String, String> body){
-        Optional<Board> writer = boardRepository.findById((long) Integer.parseInt(body.get("wcode")));
+        Optional<Board> writer = boardRepository.findById(Long.parseLong(body.get("wcode")));
         if(writer.isEmpty()){
             return false;
         }
