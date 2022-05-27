@@ -54,6 +54,8 @@
       </div>
     </div>
   </div>
+  </div>
+  </div>
 </template>
 
 <script asp-append-version=“true”>
