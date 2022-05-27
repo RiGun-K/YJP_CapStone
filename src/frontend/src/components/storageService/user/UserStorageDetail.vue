@@ -45,13 +45,12 @@
           </div>
         </div>
         <div class="storageBottomDiv">
-          <div>
-            결제금액 : {{ form.price }}원
-          </div>
-          <div class="detailBtn">
-            <button class="pay-btn" @click="pay">다음</button>
-          </div>
-        </div>
+          
+      <div >
+        결제금액 : {{ form.price }}원
+      </div>
+      <div class="detailBtn">
+        <button class="pay-btn" @click="pay">다음</button>
       </div>
     </div>
   </div>
@@ -143,7 +142,7 @@ export default {
                   this.stateCheck = true
                 } else if (this.boxList.storageBoxes[i].storageBoxState == '6') {
                   this.stateCheck = true
-                } else{
+                } else {
                   this.stateCheck = false
                 }
               }
@@ -293,6 +292,7 @@ export default {
   float: left;
   display: inline-block;
 }
+
 ul {
   list-style: none;
   padding-left: 0px;

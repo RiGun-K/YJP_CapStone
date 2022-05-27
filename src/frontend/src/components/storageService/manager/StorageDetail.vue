@@ -5,19 +5,20 @@
       <h3 style="margin: 10px">보관소 이름: {{ this.storageList.storageName }}</h3>
     </div>
     <div class="storage-view">
-      <div class="storage-box" v-for="(storage,index) in storageList.storageBoxes" :key="index"
-           @click="modalViewChk(storage.storageBoxCode)">
+      <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
+           @click="modalViewChk(box.storageBoxCode)">
         <div>
           <ul>
-            <li>보관함 이름: {{ storage.storageBoxName }}</li>
-            <li>보관함 상태:<p v-if="storage.storageBoxState == '0'">사용안함</p>
-              <p v-else-if="storage.storageBoxState == '1' ">결제완료</p>
-              <p v-else-if="storage.storageBoxState == '2' ">사용중</p>
-              <p v-else-if="storage.storageBoxState == '3' ">사용중 - 장비 이동 신청</p>
-              <p v-else-if="storage.storageBoxState == '4' ">사용중 - 장비 이동 신청</p>
-              <p v-else-if="storage.storageBoxState == '5' ">수리신청</p>
-              <p v-else-if="storage.storageBoxState == '6' ">사용중</p>
-              <p v-else-if="storage.storageBoxState == 'x' ">비활성화</p>
+            <li>보관함 이름: {{ box.storageBoxName }}</li>
+            <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용안함</p>
+              <p v-else-if="box.storageBoxState == '1' ">결제완료</p>
+              <p v-else-if="box.storageBoxState == '2' ">사용중</p>
+              <p v-else-if="box.storageBoxState == '3' ">사용중 - 장비 이동 신청</p>
+              <p v-else-if="box.storageBoxState == '4' ">사용중 - 장비 이동 신청</p>
+              <p v-else-if="box.storageBoxState == '5' ">사용중 - 수리신청</p>
+              <p v-else-if="box.storageBoxState == '6' ">사용중</p>
+              <p v-else-if="box.storageBoxState == '7' ">사용중 - 이동신청</p>
+              <p v-else-if="box.storageBoxState == 'x' ">비활성화</p>
             </li>
           </ul>
         </div>
@@ -54,10 +55,12 @@ export default {
       modalView: false,
       modal: false,
       message: '',
-      boxCode: ''
+      boxCode: '',
+      boxArray: [],
     }
   },
   mounted() {
+
     this.managerId = store.getters.getLoginState.loginState
     if(store.getters.getLoginState.stateCode != 5){
       this.$router.push('/')
