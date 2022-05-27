@@ -15,9 +15,11 @@
       </div>
     </div>
     <div v-if="stateCheck" class="detailDiv">
-      <div><h3>{{ boxName }}</h3></div>
+      <div>
+        <h3>{{ boxName }}</h3>
+      </div>
       <div style="display: inline">
-        <div class="setting-date">
+        <div class="setting-date" >
           <h5 style="margin-left: 3%; margin-top: 2%">대여기간 설정</h5>
           <hr>
           <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 80%"
@@ -43,10 +45,10 @@
           </div>
         </div>
       </div>
-      <div style="display: inline">
+      <div >
         결제금액 : {{ form.price }}원
       </div>
-      <div class="detailBtn" >
+      <div class="detailBtn">
         <button class="pay-btn" @click="pay">다음</button>
       </div>
     </div>
@@ -139,7 +141,7 @@ export default {
                   this.stateCheck = true
                 } else if (this.boxList.storageBoxes[i].storageBoxState == '6') {
                   this.stateCheck = true
-                } else{
+                } else {
                   this.stateCheck = false
                 }
               }
@@ -237,7 +239,7 @@ export default {
       var index = 0
       for (var x = 0; x < this.boxArray.length; x++) {
         for (var y = 0; y < this.boxArray[x].length; y++) {
-          if (this.boxArray[x][y].storageBoxState == 2) {
+          if (this.boxArray[x][y].storageBoxState != 0) {
             divItem[index].classList.add("disabledDiv")
           } else if (this.boxArray[x][y].storageBoxState == 6) {
             divItem[index].classList.add("playOutDiv")
@@ -268,10 +270,12 @@ export default {
   float: left;
   display: inline-block;
 }
+
 ul {
   list-style: none;
   padding-left: 0px;
 }
+
 .setting-item {
   width: 30%;
   float: right;
