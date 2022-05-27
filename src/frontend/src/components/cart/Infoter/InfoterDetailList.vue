@@ -143,7 +143,6 @@
         </div>
       </div>
     </div>
-  </div>
 
     <br>
   <div v-if="areaCheck">
