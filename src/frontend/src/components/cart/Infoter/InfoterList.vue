@@ -3,14 +3,14 @@
     <h2>캠핑장 예약</h2>
     <br>
     <div class="campingkindimage">
-    <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
-    <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
-    <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
-    <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
-    <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
-    <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
-    <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
-    <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
+      <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
+      <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
+      <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
+      <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
+      <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
+      <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
+      <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
+      <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
     </div>
     <br>
     <br>
@@ -95,22 +95,20 @@ export default {
   },
   created() {
     this.goData(),
-    axios.get('/api/campingRound')
-        .then(res => {
-          console.log(res.data)
-          this.bigRound = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-
+        axios.get('/api/campingRound')
+            .then(res => {
+              console.log(res.data)
+              this.bigRound = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
   },
   data() {
     return {
       selected: false,
       list: [],
       product: '',
-
       bigRound: [],
       smallRound: [],
       bigPick: 0,
@@ -124,7 +122,6 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
-
             axios.get('/api/product_detail_images/' + this.product.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");
@@ -137,7 +134,6 @@ export default {
             console.log(e)
           })
     },
-
     bigCheck(index) {
       if (index == '0') {
         this.smallRound = []
@@ -153,7 +149,6 @@ export default {
               console.log(err)
             })
       }
-
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == "0") {
@@ -179,11 +174,7 @@ export default {
               console.log(e)
             })
       }
-
-
-
     },
-
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
@@ -213,13 +204,12 @@ export default {
               alert("캠핑장이 없습니다.")
               return;
             }
-
           })
           .catch(e => {
             console.log(e)
           })
     },
-
+    
     campingFilter(index) {
       if (this.searchCamping == '') {
         this.goData();
@@ -235,19 +225,18 @@ export default {
       }
     },
 
+
     orderBy: function (orderBy) {
       if(orderBy == 'latest') {
         this.list.sort(function (a, b) {
           return b.latest - a.latest;
         });
-
       } else if (orderBy == 'latestd') {
         this.list.sort(function (a, b) {
           return b.latestd - a.latestd;
         })
       }
     }
-
   }
 }
 </script>
@@ -287,8 +276,6 @@ export default {
   color: white;
   background-color: #b2e2fd;
 }
-
-
 .table table-striped {
   width : 30%;
   height: 30%;
@@ -297,14 +284,10 @@ export default {
   width : 20%;
   height: 20%;
 }
-
-
-
 img {
   width : 10%;
   height: 10%;
 }
-
 .search {
   width: 300px;
   height: 100px;
@@ -316,7 +299,6 @@ img {
   border: none;
   border-bottom: 1px black solid;
 }
-
 .search button {
   font-size: 18px;
   border: none;
@@ -327,7 +309,6 @@ img {
   color: #fff;
   cursor: pointer;
 }
-
 .campingkindimage {
   width:380px;
   height:320px;
@@ -336,12 +317,10 @@ img {
 .image-thumbnail{
   float: left;
 }
-
 img {
   width: 40%;
   height: 40%;
 }
-
 .card-body {
   overflow: hidden;
 }

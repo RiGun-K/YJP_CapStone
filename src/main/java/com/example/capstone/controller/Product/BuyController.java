@@ -1,6 +1,5 @@
 package com.example.capstone.controller.Product;
 
-import com.example.capstone.domain.Board.Writer;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.*;
 import com.example.capstone.dto.Board.BoardDTO;
@@ -21,6 +20,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.*;
 
 @RestController

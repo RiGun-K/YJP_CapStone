@@ -1,39 +1,38 @@
 package com.example.capstone.controller.Board;
 
-import com.example.capstone.domain.Board.Writer;
+import com.example.capstone.domain.Board.Board;
+import com.example.capstone.domain.Board.BoardCamping;
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Camping;
 import com.example.capstone.dto.Board.BoardDTO;
 import com.example.capstone.repository.Board.BoardRepository;
 import com.example.capstone.repository.Member.MemberRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @NoArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api")
 public class BoardController {
 
+
+
     @Autowired
     private BoardRepository boardRepository;
-
-
     @Autowired
     private MemberRepository memberRepository;
 
 //    @PostMapping("/Writing")
-//    public Writer addWriter(@RequestBody BoardDTO boardDTO) {
+//    public Board addWriter(@RequestBody BoardDTO boardDTO) {
 //        System.out.println(boardDTO.getMid());
 //        Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
-//        Writer writer = new Writer(boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getOrigFilename(), boardDTO.getFilePath(), member.get());
+//        Board writer = new Board(boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getOrigFilename(), boardDTO.getFilePath(), member.get());
 //        boardRepository.save(writer);
 //        return writer;
 //    }
@@ -78,39 +77,60 @@ public class BoardController {
 //
 //    }
 
-    @GetMapping("/list")
-    public List<Writer> writerMyList() {
-        List<Writer> writerList = boardRepository.findAll();
+    @GetMapping("/boardList")
+    public List<Board> writerMyList() {
+        List<Board> writerList = boardRepository.findAll();
         System.out.println(writerList);
         return writerList;
     }
 
-    @GetMapping("/myList/{writer_code}")
-    public Writer myList(@PathVariable("writer_code") int writer_code) {
-        System.out.println("Vue에서 받은 데이터는" + writer_code + " 입니다.");
-
-        Optional<Writer> myMyList = boardRepository.findById(writer_code);
+    /* 내 게시글 상세페이지 조회 */
+    @GetMapping("/myList/{boardId}")
+    public Board myList(@PathVariable("boardId") Long boardId) {
+        System.out.println("Vue에서 받은 데이터는" + boardId + " 입니다.");
+        Optional<Board> myMyList = boardRepository.findById(boardId);
         return myMyList.get();
     }
 
+    /* 게시글 댓글 조회 */
+    @GetMapping("/myCommentList/{boardId}")
+    public List<Board> commentList(@PathVariable("boardId") Long boardId) {
+        List<Board> myMyList = boardRepository.findByCommentId(boardId);
+        return myMyList;
+    }
+
+    /* 게시글 댓글 등록 */
+    @PostMapping("/addComment/{boardId}")
+    public void addComment(@PathVariable("boardId") Long boardId, BoardDTO boardDTO) {
+        Optional<Board> board1 = boardRepository.findById(boardId);
+
+        System.out.println(boardDTO.getMCODE());
+        Optional<Member> member = memberRepository.findByMID(boardDTO.getMCODE());
+
+        System.out.println(board1.get());
+        System.out.println(member.get());
+
+    }
+
     @DeleteMapping("/deleteList/{writer_code}")
-    public String deleteList(@PathVariable("writer_code") int writer_code) {
+    public String deleteList(@PathVariable("writer_code") Long writer_code) {
         System.out.println("삭제할 게시글 번호는 : " +writer_code);
-        Optional<Writer> writer = boardRepository.findById(writer_code);
+        Optional<Board> writer = boardRepository.findById(writer_code);
         boardRepository.delete(writer.get());
         return "게시글이 삭제되었습니다.";
 
 
     }
 
-    @PutMapping("/update")
-    public String updateList(@RequestBody Writer writer) {
-        Optional<Writer> updateMyList = boardRepository.findById(writer.getWriter_code());
-        updateMyList.get().setTitle(writer.getTitle());
-        updateMyList.get().setContent(writer.getContent());
+//    @PutMapping("/update")
+//    public String updateList(@RequestBody Board board) {
+//        Optional<Board> updateMyList = boardRepository.findById(board.getBoardId());
+//        updateMyList.get().setTitle(board.getTitle());
+//        updateMyList.get().setContent(board.getContent());
+//        boardRepository.save(updateMyList.get());
+//        return "게시글이 수정되었습니다.";
+//
+//    }
 
-        boardRepository.save(updateMyList.get());
-        return "게시글이 수정되었습니다.";
 
-    }
 }
