@@ -31,6 +31,8 @@ body {
 }
 #app {
 	font-family: 'Nanum Gothic', sans-serif;
+	font-weight: 700;
+	font-size: 1em;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	//text-align: center;
@@ -57,5 +59,10 @@ a {
 	padding: 10px;
 	background: #34445c;
 	color: #fff;
+}
+button {
+	font-family: 'Nanum Gothic', sans-serif;
+	font-weight: 700;
+	font-size: 1em;
 }
 </style>

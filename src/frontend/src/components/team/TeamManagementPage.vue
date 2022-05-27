@@ -18,28 +18,37 @@
 	<div v-if="showingTeamList">
 		<p v-html="noTeam"></p>
 		<div v-for="(value, index) in teamList" :key="index" class="teamList">
-			<button @click="loadTeamMemberList(value.teamCode)">
+			<button
+				class="w-btn-gray"
+				type="button"
+				@click="loadTeamMemberList(value.teamCode)"
+				:title="value.teamCode.teamName"
+			>
 				{{ value.teamCode.teamName }}
 			</button>
 		</div>
 
-		<div v-for="(value, index) in unacceptedTeamCode" :key="index">
+		<div
+			v-for="(value, index) in unacceptedTeamCode"
+			:key="index"
+			style="display: inline-block"
+		>
 			<button
-				class="unacceptedTeam"
+				class="w-btn-gra2 w-btn-gra-anim"
+				type="button"
 				@click="selectUnacceptedTeam(value.teamCode)"
+				:title="value.teamCode.teamName"
 			>
 				{{ value.teamCode.teamName }}
 			</button>
 		</div>
 	</div>
-	<hr />
 	<div v-if="showingRequest">
 		<h3>팀{{ this.requestTeamCode.teamName }} 에서 요청이 왔습니다</h3>
 		<button @click="accept(requestTeamCode.teamCode)">수락하기</button>
 		<button @click="refuse(requestTeamCode.teamCode)">거절하기</button>
 	</div>
 	<div v-if="showingTeamMember">
-		<hr />
 		<h3>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</h3>
 
 		<button
@@ -55,6 +64,7 @@
 			>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
 		>
 	</div>
+	<button class="w-btn-gra2 w-btn-gra-anim" type="button">BUTTON</button>
 </template>
 
 <script>
@@ -226,19 +236,85 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
 #teamMembers {
 	width: 200px;
 	height: 120px;
 	background-color: #f5d682;
 	border: 1px solid red;
 }
-.unacceptedTeam {
-	background-color: red;
-}
+
 .teamList {
 	float: left;
-	width: 200px;
-	height: 120px;
-	border: 1px solid red;
+	/* width: 200px; */
+	/* height: 120px; */
+	/* border: 1px solid red; */
+}
+.w-btn-gray {
+	background-color: #a3a1a1;
+	color: #e3dede;
+}
+.teamList button {
+	position: relative;
+	overflow: hidden;
+	width: 50px;
+	height: 50px;
+	border-radius: 10px;
+	border: none;
+	margin: 12px;
+}
+.teamList button:hover {
+	position: relative;
+	overflow: visible;
+	width: 100%;
+	min-width: 40px;
+}
+
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.5);
+	cursor: pointer;
+	position: relative;
+	overflow: visible;
+	min-width: 40px;
+}
+
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+
+.w-btn-gra2 {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	color: white;
+	position: relative;
+	overflow: hidden;
+	width: 50px;
+	height: 50px;
+	border-radius: 10px;
+	border: none;
+	margin: 12px;
+}
+
+.w-btn-gra-anim {
+	background-size: 400% 400%;
+	animation: gradient1 0.5s ease infinite;
+	border-radius: 10px;
+}
+.w-btn-gra2:hover {
+	width: 100%;
+	transform: scale(1.1);
+}
+
+@keyframes gradient1 {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 </style>
