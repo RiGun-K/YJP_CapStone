@@ -52,20 +52,21 @@ export default {
   data() {
     return {
       title: '',
-      content: ''
+      content: '',
+      file: '',
     }
   },
   methods: {
     write() {
-      const data = {
-        mid: store.getters.getLoginState.loginState,
-        title: this.title,
-        content: this.content
-      }
-      console.log(data);
-      axios.post('/api/Writing', data)
+      const formData = new FormData();
+      formData.append('title', this.title);
+      formData.append('content', this.content);
+      formData.append('mid', store.getters.getLoginState.loginState);
+      formData.append('file', this.file);
+
+      axios.post('/api/Writing', formData, {headers: {'Content-Type': 'multipart/form-data'}})
           .then((res) => {
-            console.log("성공" + res.data)
+            console.log("성공" + res)
           })
           .catch((ex) => {
             console.log("fail", ex)
