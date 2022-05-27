@@ -19,8 +19,8 @@
 <!--      <input type="file" id="image" v-model="image" >-->
       <div>
         <button @click="updataStorage()">저장</button>
-        <button v-if="open == 'open'" @click="closeStorage()">보관소 정지</button>
-        <button v-if="open == 'close'" @click="openStorage()">보관소 시작</button>
+        <button v-if="stopen == 'open'" @click="closeStorage()">보관소 정지</button>
+        <button v-if="stopen == 'close'" @click="openStorage()">보관소 시작</button>
       </div>
     </div>
     <div class="storage-view">
@@ -46,17 +46,26 @@
     <div>
       <h5>보관소 매니저 관리</h5>
       <div class="manager-add">
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
-          <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
-                 placeholder="매니저id">
+        <div class="mb-3" @click="mnshow()">
+          <div v-if="mnopen">
+            매니저 추가 ▲
+            <div>
+              <div>
+                <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
+                <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
+                       placeholder="매니저id">
+              </div>
+              <button class="storage-box-b" @click="CheckMember()">검사</button>
+              <div v-if="memberIdCheck">
+                <p>가능</p>
+                <button @click="postManager()">추가</button>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            매니저 추가 ▼
+          </div>
         </div>
-        <button class="storage-box-b" @click="CheckMember()">검사</button>
-        <div v-if="memberIdCheck">
-          <p>가능</p>
-          <button @click="postManager()">추가</button>
-        </div>
-
       </div>
     </div>
     <div>
@@ -100,13 +109,17 @@ export default {
       managerList: [],
       memberId: '',
       memberIdCheck: false,
-      open:'',
+      stopen:'',
+      mnopen:false,
     }
   },
   mounted() {
     this.getStorageInfo(this.$route.params.storageCode)
   },
   methods: {
+    mnshow(){
+      this.mnopen = !this.mnopen
+    },
     getStorageInfo(storageCode) {
       axios.get('/api/storageView/' + storageCode)
           .then((res) => {
@@ -117,7 +130,7 @@ export default {
             this.address = this.boxList.storageAddress
             this.telNumber = this.boxList.storageTel
             this.detailAddress = this.boxList.storageDetailAddress
-            this.open = (this.boxList.storageState == '0')?'open':'close'
+            this.stopen = (this.boxList.storageState == '0')?'open':'close'
             this.GetManger(storageCode)
             this.memberIdCheck = false
           })
@@ -171,7 +184,7 @@ export default {
           .then((res) => {
             console.log(res.data.result)
             alert('개업되었습니다')
-            this.open = true
+            this.stopen = true
             this.$router.push({name:'storage'})
           })
           .catch((err) => {

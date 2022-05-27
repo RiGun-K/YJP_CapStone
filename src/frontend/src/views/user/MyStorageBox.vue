@@ -5,24 +5,18 @@
       <div class="card-body">
         <div>
           <table class='scrolltbody'>
-            <tbody>
+            <thead>
               <tr>
-                <td>보관소</td>
-                <td>보관함</td>
-                <td>시작일</td>
-                <td>종료 예정일</td>
+                <th>보관소</th>
+                <th>보관함</th>
+                <th>상태</th>
               </tr>
+            </thead>
+            <tbody>
               <tr v-for="(useBox,index) in useBoxes" :key="index">
-                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.storageName }}</td>
-                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.boxName }}</td>
-                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.startTime }}</td>
-                <td @click="detailBox(useBox.useBoxCode)">{{ useBox.endTime }}</td>
-                <td v-if="useBox.none">
-                  <button class="mystoragebox-re" v-if="useBox.useBoxState=='2'" @click="moveBox(useBox)">장비 이동</button>
-                  <button class="mystoragebox-re" v-if="useBox.useBoxState=='2'" @click="repairBox(useBox)">장비 수리</button>
-                  <button class="mystoragebox-re" v-if="useBox.BoxState == '3' || useBox.useBoxState=='2'" @click="renewalPay(useBox)">연장</button>
-                  <button class="mystoragebox-re" @click="closeBox(useBox)">해지</button>
-                </td>
+                <td @click="detailBox(useBox)">{{ useBox.storageName }}</td>
+                <td @click="detailBox(useBox)">{{ useBox.boxName }}</td>
+                <td v-if="useBox.useState" @click="detailBox(useBox)"></td>
               </tr>
             </tbody>
           </table>
@@ -32,8 +26,13 @@
 
     <div v-if="modal">
       <button @click="close()">X</button>
+      <div>
+          <button class="mystoragebox-re" @click="moveBox()">장비 이동</button>
+          <button class="mystoragebox-re" @click="repairBox()">장비 수리</button>
+          <button class="mystoragebox-re" @click="renewalPay()">연장</button>
+          <button class="mystoragebox-re" @click="closeBox()">해지</button>
+      </div>
       <h5>보관 캠핑장비</h5>
-
       보관된 장비를 추가하기
       <button @click="addShow()"><h9 v-if="!addItemCheck">보기</h9><h9 v-else>숨기기</h9></button>
       <div v-if="addItemCheck">
@@ -119,81 +118,23 @@ export default {
           .then(res => {
             if (res.data.length < 1) {
               alert('사용중인 보관함이 없습니다')
-              this.memberId = ''
             } else {
               const boxes = res.data
               this.useBoxes = []
-              const arrDayStr = ['일', '월', '화', '수', '목', '금', '토']
-              for (let i = 0; i < boxes.length; i++) {
-                const box = {
-                  startTime: '',
-                  endTime: '',
-                  boxCode:'',
-                  boxName: '',
-                  boxState: '',
-                  storageName: '',
-                  useBoxCode:'',
-                  useBoxState:'',
-                  start: '',
-                  end: '',
-                  none: true
+              if(boxes.length > 2){
+                for (let i = 0; i < boxes.length; i++) {
+                  const box = {}
+                  box.boxName = boxes[i][0]
+                  box.boxCode = boxes[i][1]
+                  box.boxState = boxes[i][2]
+                  box.storageName = boxes[i][3]
+                  box.useState = boxes[i][4]
+                  this.useBoxes.push(box)
                 }
-                const start = new Date(boxes[i][0])
-                const end = new Date(boxes[i][1])
-                box.startTime = start.getFullYear() + '년' + (start.getMonth() + 1) + '월' + start.getDate() + '일 (' + arrDayStr[start.getDay()] + ')'
-                box.endTime = end.getFullYear() + '년' + (end.getMonth() + 1) + '월' + end.getDate() + '일 (' + arrDayStr[end.getDay()] + ')'
-                box.boxCode = boxes[i][2]
-                box.boxName = boxes[i][3]
-                box.boxState = boxes[i][4]
-                box.storageName = boxes[i][5]
-                box.useBoxCode = boxes[i][6]
-                box.useBoxState = boxes[i][7]
-                box.start = start
-                box.end = end
-                // box.boxState 가 1 이면 연장 버튼 on 0이면 연장 버튼 off
-                if (i > 0) {
-                  // 이전 보관함이름 = 지금 보관함이름 && 이전 보관소 이름 = 지금 보관소 이름
-                  if (boxes[i - 1][3] == box.boxName && box.storageName == boxes[i - 1][5]) {
-                    console.log(box.boxState)
-                    if (box.boxState == '1') {
-                      this.useBoxes[i - 1].none = false
-
-                      box.none = true
-                      console.log(box.none)
-                    } else if (box.boxState == '0') {
-                      box.none = false
-                    }
-                    // 이전 보관함이름 == 지금 보관함이름 && 이전 보관소 이름 != 지금 보관소 이름
-                  } else if (boxes[i - 1][3] == box.boxName && box.storageName != boxes[i - 1][5]) {
-                    if (box.boxState == '1') {
-                      box.none = true
-                    } else if (box.boxState == '0') {
-                      box.none = false
-                    }
-                    // 이전 보관함이름 != 지금 보관함이름 && 이전 보관소 이름 == 지금 보관소 이름
-                  } else if (boxes[i - 1][3] != box.boxName && box.storageName == boxes[i - 1][5]) {
-                    if (box.boxState == '1') {
-                      box.none = true
-                    } else if (box.boxState == '0') {
-                      box.none = false
-                    }
-                    // 이전 보관함이름 != 지금 보관함이름 && 이전 보관소 이름 != 지금 보관소 이름
-                  } else if (boxes[i - 1][3] != box.boxName && box.storageName != boxes[i - 1][5]) {
-                    if (box.boxState == '1') {
-                      box.none = true
-                    } else if (box.boxState == '0') {
-                      box.none = false
-                    }
-                  }
-                } else {
-                  if (box.boxState == '1') {
-                    box.none = true
-                  } else if (box.boxState == '0') {
-                    box.none = false
-                  }
-                }
-                this.useBoxes.push(box)
+              }else{
+                this.useBoxes = boxes
               }
+              console.log('this.useBoxes')
               console.log(this.useBoxes)
             }
           })
@@ -209,14 +150,14 @@ export default {
         this.modal = !this.modal
       }
       axios.get('/api/getBoxInItem/'+ useBoxCode)
-      .then(res=>{
-        console.log(res.data)
-        this.myItem = res.data
-        this.pickUseBox = useBoxCode
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+          .then(res=>{
+            console.log(res.data)
+            this.myItem = res.data
+            this.pickUseBox = useBoxCode
+          })
+          .catch(err=>{
+            console.log(err)
+          })
     },
     moveBox(useBox){
       this.$store.commit('moveBoxInfo',useBox)
@@ -242,8 +183,6 @@ export default {
       })
     },
     renewalPay(useBox) {
-      console.log('useBox.useBoxCode')
-      console.log(useBox.useBoxCode)
       this.$router.push({
         name: 'renewalBox',
         params: {
@@ -288,19 +227,19 @@ export default {
         itemList:this.addBoxInItem
       }
       axios.post('/api/addBoxInItem',data)
-      .then(res=>{
-        if(res.data.result=='ok'){
-          alert('추가되었습니다')
-          this.addBoxInItem=[]
-          this.getMyItem()
-          this.detailBox(this.pickUseBox)
-        }else {
-          alert('에러, 다시 시도해 주세요')
-        }
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+          .then(res=>{
+            if(res.data.result=='ok'){
+              alert('추가되었습니다')
+              this.addBoxInItem=[]
+              this.getMyItem()
+              this.detailBox(this.pickUseBox)
+            }else {
+              alert('에러, 다시 시도해 주세요')
+            }
+          })
+          .catch(err=>{
+            console.log(err)
+          })
     },
     outItem(){
       if (this.outBoxItem.length < 1){
