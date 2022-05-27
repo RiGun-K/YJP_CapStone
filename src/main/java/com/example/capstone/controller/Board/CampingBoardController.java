@@ -162,8 +162,6 @@ public class CampingBoardController {
 
     }
 
-
-
     @PostMapping("/Reviews_countView")
     public void countCampingView(@RequestBody HashMap<String, String> recommend){
         System.out.println(recommend.get("a"));

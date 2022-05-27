@@ -17,7 +17,7 @@
       <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
         <td>{{item.title}}</td>
         <td>{{item.content}}</td>
-        <td>{{item.mcode.mname}}</td>
+        <td>{{item.mid.mname}}</td>
       </tr>
       <router-link to="{name: 'View', params: { writer_code:item.writer_code }}"></router-link>
           </table>

@@ -714,7 +714,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .review-mid{
   position: relative;
   margin-top: -7%;
-  /*background-color: green;*/
   /*border:1px solid;*/
   /*box-sizing: border-box;*/
   width: 57%;
@@ -723,7 +722,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 
 }
 .review-text{
-  /*background-color: pink;*/
   position: relative;
   left: 50px;
   font-size: 38px;

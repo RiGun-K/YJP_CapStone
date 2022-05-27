@@ -40,8 +40,8 @@ public class Board {
     private String savedTime;
 
     @ManyToOne()
-    @JoinColumn(name = "MCODE")
-    private Member MCODE;
+    @JoinColumn(name = "MID")
+    private Member MID;
 
     // 부모
     @ManyToOne
@@ -56,7 +56,7 @@ public class Board {
 
     public Board(){}
 
-    public Board(Long boardId, String title, String content, String origFilename, String filename, String filePath, Integer boardViews, String savedTime, Member MCODE) {
+    public Board(Long boardId, String title, String content, String origFilename, String filename, String filePath, Integer boardViews, String savedTime, Member MID) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
@@ -65,15 +65,17 @@ public class Board {
         this.filePath = filePath;
         this.boardViews = boardViews;
         this.savedTime = savedTime;
-        this.MCODE = MCODE;
+        this.MID = MID;
     }
 
-    public Board(String content, String savedTime, Member MCODE, Board parentBoard) {
+
+    public Board(String title, String content, String origFilename, String filePath, String filename,  String savedTime, Member MID) {
+        this.title = title;
         this.content = content;
+        this.origFilename = origFilename;
+        this.filePath = filePath;
+        this.filename = filename;
         this.savedTime = savedTime;
-        this.MCODE = MCODE;
-        this.parentBoard = parentBoard;
+        this.MID = MID;
     }
-
-
 }
