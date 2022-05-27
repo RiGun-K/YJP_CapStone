@@ -1,9 +1,14 @@
-/* eslint-disable */
-<!------------------------------------------------------------------------- -->
-
 <template>
-	<h3>MY TEAM <button @Click="showingAddTeamForm">+</button></h3>
-
+	<div class="myTeam">
+		<p>MY TEAM</p>
+		<button
+			@Click="showingAddTeamForm"
+			class="w-btn-outline w-btn-blue-outline"
+			type="button"
+		>
+			+
+		</button>
+	</div>
 	<div v-if="addTeamForm">
 		<input
 			v-model="$store.state.insertName"
@@ -13,7 +18,9 @@
 			<option>전체공개</option>
 			<option>비공개</option>
 		</select>
-		<button @click="teamSave">제출</button>
+		<button @click="teamSave" class="w-btn w-btn-indigo" type="button">
+			생성
+		</button>
 	</div>
 	<div v-if="showingTeamList">
 		<p v-html="noTeam"></p>
@@ -263,6 +270,7 @@ export default {
 	border-radius: 10px;
 	border: none;
 	margin: 12px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 .teamList button:hover {
 	position: relative;
@@ -300,12 +308,37 @@ export default {
 	background-size: 400% 400%;
 	animation: gradient1 0.5s ease infinite;
 	border-radius: 10px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 .w-btn-gra2:hover {
 	width: 100%;
 	transform: scale(1.1);
 }
+.w-btn-blue-outline {
+	border: 3px solid #6aafe6;
+	color: #6e6e6e;
+	border-radius: 10px;
+	width: 35px;
+	height: 35px;
+	border: none;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+.w-btn-blue-outline:hover {
+	background-color: #6aafe6;
+	color: #d4dfe6;
+}
+.w-btn-blue-outline {
+	border: 3px solid #6aafe6;
+	color: #6e6e6e;
+}
 
+.myTeam {
+	margin: 20px;
+	float: left;
+}
+.myTeam p {
+	font-size: 30px;
+}
 @keyframes gradient1 {
 	0% {
 		background-position: 0% 50%;
