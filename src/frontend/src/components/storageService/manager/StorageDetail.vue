@@ -81,7 +81,6 @@ export default {
     },
     modalViewChk(storage) {
       this.boxCode = storage
-      console.log(storage + '/' + this.boxCode)
       if (!this.modalView) {
         this.modalView = !this.modalView
       }
