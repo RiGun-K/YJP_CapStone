@@ -1,7 +1,6 @@
 <template>
-  <div>
-    겔제페이지
-
+  <div class="divBody">
+    결제페이지
     <table>
       <tr>
         <td colspan="2">보관소</td>
@@ -60,7 +59,6 @@
 
     <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
     <button class="payNow" @click="paymentBtn">결제하기</button>
-
   </div>
 </template>
 
@@ -174,5 +172,10 @@ export default {
 </script>
 
 <style scoped>
-
+.divBody{
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 1%;
+  width: 50%;
+}
 </style>
