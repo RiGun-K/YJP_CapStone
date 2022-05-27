@@ -126,6 +126,7 @@ export default {
     return {
       chk: false,
       box: {},
+      moveInfo:{},
     }
   },
   methods: {
@@ -133,16 +134,10 @@ export default {
       this.box = {}
       axios.get('/api/getBox/' + this.boxCode)
           .then(res => {
+            console.log('res.data')
+            console.log(res.data)
             if (res.data[0].length > 2) {
-              const data = {
-                userName: '',
-                boxCode: '',
-                boxName: '',
-                boxState: '',
-                storageCode: '',
-                useStorageCode: '',
-                useStorageState: ''
-              }
+              const data = {}
               const datak = res.data[0]
               data.userName = datak[0]
               data.boxCode = datak[1]
