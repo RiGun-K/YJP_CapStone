@@ -17,7 +17,7 @@
 	</div>
 	<div v-if="showingTeamList">
 		<p v-html="noTeam"></p>
-		<div v-for="(value, index) in teamList" :key="index">
+		<div v-for="(value, index) in teamList" :key="index" class="teamList">
 			<button @click="loadTeamMemberList(value.teamCode)">
 				{{ value.teamCode.teamName }}
 			</button>
@@ -234,5 +234,11 @@ export default {
 }
 .unacceptedTeam {
 	background-color: red;
+}
+.teamList {
+	float: left;
+	width: 200px;
+	height: 120px;
+	border: 1px solid red;
 }
 </style>
