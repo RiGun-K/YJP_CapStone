@@ -159,20 +159,22 @@
       <button type="button" @click="detail_1" class="btn_Bottom">
         <span>캠핑장 소개</span>
       </button>
-      <button type="button" @click="detail_2" class="btn_Bottom">
+      <button type="button" @click="detail_2" class="btn_Bottom_3">
         <span>이용 안내</span>
       </button>
-      <button type="button" @click="detail_3" class="btn_Bottom">
+      <button type="button" @click="detail_3" class="btn_Bottom_3">
         <span>위치/주변정보</span>
       </button>
-      <button type="button" @click="detail_4" class="btn_Bottom">
+      <button type="button" @click="detail_4" class="btn_Bottom_3">
         <span>캠핑/여행후기</span>
       </button>
     </div>
 
     <div v-if="areaCheckA">
       <br>
+      <div class="review-t">
       <h2>리뷰</h2>
+      </div>
       <div class="content-detail-list-1">
         <br>
         <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
@@ -181,8 +183,8 @@
           </div>
 
           <div class="review">
-            <div class="review-mid">{{reviews.mcode.mname}}</div>
-              <div class="review-title">캠핑장명 {{ reviews.campingId.campingName}} </div><br>
+            <div class="review-title">캠핑장명 {{ reviews.campingId.campingName}} </div><br>
+            <div class="review-mid">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
               <div class="review-text">설명 {{ reviews.campingContent }}</div>
 
             <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
@@ -633,7 +635,20 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   background-color: #96adc0;
   font-size: 20px;
   font-weight: 400;
+  margin-left: 10%;
+  position: center;
+}
+.btn_Bottom_3{
+  width: 20%;
+  padding: 21px 0 17px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #96adc0;
+  font-size: 20px;
+  font-weight: 400;
   margin-left: 10px;
+  position: center;
 }
 .my-box {               /*리뷰 젤 큰 박스*/
   border:3px solid;
@@ -665,7 +680,7 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 
 }
 .button{
-  margin-left : 20px;
+  margin-left : 40%;
   display: inline-block;
   padding: 10px 15px;
   font-size: 16px;
@@ -689,27 +704,32 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .Recommend{
   margin-left: 70%;
 }
+
+  .review-title{
+    /*background-color: blue;*/
+    position: relative;
+    margin-top: 1%;
+    left:20%;
+    font-size: 40px;
+  }
 .review-mid{
   position: relative;
-  top: -20px;
-  background-color: green;
-  border:1px solid;
-  box-sizing: border-box;
+  margin-top: -7%;
+  /*background-color: green;*/
+  /*border:1px solid;*/
+  /*box-sizing: border-box;*/
   width: 57%;
-  margin-left: 30%;
-}
-.review-title{
-  background-color: blue;
-  position: relative;
-  top: 0px;
-  left:50px;
+  margin-left: 40%;
+  font-size: 20px;
+
 }
 .review-text{
-  background-color: pink;
+  /*background-color: pink;*/
   position: relative;
-  left: 30px;
-  font-size: ;
-
+  left: 50px;
+  font-size: 38px;
+  margin-top: 20%;
+  margin-left: 40%;
 }
 .btn_Bottom_2{
   width: 30%;
@@ -721,17 +741,24 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-size: 20px;
   font-weight: 400;
   margin-right: 5%;
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
   float: right;
+  border-radius: 15px;
 }
 
 .image_1{
   width: 200%;
   height: 200%;
-  margin-left: 160%;
+  margin-left: 230%;
   margin-bottom: 10%;
   margin-top: -50%;
+  /*width: 300px;*/
+  /*height: 180px;*/
 
+}
+.review-t{
+  text-align: center;
 }
 
 .reservation {

@@ -41,7 +41,6 @@
 
     <div class="center-block" >
       <input type="submit" class ="button_1" @click="create" value="저장하기">
-      <input type="reset" class ="button_2" value="다시쓰기">
       <br>
       <input type="button" value="리뷰목록" onclick="history.back(1)">
     </div>
@@ -125,22 +124,7 @@ export default {
             console.log("fail", ex)
           })
     },
-    // create(){
-    //   const data = {
-    //     title: this.title,
-    //     content: this.content
-    //   }
-    //   console.log(data);
-    //   axios.post('/api/CampingBoard', data)
-    //       .then((res) => {
-    //         console.log("성공" + res.data)
-    //       })
-    //       .catch((ex) => {
-    //         console.log("fail", ex)
-    //       })
-    //   this.$router.push({
-    //     path: '/Read'
-    //   })
+
     //
     //   if(!this.title) {
     //     alert("제목을 입력해 주세요");

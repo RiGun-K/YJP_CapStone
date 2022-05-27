@@ -1,16 +1,19 @@
 package com.example.capstone.domain.Board;
 
 import com.example.capstone.domain.Member.Member;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.capstone.domain.Product.CampingArea;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @Entity
-@Data
 @Getter
 @Setter
 @Table(name="board")
@@ -38,11 +41,22 @@ public class Board {
 
     @ManyToOne()
     @JoinColumn(name = "MCODE")
-    private Member mcode;
+    private Member MCODE;
+
+    // 부모
+    @ManyToOne
+    @JoinColumn(name = "parentBoardId")
+    @JsonManagedReference
+    private Board parentBoard;
+
+    // 자식
+    @OneToMany(mappedBy = "parentBoard")
+    @JsonBackReference
+    private List<Board> childrenBoard = new ArrayList<>();
 
     public Board(){}
 
-    public Board(Long boardId, String title, String content, String origFilename, String filename, String filePath, Integer boardViews, String savedTime, Member mcode) {
+    public Board(Long boardId, String title, String content, String origFilename, String filename, String filePath, Integer boardViews, String savedTime, Member MCODE) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
@@ -51,7 +65,15 @@ public class Board {
         this.filePath = filePath;
         this.boardViews = boardViews;
         this.savedTime = savedTime;
-        this.mcode = mcode;
+        this.MCODE = MCODE;
     }
+
+    public Board(String content, String savedTime, Member MCODE, Board parentBoard) {
+        this.content = content;
+        this.savedTime = savedTime;
+        this.MCODE = MCODE;
+        this.parentBoard = parentBoard;
+    }
+
 
 }
