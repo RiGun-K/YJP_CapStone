@@ -45,15 +45,18 @@
           </div>
         </div>
         <div class="storageBottomDiv">
-          
-      <div >
-        결제금액 : {{ form.price }}원
-      </div>
-      <div class="detailBtn">
-        <button class="pay-btn" @click="pay">다음</button>
+
+          <div>
+            결제금액 : {{ form.price }}원
+          </div>
+          <div class="detailBtn">
+            <button class="pay-btn" @click="pay">다음</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script asp-append-version=“true”>
@@ -255,20 +258,23 @@ export default {
 
 <style scoped>
 /*추가*/
-.storageUpDiv{
+.storageUpDiv {
   display: flex;
   width: 100%;
 }
-.storageTime{
+
+.storageTime {
   width: 30%;
   position: relative;
 }
-.storageEquip{
+
+.storageEquip {
   margin-left: 5%;
   width: 30%;
   position: relative;
 }
-.storageBottomDiv{
+
+.storageBottomDiv {
   margin-top: 2%;
   margin-right: 5%;
   left: 70%;
@@ -276,6 +282,7 @@ export default {
   width: 25%;
   text-align: left;
 }
+
 .disabledDiv {
   background: rgba(161, 156, 156, 0.97);
   border: solid 3px rgba(16, 33, 145, 0.99);
