@@ -40,7 +40,6 @@ export default {
 
     },
     chPass(){
-      console.log(store.getters.getLoginState.mcode)
       if(this.passCheck && this.currentPass != '')
       axios.post("/api/changePass",{
         MCODE:store.getters.getLoginState.mcode,
@@ -49,7 +48,7 @@ export default {
       }).then((res)=>{
         if(res.data){
           alert("비밀번호가 변경되었습니다")
-          this.$router.push("/myPage")
+          this.$router.go()
         }else{
           alert("비밀번호를 확인해주세요")
         }

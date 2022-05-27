@@ -6,13 +6,16 @@
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick" @change="search()">
+      <select v-model="smallPick" @change="search()" style="margin-left: 5px">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
+    </div>
+    <div class="searchDiv">
       <label for="storageName">보관소이름</label>
-      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()">
-      <button @click="storageSearch()">검색</button>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
+      style="margin-left: 5px">
+      <button @click="storageSearch()" style="margin-left: 8px">검색</button>
     </div>
 
     <div class="listBody">
@@ -287,7 +290,7 @@ export default {
 }
 
 .searchDiv {
-  margin-left: 2%;
+  margin-left: 5.5%;
   margin-top: 1%;
 }
 

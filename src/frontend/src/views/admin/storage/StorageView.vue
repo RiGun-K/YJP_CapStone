@@ -1,6 +1,5 @@
 <template>
   <div class="allBody">
-
     <div v-if="get">
       <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
       <GetStorage></GetStorage>
@@ -60,7 +59,7 @@ export default {
   margin-left: 2%;
   margin-top: 2%;
   text-align: center;
-  width: 6%;
+  width: 100px;
   padding: 0.5%;
   background-color: #ffffff;
   font-weight: bolder;

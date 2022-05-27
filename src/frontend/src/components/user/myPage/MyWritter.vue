@@ -13,7 +13,7 @@
       </tr>
       <tr v-for="(body) in viewList" :key="body.writer_code">
         <td>{{ body.writer_code}}</td>
-        <td>{{ body.title}}</td>
+        <td @click="goBoard(body.writer_code)">{{ body.title}}</td>
         <td>공란</td>
       </tr>
     </table>
@@ -48,6 +48,9 @@ export default {
     },
     reStart(){
       this.$router.go()
+    },
+    goBoard(index){
+      this.$router.push("/view/"+index)
     }
   },
   created() {

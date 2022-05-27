@@ -1,5 +1,6 @@
 <template>
-  매니저 - 보관소 관리
+  <h1 style="color: black;text-align: center; margin-top: 1%;margin-bottom: 1%">매니저 - 보관소 관리</h1>
+
   <StorageDetail></StorageDetail>
 </template>
 

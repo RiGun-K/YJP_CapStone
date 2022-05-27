@@ -1,5 +1,5 @@
 <template>
-  <div v-if="chk">
+  <div v-if="chk" class="storageBodyDiv">
     <table>
       <tbody>
       <tr>
@@ -35,8 +35,12 @@
       </tbody>
     </table>
     <hr>
-    장비 이동 / 장비 수리 신청 내역
     <table>
+      <tr>
+        <td>
+          장비 이동 / 장비 수리 신청 내역
+        </td>
+      </tr>
       <tr>
         <td>장비 이동</td>
         <td v-if="box.useStorageState == 3">
@@ -257,5 +261,15 @@ export default {
 </script>
 
 <style scoped>
-
+.storageBodyDiv{
+  margin-right: 5%;
+  margin-left: 5%;
+  margin-top: 1%;
+  margin-bottom: 10%;
+}
+th, td{
+  padding: 5px;
+  padding-left: 5%;
+  width: 50%;
+}
 </style>
