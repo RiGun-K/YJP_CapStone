@@ -1,5 +1,6 @@
 package com.example.capstone.dto.storage;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,8 @@ public class payStorageBox {
 
     private String userId;
     private long storageBoxCode;
-    private LocalDateTime useStorageStartTime;
-    private LocalDateTime useStorageEndTime;
+    private LocalDate useStorageStartTime;
+    private LocalDate useStorageEndTime;
     private int price;
     private List<Long> item = new ArrayList<Long>();
 
@@ -21,12 +22,13 @@ public class payStorageBox {
         this.storageBoxCode = storageBoxCode;
     }
 
-    public payStorageBox(String userId, long storageBoxCode, LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, int price) {
+    public payStorageBox(String userId, long storageBoxCode, LocalDate useStorageStartTime, LocalDate useStorageEndTime, int price, List<Long> item) {
         this.userId = userId;
         this.storageBoxCode = storageBoxCode;
         this.useStorageStartTime = useStorageStartTime;
         this.useStorageEndTime = useStorageEndTime;
         this.price = price;
+        this.item = item;
     }
 
     public String getUserId() {
@@ -45,19 +47,19 @@ public class payStorageBox {
         this.storageBoxCode = storageBoxCode;
     }
 
-    public LocalDateTime getUseStorageStartTime() {
+    public LocalDate getUseStorageStartTime() {
         return useStorageStartTime;
     }
 
-    public void setUseStorageStartTime(LocalDateTime useStorageStartTime) {
+    public void setUseStorageStartTime(LocalDate useStorageStartTime) {
         this.useStorageStartTime = useStorageStartTime;
     }
 
-    public LocalDateTime getUseStorageEndTime() {
+    public LocalDate getUseStorageEndTime() {
         return useStorageEndTime;
     }
 
-    public void setUseStorageEndTime(LocalDateTime useStorageEndTime) {
+    public void setUseStorageEndTime(LocalDate useStorageEndTime) {
         this.useStorageEndTime = useStorageEndTime;
     }
 

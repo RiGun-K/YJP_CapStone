@@ -18,6 +18,10 @@
       <input type="text" v-model="form.storageDetailAddress" placeholder="상세주소">
     </div>
     <div class="bodydiv">
+      <label class="labelWidth">전화번호</label>
+      <input type="text" v-model="form.storageTel" placeholder="전화번호">
+    </div>
+    <div class="bodydiv">
       <label class="labelWidth">이미지</label>
           <input type="file"
                  id="file"
@@ -26,7 +30,8 @@
                  aria-describedby="inputGroupFileAddon04"
                  aria-label="Upload"
                  placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                 drop-placeholder="Drop file here...">
+                 drop-placeholder="Drop file here..."
+          style="width: 300px;">
     </div>
 
     <button class="storage-add-btn" @click="next()">NEXT</button>
@@ -87,6 +92,7 @@ export default {
         storageZipcode: '',
         storageAddress: '',
         storageDetailAddress: '',
+        storageTel:'',
         latitude:'',
         longitude:'',
       },
@@ -274,32 +280,27 @@ export default {
 
 <style scoped>
 .allBody{
-  width: 98%;
+  margin-left: 25%;
+  margin-right: 25%;
   margin-top: 1%;
-  margin-left: 1%;
-  margin-right: 1%;
   text-align: left;
+  width: 50%;
 }
 
 .labelWidth{
-  left: 40%;
-  width: 10%;
-  position: relative;
+  width: 100px;
 }
 input{
-  left: 40%;
-  position: relative;
+  width: 150px;
 }
 
 .bodydiv{
   width: 100%;
   margin-top: 1%;
-  position: relative;
 }
 
 .addressBtn{
-  left: 40%;
-  width: 10%;
+  width: 100px;
   height: 100%;
   margin-left: 1%;
   text-align: center;
@@ -324,9 +325,9 @@ input{
 }
 
 .storage-add-btn {
-  left: 75%;
+  left: 60%;
   margin-top: 1%;
-  width: 6%;
+  width: 100px;
   height: 6%;
   text-align: center;
   padding: 1%;
@@ -334,7 +335,7 @@ input{
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
-  position: absolute;
+  position: relative;
 }
 
 .storage-add-btn:hover {
@@ -345,10 +346,9 @@ input{
 .storage-box {
   margin-top: 2%;
   border: solid 3px #000a69;
-  width: 50%;
+  width: 70%;
   justify-content: center;
   align-items: center;
-  margin-left: 25%;
   padding-bottom: 1%;
   padding-left: 1%;
   padding-right: 1%;

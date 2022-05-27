@@ -34,7 +34,6 @@
   <div class="searchDiv">
     <input type="text" v-model="searchWord">
     <button class="searchBtn" @click="searchList">검색</button>
-    <button @click="reStart" class="resetBtn">목록 초기화</button>
   </div>
 </template>
 
@@ -52,16 +51,12 @@ export default {
   },
   methods:{
     searchList(){
-      if(this.searchWord.length <= 0){
-        alert("검색어를 입력해주세요")
-      }else{
         this.viewList = []
         for(var i = 0; i < this.members.length; i++){
           if(this.members[i].mid.includes(this.searchWord)){
             this.viewList.push(this.members[i])
           }
         }
-      }
     },
     mscDisable(index){
       if(this.viewList[index].msc == 0){
@@ -86,9 +81,6 @@ export default {
       }).catch((err)=>{
         console.log(err)
       })
-    },
-    reStart(){
-      this.$router.go()
     }
   },
   created() {
@@ -118,14 +110,6 @@ tr, td{
   margin-top: 1%;
   width: 90%;
   border: 1px solid black;
-  text-align: center;
-}
-.resetBtn{
-  float: right;
-  position: relative;
-  padding: 0.5%;
-  background: #7ea6f6;
-  color: white;
   text-align: center;
 }
 .searchDiv{

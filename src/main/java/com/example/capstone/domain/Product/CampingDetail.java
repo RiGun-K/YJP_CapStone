@@ -1,5 +1,6 @@
 package com.example.capstone.domain.Product;
 
+import com.example.capstone.domain.order.OrderMenu;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
@@ -56,6 +57,10 @@ public class CampingDetail {
     @ManyToOne()
     @JoinColumn(name = "campingId")
     private Camping campingId;
+
+    @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
+    @OneToMany(mappedBy = "campingDetail", cascade = {CascadeType.ALL})
+    private List<OrderMenu> orderMenus = new ArrayList<>();
 
     @JsonManagedReference // 부모는 자식을 가져 올 수 있음 ( FK 값 )
     @OneToMany(mappedBy = "detailId",cascade = {CascadeType.ALL})

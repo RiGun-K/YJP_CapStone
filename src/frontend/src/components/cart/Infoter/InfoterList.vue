@@ -189,9 +189,11 @@ export default {
             .catch(e => {
               console.log(e)
             })
+
       } else {
         alert("객실이 없습니다.")
       }
+
     },
     cam(index) {
       axios.get('/api/product_detail_camping/' + index)
@@ -207,20 +209,23 @@ export default {
             console.log(e)
           })
     },
+    
     campingFilter(index) {
       if (this.searchCamping == '') {
         this.goData();
       } else {
         axios.get('/api/search_CampingList', { params: { searchCamping: index }})
-            .then((res) => {
-              this.list = res.data;
-              console.log(this.list);
-            })
-            .catch(e => {
-              console.log(e)
-            })
+         .then((res) => {
+           this.list = res.data;
+           console.log(this.list);
+         })
+         .catch(e => {
+           console.log(e)
+         })
       }
     },
+
+
     orderBy: function (orderBy) {
       if(orderBy == 'latest') {
         this.list.sort(function (a, b) {

@@ -14,7 +14,7 @@
       <th>이메일</th>
       <th>홈페이지</th>
       <th>전화번호</th>
-      <th>허가</th>
+      <th>상태</th>
     </tr>
     <tr v-for="(company) in viewList" v-bind:key="company.ccode">
       <td >{{company.member.mid}}</td>
@@ -28,9 +28,9 @@
       <td>{{company.chp}}</td>
       <td v-if="company.csc == 1">
         <button @click="accept(company.ccode)">승인</button>
-        <button>취소</button>
+        <button @click="refuse(company.ccode)">취소</button>
       </td>
-      <td v-else>
+      <td v-else @click="chScs(company.ccode)">
         {{acceptCheck(company.csc)}}
       </td>
     </tr>
@@ -38,7 +38,6 @@
   <div class="searchDiv">
     <input type="text" v-model="searchWord">
     <button class="searchBtn" @click="searchId">검색</button>
-    <button @click="reStart" class="resetBtn">목록 초기화</button>
   </div>
 </template>
 
@@ -58,32 +57,52 @@ export default {
       axios.post("/api/acceptCompany",{
         CCode:index
       }).then((res)=>{
-        console.log(res)
-        this.$router.go()
+        if(res.data){
+          this.$router.go()
+        }
       }).catch((err)=>{
         console.log(err)
       })
     },
     searchId(){
-      if(this.searchWord.length <= 0){
-        alert("검색어를 입력해주세요")
-      }else{
         this.viewList = []
         for(var i = 0; i < this.request.length; i++){
           if(this.request[i].member.mid.includes(this.searchWord)){
             this.viewList.push(this.request[i])
           }
         }
-      }
     },
-    refuse(){
-
+    refuse(index){
+      axios.post("/api/refuseCompany",{
+        CCode:index
+      }).then((res)=>{
+        if(res.data){
+          this.$router.go()
+        }
+      }).catch((err)=>{
+        console.log(err)
+      })
     },
     acceptCheck(index){
-      if(index ==0){
-        return "정지됨"
-      }else{
-        return "승인됨"
+      switch (index){
+        case "0":
+          return "자격정지"
+        case "2":
+          return "자격승인"
+      }
+    },
+    chScs(index){
+      if(confirm("판매자의 상태를 변경합니까?")){
+        axios.post("/api/chcscCompany",{
+          CCode:index
+        }).then((res)=>{
+          if(res.data){
+            alert("판매자의 상태가 변경됩니다")
+            this.$router.go()
+          }
+        }).catch((err)=>{
+          console.log(err)
+        })
       }
     },
     reStart(){
@@ -115,14 +134,6 @@ th, td{
   margin-right: 5%;
   margin-top: 1%;
   width: 90%;
-  text-align: center;
-}
-.resetBtn{
-  float: right;
-  position: relative;
-  padding: 0.5%;
-  background: #7ea6f6;
-  color: white;
   text-align: center;
 }
 </style>

@@ -170,16 +170,16 @@ public class OrderController {
             Member member = searchMember.get();
             List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
 
-            for(int i = 0; i < buyOrdersList.size(); i++){
+            for (int i = 0; i < buyOrdersList.size(); i++) {
                 Optional<Orders> searchOrder = ordersRepository.findById(buyOrdersList.get(i).getOrderCode());
 
-                if(searchOrder.isPresent()){
+                if (searchOrder.isPresent()) {
                     Orders orders = searchOrder.get();
                     OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
 
                     MenuBuy menuBuy = orderMenu.getMenuBuy();
 
-                    if(menuBuy == null) {
+                    if (menuBuy == null) {
                         buyOrdersList.remove(i);
                     }
                 }
@@ -211,7 +211,7 @@ public class OrderController {
 
                     MenuBuy menuBuy = orderMenu.getMenuBuy();
 
-                    if(menuBuy != null) {
+                    if (menuBuy != null) {
                         orderMenuList.add(i, orderMenu);
                     }
                 }
@@ -232,16 +232,16 @@ public class OrderController {
             Member member = searchMember.get();
             List<Orders> buyOrdersList = ordersRepository.findByMCode(member);
 
-            for(int i = 0; i < buyOrdersList.size(); i++){
+            for (int i = 0; i < buyOrdersList.size(); i++) {
                 Optional<Orders> searchOrder = ordersRepository.findById(buyOrdersList.get(i).getOrderCode());
 
-                if(searchOrder.isPresent()){
+                if (searchOrder.isPresent()) {
                     Orders orders = searchOrder.get();
                     OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
 
                     CampingDetail campingDetail = orderMenu.getCampingDetail();
 
-                    if(campingDetail == null) {
+                    if (campingDetail == null) {
                         buyOrdersList.remove(i);
                     }
                 }
@@ -271,7 +271,8 @@ public class OrderController {
                     OrderMenu orderMenu = orderMenuRepository.findByOrders(orders);
                     CampingDetail campingDetail = orderMenu.getCampingDetail();
 
-                    if(campingDetail != null) {
+
+                    if (campingDetail != null) {
                         orderMenuList.add(i, orderMenu);
                     }
                 }
@@ -282,6 +283,4 @@ public class OrderController {
         }
         return null;
     }
-
-
 }

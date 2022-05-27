@@ -17,6 +17,7 @@
         </tr>
       </table>
 
+
       <h5>상품 정보</h5>
       <table class="pay-now-item-info">
         <tr>

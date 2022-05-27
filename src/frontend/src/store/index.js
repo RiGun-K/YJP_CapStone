@@ -16,7 +16,9 @@ export default createStore({
 		planCode: '',
 		loginedTeamCode: '',
 		storage: {},
-		payStorage: {},
+		timeStorage: {},
+		itemStorage:[],
+		infoStorage:{},
 		CampingIdOfRooms: '',
 		member: '',
 		moveBoxInfo:{},
@@ -73,12 +75,17 @@ export default createStore({
 			console.log('지워졌나');
 			console.log(state.storage);
 		},
-		putCartStorage(state, form) {
-			console.log(form)
-			state.payStorage = form;
+		putTimeStorage(state, form) {
+			state.timeStorage = form;
+		},
+		putItemStorage(state, form) {
+			state.itemStorage = form;
+		},
+		putInfoStorage(state, form) {
+			state.infoStorage = form;
 		},
 		cartStorageClear(state) {
-			state.payStorage = {};
+			state.timeStorage = {};
 		},
 		setCampingIdState(state, CampingIdOfRooms) {
 			state.CampingIdOfRooms = CampingIdOfRooms;

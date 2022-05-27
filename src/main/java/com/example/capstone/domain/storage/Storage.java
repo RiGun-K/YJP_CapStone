@@ -29,6 +29,8 @@ public class Storage {  // 보관소
     @Column
     private String storageDetailAddress;
 
+    @Column
+    private String storageTel;
 
     @Column
     private double latitude;//위도
@@ -103,6 +105,14 @@ public class Storage {  // 보관소
 
     public void setStorageState(String storageState) {
         this.storageState = storageState;
+    }
+
+    public String getStorageTel() {
+        return storageTel;
+    }
+
+    public void setStorageTel(String storageTel) {
+        this.storageTel = storageTel;
     }
 
     public double getLatitude() {

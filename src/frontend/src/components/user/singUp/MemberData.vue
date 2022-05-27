@@ -154,7 +154,7 @@ export default {
         }).then((res)=>{
           if(res.data){
             alert("업데이트 되었습니다")
-            this.$router.push("/")
+            this.$router.go()
           }else{
             alert("업데이트에 문제가 발생했습니다")
           }
