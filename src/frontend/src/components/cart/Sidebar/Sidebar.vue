@@ -10,7 +10,7 @@
     <h5><span v-if="collapsed">
       </span>
       <span v-else >캠핑용품</span></h5>
-    <SidebarLink class="sidebar-link" icon="" to="/">캠핑패키지</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/itemBuy" @click="menu(1)">캠핑패키지</SidebarLink>
     <SidebarLink class="sidebar-link" icon="" to="/">텐트</SidebarLink>
     <SidebarLink class="sidebar-link" icon="" to="/">타프</SidebarLink>
     <SidebarLink class="sidebar-link" icon="" to="/">테이블</SidebarLink>

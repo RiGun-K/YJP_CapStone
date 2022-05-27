@@ -1,7 +1,6 @@
 <template>
-  <h3 style="margin-top: 5%; margin-left: 5%;">보관소 매니저 관리</h3>
-
-  <div>
+  <div style="margin-right: 8%; margin-left: 8%; margin-top: 1%;width: 84%">
+    <h3>보관소 매니저 관리</h3>
     <table>
       <thead>
         <tr>
@@ -22,8 +21,8 @@
           <td>{{ manager.storageCode.storageName }}</td>
           <td>{{ manager.mcode.mnick }}</td>
           <td>
-            <button @click="edit(torageManagerCode)">수정</button>
-            <button @click="remove(torageManagerCode)">삭제</button>
+            <button @click="edit(manager)">수정</button>
+            <button @click="remove(manager.storageManagerCode)">삭제</button>
           </td>
         </tr>
       </tbody>
@@ -34,7 +33,7 @@
           <td>{{ manager.mcode.mnick }}</td>
           <td>
             <button>수정</button>
-            <button>삭제</button>
+            <button @click="remove(manager.storageManagerCode)">삭제</button>
           </td>
         </tr>
       </tbody>
@@ -57,7 +56,6 @@ export default {
   },
   mounted() {
     this.GetStorageManager()
-
   },
   watch: {
     storagePick: function () {
@@ -70,21 +68,26 @@ export default {
     GetStorageManager() {
       axios.get('/api/getStorageManger')
           .then((res) => {
-            console.log(res)
+            console.log(res.data)
             this.storageManagerList = res.data
+            this.pickList = []
             for (let i = 0; i < this.storageManagerList.length; i++) {
-              if (i > 0 && this.storageManagerList[i - 1].storageCode.storageCode != this.storageManagerList[i].storageCode.storageCode) {
-                this.pickList.push({
-                  code: this.storageManagerList[i].storageCode.storageCode,
-                  name: this.storageManagerList[i].storageCode.storageName
-                })
-              } else {
-                this.pickList.push({
-                  code: this.storageManagerList[i].storageCode.storageCode,
-                  name: this.storageManagerList[i].storageCode.storageName
-                })
+              // if(i==0){
+              //   this.pickList.push({
+              //     code: this.storageManagerList[i].storageCode.storageCode,
+              //     name: this.storageManagerList[i].storageCode.storageName
+              //   })
+              // }
+              for (let j = 0; j < this.pickList.length; j++) {
+                if(this.storageManagerList[i].storageCode.storageCode != this.pickList[j].storageCode){
+                  this.pickList.push({
+                    code: this.storageManagerList[i].storageCode.storageCode,
+                    name: this.storageManagerList[i].storageCode.storageName
+                  })
+                }
               }
             }
+            console.log(this.pickList)
           })
           .catch((error) => {
             console.log(error)
@@ -104,8 +107,21 @@ export default {
 
     },
     remove(index) {
-
+      console.log(index)
+      axios.get('/api/deleteManager/'+index)
+          .then(res => {
+            if(res.data.result =='ok'){
+              alert('제거되었습니다')
+              this.GetStorageManager()
+            }else{
+             alert('에러')
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
     },
+
   }
 }
 </script>

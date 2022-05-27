@@ -1,21 +1,34 @@
 <template>
   <div class="renewal-box">
     <h3>보관소 리스트 페이지</h3>
-    <div class="card"  style="width: 70%; margin-bottom: 5%; font-weight: bolder; margin-left: 7%">
+    <div class="searchDiv">
+      <select v-model="bigPick" @change="bigCheck(bigPick)">
+        <option value="0">전국</option>
+        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+      </select>
+      <select v-model="smallPick" @change="search()" style="margin-left: 10px">
+        <option value="0">전체</option>
+        <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+      </select>
+      <label for="storageName" style="margin-left: 10px">보관소이름</label>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
+      style="margin-left: 10px">
+      <button @click="storageSearch()" style="margin-left: 10px">검색</button>
+    </div>
+    <div class="bottomDiv">
       <table>
         <thead>
           <tr>
             <th>번호</th>
             <th>지역</th>
-            <th colspan="2">보관소명</th>
+            <th >보관소명</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(storage,index) in storageList" :key="index" >
+          <tr v-for="(storage,index) in storageList" :key="index" @click="GetStorageDetail(storage.storageCode)">
             <td>{{ index+1 }}</td>
-            <td>{{ storage.storageAddress }}</td>
+            <td style="width: 300px;">{{ storage.storageAddress }}</td>
             <td>{{ storage.storageName }}</td>
-            <td><button @click="GetStorageDetail(storage.storageCode)">수정</button></td>
           </tr>
         </tbody>
       </table>
@@ -33,12 +46,26 @@ export default {
   components: {},
   mounted() {
     this.GetStorage()
+    axios.get('/api/aRound')
+        .then(res => {
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
   },
   data() {
     return {
       storageList: [],
       boxList: [],
       name: '',
+      bigRound: [],
+      smallRound: [],
+      bigPick: 0,
+      smallPick: 0,
+      stSearch: '',
+      searchStorageList: [],
+      searchList: [],
     }
   },
   methods: {
@@ -46,6 +73,7 @@ export default {
       axios.get('/api/getStorage')
           .then((res) => {
             this.storageList = res.data
+            this.searchList = this.storageList
           })
           .catch((error) => {
             console.log(error)
@@ -53,13 +81,11 @@ export default {
     },
     GetStorageDetail(storageCode) {
 
-      console.log('storageCode')
-      console.log(storageCode)
       this.$router.push({name:'StorageRevise', params:{storageCode:storageCode}})
-      this.detailCheck()
+
       axios.get('/api/storageView/' + storageCode)
-          .then((resp) => {
-            this.boxList = resp.data
+          .then((res) => {
+            this.boxList = res.data
             let storageName = this.boxList.storageName
             this.name = storageName
             this.GetManger(storageCode)
@@ -69,86 +95,86 @@ export default {
             console.log(err)
           })
     },
-
+    bigCheck(index) {
+      if (index == '0') {
+        this.smallPick = 0
+        this.smallRound = []
+        this.GetStorage()
+      } else {
+        axios.get('/api/smallRound/' + index)
+            .then(res => {
+              this.smallRound = res.data
+              this.smallPick = 0
+              this.search()
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+    },
+    search() {
+      if (this.bigPick == "0" && this.smallPick == '0') {
+        this.GetStorage()
+      } else if (this.bigPick != "0" && this.smallPick == '0') {
+        axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
+            .then(res => {
+              this.storageList = res.data
+              this.searchList = this.storageList
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      } else if (this.bigPick != "0" && this.smallPick != '0') {
+        axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
+            .then(res => {
+              this.storageList = res.data
+              for (let i = 0; i < this.storageList.length; i++) {
+                if(this.storageList[i].storageState == '1'){
+                  this.storageList.splice(i,1)
+                }
+              }
+              this.searchList = this.storageList
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+    },
+    storageSearch() {
+      this.searchStorageList = []
+      if (this.stSearch != '') {
+        for (let i = 0; i < this.searchList.length; i++) {
+          if (this.searchList[i].storageName.includes(this.stSearch)) {
+            this.searchStorageList.push(this.searchList[i])
+          }
+        }
+        if (this.searchStorageList.length < 1){
+          alert('검색하신 보관소은 없습니다')
+          return
+        }
+        this.storageList = this.searchStorageList
+      } else {
+        this.search()
+      }
+    },
   }
 }
 
 </script>
 
 <style scoped>
-.storage-box {
-  border: solid 3px #00a3de;
-  border-radius: 10px;
-  width: 200px;
-
+.searchDiv{
+  margin-top: 1%;
 }
-.storage-view {
-  display: -webkit-flex;
-  display: flex;
+.bottomDiv{
+  margin-top: 1%;
 }
 .renewal-box{
   width: 70%;
 }
-.storage {
-  padding-top: 1%;
-  border: solid 3px #000a69;
-  width: 80%;
-  justify-content: center;
-  align-items: center;
-  margin-left: 7%;
-  margin-top: 2%;
-  padding-bottom: 1%;
-}
-
 .renewal-box h3{
   margin-top: 3%;
   margin-left: 7%;
   margin-bottom: 3%;
 }
-
-.form-control{
-  width: 20%;
-}
-
-.storage-box-b{
-  margin-left: 1%;
-  margin-bottom: 1%;
-  text-align: center;
-  width: 10%;
-  padding: 0.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-}
-.storage-box-b:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-.form-label{
-  font-weight: normal;
-  font-size: large;
-}
-.card{
-  margin-top: -1%;
-}
-.storage-box-name-btn{
-  display: flex;
-}
-.storage-close{
-  margin-left: 50%;
-  margin-bottom: 1%;
-  text-align: center;
-  width: 40%;
-  padding: 0.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-}
-.storage-close:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-
 </style>

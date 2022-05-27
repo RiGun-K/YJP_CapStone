@@ -88,6 +88,11 @@ const routes = [
     component: () => import('@/components/user/myPage/MyOrder.vue')
   },
   {
+    path:'/myPreference',
+    name:'myPreference',
+    component: () => import('@/components/user/myPage/myPreference.vue')
+  },
+  {
     path:'/memberAdmin',
     name:'memberAdmin',
     component: () => import('@/components/user/adminManage/MemberManagementAdmin.vue')
@@ -432,6 +437,11 @@ const routes = [
     path: "/myBox/renewalBox",
     name: "renewalBox",
     component:()=>import('@/components/storageService/user/RenewalBox.vue')
+  },
+  {
+    path: "/myBox/closeBox",
+    name: "closeBox",
+    component:()=>import('@/components/storageService/user/CloseBox.vue')
   },
   {
     path: "/myBox/moveBox",

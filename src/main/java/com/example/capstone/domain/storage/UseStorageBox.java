@@ -5,7 +5,7 @@ import com.example.capstone.domain.order.Orders;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +18,10 @@ public class UseStorageBox {
     private long useStorageBoxCode;
 
     @Column
-    private LocalDateTime useStorageStartTime;
+    private LocalDate useStorageStartTime;
 
     @Column
-    private LocalDateTime useStorageEndTime;
+    private LocalDate useStorageEndTime;
 
     @Column
     private String useStorageState = "0";
@@ -45,7 +45,7 @@ public class UseStorageBox {
     public UseStorageBox() {
     }
 
-    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, StorageBox storageBoxCode, Orders orderCode, Member MCode) {
+    public UseStorageBox(LocalDate useStorageStartTime, LocalDate useStorageEndTime, StorageBox storageBoxCode, Orders orderCode, Member MCode) {
         this.useStorageStartTime = useStorageStartTime;
         this.useStorageEndTime = useStorageEndTime;
         this.storageBoxCode = storageBoxCode;
@@ -53,7 +53,7 @@ public class UseStorageBox {
         this.MCode = MCode;
     }
 
-    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, StorageBox storageBoxCode, Orders orderCode, Member MCode, List<MemberEquipment> memberEquipmentList) {
+    public UseStorageBox(LocalDate useStorageStartTime, LocalDate useStorageEndTime, StorageBox storageBoxCode, Orders orderCode, Member MCode, List<MemberEquipment> memberEquipmentList) {
         this.useStorageStartTime = useStorageStartTime;
         this.useStorageEndTime = useStorageEndTime;
         this.storageBoxCode = storageBoxCode;
@@ -62,22 +62,20 @@ public class UseStorageBox {
         this.memberEquipmentList = memberEquipmentList;
     }
 
-    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, StorageBox storageBoxCode, Orders orderCode) {
+    public UseStorageBox(LocalDate useStorageStartTime, LocalDate useStorageEndTime, StorageBox storageBoxCode, Orders orderCode) {
         this.useStorageStartTime = useStorageStartTime;
         this.useStorageEndTime = useStorageEndTime;
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;
     }
 
-    public UseStorageBox(LocalDateTime useStorageStartTime, LocalDateTime useStorageEndTime, String useStorageState, StorageBox storageBoxCode, Orders orderCode) {
+    public UseStorageBox(LocalDate useStorageStartTime, LocalDate useStorageEndTime, String useStorageState, StorageBox storageBoxCode, Orders orderCode) {
         this.useStorageStartTime = useStorageStartTime;
         this.useStorageEndTime = useStorageEndTime;
         this.useStorageState = useStorageState;
         this.storageBoxCode = storageBoxCode;
         this.orderCode = orderCode;
     }
-
-
 
     public UseStorageBox(StorageBox storageBoxCode, Orders orderCode) {
         this.storageBoxCode = storageBoxCode;
@@ -98,19 +96,19 @@ public class UseStorageBox {
         this.useStorageBoxCode = useStorageBoxCode;
     }
 
-    public LocalDateTime getUseStorageStartTime() {
+    public LocalDate getUseStorageStartTime() {
         return useStorageStartTime;
     }
 
-    public void setUseStorageStartTime(LocalDateTime useStorageStartTime) {
+    public void setUseStorageStartTime(LocalDate useStorageStartTime) {
         this.useStorageStartTime = useStorageStartTime;
     }
 
-    public LocalDateTime getUseStorageEndTime() {
+    public LocalDate getUseStorageEndTime() {
         return useStorageEndTime;
     }
 
-    public void setUseStorageEndTime(LocalDateTime useStorageEndTime) {
+    public void setUseStorageEndTime(LocalDate useStorageEndTime) {
         this.useStorageEndTime = useStorageEndTime;
     }
 

@@ -12,8 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
 @Table(name="orderMenu")
 public class OrderMenu {
 
@@ -35,20 +33,13 @@ public class OrderMenu {
     @JoinColumn(name = "campingId")
     private Camping camping;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "detailId")
     private CampingDetail campingDetail;
 
     @Column
     private int orderMenuCount;
-
-    public int getOrderMenuId() {
-        return orderMenuId;
-    }
-
-    public void setOrderMenuId(int orderMenuId) {
-        this.orderMenuId = orderMenuId;
-    }
 
     public Orders getOrders() {
         return orders;
@@ -68,6 +59,22 @@ public class OrderMenu {
 
     public int getOrderMenuCount() {
         return orderMenuCount;
+    }
+
+    public int getOrderMenuId() {
+        return orderMenuId;
+    }
+
+    public void setOrderMenuId(int orderMenuId) {
+        this.orderMenuId = orderMenuId;
+    }
+
+    public Camping getCamping() {
+        return camping;
+    }
+
+    public void setCamping(Camping camping) {
+        this.camping = camping;
     }
 
     public void setOrderMenuCount(int orderMenuCount) {

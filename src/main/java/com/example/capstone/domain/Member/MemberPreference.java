@@ -1,5 +1,7 @@
 package com.example.capstone.domain.Member;
 
+import com.example.capstone.domain.Product.Kind;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,16 +17,16 @@ public class MemberPreference {
 
     @ManyToOne
     @JoinColumn(name = "MPRP")
-    private Preference preference;
+    private Kind kind;
 
     public MemberPreference(){
 
     }
 
-    public MemberPreference(long MPRC, Member member, Preference preference) {
+    public MemberPreference(long MPRC, Member member, Kind kind) {
         this.MPRC = MPRC;
         this.member = member;
-        this.preference = preference;
+        this.kind = kind;
     }
 
     public long getMPRC() {
@@ -43,11 +45,11 @@ public class MemberPreference {
         this.member = member;
     }
 
-    public Preference getPreference() {
-        return preference;
+    public Kind getKind() {
+        return kind;
     }
 
-    public void setPreference(Preference preference) {
-        this.preference = preference;
+    public void setKind(Kind kind) {
+        this.kind = kind;
     }
 }

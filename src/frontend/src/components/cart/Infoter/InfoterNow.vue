@@ -102,6 +102,7 @@ export default {
       user: [],
       startDate: new Date(),
       endDate: new Date(),
+
     }
   },
   setup () {

@@ -140,21 +140,19 @@
             </div>
             <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
           </div>
-          <br>
         </div>
       </div>
     </div>
-
+  </div>
 
     <br>
+  <div v-if="areaCheck">
     <br>
-    <div v-if="areaCheck">
-      <br>
       <h2>캠핑장 위치정보</h2>
       <div class="mapDiv">
         <div id="map"></div>
       </div>
-    </div>
+   </div>
 
     <br>
     <div class="btn_area">
@@ -171,15 +169,6 @@
         <span>캠핑/여행후기</span>
       </button>
     </div>
-
-
-      <div v-if="areaCheck">
-        <br>
-        <h2>캠핑장 위치정보</h2>
-        <div class="mapDiv">
-          <div id="map"></div>
-        </div>
-      </div>
 
     <div v-if="areaCheckA">
       <br>
@@ -233,7 +222,6 @@
           <br>
         </div>
       </div>
-
 </template>
 
 <script>
@@ -269,6 +257,7 @@ export default {
       disabledDates: [],
       reservationDate: [],
       // date: [],
+
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
       endDate: new Date(),
@@ -296,9 +285,11 @@ export default {
             orderMenus[i].orders.endDate[0],
             orderMenus[i].orders.endDate[1] - 1,
             orderMenus[i].orders.endDate[2])
+
         var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
         const tomorrow = startDate
         this.disabledDates.push(tomorrow.toString())
+
         for (var j = 0; j < length; j++) {
           tomorrow.setDate(tomorrow.getDate() + 1)
           this.disabledDates.push(tomorrow.toString())
@@ -314,8 +305,6 @@ export default {
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
             console.log(this.roomContent);
-            console.log(this.content.filePath);
-            console.log(this.content.filename);
           })
           .catch(e => {
             console.log(e);
@@ -324,6 +313,7 @@ export default {
     detailData() {
       this.stateCheck = true;
     },
+
     buyData(detailId) {
       console.log(this.startDate)
       console.log(this.endDate)
@@ -340,7 +330,7 @@ export default {
             period: period
           }
         })
-      }},
+    }},
 
     detail_3() {
       this.areaCheck = true
@@ -416,10 +406,11 @@ export default {
             console.log("fail", ex)
           })
     },
+
     detail_4() {
       this.areaCheckA = true;
     },
-
+    
     toString() {
       const start = dayjs(this.reservationDate[0]);
       this.startDate = start.format('YYYYMMDD');
@@ -502,161 +493,136 @@ export default {
 </script>
 
 <style scoped>
-  img {
-    width: 40%;
-    height: 40%;
-  }
-  .mt-4 {
-    text-align: center;
-  }
-  .content-detail-list {
-    margin-top: 1rem;
-    padding: 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-  }
-  .d-grid gap-2 d-md-flex justify-content-md-end {
-    margin: auto;
-    width: 100%;
-    display: inline-block;
-    text-align: center;
-  }
-  .card {
-    text-align: center;
-  }
-  .mapDiv{
-    margin-top: -17%;
-    width: 63%;
-    float: right;
-    margin-right: -47%;
-  }
-  #map {
-    width: 400px;
-    height: 400px;
-  }
-  .slides {
-    padding: 0;
-    width: 609px;
-    height: 420px;
-    right: 2.5%;
-    display: block;
-    margin: 0 auto;
-    position: relative;
-  }
-  /*.slides * {*/
-  /*  user-select: none;*/
-  /*  -ms-user-select: none;*/
-  /*  -moz-user-select: none;*/
-  /*  -khtml-user-select: none;*/
-  /*  -webkit-user-select: none;*/
-  /*  -webkit-touch-callout: none;*/
-  /*}*/
-  .slides input { display: none; }
-  .slide-container { display: block; }
-  .slide {
-    top: 0;
-    opacity: 0;
-    width: 609px;
-    height: 420px;
-    display: block;
-    position: absolute;
-    transform: scale(0);
-    transition: all .7s ease-in-out;
-  }
-  .slide img {
-    width: 120%;
-    height: 100%;
-  }
-  .nav label {
-    width: 150px;
-    height: 100%;
-    display: none;
-    position: absolute;
-    opacity: 0;
-    z-index: 9;
-    cursor: pointer;
-    transition: opacity .2s;
-    color: #FFF;
-    font-size: 156pt;
-    text-align: center;
-    line-height: 380px;
-    font-family: "Varela Round", sans-serif;
-    background-color: rgba(255, 255, 255, .3);
-    text-shadow: 0px 0px 15px rgb(119, 119, 119);
-  }
-  .slide:hover + .nav label { opacity: 0.5; }
-  .nav label:hover { opacity: 1; }
-  .nav .next { right: -20%; }
-  input:checked + .slide-container  .slide {
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 1s ease-in-out;
-  }
-  input:checked + .slide-container .nav label { display: block; }
-  .nav-dots {
-    width: 100%;
-    bottom: 9px;
-    height: 11px;
-    display: block;
-    position: absolute;
-    text-align: center;
-    left: 10%;
-  }
-  .nav-dots .nav-dot {
-    top: -5px;
-    width: 11px;
-    height: 11px;
-    margin: 0 4px;
-    position: relative;
-    border-radius: 100%;
-    display: inline-block;
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-  .nav-dots .nav-dot:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  input#img-1:checked ~ .nav-dots label#img-dot-1,
-  input#img-2:checked ~ .nav-dots label#img-dot-2,
-  input#img-3:checked ~ .nav-dots label#img-dot-3,
-  input#img-4:checked ~ .nav-dots label#img-dot-4,
-  input#img-5:checked ~ .nav-dots label#img-dot-5,
-  input#img-6:checked ~ .nav-dots label#img-dot-6 {
-    background: rgba(0, 0, 0, 0.8);
-  }
-  .listBody{
-    padding: 0.5%;
-    margin-left: 30%;
-    margin-top: 1%;
-    margin-right: 1%;
-    width: 45%;
-  }
-  .btn_area {
-    margin: 20px 0 91px;
-  }
-  .btn_Bottom {
-    width: 20%;
-    padding: 21px 0 17px;
-    border: 0;
-    cursor: pointer;
-    color: white;
-    background-color: #96adc0;
-    font-size: 20px;
-    font-weight: 400;
-    margin-left: 10px;
-  }
-  .reservation {
-    width: 285%;
-    margin-left: 80px
-  }
-  .card-body img {
-    transition: all 0.2s linear;
-  }
-  .card-body:hover img {
-    transform: scale(1.5);
-  }
-/* 버튼 */
+img {
+  width: 40%;
+  height: 40%;
+}
+.mt-4 {
+  text-align: center;
+}
+.content-detail-list {
+  margin-top: 1rem;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+.d-grid gap-2 d-md-flex justify-content-md-end {
+  margin: auto;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+.card {
+  text-align: center;
+}
+.mapDiv{
+  margin-top: -17%;
+  width: 63%;
+  float: right;
+  margin-right: -47%;
+}
+#map {
+  width: 400px;
+  height: 400px;
+}
+.slides {
+  padding: 0;
+  width: 609px;
+  height: 420px;
+  right: 2.5%;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+}
+/*.slides * {*/
+/*  user-select: none;*/
+/*  -ms-user-select: none;*/
+/*  -moz-user-select: none;*/
+/*  -khtml-user-select: none;*/
+/*  -webkit-user-select: none;*/
+/*  -webkit-touch-callout: none;*/
+/*}*/
+.slides input { display: none; }
+.slide-container { display: block; }
+.slide {
+  top: 0;
+  opacity: 0;
+  width: 609px;
+  height: 420px;
+  display: block;
+  position: absolute;
+  transform: scale(0);
+  transition: all .7s ease-in-out;
+}
+.slide img {
+  width: 120%;
+  height: 100%;
+}
+.nav label {
+  width: 150px;
+  height: 100%;
+  display: none;
+  position: absolute;
+  opacity: 0;
+  z-index: 9;
+  cursor: pointer;
+  transition: opacity .2s;
+  color: #FFF;
+  font-size: 156pt;
+  text-align: center;
+  line-height: 380px;
+  font-family: "Varela Round", sans-serif;
+  background-color: rgba(255, 255, 255, .3);
+  text-shadow: 0px 0px 15px rgb(119, 119, 119);
+}
+.slide:hover + .nav label { opacity: 0.5; }
+.nav label:hover { opacity: 1; }
+.nav .next { right: -20%; }
+input:checked + .slide-container  .slide {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1s ease-in-out;
+}
+input:checked + .slide-container .nav label { display: block; }
+.nav-dots {
+  width: 100%;
+  bottom: 9px;
+  height: 11px;
+  display: block;
+  position: absolute;
+  text-align: center;
+  left: 10%;
+}
+.nav-dots .nav-dot {
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin: 0 4px;
+  position: relative;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.nav-dots .nav-dot:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+input#img-1:checked ~ .nav-dots label#img-dot-1,
+input#img-2:checked ~ .nav-dots label#img-dot-2,
+input#img-3:checked ~ .nav-dots label#img-dot-3,
+input#img-4:checked ~ .nav-dots label#img-dot-4,
+input#img-5:checked ~ .nav-dots label#img-dot-5,
+input#img-6:checked ~ .nav-dots label#img-dot-6 {
+  background: rgba(0, 0, 0, 0.8);
+}
+.listBody{
+  padding: 0.5%;
+  margin-left: 30%;
+  margin-top: 1%;
+  margin-right: 1%;
+  width: 45%;
+}
 .btn_area {
   margin: 20px 0 91px;
 }
@@ -780,6 +746,7 @@ export default {
   float: right;
   border-radius: 15px;
 }
+
 .image_1{
   width: 200%;
   height: 200%;
@@ -792,6 +759,18 @@ export default {
 }
 .review-t{
   text-align: center;
+}
+
+.reservation {
+  width: 285%;
+  margin-left: 80px
+}
+
+.card-body img {
+  transition: all 0.2s linear;
+}
+.card-body:hover img {
+  transform: scale(1.5);
 }
 
 </style>

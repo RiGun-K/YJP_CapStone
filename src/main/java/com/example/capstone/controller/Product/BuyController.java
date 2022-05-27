@@ -1,13 +1,15 @@
 package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Images;
-import com.example.capstone.domain.Product.Kind;
-import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.Product.*;
+import com.example.capstone.dto.Board.BoardDTO;
 import com.example.capstone.dto.Product.ImagesDTO;
 import com.example.capstone.dto.Product.MenuBuyDTO;
+import com.example.capstone.dto.Product.MenuDTO;
+import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
+import com.example.capstone.service.ProductService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -45,6 +48,8 @@ public class BuyController {
 
     @Autowired
     ImagesRepository imagesRepository;
+    @Autowired
+    ProductService productService;
 
 
     /* 구매상품 등록 페이지 */
@@ -261,5 +266,40 @@ public class BuyController {
         menuBuyRepository.deleteById(buyId);
 //         menuService.deleteById(menuid);
         return "메뉴가 삭제되었습니다.";
+    }
+
+    /* 구매상품 조회 시 조회수 증가 */
+    @PostMapping("/Buy_countView")
+    public void countCampingView(@RequestBody HashMap<String, String> buyId){
+        System.out.println(buyId.get("a"));
+        Optional<MenuBuy> menuBuy = menuBuyRepository.findById(Integer.parseInt(buyId.get("a")));
+        menuBuy.get().setBuyViews(menuBuy.get().getBuyViews()+1);
+        menuBuyRepository.save(menuBuy.get());
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 캠핑 ) */
+    @GetMapping("/product_detail_buy/{kindId}")
+    public List<MenuBuy> menuBuys(@PathVariable("kindId") int kindId) {
+        System.out.println("상품번호는 " + kindId);
+        if(kindId == 1 || kindId == 2) {
+            List<MenuBuy> menuBuys = menuBuyRepository.findByParentKindId(kindId);
+            System.out.println(menuBuys);
+            return menuBuys;
+        } else {
+            List<MenuBuy> menuBuys = menuBuyRepository.findBykindId(kindId);
+            System.out.println(menuBuys);
+            return menuBuys;
+        }
+
+
+    }
+
+    @GetMapping("/search_BuyList")
+    public List<MenuBuy> searchBuyList(@RequestParam("searchBuy") String searchBuy) {
+//        List<MenuBuy> menuBuys = productService.searchBuy(searchBuy);
+        List<MenuBuy> menuBuys = menuBuyRepository.findAllBysearchBuyContains(searchBuy);
+        System.out.println("결과는" + menuBuys);
+        return menuBuys;
+
     }
 }
