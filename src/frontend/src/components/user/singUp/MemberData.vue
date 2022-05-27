@@ -2,7 +2,7 @@
   <div id="wrapper">
     <div id="content">
       <br><br>
-      <h2>정보수정 입니다</h2>
+      <h2>정보수정</h2>
       <div>
         <br>
         <h3 class="join_title">

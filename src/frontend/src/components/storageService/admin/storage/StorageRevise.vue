@@ -1,28 +1,50 @@
 <template>
-  <div>
-    <button @click="$router.push({name:'storage'})">뒤로가기</button>
-  </div>
-  <div class="storage" >
-    <h5>보관소 관리</h5>
-    <div class="storage-box-name-btn">
-      <label for="name">보관소</label>
-      <input type="text" id="name" v-model="name" >
-      <label for="zipCode">우편번호</label>
-      <input type="text" id="zipCode" v-model="zipCode" >
-      <label for="address">주소</label>
-      <input type="text" id="address" v-model="address" >
-      <label for="detailAddress">상세주소</label>
-      <input type="text" id="detailAddress" v-model="detailAddress" >
-      <label for="telNumber">전화번호</label>
-      <input type="text" id="telNumber" v-model="telNumber" >
-<!--      <label for="image">이미지</label>-->
-<!--      <input type="file" id="image" v-model="image" >-->
+  <div class="divBody">
+    <div style="text-align: center">
+      <h5>보관소 관리</h5>
+    </div>
+    <div class="manager" >
       <div>
-        <button @click="updataStorage()">저장</button>
-        <button v-if="stopen == 'open'" @click="closeStorage()">보관소 정지</button>
-        <button v-if="stopen == 'close'" @click="openStorage()">보관소 시작</button>
+        <p>보관소 매니저 관리</p>
+      </div>
+      <div class="addManager">
+        <div v-if="mnopen">
+          <lable @click="mnshow()">매니저 추가 ▲</lable>
+          <div>
+            <label>매니저아이디</label>
+            <input type="text" v-model="memberId" id="exampleFormControlInput1"
+                   placeholder="매니저id" style="width: 250px"
+                   class="inlineSet">
+            <button class="storage-box-b" @click="CheckMember()">검사</button>
+            <p v-if="memberIdCheck" class="inlineSet">가능</p>
+            <button @click="postManager()" v-if="memberIdCheck">추가</button>
+          </div>
+        </div>
+        <div v-else>
+          <lable @click="mnshow()">매니저 추가 ▼</lable>
+        </div>
+      </div>
+      <div>
+        <table>
+          <thead>
+          <tr>
+            <th></th>
+            <th>이름</th>
+            <th>아이디</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(manager, index) in managerList" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ manager.mcode.mnick }}</td>
+            <td>{{ manager.mcode.mid }}</td>
+            <td><button @click="removeManager(manager.storageManagerCode)">삭제</button></td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+    <hr>
     <div class="storage-view">
       <table class="storage-box">
         <thead>
@@ -40,52 +62,39 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <hr>
-  <div class="manager" >
-    <div>
-      <h5>보관소 매니저 관리</h5>
-      <div class="manager-add">
-        <div class="mb-3" @click="mnshow()">
-          <div v-if="mnopen">
-            매니저 추가 ▲
-            <div>
-              <div>
-                <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
-                <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
-                       placeholder="매니저id">
-              </div>
-              <button class="storage-box-b" @click="CheckMember()">검사</button>
-              <div v-if="memberIdCheck">
-                <p>가능</p>
-                <button @click="postManager()">추가</button>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            매니저 추가 ▼
-          </div>
-        </div>
-      </div>
+    <hr>
+    <div style="display: inline-flex">
+      <p class="textState">보관소 상태 변경</p>
+      <button v-if="stopen == 'open'" @click="closeStorage()" class="stateBtn">보관소 정지</button>
+      <button v-if="stopen == 'close'" @click="openStorage()" class="stateBtn">보관소 시작</button>
     </div>
+    <hr>
     <div>
-      <table>
-        <thead>
-        <tr>
-          <th></th>
-          <th>이름</th>
-          <th>아이디</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(manager, index) in managerList" :key="index">
-          <td>{{ index + 1 }}</td>
-          <td>{{ manager.mcode.mnick }}</td>
-          <td>{{ manager.mcode.mid }}</td>
-          <td><button @click="removeManager(manager.storageManagerCode)">삭제</button></td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="inputBody">
+        <label class="labelText">보관소</label>
+        <p class="textItem">{{name}}</p>
+      </div>
+      <div class="inputBody">
+        <label class="labelText">우편번호</label>
+        <p class="textItem">{{zipCode}}</p>
+      </div>
+      <div class="inputBody">
+        <label class="labelText">주소</label>
+        <p class="textItem">{{address}}</p>
+      </div>
+      <div class="inputBody">
+        <label class="labelText">상세주소</label>
+        <p class="textItem">{{detailAddress}}</p>
+      </div>
+      <div class="inputBody">
+        <label class="labelText">전화번호</label>
+        <p class="textItem">{{telNumber}}</p>
+      </div>
+      <!--      <label for="image">이미지</label>-->
+      <!--      <input type="file" id="image" v-model="image" >-->
+      <div class="divBtnBody">
+        <button @click="$router.push({name:'storage'})" class="Btn">돌아가기</button>
+      </div>
     </div>
   </div>
 </template>
@@ -275,5 +284,45 @@ export default {
 </script>
 
 <style scoped>
-
+.divBody{
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 1%;
+  margin-bottom: 5%;
+  width: 50%;
+}
+.labelText{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100px;
+}
+.inputBody{
+  width: 100%;
+}
+.divBtnBody{
+  margin-top: 10px;
+  text-align: right;
+}
+.textItem{
+  border: 1px solid black;
+  width: 250px;
+  padding-left: 5px;
+  display: inline-flex;
+}
+.stateBtn{
+  margin-left: 20px;
+  width: 150px;
+  text-align: center;
+  position: relative;
+}
+.textState{}
+.inlineSet{
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline;
+}
+.addManager{
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
 </style>

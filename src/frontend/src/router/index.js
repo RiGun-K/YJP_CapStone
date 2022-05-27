@@ -110,7 +110,12 @@ const routes = [
   {
     path:'/addEquipment',
     name:'addEquipment',
-    component: () => import('@/components/user/myPage/AddEquip')
+    component: () => import('@/components/user/myPage/AddEquip.vue')
+  },
+  {
+    path:'/memberData/:mid',
+    name:'memberData',
+    component: () => import('@/components/user/adminManage/memberData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////
@@ -389,19 +394,7 @@ const routes = [
   {
     path: "/storageAdmin",
     name: "admin",
-    component: ()=> import('@/views/admin/StorageAdminView.vue'),
-    children: [
-      {
-        path: "/storageAdmin/storage",
-        name: "storage",
-        component: ()=> import('@/views/admin/storage/StorageView.vue')
-      },
-      {
-        path: "/storageAdmin/manager",
-        name: "manager",
-        component: ()=> import('@/views/admin/manager/StorageManagerView.vue')
-      },
-    ]
+    component: ()=> import('@/views/admin/storage/StorageView.vue')
   },
   {
     path: "/storageAdmin/storageRevise",

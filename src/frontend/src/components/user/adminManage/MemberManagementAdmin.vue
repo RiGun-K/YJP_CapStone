@@ -13,10 +13,10 @@
       <th class="leaveSet">탈퇴일자</th>
     </tr>
     <tr v-for="(member, index) in viewList" v-bind:key="member.mcode" v-show="showDisable(index)">
-      <td class="idSet">{{member.mid}}</td>
-      <td class="nickSet">{{member.mnick}}</td>
-      <td class="emailSet">{{member.mmail}}</td>
-      <td class="addSet">{{member.mradd}} <br/> {{member.madd}}</td>
+      <td class="idSet" @click="showMemberData(member.mid)">{{member.mid}}</td>
+      <td class="nickSet" @click="showMemberData(member.mid)">{{member.mnick}}</td>
+      <td class="emailSet" @click="showMemberData(member.mid)">{{member.mmail}}</td>
+      <td class="addSet" @click="showMemberData(member.mid)">{{member.mradd}} <br/> {{member.madd}}</td>
       <td class="stateSet">
         <select v-model="member.msc" @change="changeSelect(index)" :disabled="mscDisable(index)" >
           <option value="0" disabled="true">탈퇴회원</option>
@@ -81,6 +81,14 @@ export default {
       }).catch((err)=>{
         console.log(err)
       })
+    },
+    showMemberData(index){
+        this.$router.push({
+          name:"memberData",
+          params:{
+            mid:index
+          }
+        })
     }
   },
   created() {
