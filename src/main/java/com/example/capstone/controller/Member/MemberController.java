@@ -115,7 +115,7 @@ public class MemberController {
 
         memberCh.get().setMNick(updataData.get("MNick"));
         memberCh.get().setMZadd(updataData.get("MZadd"));
-        memberCh.get().setMZadd(updataData.get("MRadd"));
+        memberCh.get().setMRadd(updataData.get("MRadd"));
         memberCh.get().setMAdd(updataData.get("MAdd"));
         memberCh.get().setMPH(updataData.get("MPH"));
         memberCh.get().setMMail(updataData.get("MEmail"));

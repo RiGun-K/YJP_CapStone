@@ -110,7 +110,12 @@ const routes = [
   {
     path:'/addEquipment',
     name:'addEquipment',
-    component: () => import('@/components/user/myPage/AddEquip')
+    component: () => import('@/components/user/myPage/AddEquip.vue')
+  },
+  {
+    path:'/memberData/:mid',
+    name:'memberData',
+    component: () => import('@/components/user/adminManage/memberData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////

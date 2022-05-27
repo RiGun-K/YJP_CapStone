@@ -45,12 +45,13 @@
           </div>
         </div>
         <div class="storageBottomDiv">
-          
-      <div >
-        결제금액 : {{ form.price }}원
-      </div>
-      <div class="detailBtn">
-        <button class="pay-btn" @click="pay">다음</button>
+          <div>
+            결제금액 : {{ form.price }}원
+          </div>
+          <div class="detailBtn">
+            <button class="pay-btn" @click="pay">다음</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
