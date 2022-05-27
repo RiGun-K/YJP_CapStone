@@ -10,8 +10,10 @@ import javax.persistence.Column;
 @Setter
 public class CampingBoardDTO {
 
+    private Long boardCampingCode;
     private String mcode;
     private Long boardMenuCode;
+    private int campingId;
 
     private String campingTitle;
     private String campingContent;

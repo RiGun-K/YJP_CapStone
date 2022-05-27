@@ -54,6 +54,9 @@
             <li class="menu"><a href="/board">문의관리</a></li>
           </ul>
         </li>
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/">고객센터</a>
+        </li>
       </ul>
     </div>
   </nav>
