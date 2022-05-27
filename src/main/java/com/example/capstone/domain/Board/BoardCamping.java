@@ -55,27 +55,30 @@ public class BoardCamping {
 
     public BoardCamping() {}
 
-    public BoardCamping(Long boardCampingCode, String campingTitle, String campingContent, String origFilename, String filePath, Integer recommend, String savedTime, Member mcode, BoardMenu boardMenuCode, Camping campingId) {
-        this.boardCampingCode = boardCampingCode;
-        this.campingTitle = campingTitle;
-        this.campingContent = campingContent;
-        this.origFilename = origFilename;
-        this.filePath = filePath;
-        this.recommend = recommend;
-        this.savedTime = savedTime;
-        this.mcode = mcode;
-        this.boardMenuCode = boardMenuCode;
-        this.campingId = campingId;
-    }
-
-    public BoardCamping(String campingTitle, String campingContent, Member mcode, BoardMenu boardMenuCode,  String savedTime, String origFilename, String filename, String filePath) {
+    public BoardCamping(String campingTitle, String campingContent, Member mcode, BoardMenu boardMenuCode, Camping camping, String savedTime, String origFilename, String filename, String filePath) {
         this.campingTitle = campingTitle;
         this.campingContent = campingContent;
         this.mcode = mcode;
         this.boardMenuCode = boardMenuCode;
+        this.campingId = camping;
         this.savedTime = savedTime;
         this.origFilename = origFilename;
         this.filename = filename;
         this.filePath = filePath;
+    }
+
+    public BoardCamping(Long boardCampingCode, String campingTitle, String campingContent, Member mcode, BoardMenu boardMenuCode, Camping camping, String savedTime, String origFilename, String filename, String filePath, Integer recommend) {
+        this.boardCampingCode = boardCampingCode;
+        this.campingTitle = campingTitle;
+        this.campingContent = campingContent;
+        this.mcode = mcode;
+        this.boardMenuCode = boardMenuCode;
+        this.campingId = camping;
+        this.savedTime = savedTime;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.recommend = recommend;
+
     }
 }

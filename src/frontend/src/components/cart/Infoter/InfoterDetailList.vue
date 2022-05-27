@@ -15,7 +15,7 @@
     <input type="radio" name="radio-btn" id="img-2" />
     <li class="slide-container">
       <div class="slide">
-        <img src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg" />
+        <img :src="'/api/product_detail_images/' + campingImages[0].filename"/>
       </div>
       <div class="nav">
         <label for="img-1" class="prev">&#x2039;</label>
@@ -26,7 +26,7 @@
     <input type="radio" name="radio-btn" id="img-3" />
     <li class="slide-container">
       <div class="slide">
-        <img src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg" />
+        <img :src="'/api/product_detail_images/' + campingImages[1].filename"/>
       </div>
       <div class="nav">
         <label for="img-2" class="prev">&#x2039;</label>
@@ -37,7 +37,7 @@
     <input type="radio" name="radio-btn" id="img-4" />
     <li class="slide-container">
       <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.campingDetails[0].filename" />
+        <img :src="'/api/product_detail_images/' + campingImages[2].filename"/>
       </div>
       <div class="nav">
         <label for="img-3" class="prev">&#x2039;</label>
@@ -174,31 +174,47 @@
 
     <br>
 
-    <h2>리뷰</h2>
+  <div v-if="areaCheckA">
+    <br>
+    <div class="review-t">
+      <h2>리뷰</h2>
+    </div>
     <div class="content-detail-list-1">
       <br>
-      <div class="my-box">
+      <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
         <div class="Recommend">
-          <button class="button" v-on:click="likecnt++">좋아요</button> <span>좋아요 : </span>
+          <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
         </div>
+
         <div class="review">
-          <tr>
-            <td class="review-mid"></td>
-            <br>
-            <!--          <input type="text" class="form-control" name ="subject" id="subject" placeholder="">-->
-            <td class="review-title">캠핑장명 </td><br>
-            <td class="review-text">설명</td>
-          </tr>
+          <div class="review-title">캠핑장명 {{ reviews.campingId.campingName}} </div><br>
+          <div class="review-mid">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
+          <div class="review-text">설명 {{ reviews.campingContent }}</div>
+
+          <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
 
           <div class="my-box-3">
           </div>
-          <p class="review-image">이미지</p>
-<!--          <img :src="'/api/product_detail_images/' + this.list[1].filename" />-->
-          <!--          <button type=""-->
+          <div class="image_1">
+            <p class="review-image">이미지</p>
+            <img :src="'/api/product_detail_images/' + reviews.filename" />
+          </div>
+          <div class="btn_area_2">
+            <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
+              <span>삭제</span>
+            </button>
+          </div>
 
-          <!--        </div>-->
+          <div class="btn_area_2">
+            <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
+              <span>수정</span>
+            </button>
+          </div>
+
         </div>
-        <!--        <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">-->
+
+
+
       </div>
 
       <br>
@@ -209,6 +225,7 @@
       </div>
       <br>
     </div>
+  </div>
 </template>
 
 <script>
@@ -221,6 +238,7 @@ export default {
   name: "BuyDetailList",
   created() {
     this.DataList();
+    this.fetchData();
   },
   mounted() {
   },
@@ -229,6 +247,7 @@ export default {
       id: '',
       content: [],
       roomContent: [],
+      campingImages: [],
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
       images: '',
@@ -237,6 +256,7 @@ export default {
       markers: [],
       markPositions1: [],
       areaCheck: false,
+      areaCheckA: false,
 
       disabledDates: [],
       reservationDate: [],
@@ -290,7 +310,9 @@ export default {
             console.log(res.data);
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
+            this.campingImages = this.content.images;
             console.log(this.roomContent);
+            console.log(this.campingImages);
           })
           .catch(e => {
             console.log(e);
@@ -394,6 +416,64 @@ export default {
             console.log("fail", ex)
           })
     },
+    fetchData() {
+      console.log(this.id)
+      axios.get('/api/CampingBoardlist/' + this.id)
+          // 캠핑장 아이디를 넘겨줌 = 이 캠핑장에 해당하는 게시글 가져오기
+          .then((res) => {
+            console.log("게시글 조회 성공" + res.data);
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch((ex) => {
+            console.log("게시글 조회 실패", ex)
+          })
+    },
+    delete_1(reviews) {
+      console.log("삭제하실 리뷰번호는" + reviews.boardCampingCode)
+      const boardCampingCode = reviews.boardCampingCode;
+      if (confirm("삭제하시겠습니까?")) {
+        axios.delete('/api/CampingBoardDelete/' + boardCampingCode)
+            .then((res) => {
+              console.log("삭제되었습니다.", res)
+              alert("리뷰가 삭제되었습니다.")
+              this.$router.push({
+                path: `/infoter/infoterList/${this.id}`
+              })
+            })
+            .catch((err) => {
+              console.log("삭제실패" + err)
+            })
+      }
+    },
+    update_1(reviews) {
+      console.log(reviews.campingId.campingId);
+      console.log(reviews.boardCampingCode);
+      console.log(reviews.campingContent, reviews.campingTitle, reviews.filename);
+      this.$router.push({
+        path: `/infoter/infoterupdate/${reviews.boardCampingCode}`,
+        query: {
+          title: reviews.campingTitle,
+          content: reviews.campingContent,
+          mname: reviews.mcode.mname,
+          filename: reviews.filename,
+          campingId: reviews.campingId.campingId,
+          recommend: reviews.recommend
+        }
+      })
+    },
+    addPush(reviews) {
+      console.log(reviews.boardCampingCode)
+      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
+          .then((res) => {
+            alert("추천수가 증가되었습니다.")
+            console.log("추천수가 증가되었습니다.")
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+
     toString() {
       const start = dayjs(this.reservationDate[0]);
       this.startDate = start.format('YYYYMMDD');
@@ -401,8 +481,16 @@ export default {
       this.endDate = end.format('YYYYMMDD');
     },
 
+    detail_4() {
+      this.areaCheckA = true;
+    },
     detail_5() {
-      window.location.href = 'http://localhost:8081/infoter/infoterBoard'
+      this.$router.push({
+        path: '/infoter/infoterBoard',
+        query: {
+          campingId: this.id
+        }
+      })
     },
 
 
@@ -623,8 +711,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   width: 285%;
   margin-left: 80px
 }
-
-
 
 .card-body img {
   transition: all 0.2s linear;

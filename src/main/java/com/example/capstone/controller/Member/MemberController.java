@@ -1,5 +1,6 @@
 package com.example.capstone.controller.Member;
 
+import com.example.capstone.domain.Board.Board;
 import com.example.capstone.domain.Board.Writer;
 import com.example.capstone.domain.Member.Company;
 import com.example.capstone.domain.Member.MailCheck;
@@ -351,30 +352,30 @@ public class MemberController {
 
     ///내게시글페이지///
     @PostMapping("myWritter")
-    public List<Writer> myPageWritter(@RequestBody HashMap<String, String> body){
+    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
         Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
-        List<Writer> writerList = boardRepository.findByMID(member.get());
-        if(writerList.isEmpty()){
+        List<Board> boardList = boardRepository.findByMID(member.get());
+        if(boardList.isEmpty()){
             return null;
         }
 
-        return writerList;
+        return boardList;
     }
 
     ///전체 게시글 조회///
     @GetMapping("adminAllWriter")
-    public List<Writer> adminAllWriter(){
-        List<Writer> writerList = boardRepository.findAll();
-        return writerList;
+    public List<Board> adminAllWriter(){
+        List<Board> boardList = boardRepository.findAll();
+        return boardList;
     }
     ///게시글삭제///
     @PostMapping("adminDeleteWriter")
     public Boolean adminDeleteWriter(@RequestBody HashMap<String, String> body){
-        Optional<Writer> writer = boardRepository.findById(Integer.parseInt(body.get("wcode")));
-        if(writer.isEmpty()){
+        Optional<Board> board = boardRepository.findById(Long.parseLong(body.get("wcode")));
+        if(board.isEmpty()){
             return false;
         }
-        boardRepository.delete(writer.get());
+        boardRepository.delete(board.get());
         return true;
     }
 

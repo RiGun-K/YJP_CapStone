@@ -1,5 +1,83 @@
 <template>
-  <div class="mt-4">
+  <br>
+  <ul class="slides">
+    <input type="radio" name="radio-btn" id="img-1" checked />
+    <li class="slide-container">
+      <div class="slide">
+        <img :src="'/api/product_detail_images/' + images[0].filename"/>
+      </div>
+      <div class="nav">
+        <label for="img-6" class="prev">&#x2039;</label>
+        <label for="img-2" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-2" />
+    <li class="slide-container">
+      <div class="slide">
+        <img :src="'/api/product_detail_images/' + images[1].filename"/>
+      </div>
+      <div class="nav">
+        <label for="img-1" class="prev">&#x2039;</label>
+        <label for="img-3" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-3" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-2" class="prev">&#x2039;</label>
+        <label for="img-4" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-4" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-3" class="prev">&#x2039;</label>
+        <label for="img-5" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-5" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-4" class="prev">&#x2039;</label>
+        <label for="img-6" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-6" />
+    <li class="slide-container">
+      <div class="slide">
+        <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
+      </div>
+      <div class="nav">
+        <label for="img-5" class="prev">&#x2039;</label>
+        <label for="img-1" class="next">&#x203a;</label>
+      </div>
+    </li>
+
+    <li class="nav-dots">
+      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
+      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
+      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
+      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
+      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
+      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
+    </li>
+  </ul>
+
+      <div class="mt-4">
     <b-card-text>
       <div class="content-detail-list">
         <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
@@ -39,9 +117,10 @@ export default {
     return {
       id: '',
       content: [],
+      images: [],
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
-      images: '',
+
       count: 1,
       buyMenuCheckPut: false
     }
@@ -54,8 +133,8 @@ export default {
           .then(res => {
             console.log(res.data);
             this.content = res.data;
-            console.log(this.content.filePath);
-            console.log(this.content.filename);
+            this.images = this.content.images;
+            console.log(this.images);
             axios.get('http://localhost:9002/api/product_detail_images/' + this.content.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");
@@ -121,22 +200,107 @@ export default {
 </script>
 
 <style scoped>
+.slide img {
+  width: 40%;
+  height: 40%;
+}
 .mt-4 {
   text-align: center;
 }
-.content-detail-list {
-  margin-top: 1rem;
-  padding: 1rem;
+.slides {
+  padding: 0;
+  width: 609px;
+  height: 420px;
+  right: 2.5%;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+}
+.slides input { display: none; }
+.slide-container { display: block; }
+.slide {
+  top: 0;
+  opacity: 0;
+  width: 609px;
+  height: 420px;
+  display: block;
+  position: absolute;
+  transform: scale(0);
+  transition: all .7s ease-in-out;
+}
+.slide img {
+  width: 120%;
+  height: 100%;
+}
+.nav label {
+  width: 150px;
+  height: 100%;
+  display: none;
+  position: absolute;
+  opacity: 0;
+  z-index: 9;
+  cursor: pointer;
+  transition: opacity .2s;
+  color: #FFF;
+  font-size: 156pt;
   text-align: center;
-  text-decoration: none;
+  line-height: 380px;
+  font-family: "Varela Round", sans-serif;
+  background-color: rgba(255, 255, 255, .3);
+  text-shadow: 0px 0px 15px rgb(119, 119, 119);
+}
+.slide:hover + .nav label { opacity: 0.5; }
+.nav label:hover { opacity: 1; }
+.nav .next { right: -20%; }
+input:checked + .slide-container  .slide {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1s ease-in-out;
+}
+input:checked + .slide-container .nav label { display: block; }
+.nav-dots {
+  width: 100%;
+  bottom: 9px;
+  height: 11px;
+  display: block;
+  position: absolute;
+  text-align: center;
+  left: 10%;
+}
+.nav-dots .nav-dot {
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin: 0 4px;
+  position: relative;
+  border-radius: 100%;
   display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.nav-dots .nav-dot:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+input#img-1:checked ~ .nav-dots label#img-dot-1,
+input#img-2:checked ~ .nav-dots label#img-dot-2,
+input#img-3:checked ~ .nav-dots label#img-dot-3,
+input#img-4:checked ~ .nav-dots label#img-dot-4,
+input#img-5:checked ~ .nav-dots label#img-dot-5,
+input#img-6:checked ~ .nav-dots label#img-dot-6 {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.content-detail-list {
+  padding: 0.5%;
+  margin-left: 45%;
+  margin-top: 1%;
+  margin-right: 1%;
+  width: 45%;
 }
 .d-grid gap-2 d-md-flex justify-content-md-end {
-  margin: auto;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
+  margin-left: 15%;
 }
+
 .buy-count-sub{
   color: #00a3de;
   background-color: white;
