@@ -9,17 +9,8 @@
            @click="modalViewChk(box.storageBoxCode)">
         <div>
           <ul>
-            <li>보관함 이름: {{ box.storageBoxName }}</li>
-            <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용안함</p>
-              <p v-else-if="box.storageBoxState == '1' ">결제완료</p>
-              <p v-else-if="box.storageBoxState == '2' ">사용중</p>
-              <p v-else-if="box.storageBoxState == '3' ">사용중 - 장비 이동 신청</p>
-              <p v-else-if="box.storageBoxState == '4' ">사용중 - 장비 이동 신청</p>
-              <p v-else-if="box.storageBoxState == '5' ">사용중 - 수리신청</p>
-              <p v-else-if="box.storageBoxState == '6' ">사용중</p>
-              <p v-else-if="box.storageBoxState == '7' ">사용중 - 이동신청</p>
-              <p v-else-if="box.storageBoxState == 'x' ">비활성화</p>
-            </li>
+            <li>보관함 : {{ box.storageBoxName }}</li>
+            <li>상태 : {{stateString(box.storageBoxState)}}</li>
           </ul>
         </div>
       </div>
@@ -32,7 +23,7 @@
       <button @click="modalView = false" class="cancleBtn">X</button>
     </div>
     <div>
-      <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"></BoxModalDetail>
+      <BoxModalDetail :boxCode="boxCode" @updata="getBackData()" />
     </div>
   </div>
 </template>
@@ -70,6 +61,26 @@ export default {
     }
   },
   methods: {
+    stateString(index){
+      switch (index){
+        case '0':
+          return '사용안함'
+        case '1':
+          return '결제완료'
+        case '2':
+          return '사용중'
+        case '3':case '4':
+          return '사용중 - 보관소 이동 신청'
+        case '5':
+          return '사용중 - 수리신청'
+        case '6':
+          return '사용중 - 해지'
+        case '7':
+          return '배송 신청'
+        case 'ㅌ':
+          return '비활성화'
+      }
+    },
     getBackData(){
       axios.get('/api/getManagerStorage/' + this.managerId)
           .then(res => {

@@ -71,7 +71,7 @@ public class StorageController {
                 storageBoxSmall.setStorageBoxPrice(33000);
                 storageBoxSmall.setStorageBoxName("S" + (i + 1));
                 storageBoxSmall.setStorageBoxType("S");
-                storageBoxSmall.setStorageBoxState("1");
+                storageBoxSmall.setStorageBoxState("x");
                 storageBoxRepository.save(storageBoxSmall);
             }
             for (int i = 0; i < box.getMedium(); i++) {
@@ -80,7 +80,7 @@ public class StorageController {
                 storageBoxMedium.setStorageBoxPrice(45000);
                 storageBoxMedium.setStorageBoxName("M" + (i + 1));
                 storageBoxMedium.setStorageBoxType("M");
-                storageBoxMedium.setStorageBoxState("1");
+                storageBoxMedium.setStorageBoxState("x");
                 storageBoxRepository.save(storageBoxMedium);
             }
             for (int i = 0; i < box.getLarge(); i++) {
@@ -89,7 +89,7 @@ public class StorageController {
                 storageBoxLarge.setStorageBoxPrice(60000);
                 storageBoxLarge.setStorageBoxName("L" + (i + 1));
                 storageBoxLarge.setStorageBoxType("L");
-                storageBoxLarge.setStorageBoxState("1");
+                storageBoxLarge.setStorageBoxState("x");
                 storageBoxRepository.save(storageBoxLarge);
             }
 
@@ -144,7 +144,14 @@ public class StorageController {
         return storageList;
     }
 
-//    보관함코드로 보관함 정보 찾기
+//    보관함 코드로 보관소이름 보관함이름 조죄
+    @GetMapping("getNamesToBoxCode/{boxCode}")
+    public Object[] getNamesToBoxCode(@PathVariable(value = "boxCode")long boxCode){
+        Object[] storage = storageBoxRepository.findByNamesToBoxCode(boxCode);
+        return storage;
+    }
+
+//    보관함코드로 보관소 정보 찾기
     @GetMapping("/getStorageToBox/{boxCode}")
     public Storage getStorageToBox(@PathVariable(value = "boxCode")long boxCode){
         Optional<Storage> storage = storageRepository.findByStorageBoxCode(boxCode);

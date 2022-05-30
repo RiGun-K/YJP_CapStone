@@ -4,14 +4,16 @@
   <input type="radio" name="move-option" v-model="moveOption" value="storage">보관소
   <hr>
   <div v-if="moveOption=='home'">
-    <HomeMoveBox :form="form"/>
+    <HomeMoveBox :useBoxCode="useBoxCode"/>
   </div>
   <div v-if="moveOption=='round'">
-    <RoundMoveBox :form="form"/>
+    <RoundMoveBox :useBoxCode="useBoxCode"/>
   </div>
   <div v-if="moveOption=='storage'">
-    <StorageMoveBox :form="form"/>
+    <StorageMoveBox :useBoxCode="useBoxCode"/>
   </div>
+
+  <router-view />
 </template>
 
 <script>
@@ -26,18 +28,24 @@ export default {
     RoundMoveBox,
     HomeMoveBox
   },
+  watch:{
+    moveOption:function (){
+      this.clear()
+    },
+  },
   data() {
     return {
       moveOption: '',
-      form:undefined||{}
+      useBoxCode:'',
     }
   },
   mounted() {
-    this.form.userId = this.$route.params.userId
-    this.form.storageName = this.$route.params.storageName
-    this.form.boxName = this.$route.params.boxName
-    this.form.useBoxCode = this.$route.params.useBoxCode
-    this.form.boxCode = this.$route.params.boxCode
+    this.useBoxCode = this.$route.params.useBoxCode
+  },
+  methods:{
+    clear(){
+      this.$store.commit('clearMoveBoxInfo')
+    }
   }
 }
 </script>

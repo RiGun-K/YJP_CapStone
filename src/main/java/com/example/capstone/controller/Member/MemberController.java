@@ -5,7 +5,6 @@ import com.example.capstone.domain.Member.Company;
 import com.example.capstone.domain.Member.MailCheck;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Member.PhCheck;
-import com.example.capstone.domain.Board.Writer;
 import com.example.capstone.domain.Member.*;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.storage.MemberEquipment;
