@@ -43,7 +43,7 @@ public class Board {
     @JoinColumn(name = "MID")
     private Member MID;
 
-    // 부모
+    // 부모a
     @ManyToOne
     @JoinColumn(name = "parentBoardId")
     @JsonManagedReference
