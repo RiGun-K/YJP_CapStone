@@ -1,77 +1,100 @@
 <template>
-	<div class="myTeam">
-		<p>MY TEAM</p>
-		<button
-			@Click="showingAddTeamForm"
-			class="w-btn-outline w-btn-blue-outline"
-			type="button"
-		>
-			+
-		</button>
-	</div>
-	<div v-if="addTeamForm">
-		<input
-			v-model="$store.state.insertName"
-			placeholder="insert team name"
-		/>
-		<select v-model="open">
-			<option>전체공개</option>
-			<option>비공개</option>
-		</select>
-		<button @click="teamSave" class="w-btn w-btn-indigo" type="button">
-			생성
-		</button>
-	</div>
-	<div v-if="showingTeamList">
-		<p v-html="noTeam"></p>
-		<div v-for="(value, index) in teamList" :key="index" class="teamList">
+	<div class="content">
+		<div class="myTeam">
+			<p>MY TEAM</p>
 			<button
-				class="w-btn-gray"
+				@Click="showingAddTeamForm"
+				class="w-btn-outline w-btn-blue-outline"
 				type="button"
-				@click="loadTeamMemberList(value.teamCode)"
-				:title="value.teamCode.teamName"
 			>
-				{{ value.teamCode.teamName }}
+				+
 			</button>
 		</div>
-
-		<div
-			v-for="(value, index) in unacceptedTeamCode"
-			:key="index"
-			style="display: inline-block"
-		>
-			<button
-				class="w-btn-gra2 w-btn-gra-anim"
-				type="button"
-				@click="selectUnacceptedTeam(value.teamCode)"
-				:title="value.teamCode.teamName"
-			>
-				{{ value.teamCode.teamName }}
+		<div v-if="addTeamForm">
+			<input
+				v-model="$store.state.insertName"
+				placeholder="insert team name"
+			/>
+			<select v-model="open">
+				<option>전체공개</option>
+				<option>비공개</option>
+			</select>
+			<button @click="teamSave" class="w-btn w-btn-indigo" type="button">
+				생성
 			</button>
 		</div>
-	</div>
-	<div v-if="showingRequest">
-		<h3>팀{{ this.requestTeamCode.teamName }} 에서 요청이 왔습니다</h3>
-		<button @click="accept(requestTeamCode.teamCode)">수락하기</button>
-		<button @click="refuse(requestTeamCode.teamCode)">거절하기</button>
-	</div>
-	<div v-if="showingTeamMember">
-		<h3>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</h3>
+		<div v-if="showingTeamList">
+			<p v-html="noTeam"></p>
+			<div
+				v-for="(value, index) in teamList"
+				:key="index"
+				class="teamList"
+			>
+				<button
+					class="w-btn-gray"
+					type="button"
+					@click="loadTeamMemberList(value.teamCode)"
+					:title="value.teamCode.teamName"
+				>
+					{{ value.teamCode.teamName }}
+				</button>
+			</div>
 
-		<button
-			id="teamMembers"
-			v-for="(value, index) in $store.state.teamMemberList"
-			:key="index"
-		>
-			이름:{{ value.mcode.mname }}
+			<div
+				v-for="(value, index) in unacceptedTeamCode"
+				:key="index"
+				style="display: inline-block"
+			>
+				<button
+					class="w-btn-gra2 w-btn-gra-anim"
+					type="button"
+					@click="selectUnacceptedTeam(value.teamCode)"
+					:title="value.teamCode.teamName"
+				>
+					{{ value.teamCode.teamName }}
+				</button>
+			</div>
+		</div>
+		<div>
 			<hr />
-			이메일:{{ value.mcode.mmail }}
-		</button>
-		<a :href="$store.state.teamURL"
-			>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
-		>
+			<br />
+		</div>
+		<div class="requestOuter">
+			<div v-if="showingRequest" class="request">
+				<div class="requestP">
+					<p>
+						팀{{ this.requestTeamCode.teamName }} 에서 요청이
+						왔습니다
+					</p>
+					<div class="requestButton">
+						<button @click="accept(requestTeamCode.teamCode)">
+							수락하기
+						</button>
+						<button @click="refuse(requestTeamCode.teamCode)">
+							거절하기
+						</button>
+					</div>
+				</div>
+			</div>
+			<div v-if="showingTeamMember" class="teamMemberList">
+				<p>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</p>
+
+				<button
+					id="teamMembers"
+					v-for="(value, index) in $store.state.teamMemberList"
+					:key="index"
+				>
+					이름:{{ value.mcode.mname }}
+					<br />
+					이메일:{{ value.mcode.mmail }} <br />
+					나이:{{ value.mcode.mph }}
+				</button>
+				<a :href="$store.state.teamURL"
+					>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
+				>
+			</div>
+		</div>
 	</div>
-	<button class="w-btn-gra2 w-btn-gra-anim" type="button">BUTTON</button>
 </template>
 
 <script>
@@ -247,9 +270,9 @@ export default {
 
 #teamMembers {
 	width: 200px;
-	height: 120px;
+	height: 100px;
 	background-color: #f5d682;
-	border: 1px solid red;
+	border: none;
 }
 
 .teamList {
@@ -333,11 +356,53 @@ export default {
 }
 
 .myTeam {
+	width: 100%;
 	margin: 20px;
-	float: left;
+	/* float: left; */
 }
 .myTeam p {
+	display: inline;
 	font-size: 30px;
+	margin: 10px;
+}
+.content {
+	float: left;
+}
+.teamMemberList p {
+	font-size: 20px;
+}
+
+hr {
+	width: 2000px;
+}
+.teamMemberList button {
+	border-radius: 20px;
+	margin: 20px;
+	border: none;
+}
+.request button {
+	margin: 40px;
+	width: 100px;
+	height: 60px;
+	background-color: #23a6d5;
+	border: none;
+	border-radius: 10px;
+	color: white;
+}
+
+.request {
+	margin: auto;
+}
+.request p {
+	font-size: 60px;
+	display: flex;
+}
+.requestOuter {
+	display: flex;
+}
+
+.requestButton {
+	margin: auto;
 }
 @keyframes gradient1 {
 	0% {
