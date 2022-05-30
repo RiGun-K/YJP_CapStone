@@ -329,6 +329,12 @@ const routes = [
     component: () => import('@/components/cart/ItemShare/ShareList.vue')
   },
   {
+    path: '/itemShare/rentalList/:rentalId',
+    name: 'ShareDetailList',
+    component: () => import('@/components/cart/ItemShare/ShareDetailList.vue'),
+    props: true
+  },
+  {
     path: '/itemShare/shareNow/:rentalId',
     name: 'ShareNow',
     component: () => import('@/components/cart/ItemShare/ShareNow.vue')

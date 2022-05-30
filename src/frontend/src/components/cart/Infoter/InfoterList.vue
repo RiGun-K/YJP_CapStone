@@ -1,20 +1,37 @@
 <template>
-  <div class="infoter">
-    <h2>캠핑장 예약</h2>
-    <br>
-    <div class="campingkindimage">
-    <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
-    <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
-    <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
-    <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
-    <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
-    <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
-    <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
-    <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
-    </div>
-    <br>
-    <br>
+  <div class="sidebar" :style="{ width: sidebarWidth }">
+    <h1>
+      <span v-if="collapsed">
+        <div>C</div>
+      </span>
+      <span v-else >Category</span>
+    </h1>
 
+    <h5><span v-if="collapsed">
+      </span>
+      <span v-else>캠핑 분류</span></h5>
+    <SidebarLink class="sidebar-link" icon="@/assets/전체.png" to="/infoter" @click="goData">캠핑장 전체</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(1)">캠핑</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(2)">카라반</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(3)">글램핑</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(4)">팬션</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(5)">차박</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(6)">당일 피크닉</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(7)">기타</SidebarLink>
+
+    <span
+        class="collapse-icon"
+        :class="{ 'rotate-180': collapsed }"
+        @click="toggleSidebar">
+          <i class='fas fa-angle-double-left'>  〈〈  </i>
+      </span>
+  </div>
+
+  <div :style="{ 'margin-left': sidebarWidth }">
+    <router-view />
+  </div>
+
+  <div class="infoter">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
@@ -54,7 +71,6 @@
     </section>
 
     <div class="listBody">
-      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
       <div v-for="(product,index) in list" :key="product.id"
            :item="product" @click="toDetail(product)" class="listObj">
         <div class="card">
@@ -82,16 +98,24 @@
     </div>
 
   </div>
-
 </template>
 
 <script>
 import axios from 'axios'
 import ProductList from "@/components/product/ProductList";
+import { collapsed, toggleSidebar } from '@/components/cart/Sidebar/state'
+import Sidebar from '@/components/cart/Sidebar/Sidebar'
+import { sidebarWidth } from '@/components/cart/Sidebar/state'
+import SidebarLink from '@/components/cart/Sidebar/SidebarLink'
+
 export default {
   name: 'InfoterList',
+  components: { SidebarLink },
   return: {
-    ProductList
+    ProductList, sidebarWidth
+  },
+  setup () {
+    return { collapsed, toggleSidebar, sidebarWidth }
   },
   created() {
     this.goData(),
@@ -105,6 +129,7 @@ export default {
         })
 
   },
+
   data() {
     return {
       selected: false,
@@ -211,7 +236,7 @@ export default {
             this.list = res.data;
             if (this.list.length == 0) {
               alert("캠핑장이 없습니다.")
-              return;
+              window.location.href = 'http://localhost:8081/infoter'
             }
 
           })
@@ -227,8 +252,11 @@ export default {
         axios.get('/api/search_CampingList', { params: { searchCamping: index }})
          .then((res) => {
            this.list = res.data;
-           console.log(this.list);
-         })
+           if (this.list.length == 0) {
+             alert("해당 상품은 존재하지 않습니다.")
+             window.location.href = 'http://localhost:8081/infoter'
+           }
+           })
          .catch(e => {
            console.log(e)
          })
@@ -254,10 +282,10 @@ export default {
 
 <style scoped>
 .infoter{
-  width: 90%;
+  width: 60%;
   height: 100%;
-  margin-top: 3%;
-  margin-left: 5%;
+  margin-top: 1%;
+  margin-left: 21%;
 }
 .infoter button{
   margin: 5%;
@@ -308,6 +336,7 @@ img {
 .search {
   width: 300px;
   height: 100px;
+  margin-left: 75%;
 }
 .search input {
   width: 80%;
@@ -326,6 +355,8 @@ img {
   border-radius: 15px;
   color: #fff;
   cursor: pointer;
+  margin-left: 85%;
+  margin-top: -30%;
 }
 
 .campingkindimage {
@@ -342,6 +373,10 @@ img {
   height: 40%;
 }
 
+.card {
+  width: 50%;
+}
+
 .card-body {
   overflow: hidden;
 }
@@ -351,4 +386,38 @@ img {
 .card-body:hover img {
   transform: scale(1.5);
 }
+.sidebar {
+   color: black;
+   background-color: var(--sidebar-bg-color);
+   float: left;
+   z-index: 1;
+   height: 100%;
+   left: 0;
+   bottom: 0;
+   padding-bottom: 250%;
+   margin-right: 3%;
+   transition: 0.3s ease;
+   display: flex;
+   flex-direction: column;
+ }
+.sidebar h5{
+  margin-left: 10%;
+  margin-top: 15%;
+  margin-bottom: 3%;
+}
+.sidebar-link{
+  color: black;
+}
+.collapse-icon{
+  position: absolute;
+  top: 80% ;
+  padding: 0.75em;
+  color: black;
+  transition: 0.2s linear;
+}
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: 0.2s linear;
+}
+
 </style>

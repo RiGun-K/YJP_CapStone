@@ -137,7 +137,7 @@
                         v-model="reservationDate"
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
-          </div>
+            </div>
           <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
         </div>
         <br>

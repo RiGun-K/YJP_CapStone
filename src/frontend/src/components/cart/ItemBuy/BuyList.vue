@@ -185,6 +185,8 @@ export default {
             this.list = res.data;
             if (this.list.length == 0) {
               alert("해당 상품은 존재하지 않습니다.")
+              window.location.href = 'http://localhost:8081/itemBuy'
+
             }
             console.log(this.list);
           })
