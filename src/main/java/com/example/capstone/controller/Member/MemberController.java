@@ -1,15 +1,12 @@
 package com.example.capstone.controller.Member;
 
 import com.example.capstone.domain.Board.Board;
-import com.example.capstone.domain.Board.Writer;
-import com.example.capstone.domain.Member.Company;
-import com.example.capstone.domain.Member.MailCheck;
-import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Member.PhCheck;
+import com.example.capstone.domain.Member.*;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.repository.Board.BoardRepository;
 import com.example.capstone.repository.Member.CompanyRepository;
+import com.example.capstone.repository.Member.MPRRepository;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Storage.MemberEquipmentRepository;
@@ -46,6 +43,12 @@ public class MemberController {
 
     @Autowired
     private KindRepository kindRepository;
+
+    @Autowired
+    private MPRRepository mprRepository;
+
+    @Autowired
+    private final MailCheck mailCheck;
 
     //////로그인 부분///////
     @PostMapping("/login")
@@ -258,8 +261,6 @@ public class MemberController {
         companyRepository.save(company.get());
         memberRepository.save(members.get());
     }
-    @Autowired
-    private final MailCheck mailCheck;
 
     ///인증메일 처리///
     @PostMapping("mailCheck")
@@ -351,16 +352,16 @@ public class MemberController {
     }
 
     ///내게시글페이지///
-    @PostMapping("myWritter")
-    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
-        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
-        List<Board> boardList = boardRepository.findByMID(member.get());
-        if(boardList.isEmpty()){
-            return null;
-        }
-
-        return boardList;
-    }
+//    @PostMapping("myWritter")
+//    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
+//        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+//        List<Board> boardList = boardRepository.findByMID(member.get());
+//        if(boardList.isEmpty()){
+//            return null;
+//        }
+//
+//        return boardList;
+//    }
 
     ///전체 게시글 조회///
     @GetMapping("adminAllWriter")
@@ -377,6 +378,37 @@ public class MemberController {
         }
         boardRepository.delete(board.get());
         return true;
+    }
+
+    ///유저 선호도 삭제 = 추가///
+
+    @PostMapping("removePreference")
+    public void removePreference(@RequestBody HashMap<String, String> body){
+        Optional<Member> member =  memberRepository.findByMCode(Long.parseLong(body.get("mid")));
+        Optional<Kind> kind = kindRepository.findByKindname(body.get("kindName"));
+        Optional<MemberPreference> preference = mprRepository.findByMemberAndKind(member.get(), kind.get());
+        mprRepository.delete(preference.get());
+    }
+
+    @PostMapping("addPreference")
+    public void addPreference(@RequestBody HashMap<String, String> body){
+        Optional<Member> member =  memberRepository.findByMCode(Long.parseLong(body.get("mid")));
+        Optional<Kind> kind = kindRepository.findByKindname(body.get("kindName"));
+        MemberPreference preference = new MemberPreference();
+        preference.setMember(member.get());
+        preference.setKind(kind.get());
+        mprRepository.save(preference);
+    }
+
+    ///유저 선호도 조회///
+    @PostMapping("allPreference")
+    public List<MemberPreference> allPreference(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("mid")));
+        List<MemberPreference> memberPreferences = mprRepository.findByMember(member.get());
+        if(memberPreferences.isEmpty()){
+            return null;
+        }
+        return memberPreferences;
     }
 
 

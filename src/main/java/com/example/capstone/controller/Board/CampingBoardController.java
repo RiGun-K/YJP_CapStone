@@ -2,10 +2,8 @@ package com.example.capstone.controller.Board;
 
 import com.example.capstone.domain.Board.BoardCamping;
 import com.example.capstone.domain.Board.BoardMenu;
-import com.example.capstone.domain.Board.Writer;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Camping;
-import com.example.capstone.dto.Board.BoardDTO;
 import com.example.capstone.dto.Board.CampingBoardDTO;
 import com.example.capstone.repository.Board.BoardCampingRepository;
 import com.example.capstone.repository.Board.BoardMenuRepository;
@@ -101,7 +99,7 @@ public class CampingBoardController {
     }
 
 
-
+        /* 리뷰 수정 */
     @PutMapping("/CampingBoardupdate")
     public BoardCamping updateWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, CampingBoardDTO campingBoardDTO, BindingResult result) throws IllegalStateException, IOException {
 

@@ -145,28 +145,6 @@ const routes = [
     name: 'Update',
     component: () => import('@/components/board/Update.vue')
   },
-  {
-    path: '/tbcreate',
-    name: 'TBCreate',
-    component: () => import('@/components/board/TBCreate.vue')
-
-  },
-  {
-    path: '/teamboard',
-    name: 'TeamBoard',
-    component: () => import('@/components/board/TeamBoard.vue')
-
-  },
-  {
-    path: '/tbview/:teamwriter_code',
-    name: 'TBView',
-    component: () => import('@/components/board/TBView.vue')
-  },
-  {
-    path: '/tbupdate/:teamwriter_code',
-    name: 'TBUpdate',
-    component: () => import('@/components/board/TBUpdate.vue')
-  },
 
     ///////////////////////////////상품관리///////////////////////////////////
 

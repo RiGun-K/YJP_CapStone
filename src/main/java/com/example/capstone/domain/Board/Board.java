@@ -11,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -67,11 +68,15 @@ public class Board {
         this.MID = MID;
     }
 
-    public Board(String content, String savedTime, Member MID, Board parentBoard) {
+
+    public Board(String title, String content, String origFilename, String filePath, String filename,  String savedTime, Member MID) {
+        this.title = title;
         this.content = content;
+        this.origFilename = origFilename;
+        this.filePath = filePath;
+        this.filename = filename;
         this.savedTime = savedTime;
         this.MID = MID;
-        this.parentBoard = parentBoard;
     }
 
 }
