@@ -12,8 +12,8 @@
         <th>작성일</th>
       </tr>
       <tr v-for="(body) in viewList" :key="body.writer_code">
-        <td>{{ body.writer_code}}</td>
-        <td @click="goBoard(body.writer_code)">{{ body.title}}</td>
+        <td>{{body.boardId}}</td>
+        <td @click="goBoard(body.writer_code)">{{body.title}}</td>
         <td>공란</td>
       </tr>
     </table>

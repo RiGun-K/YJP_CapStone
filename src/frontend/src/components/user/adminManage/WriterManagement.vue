@@ -15,11 +15,11 @@
         <th>삭제</th>
       </tr>
       <tr v-for="(obj, index) in viewList" :key="obj.writer_code">
-        <td>{{obj.writer_code}}</td>
-        <td  @click="toWriter(obj.writer_code)">{{obj.title}}</td>
-        <td>{{obj.mid.mnick}}</td>
-        <td></td>
-        <td></td>
+        <td>{{obj.boardId}}</td>
+        <td  @click="toWriter(obj.boardId)">{{obj.title}}</td>
+        <td>{{obj.mcode.mnick}}</td>
+        <td>{{}}</td>
+        <td>{{obj.savedTime}}</td>
         <td><button @click="deleteWriter(index)">삭제</button></td>
       </tr>
     </table>
@@ -46,7 +46,7 @@ export default {
   methods:{
     deleteWriter(index){
       axios.post("api/adminDeleteWriter",{
-        wcode:this.viewList[index].writer_code
+        wcode:this.viewList[index].boardId
       }).then((res)=>{
         if(res.data){
           alert("삭제되었습니다")
