@@ -100,7 +100,7 @@ public class CampingBoardController {
         }
 
 
-
+        /* 리뷰 수정 */
     @PutMapping("/CampingBoardupdate")
     public BoardCamping updateWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, CampingBoardDTO campingBoardDTO, BindingResult result) throws IllegalStateException, IOException {
 
