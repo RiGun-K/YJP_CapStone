@@ -76,7 +76,7 @@ export default {
           return '사용중 - 해지'
         case '7':
           return '배송 신청'
-        case 'ㅌ':
+        case 'x':
           return '비활성화'
       }
     },

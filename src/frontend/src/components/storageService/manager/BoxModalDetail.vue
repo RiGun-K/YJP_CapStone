@@ -264,11 +264,11 @@ export default {
               data.boxState = res.data[0][3]
               data.storageCode = res.data[0][4]
               data.useStorageCode = res.data[0][5]
-              data.useStorageState = res.data[0][6].charAt(0)
+              data.useStorageState = res.data[0][6].toString().charAt(0)
               this.box = data
               this.box.updateusbCode = res.data[0][6].substring(1, res.data[0][6].length)
               this.pickChange()
-              if (this.box.updateusbCode != undefined) {
+              if (this.box.updateusbCode != undefined || this.box.updateusbCode != '') {
                 this.getMoveBox()
               }
             } else {

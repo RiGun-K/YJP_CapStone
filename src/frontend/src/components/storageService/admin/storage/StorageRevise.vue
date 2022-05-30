@@ -230,7 +230,7 @@ export default {
                 this.memberIdCheck = false
               } else {
                 console.log('없음')
-                alert('입력하신 아이디가 없습니다')
+                alert('입력하신 아이디는 불가능 합니다')
                 this.memberIdCheck = false
               }
             })
