@@ -21,7 +21,7 @@
         이동 금액
         +
         보관함 변경 추가금액
-        결제금액 : {{ newForm.price }}원
+        결제금액 : {{ price }}원
       </div>
       <div>
         <button class="pay-btn" @click="pay">다음</button>
@@ -39,16 +39,9 @@ export default {
   //eslint-disable-next-line
   name: "StorageMoveBoxDetail",
   created() {
-    this.id = this.$route.params.storageCode
-    this.form.storageName = this.$route.params.storageName
-    this.form.boxName = this.$route.params.boxName
-    this.form.boxCode = this.$route.params.boxCode
-    this.form.useBoxCode = this.$route.params.useBoxCode
-    this.userId = store.getters.getLoginState.loginState
-    this.moveBoxInfo = this.$store.state.moveBoxInfo
   },
   mounted() {
-    axios.get('/api/storageView/' + this.id)
+    axios.get('/api/storageView/' + this.$route.params.storageCode)
         .then((res) => {
           this.boxList = res.data
           this.name = this.boxList.storageName
@@ -60,22 +53,12 @@ export default {
   },
   data() {
     return {
-      form: undefined||{},
-      id: '',
       boxList: [],
       name: '',
-      userId:'',
-      boxCode:'선택',
+      boxCode:'',
       boxName:'',
-      newForm:{
-        userId:'',
-        storageName:'',
-        boxName:'',
-        storageBoxCode:'',
-        price:''
-      },
+      price:'',
       stateCheck:false,
-      moveBoxInfo:{},
       boxArray: {},
     }
   },
@@ -101,20 +84,16 @@ export default {
     boxPrice(newBoxCode){
       axios.get('/api/boxPrice/'+newBoxCode)
           .then(res=>{
-            this.newForm.price = res.data
+            this.price = res.data
           })
     },
     nextTab(box){
       let code = box.storageBoxCode
-      let state = box.storageBoxState
       let name = box.storageBoxName
-
-      console.log(code +'/'+state+'/'+name)
-
+      let state = box.storageBoxState
       if(state == '0'){
         this.stateCheck = true
         this.boxCode = code
-        this.newForm.boxName = name
         this.boxName = name
       }else {
         this.stateCheck = false
@@ -122,29 +101,16 @@ export default {
 
     },
     backPage(){
-      this.$router.push('/myBox/moveBox')
+      this.$router.push({name:'moveBox'})
     },
     pay(){
-      this.newForm.storageName = this.name
-      this.newForm.storageBoxCode = this.boxCode
       this.$router.push({
             name:"BoxToBoxMovePay",
             params:{
-              // 이전
-              beforeStorageCode: this.id,
-              beforeStorageName:this.form.storageName,
-              beforeBoxName:this.form.boxName,
-              beforeStorageBoxCode:this.form.boxCode,
-              beforeuseBoxCode:this.form.useBoxCode,
-              // 이동
-              newStorageName:this.name,
-              newBoxName:this.newForm.boxName,
               newStorageBoxCode:this.boxCode
             }
           })
 
-      this.newForm.storageBoxCode = ''
-      this.newForm.userId = ''
     }
   }
 

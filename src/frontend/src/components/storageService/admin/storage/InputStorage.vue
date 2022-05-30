@@ -1,5 +1,6 @@
 <template>
-  <div class="allBody">
+  <div class="divBody">
+    <div><h5>보관소추가</h5></div>
     <div class="bodydiv">
       <label class="labelWidth">보관소명</label>
       <input type="text" v-model="form.storageName" placeholder="보관소명">
@@ -7,7 +8,7 @@
     <div class="bodydiv">
       <label class="labelWidth">우편주소</label>
       <input type="text" v-model="form.storageZipcode" placeholder="우편번호" readonly>
-      <button @click="showApi()" class="addressBtn">주소찾기</button>
+      <button @click="showApi()" class="addressBtn">검색</button>
     </div>
     <div class="bodydiv">
       <label class="labelWidth">도로명주소</label>
@@ -33,9 +34,6 @@
                  drop-placeholder="Drop file here..."
           style="width: 300px;">
     </div>
-
-    <button class="storage-add-btn" @click="next()">NEXT</button>
-
     <div class="storage-box" v-if="boxC">
       <p>보관함 추가</p>
       <div class="storage-box-add">
@@ -70,8 +68,12 @@
         <button class="storageBtn" @click="postStorage()">ADD</button>
       </div>
     </div>
+    <div class="btnDivBody">
+      <button class="storage-add-btn" @click="next()" v-if="!boxC">NEXT</button>
+      <button class="homeBtn" @click="this.$router.push({name:'admin'})" >돌아가기</button>
+    </div>
+    <div id="map"></div>
   </div>
-  <div id="map" ></div>
 </template>
 
 <script>
@@ -127,7 +129,6 @@ export default {
       }else{
         this.boxC = true
       }
-
     },
     geo(index){
       // 주소-좌표 변환 객체를 생성합니다
@@ -279,16 +280,15 @@ export default {
 </script>
 
 <style scoped>
-.allBody{
+.divBody{
   margin-left: 25%;
-  margin-right: 25%;
-  margin-top: 1%;
+  margin-top: 2%;
   text-align: left;
-  width: 50%;
+  width: 100%;
 }
 
 .labelWidth{
-  width: 100px;
+  width: 90px;
 }
 input{
   width: 150px;
@@ -300,7 +300,7 @@ input{
 }
 
 .addressBtn{
-  width: 100px;
+  width: 50px;
   height: 100%;
   margin-left: 1%;
   text-align: center;
@@ -323,19 +323,30 @@ input{
   width: 100%;
   text-align: right;
 }
+.btnDivBody{
+  margin-top: 10px;
+  width: 50%;
+  text-align: right;
+}
 
 .storage-add-btn {
-  left: 60%;
-  margin-top: 1%;
   width: 100px;
-  height: 6%;
+  height: 30px;
   text-align: center;
-  padding: 1%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
-  position: relative;
+}
+.homeBtn{
+  margin-left: 10px;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
 }
 
 .storage-add-btn:hover {
@@ -346,7 +357,7 @@ input{
 .storage-box {
   margin-top: 2%;
   border: solid 3px #000a69;
-  width: 70%;
+  width: 50%;
   justify-content: center;
   align-items: center;
   padding-bottom: 1%;

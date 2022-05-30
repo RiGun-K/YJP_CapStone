@@ -220,8 +220,6 @@ export default {
       let timeStorage = {}
       timeStorage.useStorageStartTime = this.date
       timeStorage.useStorageEndTime = new Date(start.setDate(start.getDate() + 29))
-      console.log('12222123144134')
-      console.log(this.form.storageBoxCode)
       this.$store.commit('putItemStorage', this.checkItem)
       this.$store.commit('putTimeStorage', timeStorage)
       this.$store.commit('putInfoStorage', this.form)

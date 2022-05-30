@@ -97,6 +97,13 @@ public class ProductController {
         return menuDetailList;
     }
 
+    /* 렌탈상품 결제전 상세 페이지 */
+    @GetMapping("/product_detailRR/{rentalId}")
+    public Optional<MenuRental> getProduct_DetailRR(@PathVariable("rentalId") int rentalId) {
+        Optional<MenuRental> rentalDetailList = menuRentalRepository.findById(rentalId);
+        return rentalDetailList;
+    }
+
     /* 캠핑장 결제전 상세 페이지 */
     @GetMapping("/product_detailC/{campingId}")
     public Optional<Camping> getProduct_DetailC(@PathVariable("campingId") int campingId) {

@@ -1,9 +1,11 @@
 package com.example.capstone.domain.Board;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.CampingArea;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
+import com.example.capstone.domain.Product.CampingArea;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -11,7 +13,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Entity
 @Getter
