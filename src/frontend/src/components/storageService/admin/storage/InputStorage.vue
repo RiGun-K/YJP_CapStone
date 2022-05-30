@@ -1,5 +1,6 @@
 <template>
-  <div class="allBody">
+  <div class="divBody">
+    <div><h5>보관소추가</h5></div>
     <div class="bodydiv">
       <label class="labelWidth">보관소명</label>
       <input type="text" v-model="form.storageName" placeholder="보관소명">
@@ -7,7 +8,7 @@
     <div class="bodydiv">
       <label class="labelWidth">우편주소</label>
       <input type="text" v-model="form.storageZipcode" placeholder="우편번호" readonly>
-      <button @click="showApi()" class="addressBtn">주소찾기</button>
+      <button @click="showApi()" class="addressBtn">검색</button>
     </div>
     <div class="bodydiv">
       <label class="labelWidth">도로명주소</label>
@@ -30,11 +31,9 @@
                  aria-describedby="inputGroupFileAddon04"
                  aria-label="Upload"
                  placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                 drop-placeholder="Drop file here...">
+                 drop-placeholder="Drop file here..."
+          style="width: 300px;">
     </div>
-
-    <button class="storage-add-btn" @click="next()">NEXT</button>
-
     <div class="storage-box" v-if="boxC">
       <p>보관함 추가</p>
       <div class="storage-box-add">
@@ -69,8 +68,12 @@
         <button class="storageBtn" @click="postStorage()">ADD</button>
       </div>
     </div>
+    <div class="btnDivBody">
+      <button class="storage-add-btn" @click="next()" v-if="!boxC">NEXT</button>
+      <button class="homeBtn" @click="this.$router.push({name:'admin'})" >돌아가기</button>
+    </div>
+    <div id="map"></div>
   </div>
-  <div id="map" ></div>
 </template>
 
 <script>
@@ -126,7 +129,6 @@ export default {
       }else{
         this.boxC = true
       }
-
     },
     geo(index){
       // 주소-좌표 변환 객체를 생성합니다
@@ -278,33 +280,27 @@ export default {
 </script>
 
 <style scoped>
-.allBody{
-  width: 98%;
-  margin-top: 1%;
-  margin-left: 1%;
-  margin-right: 1%;
+.divBody{
+  margin-left: 25%;
+  margin-top: 2%;
   text-align: left;
+  width: 100%;
 }
 
 .labelWidth{
-  left: 40%;
-  width: 10%;
-  position: relative;
+  width: 90px;
 }
 input{
-  left: 40%;
-  position: relative;
+  width: 150px;
 }
 
 .bodydiv{
   width: 100%;
   margin-top: 1%;
-  position: relative;
 }
 
 .addressBtn{
-  left: 40%;
-  width: 10%;
+  width: 50px;
   height: 100%;
   margin-left: 1%;
   text-align: center;
@@ -327,19 +323,30 @@ input{
   width: 100%;
   text-align: right;
 }
+.btnDivBody{
+  margin-top: 10px;
+  width: 50%;
+  text-align: right;
+}
 
 .storage-add-btn {
-  left: 75%;
-  margin-top: 1%;
-  width: 6%;
-  height: 6%;
+  width: 100px;
+  height: 30px;
   text-align: center;
-  padding: 1%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
-  position: absolute;
+}
+.homeBtn{
+  margin-left: 10px;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
 }
 
 .storage-add-btn:hover {
@@ -353,7 +360,6 @@ input{
   width: 50%;
   justify-content: center;
   align-items: center;
-  margin-left: 25%;
   padding-bottom: 1%;
   padding-left: 1%;
   padding-right: 1%;

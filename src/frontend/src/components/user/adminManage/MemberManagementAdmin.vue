@@ -13,10 +13,10 @@
       <th class="leaveSet">탈퇴일자</th>
     </tr>
     <tr v-for="(member, index) in viewList" v-bind:key="member.mcode" v-show="showDisable(index)">
-      <td class="idSet">{{member.mid}}</td>
-      <td class="nickSet">{{member.mnick}}</td>
-      <td class="emailSet">{{member.mmail}}</td>
-      <td class="addSet">{{member.mradd}} <br/> {{member.madd}}</td>
+      <td class="idSet" @click="showMemberData(member.mid)">{{member.mid}}</td>
+      <td class="nickSet" @click="showMemberData(member.mid)">{{member.mnick}}</td>
+      <td class="emailSet" @click="showMemberData(member.mid)">{{member.mmail}}</td>
+      <td class="addSet" @click="showMemberData(member.mid)">{{member.mradd}} <br/> {{member.madd}}</td>
       <td class="stateSet">
         <select v-model="member.msc" @change="changeSelect(index)" :disabled="mscDisable(index)" >
           <option value="0" disabled="true">탈퇴회원</option>
@@ -34,7 +34,6 @@
   <div class="searchDiv">
     <input type="text" v-model="searchWord">
     <button class="searchBtn" @click="searchList">검색</button>
-    <button @click="reStart" class="resetBtn">목록 초기화</button>
   </div>
 </template>
 
@@ -52,16 +51,12 @@ export default {
   },
   methods:{
     searchList(){
-      if(this.searchWord.length <= 0){
-        alert("검색어를 입력해주세요")
-      }else{
         this.viewList = []
         for(var i = 0; i < this.members.length; i++){
           if(this.members[i].mid.includes(this.searchWord)){
             this.viewList.push(this.members[i])
           }
         }
-      }
     },
     mscDisable(index){
       if(this.viewList[index].msc == 0){
@@ -87,8 +82,13 @@ export default {
         console.log(err)
       })
     },
-    reStart(){
-      this.$router.go()
+    showMemberData(index){
+        this.$router.push({
+          name:"memberData",
+          params:{
+            mid:index
+          }
+        })
     }
   },
   created() {
@@ -118,14 +118,6 @@ tr, td{
   margin-top: 1%;
   width: 90%;
   border: 1px solid black;
-  text-align: center;
-}
-.resetBtn{
-  float: right;
-  position: relative;
-  padding: 0.5%;
-  background: #7ea6f6;
-  color: white;
   text-align: center;
 }
 .searchDiv{

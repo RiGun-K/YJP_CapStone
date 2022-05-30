@@ -1,14 +1,32 @@
 <template>
   <button @click="this.$router.push({name:'myBox'})" class="renewal-box-back-btn">뒤로가기</button>
   <div class="renewal-box">
+
     <h3> 연장 </h3>
-    <!--    현재 사용 기간-->
-    <!--    시작:{{form.startTime}}-->
-    <!--    종료:{{form.endTime}}-->
-    <!--    <br>-->
-    <!--    연장 기간-->
-    <!--    시작:{{startTime}}-->
-    <!--    종료:{{endTime}}-->
+    <div class="card" style="width: 25%; font-weight: bolder; margin-left: 7%">
+      <div class="card-body">
+        <table>
+          <thead>
+          <tr>
+            <th> 보관소</th>
+            <th>보관함</th>
+          </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="card" style="display: flex; width: 25%; margin-left: 7%; margin-bottom: 3%">
+      <div class="card-body">
+        <table>
+          <tbody>
+          <tr>
+            <td>{{form.storageName}}</td>
+            <td>{{form.boxName}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div class="card" style="width: 25%; font-weight: bolder; margin-left: 7%">
       <div class="card-body">
         현재 사용 기간
@@ -39,7 +57,7 @@
 
     <div>
       <button @click="renewalBoxPay" class="renewal-box-pay">연장결제</button>
-      <button @click="closeBox" class="renewal-box-cancel">연장 해지</button>
+
     </div>
   </div>
 </template>
@@ -60,7 +78,6 @@ export default {
     this.form.endTime = this.$route.params.endTime
     this.form.start = this.$route.params.start
     this.form.end = this.$route.params.end
-    console.log(this.$route.params.useBoxCode)
     this.form.useBoxCode = this.$route.params.useBoxCode
 
     //  연장 할 기간 보여주시
@@ -120,26 +137,7 @@ export default {
             console.log(err)
           })
     },
-    closeBox(){
-      const data={
-        storageName: this.form.storageName,
-        boxName:this.form.boxName,
-      }
-      console.log(this.form.boxName)
-      axios.post('/api/closeBox',data)
-          .then(res=>{
-            console.log(res.data.result)
-            if(res.data.result == 'ok'){
-              alert('다음달 사용 해지 되었습니다 ')
-              this.$router.push({name:"myBox"})
-            }else {
-              alert('error')
-            }
-          })
-          .catch(err=>{
-            console.log(err)
-          })
-    }
+
 
   }
 }

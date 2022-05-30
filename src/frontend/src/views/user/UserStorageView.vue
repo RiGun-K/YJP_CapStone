@@ -6,15 +6,17 @@
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick" @change="search()">
+      <select v-model="smallPick" @change="search()" style="margin-left: 5px">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <label for="storageName">보관소이름</label>
-      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()">
-      <button @click="storageSearch()">검색</button>
     </div>
-
+    <div class="searchDiv">
+      <label for="storageName">보관소이름</label>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
+      style="margin-left: 5px">
+      <button @click="storageSearch()" style="margin-left: 8px">검색</button>
+    </div>
 
     <div class="listBody">
       <div v-for="(storage,index) in storageList" :key="index"
@@ -183,7 +185,13 @@ export default {
       axios.get('/api/getStorage')
           .then((res) => {
             this.storageList = res.data
-            this.searchList = res.data
+            for (let i = 0; i < this.storageList.length; i++) {
+              if(this.storageList[i].storageState == '1'){
+                this.storageList.splice(i,1)
+              }
+            }
+            this.searchList = this.storageList
+
             this.allMarker()
           })
           .catch((error) => {
@@ -217,7 +225,12 @@ export default {
         axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
               this.storageList = res.data
-              this.searchList = res.data
+              for (let i = 0; i < this.storageList.length; i++) {
+                if(this.storageList[i].storageState == '1'){
+                  this.storageList.splice(i,1)
+                }
+              }
+              this.searchList = this.storageList
               this.allMarker()
             })
             .catch(err => {
@@ -227,7 +240,12 @@ export default {
         axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
               this.storageList = res.data
-              this.searchList = res.data
+              for (let i = 0; i < this.storageList.length; i++) {
+                if(this.storageList[i].storageState == '1'){
+                  this.storageList.splice(i,1)
+                }
+              }
+              this.searchList = this.storageList
               this.allMarker()
             })
             .catch(err => {
@@ -272,7 +290,7 @@ export default {
 }
 
 .searchDiv {
-  margin-left: 2%;
+  margin-left: 5.5%;
   margin-top: 1%;
 }
 

@@ -6,11 +6,13 @@
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick">
+      <select v-model="smallPick" @change="search()">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <button @click="search()">검색</button>
+      <label for="storageName">보관소이름</label>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()">
+      <button @click="storageSearch()">검색</button>
     </div>
 
     <div class="listBody">
@@ -23,38 +25,18 @@
           <div class="card-body">
             주소: {{ storage.storageAddress }}
           </div>
+          <div class="card-body">
+            전화번호: {{ storage.storageTel }}
+          </div>
           <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
         </div>
       </div>
     </div>
 
-    <div style="float: right;">
+    <div class="mapDiv">
       <div id="map"></div>
     </div>
-
-<!--    <div v-if="check">-->
-<!--      <div class="storage">-->
-<!--        <div class="storage-name-btn">-->
-<!--          <h5 class="storage-name-h5">보관소 이름: {{ name }}</h5>-->
-
-<!--          <button @click="askBox(this.boxList.storageCode)" class="storage-submit-btn">신청</button>-->
-<!--          <button @click="closeDetail" class="storage-submit-btn">닫기</button>-->
-<!--        </div>-->
-<!--        <div class="storage-view">-->
-<!--          <div class="storage-box" v-for="(box,index) in boxList.storageBoxes" :key="index">-->
-<!--            <ul>-->
-<!--              <li>보관함 이름: {{ box.storageBoxName }}</li>-->
-<!--              <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>-->
-<!--                <p v-else>사용불가능</p>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
-
-
 </template>
 <script>
 import axios from "axios";
@@ -66,9 +48,9 @@ export default {
   created() {
     this.memberId = store.getters.getLoginState.loginState
     this.allroundsearch()
+    this.getmoveBoxInfo()
     axios.get('/api/aRound')
         .then(res => {
-          console.log(res.data)
           this.bigRound = res.data
         })
         .catch(err => {
@@ -89,7 +71,7 @@ export default {
     }
   },
   props:{
-    form: {}
+    useBoxCode: '',
   },
   data() {
     return {
@@ -105,9 +87,23 @@ export default {
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
+      moveBox:{}
     }
   },
   methods: {
+    getmoveBoxInfo(){
+      axios.get('/api/moveBoxInfo/' + this.useBoxCode)
+          .then(res => {
+            this.moveBox.storageCode = res.data[0][0]
+            this.moveBox.storageName = res.data[0][1]
+            this.moveBox.boxCode = res.data[0][2]
+            this.moveBox.boxName = res.data[0][3]
+            this.moveBox.useBoxCode = this.useBoxCode
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -130,7 +126,6 @@ export default {
           this.storageList[i].longitude, this.storageList[i].latitude
         ]);
       }
-      console.log(pos)
       const positions = pos.map(
           (position) => new kakao.maps.LatLng(...position)
       );
@@ -161,7 +156,6 @@ export default {
       const positions = place.map(
           (position) => new kakao.maps.LatLng(...position)
       );
-      console.log(positions)
       if (positions.length > 0) {
         this.markers = positions.map(
             (position) =>
@@ -181,7 +175,6 @@ export default {
     GetStorageDetail(storageCode) {
       axios.get('/api/storageView/' + storageCode)
           .then((res) => {
-            console.log(res.data)
             this.boxList = res.data
             this.name = this.boxList.storageName
             const point = [this.boxList.longitude, this.boxList.latitude]
@@ -191,25 +184,12 @@ export default {
             console.log(err)
           })
     },
-    detailCheck() {
-      if (!this.check) {
-        this.check = !this.check
-      }
-    },
-    closeDetail() {
-      if (this.check) {
-        this.check = !this.check
-        this.initMap()
-      }
-    },
+
     askBox(storageCode) {
+      this.$store.commit('moveBoxInfo',this.moveBox)
       this.$router.push({name: 'StorageMoveBoxDetail',
                          params: {
-                           storageCode: storageCode.storageCode,
-                           storageName:this.form.storageName,
-                           boxName:this.form.boxName,
-                           boxCode: this.form.boxCode,
-                           useBoxCode:this.form.useBoxCode
+                           storageCode: storageCode.storageCode
                          }
       })
     },
@@ -217,50 +197,74 @@ export default {
       axios.get('/api/getStorage')
           .then((res) => {
             this.storageList = res.data
-
+            this.searchList = res.data
+            this.allMarker()
           })
           .catch((error) => {
             console.log(error)
           })
-      this.allMarker()
     },
     bigCheck(index) {
       if (index == '0') {
         this.smallPick = 0
         this.smallRound = []
+        this.allroundsearch()
+        this.allMarker()
       } else {
         axios.get('/api/smallRound/' + index)
             .then(res => {
               this.smallRound = res.data
               this.smallPick = 0
+              this.search()
             })
             .catch(err => {
               console.log(err)
             })
       }
+      this.allMarker()
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == '0') {
         this.allroundsearch()
+        this.allMarker()
       } else if (this.bigPick != "0" && this.smallPick == '0') {
-        console.log(this.bigPick)
-        axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
+        axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
               this.storageList = res.data
+              this.searchList = res.data
               this.allMarker()
             })
             .catch(err => {
               console.log(err)
             })
-      } else if (this.bigPick != "0" && this.smallPick != '0'){
-        axios.get('/api/roundPick/' + this.bigPick + '/'+ this.smallPick)
+      } else if (this.bigPick != "0" && this.smallPick != '0') {
+        axios.get('/api/roundPick/' + this.bigPick + '/' + this.smallPick)
             .then(res => {
               this.storageList = res.data
+              this.searchList = res.data
               this.allMarker()
             })
             .catch(err => {
               console.log(err)
             })
+      }
+      this.allMarker()
+    },
+    storageSearch() {
+      this.searchStorageList = []
+      if (this.stSearch != '') {
+        for (let i = 0; i < this.searchList.length; i++) {
+          if (this.searchList[i].storageName.includes(this.stSearch)) {
+            this.searchStorageList.push(this.searchList[i])
+          }
+        }
+        if (this.searchStorageList.length < 1){
+          alert('검색하신 보관소은 없습니다')
+          return
+        }
+        this.storageList = this.searchStorageList
+      } else {
+        this.search()
       }
       this.allMarker()
     },
@@ -270,27 +274,35 @@ export default {
 
 <style scoped>
 /*추가*/
-.listBody{
+.listBody {
   padding: 0.5%;
   margin-left: 5%;
   margin-top: 1%;
   margin-right: 1%;
-  width: 45%;
+  width: 40%;
   float: left;
+  overflow:auto;
+  height:550px;
 }
-.searchDiv{
+
+.searchDiv {
   margin-left: 2%;
   margin-top: 1%;
 }
-.listObj{
+
+.listObj {
   width: 100%;
 }
-.mapDiv{
+
+.mapDiv {
   margin-top: 1%;
-  width: 45%;
+  margin-right: 1%;
+  margin-bottom: 1%;
+  width: 50%;
   float: right;
 }
-.card{
+
+.card {
   margin-top: 1%;
   width: 100%;
   text-align: right;
@@ -298,8 +310,8 @@ export default {
 
 /*기존*/
 #map {
-  width: 950px;
-  height: 700px;
+  width: 98%;
+  height: 600px;
 }
 
 .user-storage-view {

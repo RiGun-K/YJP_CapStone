@@ -1,123 +1,123 @@
 <template>
-  <br>
-  <ul class="slides">
-    <input type="radio" name="radio-btn" id="img-1" checked />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-6" class="prev">&#x2039;</label>
-        <label for="img-2" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-2" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + campingImages[0].filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-1" class="prev">&#x2039;</label>
-        <label for="img-3" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-3" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + campingImages[1].filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-2" class="prev">&#x2039;</label>
-        <label for="img-4" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-4" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + campingImages[2].filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-3" class="prev">&#x2039;</label>
-        <label for="img-5" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-5" />
-    <li class="slide-container">
-      <div class="slide">
-        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
-      </div>
-      <div class="nav">
-        <label for="img-4" class="prev">&#x2039;</label>
-        <label for="img-6" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-6" />
-    <li class="slide-container">
-      <div class="slide">
-        <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
-      </div>
-      <div class="nav">
-        <label for="img-5" class="prev">&#x2039;</label>
-        <label for="img-1" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <li class="nav-dots">
-      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
-      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
-      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
-      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
-      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
-      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
-    </li>
-  </ul>
-
-  <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
-  <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
-  <!--  </div>-->
-  <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
-  <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
-  <!--  -->
-
-
-  <div class="mt-4">
-
-    <h4>{{ this.content.campingName }}</h4>
-    <p class="card-text">010-9699-4238</p>
-    <p class="card-text">{{ this.content.campingInfo }}</p>
-    <p class="card-text">{{ this.content.address }}</p>
-    <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-    <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
-    <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
-
     <br>
+    <ul class="slides">
+      <input type="radio" name="radio-btn" id="img-1" checked />
+      <li class="slide-container">
+        <div class="slide">
+          <img :src="'/api/product_detail_images/' + content.filename"/>
+        </div>
+        <div class="nav">
+          <label for="img-6" class="prev">&#x2039;</label>
+          <label for="img-2" class="next">&#x203a;</label>
+        </div>
+      </li>
+
+      <input type="radio" name="radio-btn" id="img-2" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-1" class="prev">&#x2039;</label>
+          <label for="img-3" class="next">&#x203a;</label>
+        </div>
+      </li>
+
+      <input type="radio" name="radio-btn" id="img-3" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-2" class="prev">&#x2039;</label>
+          <label for="img-4" class="next">&#x203a;</label>
+        </div>
+      </li>
+
+      <input type="radio" name="radio-btn" id="img-4" />
+      <li class="slide-container">
+        <div class="slide">
+          <img :src="'/api/product_detail_images/' + content.campingDetails[0].filename" />
+        </div>
+        <div class="nav">
+          <label for="img-3" class="prev">&#x2039;</label>
+          <label for="img-5" class="next">&#x203a;</label>
+        </div>
+      </li>
+
+      <input type="radio" name="radio-btn" id="img-5" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-4" class="prev">&#x2039;</label>
+          <label for="img-6" class="next">&#x203a;</label>
+        </div>
+      </li>
+
+      <input type="radio" name="radio-btn" id="img-6" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-5" class="prev">&#x2039;</label>
+          <label for="img-1" class="next">&#x203a;</label>
+        </div>
+      </li>
+
+      <li class="nav-dots">
+        <label for="img-1" class="nav-dot" id="img-dot-1"></label>
+        <label for="img-2" class="nav-dot" id="img-dot-2"></label>
+        <label for="img-3" class="nav-dot" id="img-dot-3"></label>
+        <label for="img-4" class="nav-dot" id="img-dot-4"></label>
+        <label for="img-5" class="nav-dot" id="img-dot-5"></label>
+        <label for="img-6" class="nav-dot" id="img-dot-6"></label>
+      </li>
+    </ul>
+
+    <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+    <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+    <!--  </div>-->
+    <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+    <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+    <!--  -->
 
 
-    <div class="listBody">
-      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
-      <div v-for="(room,index) in roomContent" :key="index"
-           @click="" class="listObj">
-        <div class="card">
-          <div class="card-body">
-            <img :src="'/api/product_detail_images/' + room.filename" alt="...">
-          </div>
-          <div class="card-body">
-            객실명 - {{ room.detailName }}
-          </div>
-          <div class="card-body">
-            설명 - {{ room.detailFunction }}
-          </div>
-          <div class="card-body">
-            최대인원 - {{ room.maximumNumber }}
-          </div>
-          <div class="card-body">
-            객실 가격 - {{ room.detailPrice }}
-          </div>
+    <div class="mt-4">
+
+      <h4>{{ this.content.campingName }}</h4>
+      <p class="card-text">010-9699-4238</p>
+      <p class="card-text">{{ this.content.campingInfo }}</p>
+      <p class="card-text">{{ this.content.address }}</p>
+      <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
+      <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
+      <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
+
+      <br>
+
+
+      <div class="listBody">
+        <h2> 캠핑장 내 객실 선택 및 예약 </h2>
+        <div v-for="(room,index) in roomContent" :key="index"
+             @click="" class="listObj">
+          <div class="card">
+            <div class="card-body">
+              <img :src="'/api/product_detail_images/' + room.filename" alt="...">
+            </div>
+            <div class="card-body">
+              객실명 - {{ room.detailName }}
+            </div>
+            <div class="card-body">
+              설명 - {{ room.detailFunction }}
+            </div>
+            <div class="card-body">
+              최대인원 - {{ room.maximumNumber }}
+            </div>
+            <div class="card-body">
+              객실 가격 - {{ room.detailPrice }}
+            </div>
             <br>
             <p>예약기간 설정</p>
             <div class="reservation">
@@ -140,61 +140,56 @@
             </div>
           <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
         </div>
-        <br>
       </div>
     </div>
-  </div>
+    </div>
 
-
-    <br>
     <br>
   <div v-if="areaCheck">
     <br>
-    <h2>캠핑장 위치정보</h2>
-    <div class="mapDiv">
-      <div id="map"></div>
-    </div>
-  </div>
+      <h2>캠핑장 위치정보</h2>
+      <div class="mapDiv">
+        <div id="map"></div>
+      </div>
+   </div>
 
     <br>
     <div class="btn_area">
       <button type="button" @click="detail_1" class="btn_Bottom">
         <span>캠핑장 소개</span>
       </button>
-      <button type="button" @click="detail_2" class="btn_Bottom">
+      <button type="button" @click="detail_2" class="btn_Bottom_3">
         <span>이용 안내</span>
       </button>
-      <button type="button" @click="detail_3" class="btn_Bottom">
+      <button type="button" @click="detail_3" class="btn_Bottom_3">
         <span>위치/주변정보</span>
       </button>
-      <button type="button" @click="detail_4" class="btn_Bottom">
+      <button type="button" @click="detail_4" class="btn_Bottom_3">
         <span>캠핑/여행후기</span>
       </button>
     </div>
 
-    <br>
-
-  <div v-if="areaCheckA">
-    <br>
-    <div class="review-t">
-      <h2>리뷰</h2>
-    </div>
-    <div class="content-detail-list-1">
+    <div v-if="areaCheckA">
       <br>
-      <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
-        <div class="Recommend">
-          <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
-        </div>
-
-        <div class="review">
-          <div class="review-title">캠핑장명 {{ reviews.campingId.campingName}} </div><br>
-          <div class="review-mid">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
-          <div class="review-text">설명 {{ reviews.campingContent }}</div>
-
-          <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
-
-          <div class="my-box-3">
+      <div class="review-t">
+      <h2>리뷰</h2>
+      </div>
+      <div class="content-detail-list-1">
+        <br>
+        <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
+          <div class="Recommend">
+            <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
           </div>
+
+          <div class="review">
+            <div class="review-title">캠핑장명 {{ reviews.campingId.campingName}} </div><br>
+            <div class="review-mid">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
+              <div class="review-text">설명 {{ reviews.campingContent }}</div>
+
+            <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
+
+            <div class="my-box-3">
+            </div>
           <div class="image_1">
             <p class="review-image">이미지</p>
             <img :src="'/api/product_detail_images/' + reviews.filename" />
@@ -256,8 +251,9 @@ export default {
       markers: [],
       markPositions1: [],
       areaCheck: false,
+      list: [],
       areaCheckA: false,
-
+      // likecnt: 0
       disabledDates: [],
       reservationDate: [],
       // date: [],
@@ -285,7 +281,6 @@ export default {
             orderMenus[i].orders.startDate[0],
             orderMenus[i].orders.startDate[1] - 1,
             orderMenus[i].orders.startDate[2])
-
         let endDate = new Date(
             orderMenus[i].orders.endDate[0],
             orderMenus[i].orders.endDate[1] - 1,
@@ -300,7 +295,6 @@ export default {
           this.disabledDates.push(tomorrow.toString())
         }
       }
-
     },
     DataList() {
       this.id = this.$route.params.campingId;
@@ -323,7 +317,6 @@ export default {
     },
 
     buyData(detailId) {
-
       console.log(this.startDate)
       console.log(this.endDate)
       const period = this.endDate - this.startDate
@@ -339,8 +332,8 @@ export default {
             period: period
           }
         })
-
     }},
+
     detail_3() {
       this.areaCheck = true
       let check = prompt("1+1 은?");
@@ -397,7 +390,6 @@ export default {
         this.map.setBounds(bounds);
       }
     },
-
     create() {
       this.id = store.getters.getLoginState.loginState;
       console.log(this.id);
@@ -473,7 +465,7 @@ export default {
             console.log(e)
           })
     },
-
+    
     toString() {
       const start = dayjs(this.reservationDate[0]);
       this.startDate = start.format('YYYYMMDD');
@@ -493,7 +485,18 @@ export default {
       })
     },
 
+    addPush(reviews) {
+      console.log(reviews.boardCampingCode)
+      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
+        .then((res) => {
+          alert("추천수가 증가되었습니다.")
+          console.log("추천수가 증가되었습니다.")
+        })
+        .catch(e => {
+          console.log(e)
+        })
 
+    }
   }
 }
 </script>
@@ -641,14 +644,10 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   background-color: #96adc0;
   font-size: 20px;
   font-weight: 400;
-  margin-left: 10px;
+  margin-left: 10%;
+  position: center;
 }
-
-/* 버튼 */
-.btn_area {
-  margin: 20px 0 91px;
-}
-.btn_Bottom {
+.btn_Bottom_3{
   width: 20%;
   padding: 21px 0 17px;
   border: 0;
@@ -658,8 +657,9 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-size: 20px;
   font-weight: 400;
   margin-left: 10px;
+  position: center;
 }
-.my-box {
+.my-box {               /*리뷰 젤 큰 박스*/
   border:3px solid;
   padding:50px 0 5%;
   box-sizing: border-box;
@@ -686,27 +686,88 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .review-image{
   margin-top: 10%;
   margin-right: 5%;
-}
-.review-mid{
-  border:1px solid;
-  box-sizing: border-box;
-  width: 57%;
-  margin-left: 30%;
-}
-.my-box-3{
-  border:1px solid;
-  padding:30px 0 50%;
-  box-sizing: border-box;
-  width: 230%;
-  margin-left: 77%;
-  margin-top: 5%;
+
 }
 .button{
-  margin-left : 15px;
+  margin-left : 40%;
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #0152b9;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.button:hover {background-color: #61cce0
+}
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 .Recommend{
   margin-left: 70%;
 }
+
+  .review-title{
+    /*background-color: blue;*/
+    position: relative;
+    margin-top: 1%;
+    left:20%;
+    font-size: 40px;
+  }
+.review-mid{
+  position: relative;
+  margin-top: -7%;
+  /*border:1px solid;*/
+  /*box-sizing: border-box;*/
+  width: 57%;
+  margin-left: 40%;
+  font-size: 20px;
+
+}
+.review-text{
+  position: relative;
+  left: 50px;
+  font-size: 38px;
+  margin-top: 20%;
+  margin-left: 40%;
+}
+.btn_Bottom_2{
+  width: 30%;
+  padding: 10px 0 10px;
+  border: 0;
+  cursor: pointer;
+  color: black;
+  background-color: #9dc7ea;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 5%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  float: right;
+  border-radius: 15px;
+}
+
+.image_1{
+  width: 200%;
+  height: 200%;
+  margin-left: 230%;
+  margin-bottom: 10%;
+  margin-top: -50%;
+  /*width: 300px;*/
+  /*height: 180px;*/
+
+}
+.review-t{
+  text-align: center;
+}
+
 .reservation {
   width: 285%;
   margin-left: 80px
@@ -718,4 +779,5 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .card-body:hover img {
   transform: scale(1.5);
 }
+
 </style>

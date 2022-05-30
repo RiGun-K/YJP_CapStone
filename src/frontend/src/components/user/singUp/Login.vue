@@ -92,7 +92,6 @@ export default {
                 loginState:this.userID,
                 stateCode:res.data.msc,
                 mcode:res.data.mcode
-
               })
               this.$router.push("/")
               break;

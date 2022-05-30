@@ -2,7 +2,7 @@
   <div id="wrapper">
     <div id="content">
       <br><br>
-      <h2>정보수정 입니다</h2>
+      <h2>정보수정</h2>
       <div>
         <br>
         <h3 class="join_title">
@@ -154,7 +154,7 @@ export default {
         }).then((res)=>{
           if(res.data){
             alert("업데이트 되었습니다")
-            this.$router.push("/")
+            this.$router.go()
           }else{
             alert("업데이트에 문제가 발생했습니다")
           }

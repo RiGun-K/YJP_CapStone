@@ -52,20 +52,21 @@ export default {
   data() {
     return {
       title: '',
-      content: ''
+      content: '',
+      file: '',
     }
   },
   methods: {
     write() {
-      const data = {
-        mid: store.getters.getLoginState.loginState,
-        title: this.title,
-        content: this.content
-      }
-      console.log(data);
-      axios.post('/api/Writing', data)
+      const formData = new FormData();
+      formData.append('title', this.title);
+      formData.append('content', this.content);
+      formData.append('mid', store.getters.getLoginState.loginState);
+      formData.append('file', this.file);
+
+      axios.post('/api/Writing', formData, {headers: {'Content-Type': 'multipart/form-data'}})
           .then((res) => {
-            console.log("성공" + res.data)
+            console.log("성공" + res)
           })
           .catch((ex) => {
             console.log("fail", ex)
@@ -122,7 +123,6 @@ export default {
 
     },
 
-
   }
 }
 </script>
@@ -136,7 +136,17 @@ export default {
 .tbAdd td textarea{width:100%; min-height:300px; padding:10px; box-sizing:border-box;}
 .btnWrap{text-align:center; margin:20px 0 0 0;}
 .btnWrap a{margin:0 10px;}
-.btnAdd {background:#43b984; text-align:center; margin:20px 0 0 0;}
-.btnDelete{background:#f00;}
+.btnAdd {text-align:center;
+  width: 17%;
+  padding: 10px 0 10px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #5f8c98;
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 10%;
+  margin-top: 20px;}
+
 
 </style>

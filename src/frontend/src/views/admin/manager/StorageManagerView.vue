@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div>
-      <button @click="$router.push({name:'InputStorageManager'})">추가</button>
+    <div style="text-align: right">
+      <button @click="$router.push({name:'InputStorageManager'})"
+      style="margin-right: 8%; margin-top: 1%">추가</button>
     </div>
     <div>
       <GetStorageManager></GetStorageManager>

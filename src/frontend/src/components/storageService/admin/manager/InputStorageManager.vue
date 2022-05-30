@@ -1,45 +1,52 @@
 <template>
-  <button @click="$router.push({name:'manager'})">뒤로가기</button>
+  <div style="margin-left: 5%; margin-right: 5%; margin-top: 1%;width: 90%;">
+    <button @click="$router.push({name:'manager'})">뒤로가기</button>
+  </div>
 
-  <h5>보관소 매니저</h5>
   <div class="manager-add">
-    <div class="mb-3">
-      <label for="exampleFormControlInput1" class="form-label">매니저아이디</label>
-      <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
-             placeholder="매니저id">
-    </div>
-    <button class="storage-box-b" @click="CheckMember()">CHECK</button>
-    <p v-if="memberIdCheck">가능</p>
-
+    <h5>보관소 매니저</h5>
     <div>
-      <labe for="storage-search">보관소</labe>
-      <input id="storage-search" type="text" v-model="searchStorage" @keyup.enter="storageSearch()" placeholder="보관소명">
-      <button @click="storageSearch()">검색</button>
-
+      <div>
+        <labe for="storage-search">보관소</labe>
+        <input id="storage-search" type="text" v-model="searchStorage"
+               @keyup.enter="storageSearch()" placeholder="보관소명"
+               style="margin: 1%;">
+        <button @click="storageSearch()">검색</button>
+      </div>
       <div>
         <table>
           <thead>
           <tr>
-            <th calspan="2">지역</th>
-            <th calspan="2">보관소명</th>
+            <th>보관소번호</th>
+            <th>지역</th>
+            <th>보관소명</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(storage,index) in storageList">
-            <td>{{ index + 1 }}</td>
-            <td>{{ storage.storageAddress }}</td>
-            <td>{{ storage.storageName }}</td>
-            <td>
-              <button @click="checkStorage(storage.storageCode)">선택</button>
-            </td>
-          </tr>
+            <tr v-for="(storage,index) in storageList">
+              <td>{{ index + 1 }}</td>
+              <td>{{ storage.storageAddress }}</td>
+              <td>{{ storage.storageName }}</td>
+              <td>
+                <input type="checkbox" name="aaa" :id="storage.storageCode"
+                       @click="checkStorage(storage.storageCode)">
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
-
-
-    <button v-if="memberIdCheck" @click="postManager">ADD</button>
+    <div>
+      <div class="managerBottom">
+        <label for="exampleFormControlInput1" class="form-label" style="width: 10%">매니저아이디</label>
+        <input type="text" v-model="memberId" class="form-control" id="exampleFormControlInput1"
+               placeholder="매니저id" style="width: 20%;display: inline">
+        <button class="storage-box-b" @click="CheckMember()"
+                style="width: 60px; margin-left: 10px">확인</button>
+        <p v-if="memberIdCheck" style="margin-right: 10px;margin-left: 10px;display: inline">가능</p>
+        <button v-if="memberIdCheck" @click="postManager" style="width: 60px;">추가</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -58,6 +65,7 @@ export default {
       searchList: [],
       searchStorageList: [],
       storage: {},
+      storageCode: '',
     }
   },
   mounted() {
@@ -96,7 +104,7 @@ export default {
       if (!this.memberId) {
         alert('아이디를 입력하세요')
       } else {
-        axios.get('api/checkManager/' + this.memberId)
+        axios.get('/api/checkManager/' + this.memberId)
             .then((res) => {
               console.log(res)
               if (res.data.result == 'ok') {
@@ -120,15 +128,20 @@ export default {
       }
     },
     checkStorage(storageCode) {
-
+      this.storageCode = storageCode
+      document.getElementsByName("aaa")
+          .forEach(el => {
+        el.checked = false
+      });
+      document.getElementById(storageCode).checked = true;
     },
     postManager() {
       let manager = {
-        member: memberId,
-        storage: storageCode
+        member: this.memberId,
+        storage: this.storageCode
       }
       if (this.memberIdCheck) {
-        axios.post('api/postManager', manager)
+        axios.post('/api/postManager', manager)
             .then((res) => {
               console.log(res.data.result)
               if (res.data.result === 'ok') {
@@ -136,6 +149,7 @@ export default {
                 alert('추가되었습니다')
                 this.clearInput()
                 this.memberIdCheck = false
+                this.$router.push({name:'manager'})
               } else {
                 alert('추가 되지 않음')
               }
@@ -152,5 +166,16 @@ export default {
 </script>
 
 <style scoped>
-
+th,td{
+  width: 25%;
+}
+.manager-add{
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 1%;
+  width: 90%;
+}
+.managerBottom{
+  margin-top: 1%;
+}
 </style>

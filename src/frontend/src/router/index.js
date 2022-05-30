@@ -110,7 +110,12 @@ const routes = [
   {
     path:'/addEquipment',
     name:'addEquipment',
-    component: () => import('@/components/user/myPage/AddEquip')
+    component: () => import('@/components/user/myPage/AddEquip.vue')
+  },
+  {
+    path:'/memberData/:mid',
+    name:'memberData',
+    component: () => import('@/components/user/adminManage/memberData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////
@@ -136,7 +141,7 @@ const routes = [
     component: () => import('@/components/board/Create.vue')
   },
   {
-    path: '/view/:writer_code',
+    path: '/view/:boardId',
     name: 'View',
     component: () => import('@/components/board/View.vue')
   },
@@ -339,6 +344,11 @@ const routes = [
     component: () => import('@/components/cart/Infoter/InfoterDetailBoard.vue'),
   },
   {
+    path: '/infoter/infoterupdate/:boardCampingCode',
+    name: 'InfoterDetailBoardUpdate',
+    component: () => import('@/components/cart/Infoter/InforterDetailBoardUpdate.vue')
+  },
+  {
     path: '/infoter/infoterNow/:campingId/:detailId',
     name: 'InfoterNow',
     component: () => import('@/components/cart/Infoter/InfoterNow.vue')
@@ -395,19 +405,7 @@ const routes = [
   {
     path: "/storageAdmin",
     name: "admin",
-    component: ()=> import('@/views/admin/StorageAdminView.vue'),
-    children: [
-      {
-        path: "/storageAdmin/storage",
-        name: "storage",
-        component: ()=> import('@/views/admin/storage/StorageView.vue')
-      },
-      {
-        path: "/storageAdmin/manager",
-        name: "manager",
-        component: ()=> import('@/views/admin/manager/StorageManagerView.vue')
-      },
-    ]
+    component: ()=> import('@/views/admin/storage/StorageView.vue')
   },
   {
     path: "/storageAdmin/storageRevise",
@@ -445,29 +443,34 @@ const routes = [
     component:()=>import('@/components/storageService/user/RenewalBox.vue')
   },
   {
-    path: "/myBox/moveBox",
+    path: "/myBox/closeBox",
+    name: "closeBox",
+    component:()=>import('@/components/storageService/user/CloseBox.vue')
+  },
+  {
+    path: "/myBox/moveBox/:useBoxCode",
     name: "moveBox",
     component:()=>import('@/components/storageService/user/MoveBox.vue')
   },
   {
-    path: "/myBox/moveBox/boxToBox",
+    path: "/myBox/moveBox/:useBoxCode/boxToBox/:storageCode",
     name: "StorageMoveBoxDetail",
     component:()=>import('@/components/storageService/user/StorageMoveBoxDetail.vue')
   },
   {
-    path: "/myBox/moveBox/storagePay",
+    path: "/myBox/moveBox/:useBoxCode/storagePay/:newStorageBoxCode",
     name: "BoxToBoxMovePay",
     component:()=>import('@/views/user/BoxToBoxMovePay.vue'),
     props: true
   },
   {
-    path: "/myBox/moveBox/roundPay",
+    path: "/myBox/moveBox/:useBoxCode/roundPay",
     name: "roundToBoxMovePay",
     component:()=>import('@/views/user/roundToBoxMovePay.vue'),
     props: true
   },
   {
-    path: "/myBox/repairBox",
+    path: "/myBox/repairBox/:useBoxCode",
     name: "repairBox",
     component:()=>import('@/components/storageService/user/RepairBox.vue')
   },
