@@ -149,11 +149,11 @@ export default {
     updateData(List) {
         console.log(List.mid.mid, List.title, List.content);
         this.$router.push({
-          path: `/update/${List.writer_code}`,
+          path: `/update/${List.boardId}`,
           query: {
-            writer_code: List.writer_code,
             title: List.title,
-            content: List.content
+            content: List.content,
+            boardId: List.boardId,
           }
         })
 
