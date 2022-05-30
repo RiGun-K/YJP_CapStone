@@ -8,10 +8,10 @@
       </tr>
       <tr>
         <td>상태</td>
-        <td v-if="box.boxState == 'x'">
+        <td v-if="box.boxState == '0'">
           <p>빈 상태</p>
         </td>
-        <td v-else-if="box.boxState == 0">결제완료
+        <td v-else-if="box.boxState == 1">결제완료
           <button @click="updateState">보관완료</button>
         </td>
         <td v-else-if="box.boxState == 6">

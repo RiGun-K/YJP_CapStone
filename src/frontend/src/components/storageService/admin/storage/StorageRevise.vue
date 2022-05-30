@@ -305,7 +305,7 @@ export default {
 }
 .textItem{
   border: 1px solid black;
-  width: 250px;
+  width: 350px;
   padding-left: 5px;
   display: inline-flex;
 }

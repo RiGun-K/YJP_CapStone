@@ -12,7 +12,7 @@
                  aria-label="Recipient's username" aria-describedby="button-addon2">
     </span>
     <span class="input-group mb-3">
-          <input type="text" v-model="authPass" class="form-control" placeholder="변경 비밀번호재입력"
+          <input type="password" v-model="authPass" class="form-control" placeholder="변경 비밀번호재입력"
              aria-label="Recipient's username" aria-describedby="button-addon2">
     </span>
     <p>{{inputCheck}}</p>
