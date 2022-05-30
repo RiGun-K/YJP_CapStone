@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface MPRRepository extends JpaRepository<MemberPreference, Long> {
+  
     List<MemberPreference> findByMember(Member member);
     Optional<MemberPreference> findByMemberAndKind(Member member, Kind kind);
 }

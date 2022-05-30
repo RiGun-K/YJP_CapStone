@@ -284,6 +284,11 @@ const routes = [
     component: () => import('@/components/cart/ItemBuy/BuyList.vue')
   },
   {
+    path: '/itemBuy/index',
+    name: 'ItemBuyIndex',
+    component: () => import('@/components/cart/ItemBuy/Buyindex.vue')
+  },
+  {
     path: '/itemBuy/buyList/:buyId',
     name: 'BuyDetailList',
     component: () => import('@/components/cart/ItemBuy/BuyDetailList.vue'),
@@ -305,6 +310,12 @@ const routes = [
     path: '/itemShare',
     name: 'ShareList',
     component: () => import('@/components/cart/ItemShare/ShareList.vue')
+  },
+  {
+    path: '/itemShare/rentalList/:rentalId',
+    name: 'ShareDetailList',
+    component: () => import('@/components/cart/ItemShare/ShareDetailList.vue'),
+    props: true
   },
   {
     path: '/itemShare/shareNow/:rentalId',

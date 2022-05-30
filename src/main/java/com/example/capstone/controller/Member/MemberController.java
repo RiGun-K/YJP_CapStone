@@ -388,28 +388,28 @@ public class MemberController {
 //    @PostMapping("myWritter")
 //    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
 //        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
-//        List<Board> writerList = boardRepository.findByMCODE(member.get());
-//        if(writerList.isEmpty()){
+//        List<Board> boardList = boardRepository.findByMID(member.get());
+//        if(boardList.isEmpty()){
 //            return null;
 //        }
 //
-//        return writerList;
+//        return boardList;
 //    }
 
     ///전체 게시글 조회///
     @GetMapping("adminAllWriter")
     public List<Board> adminAllWriter(){
-        List<Board> writerList = boardRepository.findAll();
-        return writerList;
+        List<Board> boardList = boardRepository.findAll();
+        return boardList;
     }
     ///게시글삭제///
     @PostMapping("adminDeleteWriter")
     public Boolean adminDeleteWriter(@RequestBody HashMap<String, String> body){
-        Optional<Board> writer = boardRepository.findById(Long.parseLong(body.get("wcode")));
-        if(writer.isEmpty()){
+        Optional<Board> board = boardRepository.findById(Long.parseLong(body.get("wcode")));
+        if(board.isEmpty()){
             return false;
         }
-        boardRepository.delete(writer.get());
+        boardRepository.delete(board.get());
         return true;
     }
 

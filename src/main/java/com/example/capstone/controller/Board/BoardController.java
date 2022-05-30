@@ -1,3 +1,4 @@
+
 package com.example.capstone.controller.Board;
 
 import com.example.capstone.domain.Board.Board;
@@ -26,7 +27,6 @@ import java.util.Optional;
 public class BoardController {
 
 
-
     @Autowired
     private BoardRepository boardRepository;
     @Autowired
@@ -47,7 +47,7 @@ public class BoardController {
             if (!new File(savePath).exists()) {
                 try {
                     new File(savePath).mkdir();
-                }
+                } 
                 catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -68,9 +68,7 @@ public class BoardController {
 
         Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
         System.out.println(member.get());
-
-
-        Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
+        Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
         boardRepository.save(board);
         return board;
 
@@ -132,13 +130,14 @@ public class BoardController {
     /* 게시글 삭제*/
     @DeleteMapping("/deleteList/{writer_code}")
     public String deleteList(@PathVariable("writer_code") Long writer_code) {
-        System.out.println("삭제할 게시글 번호는 : " +writer_code);
+        System.out.println("삭제할 게시글 번호는 : " + writer_code);
         Optional<Board> writer = boardRepository.findById(writer_code);
         boardRepository.delete(writer.get());
         return "게시글이 삭제되었습니다.";
 
 
     }
+}
 
     /* 게시글 수정*/
 //    @PutMapping("/update")
@@ -151,36 +150,36 @@ public class BoardController {
 //
 //    }
 
-    @PutMapping("/update")
-    public Board addWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, BoardDTO boardDTO, BindingResult result) throws IllegalStateException, IOException {
-
-        try {
-            String origFilename = uploadFile.getOriginalFilename();
-            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
-
-            String filename = now + "_" + origFilename;
-
-            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
-            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
-            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdir();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String filePath = savePath + "\\" + filename;
-            uploadFile.transferTo(new File(filePath));
-
-            boardDTO.setOrigFilename(origFilename);
-            boardDTO.setFilename(filename);
-            boardDTO.setFilePath(filePath);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Optional<Board> updateMyList = boardRepository.findById(boardDTO.getParentBoard());
-
-    }
+//    @PutMapping("/update")
+//    public Board addWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, BoardDTO boardDTO, BindingResult result) throws IllegalStateException, IOException {
+//
+//        try {
+//            String origFilename = uploadFile.getOriginalFilename();
+//            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+//
+//            String filename = now + "_" + origFilename;
+//
+//            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+//            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+//            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+//            if (!new File(savePath).exists()) {
+//                try {
+//                    new File(savePath).mkdir();
+//                } catch (Exception e) {
+//                    e.getStackTrace();
+//                }
+//            }
+//            String filePath = savePath + "\\" + filename;
+//            uploadFile.transferTo(new File(filePath));
+//
+//            boardDTO.setOrigFilename(origFilename);
+//            boardDTO.setFilename(filename);
+//            boardDTO.setFilePath(filePath);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        Optional<Board> updateMyList = boardRepository.findById(boardDTO.getParentBoard());
+//
+//    }
