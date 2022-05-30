@@ -93,7 +93,7 @@
       <!--      <label for="image">이미지</label>-->
       <!--      <input type="file" id="image" v-model="image" >-->
       <div class="divBtnBody">
-        <button @click="$router.push({name:'storage'})" class="Btn">돌아가기</button>
+        <button @click="$router.push({name:'admin'})" class="Btn">돌아가기</button>
       </div>
     </div>
   </div>

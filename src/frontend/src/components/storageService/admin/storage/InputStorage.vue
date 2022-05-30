@@ -70,7 +70,7 @@
     </div>
     <div class="btnDivBody">
       <button class="storage-add-btn" @click="next()" v-if="!boxC">NEXT</button>
-      <button class="homeBtn" @click="returnList()" >돌아가기</button>
+      <button class="homeBtn" @click="this.$router.push({name:'admin'})" >돌아가기</button>
     </div>
     <div id="map"></div>
   </div>
@@ -275,9 +275,6 @@ export default {
         })
       }
     },
-    returnList(){
-      this.$router.go()
-    }
   }
 }
 </script>

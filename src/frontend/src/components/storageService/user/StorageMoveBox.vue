@@ -48,6 +48,7 @@ export default {
   created() {
     this.memberId = store.getters.getLoginState.loginState
     this.allroundsearch()
+    this.getmoveBoxInfo()
     axios.get('/api/aRound')
         .then(res => {
           this.bigRound = res.data
@@ -70,7 +71,7 @@ export default {
     }
   },
   props:{
-    form: {}
+    useBoxCode: '',
   },
   data() {
     return {
@@ -86,9 +87,23 @@ export default {
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
+      moveBox:{}
     }
   },
   methods: {
+    getmoveBoxInfo(){
+      axios.get('/api/moveBoxInfo/' + this.useBoxCode)
+          .then(res => {
+            this.moveBox.storageCode = res.data[0][0]
+            this.moveBox.storageName = res.data[0][1]
+            this.moveBox.boxCode = res.data[0][2]
+            this.moveBox.boxName = res.data[0][3]
+            this.moveBox.useBoxCode = this.useBoxCode
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -171,13 +186,10 @@ export default {
     },
 
     askBox(storageCode) {
+      this.$store.commit('moveBoxInfo',this.moveBox)
       this.$router.push({name: 'StorageMoveBoxDetail',
                          params: {
-                           storageCode: storageCode.storageCode,
-                           storageName:this.form.storageName,
-                           boxName:this.form.boxName,
-                           boxCode: this.form.boxCode,
-                           useBoxCode:this.form.useBoxCode
+                           storageCode: storageCode.storageCode
                          }
       })
     },
