@@ -358,7 +358,7 @@ export default {
 .myTeam {
 	width: 100%;
 	margin: 20px;
-	/* float: left; */
+	/* float: left; asdasdasdasd*/
 }
 .myTeam p {
 	display: inline;
@@ -373,7 +373,7 @@ export default {
 }
 
 hr {
-	width: 2000px;
+	width: 2001px;
 }
 .teamMemberList button {
 	border-radius: 20px;
