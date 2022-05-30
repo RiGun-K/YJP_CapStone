@@ -18,10 +18,9 @@
 								<th>주문코드</th>
 								<th>캠핑장</th>
 								<th>객실명</th>
-
-								<th>예약날짜</th>
-
+								<th>예약일자</th>
 								<th>주문금액</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -36,7 +35,6 @@
 											.detailName
 									}}
 								</td>
-
 								<td>
 									{{
 										this.menus[index].orders.startDate[0]
@@ -51,8 +49,14 @@
 									{{ this.menus[index].orders.endDate[1] }}월
 									{{ this.menus[index].orders.endDate[2] }}일
 								</td>
-
 								<td>{{ order.orderPrice }}</td>
+								<td>
+									<button
+										@click="selectMyOrder(order, index)"
+									>
+										선택
+									</button>
+								</td>
 							</tr>
 							<!-- PathVariable 을 위해서는 router-link 작성 -->
 							<!--      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>-->
@@ -60,6 +64,7 @@
 					</table>
 				</div>
 			</div>
+			<button @click="skip">건너뛰기</button>
 		</div>
 	</div>
 </template>
@@ -73,6 +78,8 @@ export default {
 			content: [],
 			orders: [],
 			menus: [],
+			startDate: '',
+			endDate: '',
 		};
 	},
 	created() {
@@ -80,6 +87,49 @@ export default {
 		this.DataList();
 	},
 	methods: {
+		skip: function () {
+			const confirmData = confirm(
+				'예약된 캠핑장을 선택하지 않고 계획을 작성합니다',
+			);
+			if (confirmData) {
+				this.$store.state.myReservation = new Object();
+				this.$store.state.camping.camping.address = '';
+				this.$store.state.camping.camping.areaId = '';
+				this.$store.state.camping.camping.campingName = '';
+				this.$store.commit(
+					'setMyReservation',
+					this.$store.state.myReservation,
+				);
+				this.$store.commit('setCamping', this.$store.state.camping);
+				this.$router.push({ name: 'basicPlan' });
+			}
+		},
+		selectMyOrder(myOrder, index) {
+			this.$store.commit('setCamping', this.menus[index]);
+			this.endDate =
+				myOrder.endDate[0].toString() +
+				'/' +
+				myOrder.endDate[1].toString() +
+				'/' +
+				myOrder.endDate[2].toString() +
+				'/';
+			this.startDate =
+				myOrder.startDate[0].toString() +
+				'/' +
+				myOrder.startDate[1].toString() +
+				'/' +
+				myOrder.startDate[2].toString() +
+				'/';
+			myOrder.endDate = this.endDate;
+			myOrder.startDate = this.startDate;
+			this.$store.commit('setMyReservation', myOrder);
+			const confirmData = confirm(
+				'해당 캠핑장으로 일정작성을 진행하시겠습니까?',
+			);
+			if (confirmData) {
+				this.$router.push({ name: 'basicPlan' });
+			}
+		},
 		DataList() {
 			axios
 				.get(
@@ -95,7 +145,6 @@ export default {
 						.then((res2) => {
 							this.orders = res.data;
 							this.menus = res2.data;
-							console.log(res2.data);
 						})
 						.catch((e2) => {
 							console.log(e2);

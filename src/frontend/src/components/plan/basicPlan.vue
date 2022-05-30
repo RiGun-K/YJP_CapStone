@@ -2,27 +2,70 @@
 
 <template>
 	<h1>아래 정보는 AI추천기능을 위해 사용됩니다</h1>
-	<h1>날짜 선택</h1>
+	<h1>날짜선택</h1>
 	<Datepicker
 		v-model="shareDate"
 		:enable-time-picker="false"
 		:min-date="today"
 		range
-		placeholder="Select share date range"
+		placeholder="Select camping  date range"
 		v-on="toString()"
 		format="yyyy/MM/dd"
 		autoApply
 		:closeOnAutoApply="false"
 	></Datepicker>
 	<h2>{{ this.$store.state.diff - 1 }}박{{ this.$store.state.diff }}일</h2>
-	<input
-		type="text"
-		@keyup="checkPlanName"
-		placeholder="플랜이름"
-		v-model="planName"
-	/>
+	<h3>캠핑장이름:<input type="text" v-model="campingName" /></h3>
 
-	<p>{{ checkResult }}</p>
+	<span class="input-group mb-3">
+		<input
+			type="text"
+			v-model="postalAddress"
+			class="form-control"
+			placeholder="우편주소 입력"
+			aria-label="Recipient's username"
+			aria-describedby="button-addon2"
+			readonly
+		/>
+		<button
+			class="btn btn-outline-secondary"
+			type="button"
+			id="button-addon2"
+			@click="zcGet"
+		>
+			우편주소검색
+		</button>
+	</span>
+	<div>
+		<span class="input-group mb-3">
+			<input
+				type="text"
+				v-model="address"
+				id="email"
+				class="form-control"
+				maxlength="100"
+				placeholder="도로명입력"
+				readonly
+			/>
+		</span>
+	</div>
+	<div>
+		<span class="input-group mb-3">
+			<input
+				type="text"
+				v-model="detailAddress"
+				id="email"
+				class="form-control"
+				maxlength="100"
+				placeholder="상세주소"
+			/>
+		</span>
+		<span class="error_next_box">상세주소를 다시 확인해주세요.</span>
+	</div>
+	<input type="text" placeholder="플랜이름" v-model="planName" />
+	<h6>{{ checkResult }}</h6>
+	<button @click="checkPlanName">중복확인</button>
+
 	<h3>
 		공개여부
 		<select v-model="planOpen">
@@ -32,23 +75,20 @@
 		</select>
 	</h3>
 	<h3>
-		장소
+		지역
 		<select v-model="planDestination">
 			<option disabled value="">지역선택</option>
-			<option>강원</option>
-			<option>경기</option>
-			<option>경남</option>
-			<option>경북</option>
-			<option>광주</option>
-			<option>대구</option>
-			<option>대전</option>
-			<option>부산</option>
-			<option>서울</option>
-			<option>인천</option>
-			<option>전남</option>
-			<option>전북</option>
-			<option>제주</option>
-			<option>충북</option>
+			<option>강원도</option>
+			<option>경기도</option>
+			<option>경상도</option>
+			<option>대구시</option>
+			<option>부산시</option>
+			<option>서울시</option>
+			<option>인천시</option>
+			<option>전라도</option>
+			<option>제주도</option>
+			<option>충청도</option>
+			<option>울산시</option>
 		</select>
 	</h3>
 
@@ -92,11 +132,14 @@ export default {
 	components: { Datepicker },
 	data() {
 		return {
-			shareDate: [],
+			shareDate: [
+				this.$store.state.myReservation.startDate,
+				this.$store.state.myReservation.endDate,
+			],
 			today: new Date(),
 			planStart: '',
 			planEnd: '',
-			planDestination: '',
+			planDestination: this.$store.state.camping.camping.areaId.areaName,
 			planType: '',
 			planNumber: 0,
 			planBudget: '0',
@@ -107,9 +150,22 @@ export default {
 			planOpen: '전체공개',
 			tag: '',
 			TagContentList: [],
+			campingName: this.$store.state.camping.camping.campingName,
+			address: '',
+			postalAddress: '',
+			detailAdress: '',
+			address: this.$store.state.camping.camping.address,
 		};
 	},
 	methods: {
+		zcGet() {
+			new window.daum.Postcode({
+				oncomplete: (data) => {
+					this.postalAddress = data.zonecode;
+					this.address = data.roadAddress;
+				},
+			}).open({ popupKey: '주소검색' });
+		},
 		addTags: function (value) {
 			if (this.TagContentList.indexOf(value) !== -1) {
 				alert('중복된 Tag설정은 불가능합니다');
@@ -119,7 +175,6 @@ export default {
 			this.tag = '';
 		},
 		deleteTag: function (index) {
-			console.log(index);
 			this.TagContentList.splice(index, 1);
 		},
 		checkPlanName: function () {
@@ -151,9 +206,7 @@ export default {
 			this.diff = secondValue.diff(firstValue, 'd') + 1;
 			this.$store.commit('updateDiff', this.diff);
 		},
-		// addTags: function () {
-		// 	const url = '/api/addTags';
-		// },
+
 		createPlan: function () {
 			const data = {
 				planName: this.planName,
@@ -166,6 +219,9 @@ export default {
 				planBudget: this.planBudget,
 				planTotalDate: this.diff,
 				planOpen: this.planOpen,
+				address: this.address,
+				detailAddress: this.detailAddress,
+				campingName: this.campingName,
 			};
 			const form = { plan: data, tagContentList: this.TagContentList };
 			if (
@@ -181,7 +237,6 @@ export default {
 				if (this.TagContentList.length < 3) {
 					alert('테그를 3개 이상 입력해야합니다');
 				} else {
-					console.log(this.$store.state.teamCode.teamCode);
 					const url = '/api/createPlan';
 					axios
 						.post(url, form)

@@ -126,6 +126,7 @@ public class ProductController {
         System.out.println("-------------------1----------------");
 
         String requestPath = "C:\\Users\\bon300-6\\YJP_CapStone16\\src\\frontend\\src\\assets\\" + filename;
+
         InputStream imageStream = new FileInputStream(requestPath);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();

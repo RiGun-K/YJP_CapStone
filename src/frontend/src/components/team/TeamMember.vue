@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>{{ $store.state.teamCode.teamCode.teamName }}팀의 상세정보</h2>
+	<div>
+		<h2>{{ $store.state.teamCode.teamCode.teamName }}팀의 상세정보</h2>
 
 		<h3>팀 관리자 -{{ $store.state.teamCode.teamCode.teamMaster }}-</h3>
 		<h1>팀게시판</h1>
@@ -12,13 +12,24 @@
 			<th>작성자</th>
 			<th>내용</th>
 			<th>작성일</th>
-			<tr v-for="(value, index) in contentList" :key="index">
+			<tr
+				:class="{
+					master:
+						this.$store.state.teamCode.teamCode.teamMaster ==
+						value.memberDto.mcodeDto,
+				}"
+				v-for="(value, index) in contentList"
+				:key="index"
+			>
 				<td>{{ value.memberDto.mname }}</td>
 				<td>{{ value.contentDto }}</td>
 				<td>{{ value.boardDateDto }}</td>
 				<td
 					v-if="
-						value.memberDto.mname === this.$store.state.member.mname
+						value.memberDto.mname ===
+							this.$store.state.member.mname ||
+						this.$store.state.teamCode.teamCode.teamMaster ===
+							this.$store.state.member.mcode
 					"
 				>
 					<button @click="editContent(value.teamBoardCodeDto)">
@@ -30,6 +41,7 @@
 				</td>
 			</tr>
 		</table>
+
 		<textarea v-model="content">게시글을 작성하세요</textarea>
 		<button @click="insertContent(content)">작성</button>
 		<hr />
@@ -41,6 +53,28 @@
 		<div v-for="(value, index) in $store.state.teamMemberList" :key="index">
 			<button>
 				{{ value.mcode.mname }}
+			</button>
+			<form>
+				<input
+					v-model="value.teamMemberAuthority"
+					type="radio"
+					name="manager"
+					value="y"
+					@click="changeManager(value)"
+				/>운영자
+				<input
+					v-model="value.teamMemberAuthority"
+					type="radio"
+					name="manager"
+					value="n"
+					@click="changeManager(value)"
+				/>일반회원
+			</form>
+			<button
+				v-if="showingDeleteTeamButton"
+				@click="banishment(value.teamMemberCode, index)"
+			>
+				추방하기
 			</button>
 		</div>
 		<div>
@@ -65,14 +99,13 @@
 		</div>
 		<button @click="refuse()">탈퇴하기</button>
 	</div>
-
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-	name: 'TeamDetail',
+	name: 'TeamMemberVue',
 	created() {
 		this.showingDeleteTeam();
 		this.loadTeamPlans();
@@ -90,6 +123,27 @@ export default {
 		};
 	},
 	methods: {
+		changeManager: function (teamMember) {
+			console.log(teamMember);
+			const url = 'api/changeManager';
+			axios
+				.put(url, teamMember)
+				.then((response) => {})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
+		banishment: function (teamMemberCode, index) {
+			const url = 'api/banishment';
+			axios
+				.delete(url, { params: { teamMemberCode: teamMemberCode } })
+				.then((response) => {
+					this.$store.state.teamMemberList.splice(index);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 		deletePlan: function (planCode) {
 			const delConfirm = confirm('정말로 삭제 하시겠습니까?');
 			const url = 'api/deletePlan';
@@ -141,7 +195,6 @@ export default {
 				.then((response) => {
 					response.data.map((item) => {
 						this.contentList.push(item);
-						console.log(this.contentList);
 					});
 				})
 				.catch((error) => {
@@ -228,7 +281,6 @@ export default {
 					teamCode: this.$store.state.teamCode.teamCode,
 				})
 				.then((response) => {
-					console.log(response.data);
 					this.$store.commit('updateLoginedTeamCode', response.data);
 				})
 				.catch((error) => {
@@ -238,7 +290,6 @@ export default {
 		refuse: function () {
 			const delConfirm = confirm('정말로 탈퇴 하시겠습니까?');
 			if (delConfirm) {
-				console.log(this.$store.state.teamCode.teamCode);
 				const url = 'http://localhost:9002/api/refuseTeam';
 				const member = { mcode: this.$store.state.member.mcode };
 				const tc = {
@@ -287,11 +338,10 @@ export default {
 			});
 		},
 
-
-    openWindow: function (url) {
-      window.open(url);
-    },
-  },
+		openWindow: function (url) {
+			window.open(url);
+		},
+	},
 };
 </script>
 
@@ -312,5 +362,8 @@ export default {
 .tbAdd td.txt_cont {
 	height: 300px;
 	vertical-align: top;
+}
+.master {
+	color: red;
 }
 </style>

@@ -7,6 +7,7 @@ import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.dto.plan.TeamDto;
+import com.example.capstone.dto.plan.TeamMemberDto;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.TeamMemberRepository;
@@ -88,7 +89,16 @@ public class TeamMemberService {
         teamMember.setTeamCode(tm);
         teamMember.setMcode(member.get());
         teamMember.setAcception("y");
+        teamMember.setTeamMemberAuthority('y');
         System.out.println(teamMember.getTeamCode());
         teamMemberRepository.save(teamMember);
+    }
+    public void banishment(Long teamMemberCode){
+        Optional<TeamMember> teamMember = teamMemberRepository.findById(teamMemberCode);
+        teamMemberRepository.delete(teamMember.get());
+    }
+    public void changeManager(TeamMemberDto teamMemberDto){
+        Optional<TeamMember> teamMember = teamMemberRepository.findById(teamMemberDto.getTeamMemberCode());
+        teamMember.get().setTeamMemberAuthority(teamMemberDto.getTeamMemberAuthority());
     }
 }
