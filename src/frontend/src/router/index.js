@@ -427,7 +427,7 @@ const routes = [
     component:()=>import('@/views/user/MyStorageBox.vue')
   },
   {
-    path: "/myBox/renewalBox",
+    path: "/myBox/renewalBox/:useBoxCode",
     name: "renewalBox",
     component:()=>import('@/components/storageService/user/RenewalBox.vue')
   },

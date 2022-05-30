@@ -29,124 +29,124 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div v-if="modal">
+  <div v-if="modal">
+    <div>
+      <button @click="close()">X</button>
       <div>
-        <button @click="close()">X</button>
         <div>
+          <button class="mystoragebox-re" v-if="detailUseState==2" @click="moveBox(pickUseBox)">장비 이동</button>
+          <button class="mystoragebox-re" v-if="detailUseState==2" @click="repairBox(pickUseBox)">장비 수리</button>
+          <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
+          <button class="mystoragebox-re" v-if="detailUseState==2" @click="closeBox(pickUseBox)">해지</button>
+        </div>
+        <div>
+          <table>
+            <thead>
+            <tr>
+              <th>시작일</th>
+              <th>종료예정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{ useTime[0] }}</td>
+              <td>{{ useTime[1] }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="moveInfo">
           <div>
-            <button class="mystoragebox-re" v-if="detailUseState==2" @click="moveBox(pickUseBox)">장비 이동</button>
-            <button class="mystoragebox-re" v-if="detailUseState==2" @click="repairBox(pickUseBox)">장비 수리</button>
-            <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
-            <button class="mystoragebox-re" v-if="detailUseState==2" @click="closeBox(pickUseBox)">해지</button>
-          </div>
-          <div>
-            <table>
-              <thead>
-              <tr>
-                <th>시작일</th>
-                <th>종료예정일</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>{{ useTime[0] }}</td>
-                <td>{{ useTime[1] }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div v-if="moveInfo">
-            <div>
-              <h6>이동정보</h6>
-              <hr>
-              <div>
-                <table>
-                  <thead>
-                  <tr>
-                    <th>이동 보관함</th>
-                    <th>상태</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-if="moveBoxInfo.useState == 3">
-                    <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
-                    <td>접수</td>
-                  </tr>
-                  <tr v-if="moveBoxInfo.useState == 4">
-                    <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                    <td>이동중</td>
-                  </tr>
-                  <tr v-if="moveBoxInfo.useState == 5">
-                    <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                    <td>도착</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h5>보관 캠핑장비</h5>
-            <div @click="addShow()">
-              보관된 장비를 추가하기
-              <h9 v-if="!addItemCheck">▼</h9>
-              <h9 v-else>▲</h9>
-            </div>
-            <div v-if="addItemCheck">
-              <div>
-                <table>
-                  <thead>
-                  <tr>
-                    <th colspan="2">장비</th>
-                    <th>수량</th>
-                    <th>선택</th>
-                  </tr>
-                  </thead>
-                  <tbody v-for="(item,index) in notInItem" :key="index">
-                  <tr>
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.memEquipmentName }}</td>
-                    <td>{{ item.memEquipmentCount }}</td>
-                    <td><input type="checkbox" :value="item.memEquipmentCode" v-model="addBoxInItem"></td>
-                  </tr>
-                  </tbody>
-                </table>
-                <button @click="addItem()">추가하기</button>
-              </div>
-            </div>
-          </div>
-          <div v-if="myItem.length > 0">
-            <h5>보관장비</h5>
+            <h6>이동정보</h6>
             <hr>
+            <div>
+              <table>
+                <thead>
+                <tr>
+                  <th>이동 보관함</th>
+                  <th>상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-if="moveBoxInfo.useState == 3">
+                  <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
+                  <td>접수</td>
+                </tr>
+                <tr v-if="moveBoxInfo.useState == 4">
+                  <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
+                  <td>이동중</td>
+                </tr>
+                <tr v-if="moveBoxInfo.useState == 5">
+                  <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
+                  <td>도착</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5>보관 캠핑장비</h5>
+          <div @click="addShow()">
+            보관된 장비를 추가하기
+            <h9 v-if="!addItemCheck">▼</h9>
+            <h9 v-else>▲</h9>
+          </div>
+          <div v-if="addItemCheck">
             <div>
               <table>
                 <thead>
                 <tr>
                   <th colspan="2">장비</th>
                   <th>수량</th>
-                  <th>선택
-                    <button @click="outItem()">빼내기</button>
-                  </th>
+                  <th>선택</th>
                 </tr>
                 </thead>
-                <tbody v-for="(item,index) in myItem" :key="index">
+                <tbody v-for="(item,index) in notInItem" :key="index">
                 <tr>
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.memEquipmentName }}</td>
                   <td>{{ item.memEquipmentCount }}</td>
-                  <td><input type="checkbox" :value="item.memEquipmentCode" v-model="outBoxItem"></td>
+                  <td><input type="checkbox" :value="item.memEquipmentCode" v-model="addBoxInItem"></td>
                 </tr>
                 </tbody>
               </table>
+              <button @click="addItem()">추가하기</button>
             </div>
           </div>
-          <div v-else>
-            <h5>보관장비</h5>
-            <hr>
-            <div>
-              <h5>보관중인 장비가 없습니다.</h5>
-            </div>
+        </div>
+        <div v-if="myItem.length > 0">
+          <h5>보관장비</h5>
+          <hr>
+          <div>
+            <table>
+              <thead>
+              <tr>
+                <th colspan="2">장비</th>
+                <th>수량</th>
+                <th>선택
+                  <button @click="outItem()">빼내기</button>
+                </th>
+              </tr>
+              </thead>
+              <tbody v-for="(item,index) in myItem" :key="index">
+              <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.memEquipmentName }}</td>
+                <td>{{ item.memEquipmentCount }}</td>
+                <td><input type="checkbox" :value="item.memEquipmentCode" v-model="outBoxItem"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div v-else>
+          <h5>보관장비</h5>
+          <hr>
+          <div>
+            <h5>보관중인 장비가 없습니다.</h5>
           </div>
         </div>
       </div>
@@ -311,9 +311,7 @@ export default {
       this.$router.push({
         name: 'repairBox',
         params: {
-          storageName: useBox.storageName,    // 보관소 이름
-          boxName: useBox.boxName,       // 보관함 이름
-          useBoxCode: useBox.useBoxCode  // 사용 보관함 코드
+          useBoxCode: useBox  // 사용 보관함 코드
         }
       })
     },
@@ -321,7 +319,7 @@ export default {
       this.$router.push({
         name: 'renewalBox',
         params: {
-          useBoxCode: useBox.useBoxCode  // 사용 보관함 코드
+          useBoxCode: useBox  // 사용 보관함 코드
         }
       })
     },

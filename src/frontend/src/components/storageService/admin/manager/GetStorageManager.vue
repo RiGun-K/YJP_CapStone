@@ -43,6 +43,7 @@
 
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
   name: "GetStorageManagerPage",
@@ -56,6 +57,10 @@ export default {
   },
   mounted() {
     this.GetStorageManager()
+    if (store.getters.getLoginState.stateCode != 5) {
+      this.$router.push('/')
+      alert('보관소 매니저만 확인이 가능합니다')
+    }
   },
   watch: {
     storagePick: function () {
@@ -72,12 +77,6 @@ export default {
             this.storageManagerList = res.data
             this.pickList = []
             for (let i = 0; i < this.storageManagerList.length; i++) {
-              // if(i==0){
-              //   this.pickList.push({
-              //     code: this.storageManagerList[i].storageCode.storageCode,
-              //     name: this.storageManagerList[i].storageCode.storageName
-              //   })
-              // }
               for (let j = 0; j < this.pickList.length; j++) {
                 if(this.storageManagerList[i].storageCode.storageCode != this.pickList[j].storageCode){
                   this.pickList.push({
