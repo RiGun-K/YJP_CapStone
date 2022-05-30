@@ -2,7 +2,7 @@
 
 <template>
 	<h1>아래 정보는 AI추천기능을 위해 사용됩니다</h1>
-	<h1>날짜 선택</h1>
+	<h1>날짜선택</h1>
 	<Datepicker
 		v-model="shareDate"
 		:enable-time-picker="false"
