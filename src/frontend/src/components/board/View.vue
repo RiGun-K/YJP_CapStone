@@ -12,7 +12,7 @@
           </colgroup>
           <tr>
             <th>글쓴이</th>
-            <td>{{List.mcode.mname}}</td>
+            <td>{{List.mid.mname}}</td>
           </tr>
           <tr>
             <th>제목</th>
@@ -50,15 +50,18 @@
 
     <div class="dap_ins" v-for="item in Comment" :key="item.id" :item="item">
       <form>
-        <div class="tbAdd">
+        <div class="tbAdd_a">
           <div class="tbAdd_1">
-          {{item.mcode.mname}} | {{item.savedTime}}
+          {{item.mid.mname}} | {{item.savedTime}}
           </div>
-
-
+            <div class="tbAdd_2">
+            <button @click="commentdelete(item)" class="btn" style="float: left;" v-if="ch">삭제</button>
+            </div>
             <th></th>
-            <textarea name="commenttext" v-model="item.content" class="reply_content" id="re_content" disabled />
 
+            <div class="tbAdd_3">
+          <textarea name="commenttext" v-model="item.content" class="reply_content" id="re_content" disabled />
+            </div>
         </div>
       </form>
       <br>
@@ -163,12 +166,12 @@ export default {
 
     addComments(){
       const data= {
-        MCODE: store.getters.getLoginState.loginState,
+        mid: store.getters.getLoginState.loginState,
         content: this.comment,
         parentBoard: this.id
       }
       console.log(data);
-      axios.post('/api/addComment/' + this.id, data)
+      axios.post('/api/addComment/', data)
       .then((res) => {
         console.log("성공" + res.data)
       })
@@ -180,33 +183,44 @@ export default {
       // })
     },
 
-    commentsList() {
-      axios.get('/api/commentsList' )
-          .then((res) => {
-            console.log(res.data);
-            this.listss = res.data;
-          })
-          .catch((ex) =>{
-            console.log("fail", ex)
-          })
+    commentdelete(item){
+      console.log(item.boardId);
+      if (confirm("삭제하시겠습니까?")) {
+        axios.delete('/api/commentdelete/'+ item.boardId)
+            .then((res) => {
+              console.log("삭제되었습니다.", res)
+              alert("댓글이 삭제되었습니다.")
+              this.$router.push({
+                path: '/infoter/infoterBoard'
+              })
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+      }
     }
-
   }
 }
 
 </script>
 
 <style scoped>
-.tbAdd{border-top:1px solid #888;}
-.tbAdd_1{margin-left: 10%; margin-top: 5%; font-size: 20px; font-weight: bolder}
+.tbAdd{
+  border-top:1px solid #888;
+}
+.tbAdd_a{
+  border:1px solid;
+  padding:1% 0 3%;
+  box-sizing: border-box;
+  width: 50%;
+
+}
+.tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
 /*.tbAdd td{padding:10px 10px; box-sizing:border-box; text-align:left;}*/
 /*.tbAdd td.txt_cont{height:300px; vertical-align:top;}*/
 .btnWrap{text-align:center; margin:20px 0 0 0;}
 .btnWrap a{margin:0 10px;}
-.btnAdd {background:#43b984}
-.btnDelete{background:#f00;}
-
 .btn {
   margin: 10px;
 }
@@ -232,7 +246,15 @@ export default {
 
 .reply_content{
   margin-left: 10%;
-  margin-top: -1%;
+  margin-top: 0%;
+}
+.tbAdd_2{
+  margin-left: 35%;
+  margin-top: -2%;
+}
+.tbAdd_3{
+  margin-top: 3%;
+  margin-left: -5%;
 }
 
 </style>
