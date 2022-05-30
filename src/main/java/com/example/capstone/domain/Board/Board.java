@@ -43,7 +43,7 @@ public class Board {
     @JoinColumn(name = "MID")
     private Member MID;
 
-    // 부모a
+    // 부모
     @ManyToOne
     @JoinColumn(name = "parentBoardId")
     @JsonManagedReference
@@ -68,6 +68,16 @@ public class Board {
         this.MID = MID;
     }
 
+    public Board(Long boardId, String title, String content, String origFilename, String filePath, String filename, String savedTime, Member MID) {
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.savedTime = savedTime;
+        this.MID = MID;
+    }
 
     public Board(String title, String content, String origFilename, String filePath, String filename,  String savedTime, Member MID) {
         this.title = title;

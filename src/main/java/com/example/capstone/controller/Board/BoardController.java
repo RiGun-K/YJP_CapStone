@@ -26,7 +26,6 @@ import java.util.Optional;
 public class BoardController {
 
 
-
     @Autowired
     private BoardRepository boardRepository;
     @Autowired
@@ -47,8 +46,7 @@ public class BoardController {
             if (!new File(savePath).exists()) {
                 try {
                     new File(savePath).mkdir();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.getStackTrace();
                 }
             }
@@ -63,14 +61,14 @@ public class BoardController {
             e.printStackTrace();
         }
 
-        if(boardDTO.getSavedTime()==null)
+        if (boardDTO.getSavedTime() == null)
             boardDTO.setSavedTime(LocalDate.now().toString());
 
         Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
         System.out.println(member.get());
 
 
-        Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
+        Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
         boardRepository.save(board);
         return board;
 
@@ -129,10 +127,10 @@ public class BoardController {
     }
 
 
-    /* 게시글 삭제*/
+    /* 게시글 삭제 */
     @DeleteMapping("/deleteList/{writer_code}")
     public String deleteList(@PathVariable("writer_code") Long writer_code) {
-        System.out.println("삭제할 게시글 번호는 : " +writer_code);
+        System.out.println("삭제할 게시글 번호는 : " + writer_code);
         Optional<Board> writer = boardRepository.findById(writer_code);
         boardRepository.delete(writer.get());
         return "게시글이 삭제되었습니다.";
@@ -140,17 +138,7 @@ public class BoardController {
 
     }
 
-    /* 게시글 수정*/
-//    @PutMapping("/update")
-//    public String updateList(@RequestBody BoardDTO boardDTO) {
-//        Optional<Board> updateMyList = boardRepository.findById(boardDTO.getParentBoard());
-//        updateMyList.get().setTitle(boardDTO.getTitle());
-//        updateMyList.get().setContent(boardDTO.getContent());
-//        boardRepository.save(updateMyList.get());
-//        return "게시글이 수정되었습니다.";
-//
-//    }
-
+    /* 게시글 수정 */
     @PutMapping("/update")
     public Board addWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, BoardDTO boardDTO, BindingResult result) throws IllegalStateException, IOException {
 
@@ -181,6 +169,18 @@ public class BoardController {
             e.printStackTrace();
         }
 
-        Optional<Board> updateMyList = boardRepository.findById(boardDTO.getParentBoard());
+
+        boardDTO.setSavedTime(LocalDate.now().toString());
+
+        Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
+        System.out.println(member.get());
+        Optional<Board> board = boardRepository.findById(boardDTO.getBoardId());
+        System.out.println(board.get());
+
+
+        Board board1 = new Board(boardDTO.getBoardId(), boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
+        boardRepository.save(board1);
+        return board1;
 
     }
+}

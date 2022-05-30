@@ -65,69 +65,26 @@ export default {
     }
   },
   created() {
-    this.writer_code = this.$route.query.writer_code;
+    this.id = this.$route.query.boardId;
     this.title = this.$route.query.title;
     this.content = this.$route.query.content;
     this.file = this.$route.query.filename;
+    console.log(this.id)
   },
 
 
   methods: {
-    // fetchData() {
-    //   console.log("받아온 값")
-    //   console.log(this.writer_code)
-    //   console.log(this.$route.query.title)
-    //   console.log(this.$route.query.content)
-    //   console.log(this.filename)
-    // },
-
-    // update() {
-    //   this.id = this.writer_code;
-    //   const data = {
-    //     // mid: store.getters.getLoginState.loginState,
-    //     writer_code: this.writer_code,
-    //     title: this.title,
-    //     content: this.content,
-    //
-    //   }
-    //   console.log(data);
-    //   if (confirm("수정하시겠습니까?")) {
-    //     axios.put('/api/update', data)
-    //         .then((res) => {
-    //           console.log("수정되었습니다.", res.data)
-    //           alert("수정되었습니다.")
-    //           this.$router.push({
-    //             path: '/Read'
-    //           })
-    //         })
-    //         .catch((error) => {
-    //           console.log(error)
-    //         })
-    //
-    //   }
-    // },
-
     update() {
-      this.id = this.writer_code;
-      console.log(this.id);
-        // const data = {
-        //   // mid: store.getters.getLoginState.loginState,
-        //   writer_code: this.writer_code,
-        //   title: this.title,
-        //   content: this.content
-        // }
       const formData = new FormData();
+
+      formData.append('boardId', this.id);
       formData.append('title', this.title);
       formData.append('content', this.content);
       formData.append('mid', store.getters.getLoginState.loginState);
       formData.append('file', this.file);
 
-      console.log(this.this.title);
-      console.log(this.this.this.content);
-
-
       if (confirm("수정하시겠습니까?")) {
-        axios.put('api/update', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        axios.put('/api/update', formData, {headers: {'Content-Type': 'multipart/form-data'}})
         .then((res) => {
           console.log("수정되었습니다.", res.data)
           alert("수정되었습니다.")
