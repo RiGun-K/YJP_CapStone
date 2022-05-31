@@ -88,4 +88,11 @@ public class Board {
         this.savedTime = savedTime;
         this.MID = MID;
     }
+
+    public Board(String content, String savedTime, Member MID, Board parentBoard) {
+        this.content = content;
+        this.savedTime = savedTime;
+        this.MID = MID;
+        this.parentBoard = parentBoard;
+    }
 }

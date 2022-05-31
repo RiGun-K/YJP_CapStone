@@ -33,11 +33,13 @@
   </div>
 
   <div id="foot_box"></div>
-
-  <div class="btnWrap">
+  <div class="btnWrap_1">
     <button @click="list" class="btn" style="float: left;">목록</button>
-
+  </div>
+  <div class="btnWrap_2">
     <button @click="updateData(List)" class="btn" style="float: left;" v-if="ch">수정</button>
+  </div>
+  <div class="btnWrap_3">
     <button @click="deleteData" class="btn" style="float: left;" v-if="ch">삭제</button>
   </div>
 
@@ -217,15 +219,68 @@ export default {
 }
 .tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
-/*.tbAdd td{padding:10px 10px; box-sizing:border-box; text-align:left;}*/
-/*.tbAdd td.txt_cont{height:300px; vertical-align:top;}*/
-.btnWrap{text-align:center; margin:20px 0 0 0;}
-.btnWrap a{margin:0 10px;}
+.btnWrap_1{text-align:center;
+  margin-left: 60%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.btnWrap_1 a{margin:0 10px;}
+.btnWrap_1:hover {background-color: #f7bafa}
+.btnWrap_1:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.btnWrap_2{text-align:center;
+  margin-left: 65%;
+margin-top: 0%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.btnWrap_2 a{margin:0 10px;}
+.btnWrap_2:hover {background-color: #f7bafa}
+.btnWrap_2:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.btnWrap_3{text-align:center;
+  margin-left: 70%;
+  margin-top: 0%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.btnWrap_3 a{margin:0 10px;}
+.btnWrap_3:hover {background-color: #f7bafa}
+.btnWrap_3:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 .btn {
-  margin: 10px;
+  font-size: 16px;
+  font-weight: bolder;
+  text-align: center;
+  margin-left: 1px;
+  margin-top: 2px;
 }
 .dap_ins {
   margin-top:50px;
+
+
 }
 .re_bt {
   position: absolute;
@@ -233,6 +288,20 @@ export default {
   height:56px;
   font-size:16px;
   margin-left: 10px;
+  text-align:center;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+}
+.re_bt:hover {background-color: #e891ec
+}
+.re_bt:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 #re_content {
@@ -249,8 +318,23 @@ export default {
   margin-top: 0%;
 }
 .tbAdd_2{
-  margin-left: 35%;
+  margin-left: 80%;
   margin-top: -2%;
+  background-color: #58a8e5;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  width: 8%;
+  border-radius: 7px;
+}
+.tbAdd_2:hover {background-color: #f7bafa
+}
+.tbAdd_2:active {
+  background-color: #c27dea;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 .tbAdd_3{
   margin-top: 3%;
