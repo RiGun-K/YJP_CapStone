@@ -1,20 +1,19 @@
 <template>
   <div class="allBody">
     <div v-if="get">
-      <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
       <GetStorage></GetStorage>
+      <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
     </div>
     <div v-if="input">
-      <button @click="getStorage" class="storage-back-btn">뒤로가기</button>
       <InputStorage></InputStorage>
     </div>
-
   </div>
 </template>
 
 <script>
 import InputStorage from '@/components/storageService/admin/storage/InputStorage.vue'
 import GetStorage from "@/components/storageService/admin/storage/GetStorage";
+import store from "@/store";
 
 export default {
 
@@ -24,6 +23,10 @@ export default {
     GetStorage
   },
   mounted() {
+    if (store.getters.getLoginState.stateCode != 5) {
+      this.$router.push('/')
+      alert('보관소 매니저만 확인이 가능합니다')
+    }
   },
   data() {
     return {
@@ -48,11 +51,10 @@ export default {
 <style scoped>
 
 .allBody{
-  width: 84%;
-  margin-left: 8%;
-  margin-right: 8%;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
   margin-top: 1%;
-  align-content: center;
 }
 
 .storage-back-btn{

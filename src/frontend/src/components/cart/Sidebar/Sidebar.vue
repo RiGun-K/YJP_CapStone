@@ -70,7 +70,7 @@ export default {
   height: 100%;
   left: 0;
   bottom: 0;
-  padding-bottom: 50%;
+  padding-bottom: 100%;
   margin-right: 3%;
   transition: 0.3s ease;
   display: flex;

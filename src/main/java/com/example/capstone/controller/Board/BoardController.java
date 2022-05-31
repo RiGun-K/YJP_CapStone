@@ -1,3 +1,4 @@
+
 package com.example.capstone.controller.Board;
 
 import com.example.capstone.domain.Board.Board;
@@ -48,6 +49,7 @@ public class BoardController {
             if (!new File(savePath).exists()) {
                 try {
                     new File(savePath).mkdir();
+
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -68,7 +70,6 @@ public class BoardController {
 
         Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
         System.out.println(member.get());
-
 
         Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
         boardRepository.save(board);
@@ -144,6 +145,7 @@ public class BoardController {
 
 
     }
+}
 
     /* 게시글 수정 */
     @PutMapping("/update")
@@ -200,3 +202,4 @@ public class BoardController {
         boardRepository.save(board.get());
     }
 }
+

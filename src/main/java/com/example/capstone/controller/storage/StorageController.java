@@ -2,7 +2,6 @@ package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.CampingArea;
-import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.*;
 import com.example.capstone.dto.storage.*;
@@ -15,9 +14,10 @@ import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -71,7 +71,7 @@ public class StorageController {
                 storageBoxSmall.setStorageBoxPrice(33000);
                 storageBoxSmall.setStorageBoxName("S" + (i + 1));
                 storageBoxSmall.setStorageBoxType("S");
-                storageBoxSmall.setStorageBoxState("1");
+                storageBoxSmall.setStorageBoxState("x");
                 storageBoxRepository.save(storageBoxSmall);
             }
             for (int i = 0; i < box.getMedium(); i++) {
@@ -80,7 +80,7 @@ public class StorageController {
                 storageBoxMedium.setStorageBoxPrice(45000);
                 storageBoxMedium.setStorageBoxName("M" + (i + 1));
                 storageBoxMedium.setStorageBoxType("M");
-                storageBoxMedium.setStorageBoxState("1");
+                storageBoxMedium.setStorageBoxState("x");
                 storageBoxRepository.save(storageBoxMedium);
             }
             for (int i = 0; i < box.getLarge(); i++) {
@@ -89,7 +89,7 @@ public class StorageController {
                 storageBoxLarge.setStorageBoxPrice(60000);
                 storageBoxLarge.setStorageBoxName("L" + (i + 1));
                 storageBoxLarge.setStorageBoxType("L");
-                storageBoxLarge.setStorageBoxState("1");
+                storageBoxLarge.setStorageBoxState("x");
                 storageBoxRepository.save(storageBoxLarge);
             }
 
@@ -129,6 +129,9 @@ public class StorageController {
 
             } else {
                 // 가능
+                if(member.get().getMSC() != "5"){
+                    return new Result("no");
+                }
                 return new Result("ok");
             }
         } catch (NoSuchElementException n) {
@@ -144,7 +147,14 @@ public class StorageController {
         return storageList;
     }
 
-//    보관함코드로 보관함 정보 찾기
+//    보관함 코드로 보관소이름 보관함이름 조죄
+    @GetMapping("getNamesToBoxCode/{boxCode}")
+    public Object[] getNamesToBoxCode(@PathVariable(value = "boxCode")long boxCode){
+        Object[] storage = storageBoxRepository.findByNamesToBoxCode(boxCode);
+        return storage;
+    }
+
+//    보관함코드로 보관소 정보 찾기
     @GetMapping("/getStorageToBox/{boxCode}")
     public Storage getStorageToBox(@PathVariable(value = "boxCode")long boxCode){
         Optional<Storage> storage = storageRepository.findByStorageBoxCode(boxCode);
@@ -222,10 +232,10 @@ public class StorageController {
     //보관함 연장 결제
     @PostMapping("/renewalPay")
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
-        Optional<Member> user = memberRepository.findByMID(renewalBox.getUserId());
-        Optional<Storage> storage = storageRepository.findByStorageName(renewalBox.getStorageName());
-        Optional<StorageBox> storageBox = storageBoxRepository.findByStorageCodeAndStorageBoxName(storage.get().getStorageCode(), renewalBox.getBoxName());
         Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
+        Optional<Member> user = memberRepository.findByMCode(beforeUseStorageBox.get().getMCode().getMCode());
+        Optional<StorageBox> storageBox = storageBoxRepository.findById(beforeUseStorageBox.get().getStorageBoxCode().getStorageBoxCode());
+
         List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
         for (int i = 0; i < memberEquipmentList.size(); i++) {
             memberEquipmentList.get(i).setUseStorageBoxCode(null);
@@ -234,12 +244,19 @@ public class StorageController {
         LocalDate end = renewalBox.getEndTime();
 
         Orders orderList = new Orders(user.get());
+        orderList.setOrderPrice(renewalBox.getPrice());
+        orderList.setPaymentDate(LocalDateTime.now());
         ordersRepository.save(orderList);
 
         beforeUseStorageBox.get().setUseStorageState("1");
         useStorageBoxRepository.save(beforeUseStorageBox.get());
 
-        UseStorageBox useStorageBox = new UseStorageBox(start, end, storageBox.get(), orderList, user.get());
+        UseStorageBox useStorageBox = new UseStorageBox();
+        useStorageBox.setStorageBoxCode(storageBox.get());
+        useStorageBox.setOrderCode(orderList);
+        useStorageBox.setUseStorageStartTime(start);
+        useStorageBox.setUseStorageEndTime(end);
+        useStorageBox.setMCode(user.get());
         useStorageBox.setUseStorageState("2");
         for (int i = 0; i < memberEquipmentList.size(); i++) {
             memberEquipmentList.get(i).setUseStorageBoxCode(useStorageBox);
@@ -500,6 +517,46 @@ public class StorageController {
 
     }
 
+//    사용중인 보관함 시간 조회
+    @GetMapping("findUseBoxTimes/{stCode}/{boxCode}/{mid}")
+    public LocalDateTime[][] findUseBoxTimes(@PathVariable(value = "stCode")long stCode,
+                                               @PathVariable(value = "boxCode")long boxCode,
+                                               @PathVariable(value = "mid")String mid) throws ParseException {
+        Optional<Member> member = memberRepository.findByMID(mid);
+
+        List<List<String>> useStorageBoxList = useStorageBoxRepository.findByUseTimes(stCode,boxCode, member.get().getMCode());
+
+        int x = useStorageBoxList.size();
+        int y = 0;
+        for (int i = 0; i < useStorageBoxList.size(); i++) {
+            for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
+                if (i == 0){
+                    y = useStorageBoxList.get(i).size();
+                }
+                if (i>0 && useStorageBoxList.get(i).size() > useStorageBoxList.get(i-1).size()){
+                    y = useStorageBoxList.get(i).size();
+                }
+            }
+        }
+
+        LocalDateTime[][] array = new LocalDateTime[x][y];
+        for (int i = 0; i < useStorageBoxList.size(); i++) {
+            for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.s");
+                LocalDateTime dateTime = LocalDateTime.parse(useStorageBoxList.get(i).get(j), formatter);
+                array[i][j] = dateTime;
+            }
+        }
+        return array;
+    }
+
+//    보관함 사용 연장을 위한 시간조회
+    @GetMapping("useTime/{useCode}")
+    public UseStorageBox getUseT(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
+        return useStorageBox.get();
+    }
+
     // 보관함 가격 조회
     @GetMapping("boxPrice/{boxCode}")
     private int getBoxPrice(@PathVariable(value = "boxCode")long box){
@@ -572,11 +629,11 @@ public class StorageController {
             memberEquipmentRepository.save(memberEquipmentList.get(i));
         }
 
-        LocalDateTime nowTime = LocalDateTime.now();
+        LocalDate nowTime = LocalDate.now();
 
         UseStorageBox before = beforeUSBox.get();
         before.setUseStorageState("1");
-        before.setUseStorageEndTime(nowTime.toLocalDate());
+        before.setUseStorageEndTime(nowTime);
         afterUSBox.get().setUseStorageState("5" + beforeUSBox.get().getUseStorageBoxCode());
 
         StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();

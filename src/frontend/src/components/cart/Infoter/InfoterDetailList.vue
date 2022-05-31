@@ -121,27 +121,27 @@
             <br>
             <p>예약기간 설정</p>
             <div class="reservation">
-              <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
-                          locale="ko-KR"
-                          :min-date="today"
-                          :max-date="end"
-                          type="date"
-                          range
-                          format="yyyy/MM/dd"
-                          value-format="yyyyMMdd"
-                          :enableTimePicker="false"
-                          autoApply
-                          v-on="toString()"
-                          :closeOnAutoApply="false"
-                          placeholder="예약 날짜를 선택해주세요."
-                          v-model="reservationDate"
-                          @click="DayList(room.orderMenus)"
-                          :disabledDates="disabledDates"/>
+            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+                        locale="ko-KR"
+                        :min-date="today"
+                        :max-date="end"
+                        type="date"
+                        range
+                        format="yyyy/MM/dd"
+                        value-format="yyyyMMdd"
+                        :enableTimePicker="false"
+                        autoApply
+                        v-on="toString()"
+                        :closeOnAutoApply="false"
+                        placeholder="예약 날짜를 선택해주세요."
+                        v-model="reservationDate"
+                        @click="DayList(room.orderMenus)"
+                        :disabledDates="disabledDates"/>
             </div>
-            <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
-          </div>
+          <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
         </div>
       </div>
+    </div>
     </div>
 
     <br>
@@ -190,37 +190,37 @@
 
             <div class="my-box-3">
             </div>
-            <div class="image_1">
+          <div class="image_1">
             <p class="review-image">이미지</p>
             <img :src="'/api/product_detail_images/' + reviews.filename" />
-            </div>
-              <div class="btn_area_2">
-                <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
-                  <span>삭제</span>
-                </button>
-              </div>
-
-              <div class="btn_area_2">
-                <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
-                  <span>수정</span>
-                </button>
-              </div>
-
-            </div>
-
-
-
           </div>
-
-          <br>
-          <div class="btn_area_1">
-            <button type="button" @click="detail_5" class="btn_Bottom_1">
-              <span>리뷰 작성</span>
+          <div class="btn_area_2">
+            <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
+              <span>삭제</span>
             </button>
           </div>
-          <br>
+
+          <div class="btn_area_2">
+            <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
+              <span>수정</span>
+            </button>
+          </div>
+
         </div>
+
+
+
       </div>
+
+      <br>
+      <div class="btn_area_1">
+        <button type="button" @click="detail_5" class="btn_Bottom_1">
+          <span>리뷰 작성</span>
+        </button>
+      </div>
+      <br>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -242,6 +242,7 @@ export default {
       id: '',
       content: [],
       roomContent: [],
+      campingImages: [],
       image: require('@/assets/camp1.jpg'),
       // file: this.content.origFilename
       images: '',
@@ -303,7 +304,9 @@ export default {
             console.log(res.data);
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
+            this.campingImages = this.content.images;
             console.log(this.roomContent);
+            console.log(this.campingImages);
           })
           .catch(e => {
             console.log(e);
@@ -405,26 +408,6 @@ export default {
             console.log("fail", ex)
           })
     },
-
-    detail_4() {
-      this.areaCheckA = true;
-    },
-    
-    toString() {
-      const start = dayjs(this.reservationDate[0]);
-      this.startDate = start.format('YYYYMMDD');
-      const end = dayjs(this.reservationDate[1]);
-      this.endDate = end.format('YYYYMMDD');
-    },
-
-    detail_5() {
-      this.$router.push({
-        path: '/infoter/infoterBoard',
-        query: {
-          campingId: this.id
-        }
-      })
-    },
     fetchData() {
       console.log(this.id)
       axios.get('/api/CampingBoardlist/' + this.id)
@@ -441,7 +424,6 @@ export default {
     delete_1(reviews) {
       console.log("삭제하실 리뷰번호는" + reviews.boardCampingCode)
       const boardCampingCode = reviews.boardCampingCode;
-
       if (confirm("삭제하시겠습니까?")) {
         axios.delete('/api/CampingBoardDelete/' + boardCampingCode)
             .then((res) => {
@@ -456,7 +438,6 @@ export default {
             })
       }
     },
-
     update_1(reviews) {
       console.log(reviews.campingId.campingId);
       console.log(reviews.boardCampingCode);
@@ -472,7 +453,36 @@ export default {
           recommend: reviews.recommend
         }
       })
+    },
+    addPush(reviews) {
+      console.log(reviews.boardCampingCode)
+      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
+          .then((res) => {
+            alert("추천수가 증가되었습니다.")
+            console.log("추천수가 증가되었습니다.")
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    
+    toString() {
+      const start = dayjs(this.reservationDate[0]);
+      this.startDate = start.format('YYYYMMDD');
+      const end = dayjs(this.reservationDate[1]);
+      this.endDate = end.format('YYYYMMDD');
+    },
 
+    detail_4() {
+      this.areaCheckA = true;
+    },
+    detail_5() {
+      this.$router.push({
+        path: '/infoter/infoterBoard',
+        query: {
+          campingId: this.id
+        }
+      })
     },
 
     addPush(reviews) {

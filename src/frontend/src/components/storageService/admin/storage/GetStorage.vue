@@ -12,7 +12,7 @@
       </select>
       <label for="storageName" style="margin-left: 10px">보관소이름</label>
       <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
-      style="margin-left: 10px">
+      style="margin-left: 10px; display: inline; width: 150px">
       <button @click="storageSearch()" style="margin-left: 10px">검색</button>
     </div>
     <div class="bottomDiv">
@@ -164,7 +164,8 @@ export default {
 
 <style scoped>
 .searchDiv{
-  margin-top: 1%;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 .bottomDiv{
   margin-top: 1%;
@@ -173,8 +174,6 @@ export default {
   width: 70%;
 }
 .renewal-box h3{
-  margin-top: 3%;
-  margin-left: 7%;
-  margin-bottom: 3%;
+  width: 100%;
 }
 </style>

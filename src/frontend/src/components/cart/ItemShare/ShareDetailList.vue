@@ -4,7 +4,7 @@
     <input type="radio" name="radio-btn" id="img-1" checked />
     <li class="slide-container">
       <div class="slide">
-        <img :src="'/api/product_detail_images/' + images[0].filename"/>
+        <img :src="'/api/product_detail_images/' + content.filename"/>
       </div>
       <div class="nav">
         <label for="img-6" class="prev">&#x2039;</label>
@@ -15,7 +15,7 @@
     <input type="radio" name="radio-btn" id="img-2" />
     <li class="slide-container">
       <div class="slide">
-        <img :src="'/api/product_detail_images/' + images[1].filename"/>
+        <img :src="'/api/product_detail_images/' + content.filename"/>
       </div>
       <div class="nav">
         <label for="img-1" class="prev">&#x2039;</label>
@@ -77,18 +77,34 @@
     </li>
   </ul>
 
-      <div class="mt-4">
+  <div class="listBody">
     <b-card-text>
       <div class="content-detail-list">
-        <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
         <div class="card" style="width: 18rem;">
           <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
-            <p class="card-text">가격: {{ this.content.buyPrice }}</p>
-            <p class="card-text">설명: {{ this.content.buyEx }}</p>
-            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
-            <a href="#" class="btn btn-primary" @click="buyData">구매</a>
+            <h5 class="card-title">상품명: {{ this.content.rentalName }}</h5>
+            <p class="card-text">가격: 1일 당 {{ this.content.rentalPrice }}</p>
+            <p class="card-text">설명: {{ this.content.rentalEx }}</p>
+            <br>
+            <h3>대여기간 설정</h3>
+            <div class="reservation">
+              <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+                          locale="ko-KR"
+                          :min-date="today"
+                          :max-date="end"
+                          type="date"
+                          range
+                          format="yyyy/MM/dd"
+                          value-format="yyyyMMdd"
+                          :enableTimePicker="false"
+                          autoApply
+                          v-on="toString()"
+                          :closeOnAutoApply="false"
+                          placeholder="대여하실 기간을 선택해주세요."
+                          v-model="reservationDate"
+                          :disabledDates="disabledDates"/>
+            </div>
           </div>
         </div>
       </div>
@@ -98,18 +114,13 @@
       </div>
     </b-card-text>
   </div>
-  <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-  <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-  <!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
-
 </template>
 
 <script>
 import axios from "axios";
+import dayjs from "dayjs";
 export default {
-  name: "BuyDetailList",
+  name: "ShareDetailList",
   created() {
     this.DataList();
   },
@@ -118,18 +129,31 @@ export default {
       id: '',
       content: [],
       images: [],
-      image: require('@/assets/camp1.jpg'),
-      // file: this.content.origFilename
 
       count: 1,
-      buyMenuCheckPut: false
+      buyMenuCheckPut: false,
+
+      disabledDates: [],
+      reservationDate: [],
+      startDate: new Date(),
+      endDate: new Date(),
+      period: '',
+    }
+  },
+  setup() {
+    const today = new Date()
+    const todayEnd = new Date()
+    const end = new Date(todayEnd.setDate(todayEnd.getDate() + 200))
+    return {
+      today,
+      end
     }
   },
   methods: {
     DataList() {
-      this.id = this.$route.params.buyId;
+      this.id = this.$route.params.rentalId;
       console.log(this.id);
-      axios.get('http://localhost:9002/api/product_detailB/' + this.id)
+      axios.get('http://localhost:9002/api/product_detailRR/' + this.id)
           .then(res => {
             console.log(res.data);
             this.content = res.data;
@@ -148,12 +172,23 @@ export default {
           })
     },
     buyData() {
-      this.$router.push({
-        path: `/itemBuy/buyNow/${this.content.buyId}`,
-        query: {
-          count: this.count
-        }
-      })
+      console.log(this.startDate)
+      console.log(this.endDate)
+      const period = this.endDate - this.startDate
+      console.log("대여 기간은 " + period + " 일 입니다.")
+      if (this.startDate == this.endDate) {
+        alert('대여 날짜를 선택해주세요.')
+      } else {
+        this.$router.push({
+          path: `/itemShare/shareNow/${this.content.rentalId}`,
+          query: {
+            count: this.count,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            period: period
+          }
+        })
+      }
     },
     putData() {
       this.axios.post('http://localhost:9002/api/buyCartPut', {
@@ -179,31 +214,19 @@ export default {
         console.log(err)
       })
     },
-    putCart() {
+
+    toString() {
+      const start = dayjs(this.reservationDate[0]);
+      this.startDate = start.format('YYYYMMDD');
+      const end = dayjs(this.reservationDate[1]);
+      this.endDate = end.format('YYYYMMDD');
     },
-    subCount() {
-      if (this.count === 1) {
-        alert('더 이상 뺄 수 없습니다.')
-      } else {
-        this.count--
-      }
-    },
-    addCount(){
-      if(this.count === this.content.buyStock){
-        alert('더 이상 올릴 수 없습니다. (재고부족)')
-      }else{
-        this.count++
-      }
-    }
+
   }
 }
 </script>
 
 <style scoped>
-.slide img {
-  width: 10%;
-  height: 10%;
-}
 .mt-4 {
   text-align: center;
 }
@@ -277,6 +300,22 @@ input:checked + .slide-container .nav label { display: block; }
   display: inline-block;
   background-color: rgba(0, 0, 0, 0.6);
 }
+.listBody{
+  padding: 0.5%;
+  margin-left: 30%;
+  margin-top: 1%;
+  margin-right: 1%;
+  width: 45%;
+}
+.card-body img {
+  transition: all 0.2s linear;
+}
+.card-body:hover img {
+  transform: scale(1.5);
+}
+.card {
+  text-align: center;
+}
 .nav-dots .nav-dot:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.8);
@@ -292,8 +331,8 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 
 .content-detail-list {
   padding: 0.5%;
-  margin-left: 45%;
-  margin-top: 1%;
+  margin-left: 33%;
+  margin-top: 5%;
   margin-right: 1%;
   width: 45%;
 }
@@ -315,5 +354,9 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-size: 0.5em;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+.reservation {
+  width: 538%;
+  margin-left: -31px;
 }
 </style>

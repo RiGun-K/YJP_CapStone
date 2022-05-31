@@ -36,7 +36,6 @@ public class CampingBoardController {
     @Autowired
     CampingRepository campingRepository;
 
-
     @PostMapping("/CampingBoard")
     public BoardCamping addWriter(@RequestParam(value = "file", required = false) MultipartFile uploadFile, CampingBoardDTO campingBoardDTO) throws IllegalStateException, IOException {
 
@@ -154,7 +153,8 @@ public class CampingBoardController {
 
     }
 
-        @DeleteMapping("/CampingBoardDelete/{boardCampingCode}")
+
+    @DeleteMapping("/CampingBoardDelete/{boardCampingCode}")
     public String boarddeleteList(@PathVariable("boardCampingCode") Long boardCampingCode) {
         System.out.println("삭제할 리뷰 번호는 : " +boardCampingCode);
         boardCampingRepository.deleteById(boardCampingCode);
@@ -169,6 +169,5 @@ public class CampingBoardController {
         boardCamping.get().setRecommend(boardCamping.get().getRecommend()+1);
         boardCampingRepository.save(boardCamping.get());
     }
-
 }
 
