@@ -91,8 +91,12 @@ export default createStore({
 			state.CampingIdOfRooms = CampingIdOfRooms;
 		},
 		moveBoxInfo(state, box){
+			console.log(box)
 			state.moveBoxInfo = box;
-		}
+		},
+		clearMoveBoxInfo(state){
+			state.moveBoxInfo = {};
+		},
 	},
 	actions: {},
 

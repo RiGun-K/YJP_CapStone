@@ -52,4 +52,5 @@ public class MemberPreference {
     public void setKind(Kind kind) {
         this.kind = kind;
     }
+
 }

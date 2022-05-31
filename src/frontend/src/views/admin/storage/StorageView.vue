@@ -15,6 +15,7 @@
 <script>
 import InputStorage from '@/components/storageService/admin/storage/InputStorage.vue'
 import GetStorage from "@/components/storageService/admin/storage/GetStorage";
+import store from "@/store";
 
 export default {
 
@@ -24,6 +25,10 @@ export default {
     GetStorage
   },
   mounted() {
+    if (store.getters.getLoginState.stateCode != 5) {
+      this.$router.push('/')
+      alert('보관소 매니저만 확인이 가능합니다')
+    }
   },
   data() {
     return {

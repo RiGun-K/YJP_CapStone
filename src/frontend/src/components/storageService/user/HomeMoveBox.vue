@@ -5,17 +5,17 @@
       <table>
         <thead>
         <tr>
-          <th colspan="2">사용중인보관함</th>
+          <th>사용중인보관함</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           <td>보관소</td>
-          <td>{{form.storageName}}</td>
+          <td>{{moveBoxInfo.storageName}}</td>
         </tr>
         <tr>
           <td>보관함</td>
-          <td>{{ form.boxName }}</td>
+          <td>{{ moveBoxInfo.boxName }}</td>
         </tr>
         </tbody>
       </table>
@@ -29,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item,index) in myItemList">
+        <tr v-for="(item,index) in myItem">
           <td>{{ index + 1 }}</td>
           <td>{{ item.memEquipmentName }}</td>
           <td>{{ item.memEquipmentCount }}</td>
@@ -76,38 +76,53 @@
 </template>
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
   name: "HomeMoveBox",
   props:{
-    form:{}
+    useBoxCode:''
   },
   data(){
     return{
-      myItemList: [],
+      myItem: {},
       boxName: '',
       storageName:'',
       zipCode:'',
       address:'',
       member:{},
+      moveBoxInfo:{},
     }
   },
   mounted() {
     this.getItem()
     this.getAddress()
+    this.getUseBoxInfo()
   },
   methods:{
-    getItem(){
-      axios.get('/api/getBoxInItem/' + this.form.useBoxCode)
+    getUseBoxInfo(){
+      axios.get('/api/moveBoxInfo/' + this.useBoxCode)
           .then(res => {
-            this.myItemList = res.data
+            this.moveBoxInfo.storageCode = res.data[0][0]
+            this.moveBoxInfo.storageName = res.data[0][1]
+            this.moveBoxInfo.boxCode = res.data[0][2]
+            this.moveBoxInfo.boxName = res.data[0][3]
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getItem(){
+      axios.get('/api/getBoxInItem/' + this.useBoxCode)
+          .then(res => {
+            this.myItem = res.data
           })
           .catch(err => {
             console.log(err)
           })
     },
     getAddress(){
-      axios.get('/api/myAddress/' + this.form.userId)
+      axios.get('/api/myAddress/' + store.getters.getLoginState.loginState)
           .then(res => {
             this.member = res.data
           })

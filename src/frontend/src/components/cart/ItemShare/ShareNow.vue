@@ -6,15 +6,15 @@
     <table>
       <tr>
         <td class="share-now-td">이름</td>
-        <td>땡땡땡</td>
+        <td>{{ user.mname }}</td>
       </tr>
       <tr>
         <td class="share-now-td">이메일</td>
-        <td>Tang@naver.com</td>
+        <td>{{ user.mmail }}</td>
       </tr>
       <tr>
         <td class="share-now-td">휴대폰 번호</td>
-        <td>01012345678</td>
+        <td>{{ user.mph }}</td>
       </tr>
     </table>
 
@@ -46,11 +46,11 @@
     <table>
       <tr>
         <td class="share-now-td">상품 이름</td>
-        <td>땡땡땡땡땡상품</td>
+        <td>{{ content.rentalName }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">상품 금액</td>
-        <td>200000</td>
+        <td class="share-now-td">상품 1일당 금액</td>
+        <td>{{ content.rentalPrice }}</td>
       </tr>
       <tr>
         <td class="share-now-td">배송비</td>
@@ -62,7 +62,7 @@
       </tr>
       <tr>
         <td class="share-now-td">대여일</td>
-        <td><Datepicker v-model="shareDate" :enable-time-picker="false" :min-date="today" range placeholder="Select share date range"></Datepicker></td>
+        <td>{{ this.$route.query.startDate }} ~ {{ this.$route.query.endDate }} ♡ 총 기간 {{ this.$route.query.period }} 일</td>
       </tr>
     </table>
 
@@ -70,7 +70,7 @@
     <table>
       <tr>
         <td class="share-now-td">총 대여상품 금액</td>
-        <td>200000</td>
+        <td>{{ content.rentalPrice * this.$route.query.period }}</td>
       </tr>
       <tr>
         <td class="share-now-td">배송비</td>
@@ -95,6 +95,8 @@
 <script>
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import store from "@/store";
+import axios from "axios";
 
 export default {
   name: 'ShareNow',
@@ -106,15 +108,50 @@ export default {
       addr2: '',
       price: 1000,
       value: '',
-      shareDate: null,
-      today: new Date()
+
+      content: [],
+      user: [],
     }
+  },
+  created() {
+    this.DataList();
+    console.log("대여 시작기간")
+    console.log(this.$route.query.startDate)
+    console.log("대여 종료기간")
+    console.log(this.$route.query.endDate)
+    console.log("대여 총 기간")
+    console.log(this.$route.query.period)
   },
   mounted () {
     const IMP = window.IMP
     IMP.init('imp35975601')
   },
   methods: {
+    DataList() {
+      this.rentalId = this.$route.params.rentalId;
+      this.user = store.getters.getLoginState.mcode;
+      console.log(this.rentalId);
+      console.log(this.user);
+      axios.get('http://localhost:9002/api/product_detailRR/' + this.rentalId)
+          .then(res => {
+            console.log(res.data);
+            this.content = res.data;
+            //
+          })
+          .catch(e => {
+            console.log(e);
+          })
+      //
+      axios.get('http://localhost:9002/api/product_detailU/' + this.user)
+          .then(res => {
+            console.log(res.data);
+            this.user = res.data;
+            //
+          })
+          .catch(e => {
+            console.log(e);
+          })
+    },
     showApi () {
       new window.daum.Postcode({
         oncomplete: (data) => {

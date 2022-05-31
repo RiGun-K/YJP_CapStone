@@ -29,39 +29,71 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div v-if="modal">
+  <div v-if="modal">
+    <div>
+      <button @click="close()">X</button>
       <div>
-        <button @click="close()">X</button>
         <div>
+          <button class="mystoragebox-re" v-if="detailUseState==2" @click="moveBox(pickUseBox)">장비 이동</button>
+          <button class="mystoragebox-re" v-if="detailUseState==2" @click="repairBox(pickUseBox)">장비 수리</button>
+          <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
+          <button class="mystoragebox-re" v-if="detailUseState==2" @click="closeBox(pickUseBox)">해지</button>
+        </div>
+        <div>
+          <table>
+            <thead>
+            <tr>
+              <th>시작일</th>
+              <th>종료예정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{ useTime[0] }}</td>
+              <td>{{ useTime[1] }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="moveInfo">
           <div>
-            <button class="mystoragebox-re" v-if="detailUseState==2" @click="moveBox(pickUseBox)">장비 이동</button>
-            <button class="mystoragebox-re" v-if="detailUseState==2" @click="repairBox(pickUseBox)">장비 수리</button>
-            <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
-            <button class="mystoragebox-re" v-if="detailUseState==2" @click="closeBox(pickUseBox)">해지</button>
+            <h6>이동정보</h6>
+            <hr>
+            <div>
+              <table>
+                <thead>
+                <tr>
+                  <th>이동 보관함</th>
+                  <th>상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-if="moveBoxInfo.useState == 3">
+                  <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
+                  <td>접수</td>
+                </tr>
+                <tr v-if="moveBoxInfo.useState == 4">
+                  <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
+                  <td>이동중</td>
+                </tr>
+                <tr v-if="moveBoxInfo.useState == 5">
+                  <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
+                  <td>도착</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div>
-            <table>
-              <thead>
-              <tr>
-                <th>시작일</th>
-                <th>종료예정일</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>{{useTime[0]}}</td>
-                <td>{{useTime[1]}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+        </div>
+        <div>
           <h5>보관 캠핑장비</h5>
-          보관된 장비를 추가하기
-          <button @click="addShow()">
-            <h9 v-if="!addItemCheck">보기</h9>
-            <h9 v-else>숨기기</h9>
-          </button>
+          <div @click="addShow()">
+            보관된 장비를 추가하기
+            <h9 v-if="!addItemCheck">▼</h9>
+            <h9 v-else>▲</h9>
+          </div>
           <div v-if="addItemCheck">
             <div>
               <table>
@@ -84,9 +116,11 @@
               <button @click="addItem()">추가하기</button>
             </div>
           </div>
-          <div v-if="myItem.length > 0">
-            <h5>보관장비</h5>
-            <hr>
+        </div>
+        <div v-if="myItem.length > 0">
+          <h5>보관장비</h5>
+          <hr>
+          <div>
             <table>
               <thead>
               <tr>
@@ -107,9 +141,11 @@
               </tbody>
             </table>
           </div>
-          <div v-else>
-            <h5>보관장비</h5>
-            <hr>
+        </div>
+        <div v-else>
+          <h5>보관장비</h5>
+          <hr>
+          <div>
             <h5>보관중인 장비가 없습니다.</h5>
           </div>
         </div>
@@ -136,9 +172,12 @@ export default {
       addItemCheck: false,
       pickUseBox: '',
       outBoxItem: [],
-      detailUseState:'',
-      useTimeList:[],
-      useTime:[],
+      detailUseState: '',
+      useTimeList: [],
+      useTime: [],
+      useStorageTime: [],
+      moveBoxInfo: {},
+      moveInfo: false,
     }
   },
   mounted() {
@@ -165,16 +204,19 @@ export default {
                 box.boxState = boxes[i][4]
                 box.useCode = boxes[i][5]
                 box.useState = boxes[i][6].charAt(0)
+                if (boxes[i][6].length > 1) {
+                  box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
+
+                }
                 this.useBoxes.push(box)
               }
-              console.log('this.useBoxes')
-              console.log(this.useBoxes)
             }
           })
           .catch(err => {
             console.log(err)
           })
     },
+
     close() {
       this.modal = false
     },
@@ -182,54 +224,70 @@ export default {
       if (!this.modal) {
         this.modal = !this.modal
       }
+      this.moveInfo = false
       this.pickUseBox = us.useCode
       this.detailUseState = us.useState
       this.boxinItem(us.useCode)
       this.getBoxTimes(us)
+      if (us.moveUseCode != undefined) {
+        this.moveInfo = true
+        if (us.useState == 3 || us.useState == 4 || us.useState == 5) {
+          this.boxDetailMoveInfo(us.moveUseCode, us.moveUseCode)
+        }
+      }
     },
-    getBoxTimes(us){
-      axios.get('/api/findUseBoxTimes/'+ us.storageCode+'/'+us.boxCode +'/'+ this.memberId)
+    boxDetailMoveInfo(useCode, useState) {
+      this.moveBoxInfo.moveState = useState
+      axios.get('/api/moveBoxInfo/' + useCode)
+          .then(res => {
+            this.moveBoxInfo.storageCode = res.data[0][0]
+            this.moveBoxInfo.storageName = res.data[0][1]
+            this.moveBoxInfo.boxCode = res.data[0][2]
+            this.moveBoxInfo.boxName = res.data[0][3]
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getBoxTimes(us) {
+      axios.get('/api/findUseBoxTimes/' + us.storageCode + '/' + us.boxCode + '/' + this.memberId)
           .then(res => {
             this.useTimeList = res.data
-            console.log(this.useTimeList)
             this.useTime = []
 
-            let A = [];
-            let B = [];
+            this.useStorageTime = []
             for (let i = 0; i < this.useTimeList.length; i++) {
               for (let j = 0; j < this.useTimeList[i].length; j++) {
-                if (i == 0 && j ==0){
+                if (i == 0 && j == 0) {
                   this.useTime.push(
-                      this.useTimeList[i][j][0] +"년" +
-                      this.useTimeList[i][j][1] +"월" +
-                      this.useTimeList[i][j][2] +"일"
+                      this.useTimeList[i][j][0] + "년" +
+                      this.useTimeList[i][j][1] + "월" +
+                      this.useTimeList[i][j][2] + "일"
                   )
                 }
-                if (i == this.useTimeList.length-1 && j ==this.useTimeList[i].length-1){
+                if (i == this.useTimeList.length - 1 && j == this.useTimeList[i].length - 1) {
                   this.useTime.push(
-                      this.useTimeList[i][j][0] +"년" +
-                      this.useTimeList[i][j][1] +"월" +
-                      this.useTimeList[i][j][2] +"일"
+                      this.useTimeList[i][j][0] + "년" +
+                      this.useTimeList[i][j][1] + "월" +
+                      this.useTimeList[i][j][2] + "일"
                   )
+                }
+                if (i == this.useTimeList.length - 1) {
+                  let date = new Date(
+                      this.useTimeList[i][j][0],
+                      this.useTimeList[i][j][1],
+                      this.useTimeList[i][j][2]
+                  )
+                  this.useStorageTime.push(date)
                 }
 
-                let date = new Date(
-                     this.useTimeList[i][j][0],
-                     this.useTimeList[i][j][1],
-                     this.useTimeList[i][j][2]
-                 )
-                  A.push(date)
               }
-              B.push(A)
-              A =[]
             }
           })
           .catch(err => {
             console.log(err)
           })
 
-      console.log('this.useTime')
-      console.log(this.useTime)
     },
     boxinItem(index) {
       axios.get('/api/getBoxInItem/' + index)
@@ -241,15 +299,11 @@ export default {
           })
     },
     moveBox(useBox) {
-      this.$store.commit('moveBoxInfo', useBox)
+      console.log(useBox)
       this.$router.push({
         name: 'moveBox',
         params: {
-          userId: this.memberId,  // 사용자 아이디
-          storageName: useBox.storageName,    // 보관소 이름
-          boxName: useBox.boxName,       // 보관함 이름
-          boxCode: useBox.boxCode,        // 보관함 코드
-          useBoxCode: useBox.useBoxCode // 사용 보관함 코드
+          useBoxCode: useBox // 사용 보관함 코드
         }
       })
     },
@@ -257,9 +311,7 @@ export default {
       this.$router.push({
         name: 'repairBox',
         params: {
-          storageName: useBox.storageName,    // 보관소 이름
-          boxName: useBox.boxName,       // 보관함 이름
-          useBoxCode: useBox.useBoxCode  // 사용 보관함 코드
+          useBoxCode: useBox  // 사용 보관함 코드
         }
       })
     },
@@ -267,15 +319,7 @@ export default {
       this.$router.push({
         name: 'renewalBox',
         params: {
-          userId: this.memberId,  // 사용자 아이디
-          storageName: useBox.storageName,    // 보관소 이름
-          boxName: useBox.boxName,       // 보관함 이름
-          startTime: useBox.startTime,  // 시작년월인
-          endTime: useBox.endTime,      // 종료년월인
-          start: useBox.start,            // 시작date
-          end: useBox.end,                 // 종료date
-          none: false,
-          useBoxCode: useBox.useBoxCode  // 사용 보관함 코드
+          useBoxCode: useBox  // 사용 보관함 코드
         }
       })
     },

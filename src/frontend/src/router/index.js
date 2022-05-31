@@ -284,6 +284,11 @@ const routes = [
     component: () => import('@/components/cart/ItemBuy/BuyList.vue')
   },
   {
+    path: '/itemBuy/index',
+    name: 'ItemBuyIndex',
+    component: () => import('@/components/cart/ItemBuy/Buyindex.vue')
+  },
+  {
     path: '/itemBuy/buyList/:buyId',
     name: 'BuyDetailList',
     component: () => import('@/components/cart/ItemBuy/BuyDetailList.vue'),
@@ -305,6 +310,12 @@ const routes = [
     path: '/itemShare',
     name: 'ShareList',
     component: () => import('@/components/cart/ItemShare/ShareList.vue')
+  },
+  {
+    path: '/itemShare/rentalList/:rentalId',
+    name: 'ShareDetailList',
+    component: () => import('@/components/cart/ItemShare/ShareDetailList.vue'),
+    props: true
   },
   {
     path: '/itemShare/shareNow/:rentalId',
@@ -427,7 +438,7 @@ const routes = [
     component:()=>import('@/views/user/MyStorageBox.vue')
   },
   {
-    path: "/myBox/renewalBox",
+    path: "/myBox/renewalBox/:useBoxCode",
     name: "renewalBox",
     component:()=>import('@/components/storageService/user/RenewalBox.vue')
   },
@@ -437,29 +448,29 @@ const routes = [
     component:()=>import('@/components/storageService/user/CloseBox.vue')
   },
   {
-    path: "/myBox/moveBox",
+    path: "/myBox/moveBox/:useBoxCode",
     name: "moveBox",
     component:()=>import('@/components/storageService/user/MoveBox.vue')
   },
   {
-    path: "/myBox/moveBox/boxToBox",
+    path: "/myBox/moveBox/:useBoxCode/boxToBox/:storageCode",
     name: "StorageMoveBoxDetail",
     component:()=>import('@/components/storageService/user/StorageMoveBoxDetail.vue')
   },
   {
-    path: "/myBox/moveBox/storagePay",
+    path: "/myBox/moveBox/:useBoxCode/storagePay/:newStorageBoxCode",
     name: "BoxToBoxMovePay",
     component:()=>import('@/views/user/BoxToBoxMovePay.vue'),
     props: true
   },
   {
-    path: "/myBox/moveBox/roundPay",
+    path: "/myBox/moveBox/:useBoxCode/roundPay",
     name: "roundToBoxMovePay",
     component:()=>import('@/views/user/roundToBoxMovePay.vue'),
     props: true
   },
   {
-    path: "/myBox/repairBox",
+    path: "/myBox/repairBox/:useBoxCode",
     name: "repairBox",
     component:()=>import('@/components/storageService/user/RepairBox.vue')
   },

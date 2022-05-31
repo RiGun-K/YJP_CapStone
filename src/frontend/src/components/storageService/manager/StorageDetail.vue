@@ -8,22 +8,23 @@
       <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
            @click="modalViewChk(box.storageBoxCode)">
           <ul>
-            <li>보관함 이름: {{ box.storageBoxName }}</li>
-            <li>보관함 상태:
-              <p>{{ stateString(box.storageBoxState)}}</p>
-            </li>
+            <li>보관함 : {{ box.storageBoxName }}</li>
+            <li>상태 : {{ stateString(box.storageBoxState) }}</li>
           </ul>
       </div>
     </div>
   </div>
 
   <!-- 모달-->
-  <div v-if="modalView">
+  <div v-if="modalView" class="modal">
     <div style="width: 100%; text-align: right">
-      <button @click="modalView = false" class="cancleBtn">X</button>
+      <button @click="close()" class="cancleBtn">X</button>
     </div>
-    <div>
-      <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"></BoxModalDetail>
+    <!--    <div style="width: 100%; text-align: right">-->
+    <!--      <button @click="modalView = false" class="cancleBtn">X</button>-->
+    <!--    </div>-->
+    <div class="modal-body">
+      <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"/>
     </div>
   </div>
 </template>
@@ -51,17 +52,37 @@ export default {
     }
   },
   mounted() {
-
     this.managerId = store.getters.getLoginState.loginState
-    if(store.getters.getLoginState.stateCode != 5){
+    if (store.getters.getLoginState.stateCode != 5) {
       this.$router.push('/')
       alert('보관소 매니저만 확인이 가능합니다')
-    }else{
+    } else {
       this.getBackData()
     }
   },
   methods: {
-    getBackData(){
+    stateString(index) {
+      switch (index) {
+        case '0':
+          return '사용안함'
+        case '1':
+          return '결제완료'
+        case '2':
+          return '사용중'
+        case '3':
+        case '4':
+          return '사용중 - 보관소 이동 신청'
+        case '5':
+          return '사용중 - 수리신청'
+        case '6':
+          return '사용중 - 해지'
+        case '7':
+          return '배송 신청'
+        case 'x':
+          return '비활성화'
+      }
+    },
+    getBackData() {
       axios.get('/api/getManagerStorage/' + this.managerId)
           .then(res => {
             this.storageList = res.data
@@ -75,34 +96,16 @@ export default {
       if (!this.modalView) {
         this.modalView = !this.modalView
       }
+
     },
-    stateString(index){
-      switch (index){
-        case "0":
-          return "사용안함"
-        case "1":
-          return "결제완료"
-        case "2":
-          return "사용중"
-        case "3":
-          return "사용중 - 장비 이동 신청"
-        case "4":
-          return "사용중 - 장비 이동 신청"
-        case "5":
-          return "사용중 - 수리신청"
-        case "6":
-          return "사용중"
-        case "7":
-          return "사용중 - 이동신청"
-        case "x":
-          return "비활성화"
-      }
-    }
   }
 }
 </script>
 
 <style lang="css" scoped>
+
+
+
 .storage-box {
   margin: 10px;
   border: solid 3px #DAA520;
@@ -121,12 +124,14 @@ export default {
   border: solid 3px #42b983;
   width: 90%;
 }
-.cancleBtn{
+
+.cancleBtn {
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 1%;
 }
-.cancleBtn:hover{
+
+.cancleBtn:hover {
   background: black;
   color: white;
 }
