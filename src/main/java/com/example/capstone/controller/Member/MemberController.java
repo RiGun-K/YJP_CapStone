@@ -385,16 +385,16 @@ public class MemberController {
     }
 
     ///내게시글페이지///
-//    @PostMapping("myWritter")
-//    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
-//        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
-//        List<Board> boardList = boardRepository.findByMID(member.get());
-//        if(boardList.isEmpty()){
-//            return null;
-//        }
-//
-//        return boardList;
-//    }
+    @PostMapping("myWritter")
+    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<Board> boardList = boardRepository.findByMID(member.get());
+        if(boardList.isEmpty()){
+            return null;
+        }
+
+        return boardList;
+    }
 
     ///전체 게시글 조회///
     @GetMapping("adminAllWriter")

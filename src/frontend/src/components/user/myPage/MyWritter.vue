@@ -3,19 +3,23 @@
   <div id="content">
     <table border="1px">
       <tr>
-        <th colspan="3">
+        <th colspan="5">
           <h1 style="color: black; text-align: center">내 게시글</h1>
         </th>
       </tr>
       <tr>
-        <th>게시글번호</th>
+        <th>번호</th>
         <th>제목</th>
+        <th>댓글</th>
+        <th>조회수</th>
         <th>작성일</th>
       </tr>
       <tr v-for="(body) in viewList" :key="body.writer_code">
-        <td>{{body.boardId}}</td>
-        <td @click="goBoard(body.writer_code)">{{body.title}}</td>
-        <td>공란</td>
+        <td style="width: 10%;">{{body.boardId}}</td>
+        <td @click="goBoard(body.boardId)" style="width: 50%">{{body.title}}</td>
+        <td style="width: 10%;">공란</td>
+        <td style="width: 10%;">{{ body.boardViews }}</td>
+        <td style="width: 10%;">{{body.savedTime}}</td>
       </tr>
     </table>
     <div class="searchDiv">
