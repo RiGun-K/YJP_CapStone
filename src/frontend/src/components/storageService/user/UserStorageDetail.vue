@@ -1,51 +1,58 @@
 <template>
   <div class="storage">
     <button @click="backPage" class="storage-back-btn">되돌아가기</button>
-
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
     <div class="storage-view" v-for="(obj, index) in boxArray">
-      <div class="storage-box" v-for="box in boxArray[index]" @click="findTime(box)">
+      <div class="storage-box" v-for="(box) in boxArray[index]" @click="findTime(box)">
         <ul>
-          <li>보관함 이름: {{ box.storageBoxName }}</li>
-          <li>보관함 상태:<p v-if="box.storageBoxState == '0'">사용가능</p>
-            <p v-else>사용불가능</p>
-          </li>
+          <li>{{ box.storageBoxName }}</li>
+          <li v-if="box.storageBoxState == '0'">사용가능</li>
+          <li v-else-if="box.storageBoxState == '6'">사용가능 <br>(바로사용불가)</li>
+          <li v-else>사용불가능</li>
           <li>가격 : {{ box.storageBoxPrice }}원</li>
         </ul>
       </div>
     </div>
     <div v-if="stateCheck" class="detailDiv">
       <div><h3>{{ boxName }}</h3></div>
-      <div>
-        <p style="margin-left: 3%; margin-top: 2%">대여기간 설정</p>
-        <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
-                    locale="ko-KR"
-                    :min-date="today"
-                    type="date"
-                    format="yyyy/MM/dd"
-                    value-format="yyyyMMdd"
-                    :enableTimePicker="false"
-                    autoApply
-                    :closeOnAutoApply="false"
-                    placeholder="Select Date"
-                    v-model="date"
-                    :disabledDates="disabledDates"/>
-      </div>
-      <div>
-        넣을 장비 선택
-        내 캠핑장비
-        <div>
-          <ul v-for="(item, index) in myItem" :key="index">
-            <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
-          </ul>
+      <div class="storageBody">
+        <div class="storageUpDiv">
+          <div class="storageTime">
+            <h5>대여기간 설정</h5>
+            <hr>
+            <Datepicker
+                locale="ko-KR"
+                :min-date="today"
+                type="date"
+                format="yyyy/MM/dd"
+                value-format="yyyyMMdd"
+                :enableTimePicker="false"
+                autoApply
+                :closeOnAutoApply="false"
+                placeholder="Select Date"
+                v-model="date"
+                :disabledDates="disabledDates"/>
+          </div>
+          <div class="storageEquip">
+            <h5>내 캠핑장비 선택</h5>
+            <hr>
+            <div>
+              <ul v-for="(item, index) in myItem" :key="index">
+                <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div>
-        결제금액 : {{ form.price }}원
-      </div>
-      <div class="detailBtn">
-        <button class="pay-btn" @click="pay">다음</button>
+        <div class="storageBottomDiv">
+
+          <div>
+            결제금액 : {{ form.price }}원
+          </div>
+          <div class="detailBtn">
+            <button class="pay-btn" @click="pay">다음</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -67,12 +74,14 @@ export default {
   mounted() {
     axios.get('/api/myItem/' + this.userId)
         .then(res => {
-          console.log(res.data)
           this.myItem = res.data
         }).catch(err => {
       console.log(err)
     });
     this.boxArrayR()
+    setTimeout(() => {
+      this.backFlag = true
+    }, 100)
   },
   created() {
     this.userId = store.getters.getLoginState.loginState
@@ -99,20 +108,19 @@ export default {
       useTimeList: [],
       disabledDates: [],
       stateCheck: false,
-      boxArray: {},
+      boxArray: [],
+      backFlag: false
     }
   },
   methods: {
     boxArrayR() {
-      let arrayone = {}
-      let k = 0;
+      let arrayone = []
       for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
         arrayone[0 + i % 5] = this.boxList.storageBoxes[i]
 
         if ((i + 1) % 5 == 0 || (i + 1) == this.boxList.storageBoxes.length) {
-          this.boxArray[0 + k] = arrayone
-          arrayone = {}
-          k = k + 1;
+          this.boxArray.push(arrayone)
+          arrayone = []
         }
       }
     },
@@ -126,9 +134,42 @@ export default {
       this.form.storageBoxCode = boxCode.storageBoxCode
       this.date = null
       this.disabledDates = []
+
       axios.get('/api/findUseTime/' + boxCode.storageBoxCode)
           .then(res => {
             this.useTimeList = res.data
+            for (let i = 0; i < this.boxList.storageBoxes.length; i++) {
+              if (boxCode.storageBoxCode == this.boxList.storageBoxes[i].storageBoxCode) {
+                if (this.boxList.storageBoxes[i].storageBoxState == '0') {
+                  this.stateCheck = true
+                } else if (this.boxList.storageBoxes[i].storageBoxState == '6') {
+                  this.stateCheck = true
+                } else {
+                  this.stateCheck = false
+                }
+              }
+            }
+            for (var i = 0; i < this.useTimeList.length; i++) {
+              let startDate = new Date(
+                  this.useTimeList[i].useStorageStartTime[0],
+                  this.useTimeList[i].useStorageStartTime[1] - 1,
+                  this.useTimeList[i].useStorageStartTime[2])
+
+              let endDate = new Date(
+                  this.useTimeList[i].useStorageEndTime[0],
+                  this.useTimeList[i].useStorageEndTime[1] - 1,
+                  this.useTimeList[i].useStorageEndTime[2])
+
+              var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
+
+              const tomorrow = startDate
+              this.disabledDates.push(tomorrow.toString())
+
+              for (var j = 0; j < length; j++) {
+                tomorrow.setDate(tomorrow.getDate() + 1)
+                this.disabledDates.push(tomorrow.toString())
+              }
+            }
           })
           .catch(err => {
             console.log(err)
@@ -164,12 +205,16 @@ export default {
         }
       }
       this.form.price = boxCode.storageBoxPrice
+      this.form.storageBoxCode = boxCode.storageBoxCode
     },
     pay() {
       if (this.date == null) {
         alert('날짜 선택하세요')
         return
       }
+
+      this.form.storageName = this.name
+      this.form.item = this.checkItem
 
       const start = new Date(this.date)
       let timeStorage = {}
@@ -190,13 +235,75 @@ export default {
       this.form.useStorageStartTime = ''
       this.form.useStorageEndTime = ''
     }
+  },
+  watch: {
+    backFlag() {
+      var divItem = document.getElementsByClassName("storage-box")
+      var index = 0
+      for (var x = 0; x < this.boxArray.length; x++) {
+        for (var y = 0; y < this.boxArray[x].length; y++) {
+          if (this.boxArray[x][y].storageBoxState != 0) {
+            divItem[index].classList.add("disabledDiv")
+          } else if (this.boxArray[x][y].storageBoxState == 6) {
+            divItem[index].classList.add("playOutDiv")
+          }
+          index++
+        }
+      }
+    }
   }
-
 }
 </script>
 
 <style scoped>
 /*추가*/
+.storageUpDiv {
+  display: flex;
+  width: 100%;
+}
+
+.storageTime {
+  width: 30%;
+  position: relative;
+}
+
+.storageEquip {
+  margin-left: 5%;
+  width: 30%;
+  position: relative;
+}
+
+.storageBottomDiv {
+  margin-top: 2%;
+  margin-right: 5%;
+  left: 70%;
+  position: relative;
+  width: 25%;
+  text-align: left;
+}
+
+.disabledDiv {
+  background: rgba(161, 156, 156, 0.97);
+  border: solid 3px rgba(16, 33, 145, 0.99);
+  color: white;
+}
+
+.playOutDiv {
+  background: #c3c3c3;
+  color: #000000;
+}
+
+.setting-date {
+  width: 30%;
+  float: left;
+  display: inline-block;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
 .detailDiv {
   margin-top: 3%;
   margin-right: 5%;
@@ -204,9 +311,8 @@ export default {
 }
 
 .detailBtn {
-  text-align: left;
-  left: 25%;
-  position: relative;
+  text-align: right;
+  width: 100%;
 }
 
 /*기존*/
@@ -251,9 +357,10 @@ export default {
 
 .storage {
   border: solid 3px #000a69;
-  margin-left: 7%;
-  width: 87%;
-  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
+  margin-top: 3%;
 }
 
 .storage-name-h5 {
@@ -267,7 +374,7 @@ export default {
 .pay-btn {
   margin-bottom: 2%;
   text-align: center;
-  width: 12%;
+  width: 50px;
   padding: 1%;
   background-color: #ffffff;
   font-weight: bolder;

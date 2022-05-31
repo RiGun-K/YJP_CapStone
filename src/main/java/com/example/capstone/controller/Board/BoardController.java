@@ -47,7 +47,8 @@ public class BoardController {
             if (!new File(savePath).exists()) {
                 try {
                     new File(savePath).mkdir();
-                } catch (Exception e) {
+                } 
+                catch (Exception e) {
                     e.getStackTrace();
                 }
             }
@@ -62,13 +63,11 @@ public class BoardController {
             e.printStackTrace();
         }
 
-        if (boardDTO.getSavedTime() == null)
+        if(boardDTO.getSavedTime()==null)
             boardDTO.setSavedTime(LocalDate.now().toString());
 
         Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
         System.out.println(member.get());
-
-
         Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
         boardRepository.save(board);
         return board;

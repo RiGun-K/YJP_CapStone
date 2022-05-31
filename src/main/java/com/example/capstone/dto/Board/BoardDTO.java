@@ -1,5 +1,6 @@
 package com.example.capstone.dto.Board;
 
+import com.example.capstone.domain.Member.Member;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,16 +2,12 @@ package com.example.capstone.domain.Board;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Camping;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -53,7 +49,7 @@ public class BoardCamping {
     @JoinColumn(name = "campingid")
     private Camping campingId;
 
-    public BoardCamping() {}
+    public BoardCamping(){}
 
     public BoardCamping(String campingTitle, String campingContent, Member mcode, BoardMenu boardMenuCode, Camping camping, String savedTime, String origFilename, String filename, String filePath) {
         this.campingTitle = campingTitle;
@@ -81,4 +77,5 @@ public class BoardCamping {
         this.recommend = recommend;
 
     }
+
 }

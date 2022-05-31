@@ -1,6 +1,10 @@
 package com.example.capstone.controller.Member;
 
 import com.example.capstone.domain.Board.Board;
+import com.example.capstone.domain.Member.Company;
+import com.example.capstone.domain.Member.MailCheck;
+import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Member.PhCheck;
 import com.example.capstone.domain.Member.*;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.storage.MemberEquipment;
@@ -115,7 +119,7 @@ public class MemberController {
 
         memberCh.get().setMNick(updataData.get("MNick"));
         memberCh.get().setMZadd(updataData.get("MZadd"));
-        memberCh.get().setMZadd(updataData.get("MRadd"));
+        memberCh.get().setMRadd(updataData.get("MRadd"));
         memberCh.get().setMAdd(updataData.get("MAdd"));
         memberCh.get().setMPH(updataData.get("MPH"));
         memberCh.get().setMMail(updataData.get("MEmail"));
@@ -253,13 +257,42 @@ public class MemberController {
     }
 
     @PostMapping("acceptCompany")
-    public void acceptCompany(@RequestBody HashMap<String, String> check){
+    public Boolean acceptCompany(@RequestBody HashMap<String, String> check){
         Optional<Company> company = companyRepository.findCompanyByCCode(check.get("CCode"));
         company.get().setCsc("2");
         Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
         members.get().setMSC("4");
         companyRepository.save(company.get());
         memberRepository.save(members.get());
+        return true;
+    }
+
+    @PostMapping("refuseCompany")
+    public Boolean refuseCompany(@RequestBody HashMap<String, String> body){
+        Optional<Company> company = companyRepository.findCompanyByCCode(body.get("CCode"));
+        company.get().setCsc("0");
+        Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
+        members.get().setMSC("3");
+        companyRepository.save(company.get());
+        memberRepository.save(members.get());
+        return true;
+    }
+
+    ///판매자 상태 변경///
+    @PostMapping("chcscCompany")
+    public Boolean chcscCompany(@RequestBody HashMap<String, String> body){
+        Optional<Company> company = companyRepository.findCompanyByCCode(body.get("CCode"));
+        Optional<Member> members = memberRepository.findByMID(company.get().getMember().getMID());
+        if(Integer.parseInt(company.get().getCsc()) == 0){
+            company.get().setCsc("2");
+            members.get().setMSC("4");
+        }else{
+            company.get().setCsc("0");
+            members.get().setMSC("3");
+        }
+        companyRepository.save(company.get());
+        memberRepository.save(members.get());
+        return true;
     }
 
     ///인증메일 처리///

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+import com.example.capstone.domain.Product.CampingArea;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -78,5 +79,4 @@ public class Board {
         this.savedTime = savedTime;
         this.MID = MID;
     }
-
 }

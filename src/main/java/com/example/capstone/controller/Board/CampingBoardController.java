@@ -90,13 +90,13 @@ public class CampingBoardController {
 
     }
 
-    @GetMapping("/CampingBoardlist/{campingId}")
-    public List<BoardCamping> boardCampingList(@PathVariable("campingId") int campingId) {
-        System.out.println(campingId);
-        List<BoardCamping> boardCampingList = boardCampingRepository.findBycampingId(campingId);
-        System.out.println(boardCampingList);
-        return boardCampingList;
-    }
+        @GetMapping("/CampingBoardlist/{campingId}")
+        public List<BoardCamping> boardCampingList(@PathVariable("campingId") int campingId) {
+            System.out.println(campingId);
+            List<BoardCamping> boardCampingList = boardCampingRepository.findBycampingId(campingId);
+            System.out.println(boardCampingList);
+            return boardCampingList;
+        }
 
 
         /* 리뷰 수정 */
@@ -153,6 +153,7 @@ public class CampingBoardController {
 
     }
 
+
     @DeleteMapping("/CampingBoardDelete/{boardCampingCode}")
     public String boarddeleteList(@PathVariable("boardCampingCode") Long boardCampingCode) {
         System.out.println("삭제할 리뷰 번호는 : " +boardCampingCode);
@@ -161,8 +162,6 @@ public class CampingBoardController {
 
     }
 
-
-
     @PostMapping("/Reviews_countView")
     public void countCampingView(@RequestBody HashMap<String, String> recommend){
         System.out.println(recommend.get("a"));
@@ -170,6 +169,5 @@ public class CampingBoardController {
         boardCamping.get().setRecommend(boardCamping.get().getRecommend()+1);
         boardCampingRepository.save(boardCamping.get());
     }
-
-
 }
+

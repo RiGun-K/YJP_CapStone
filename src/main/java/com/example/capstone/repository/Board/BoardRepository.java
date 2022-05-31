@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
-
+  
     @Query(value = "SELECT * FROM Board b WHERE b.PARENT_BOARD_ID = :boardId", nativeQuery = true)
     public List<Board> findByCommentId(@Param("boardId") Long boardId);
 

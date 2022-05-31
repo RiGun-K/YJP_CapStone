@@ -1,52 +1,37 @@
 <template>
-  <div class="main">
-  <img :src="mainImage">
+  <div class="sidebar" :style="{ width: sidebarWidth }">
+    <h1>
+      <span v-if="collapsed">
+        <div>C</div>
+      </span>
+      <span v-else >Category</span>
+    </h1>
+
+    <h5><span v-if="collapsed">
+      </span>
+      <span v-else>캠핑 분류</span></h5>
+    <SidebarLink class="sidebar-link" icon="@/assets/전체.png" to="/infoter" @click="goData">캠핑장 전체</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(1)">캠핑</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(2)">카라반</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(3)">글램핑</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(4)">팬션</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(5)">차박</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(6)">당일 피크닉</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(7)">기타</SidebarLink>
+
+    <span
+        class="collapse-icon"
+        :class="{ 'rotate-180': collapsed }"
+        @click="toggleSidebar">
+          <i class='fas fa-angle-double-left'>  〈〈  </i>
+      </span>
+  </div>
+
+  <div :style="{ 'margin-left': sidebarWidth }">
+    <router-view />
   </div>
 
   <div class="infoter">
-    <div class="sub_title_wrap2">
-
-      <div class="card">
-        <div class="card-body">
-          <h3>글램핑,기타,당일피크닉,전체,카라반,차박,캠핑,팬션</h3>
-        </div>
-        <div class="card-body">
-          ㅇ
-        </div>
-        <div class="card-body">
-          ㅇ
-        </div>
-        <div class="card-body">
-          ㅇ
-        </div>
-        <div class="card-body">
-          ㅇ
-        </div>
-      </div>
-
-
-      <br>
-    <h3>지역분류</h3>
-    <div class="searchDiv">
-      <select v-model="bigPick" @change="bigCheck(bigPick)">
-        <option value="0">전국</option>
-        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
-      </select>
-      <select v-model="smallPick">
-        <option value="0">전체</option>
-        <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
-      </select>
-      <button @click="search()" class="w-btn-neon2" type="button">검색</button>
-    </div>
-
-    <section>
-      <div class="search">
-        <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
-        <button class="w-btn-outline w-btn-blue-outline" type="button" @click="campingFilter(this.searchCamping)">검색</button>
-      </div>
-    </section>
-    </div>
-
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
@@ -64,6 +49,26 @@
       <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
     </div>
 
+    <h3>지역분류</h3>
+    <div class="searchDiv">
+      <select v-model="bigPick" @change="bigCheck(bigPick)">
+        <option value="0">전국</option>
+        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+      </select>
+      <select v-model="smallPick">
+        <option value="0">전체</option>
+        <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+      </select>
+      <button @click="search()">검색</button>
+    </div>
+
+
+    <section>
+      <div class="search">
+        <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
+        <button @click="campingFilter(this.searchCamping)">검색</button>
+      </div>
+    </section>
 
     <div class="listBody">
       <div v-for="(product,index) in list" :key="product.id"
@@ -102,6 +107,7 @@ import { collapsed, toggleSidebar } from '@/components/cart/Sidebar/state'
 import Sidebar from '@/components/cart/Sidebar/Sidebar'
 import { sidebarWidth } from '@/components/cart/Sidebar/state'
 import SidebarLink from '@/components/cart/Sidebar/SidebarLink'
+
 export default {
   name: 'InfoterList',
   components: { SidebarLink },
@@ -135,8 +141,6 @@ export default {
       bigPick: 0,
       smallPick: 0,
       searchCamping: '',
-      mainImage: require('@/assets/camp3.jpg'),
-      carImage: require('@/assets/차박.png')
     }
   },
   methods: {
@@ -277,7 +281,6 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 .infoter{
   width: 60%;
   height: 100%;
@@ -322,16 +325,7 @@ export default {
   width : 20%;
   height: 20%;
 }
-.main img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-.mainArea {
-  width: 50px;
-  height: 100px;
-  margin-left: 30px;
-}
+
 
 
 img {
@@ -352,18 +346,18 @@ img {
   border-bottom: 1px black solid;
 }
 
-/*.search button {*/
-/*  font-size: 18px;*/
-/*  border: none;*/
-/*  background-color: green;*/
-/*  width: 50px;*/
-/*  height: 30px;*/
-/*  border-radius: 15px;*/
-/*  color: #fff;*/
-/*  cursor: pointer;*/
-/*  margin-left: 85%;*/
-/*  margin-top: -30%;*/
-/*}*/
+.search button {
+  font-size: 18px;
+  border: none;
+  background-color: green;
+  width: 50px;
+  height: 30px;
+  border-radius: 15px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 85%;
+  margin-top: -30%;
+}
 
 .campingkindimage {
   width:380px;
@@ -380,9 +374,7 @@ img {
 }
 
 .card {
-  width: 120%;
-  margin: auto;
-  margin-left: -10%;
+  width: 50%;
 }
 
 .card-body {
@@ -394,75 +386,38 @@ img {
 .card-body:hover img {
   transform: scale(1.5);
 }
-
+.sidebar {
+   color: black;
+   background-color: var(--sidebar-bg-color);
+   float: left;
+   z-index: 1;
+   height: 100%;
+   left: 0;
+   bottom: 0;
+   padding-bottom: 250%;
+   margin-right: 3%;
+   transition: 0.3s ease;
+   display: flex;
+   flex-direction: column;
+ }
+.sidebar h5{
+  margin-left: 10%;
+  margin-top: 15%;
+  margin-bottom: 3%;
+}
+.sidebar-link{
+  color: black;
+}
+.collapse-icon{
+  position: absolute;
+  top: 80% ;
+  padding: 0.75em;
+  color: black;
+  transition: 0.2s linear;
+}
 .rotate-180 {
   transform: rotate(180deg);
   transition: 0.2s linear;
 }
-.w-btn-neon2 {
-  position: relative;
-  border: none;
-  min-width: 90px;
-  min-height: 40px;
-  background: linear-gradient(
-      90deg,
-      rgba(129, 230, 217, 1) 0%,
-      rgba(79, 209, 197, 1) 100%
-  );
-  border-radius: 1000px;
-  color: darkslategray;
-  cursor: pointer;
-  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
-  font-weight: 700;
-  transition: 0.3s;
-}
-.w-btn-neon2:hover {
-  transform: scale(1.2);
-}
 
-.w-btn-neon2:hover::after {
-  content: "";
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  border: 6px solid #00ffcb;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: ring 1.5s infinite;
-}
-@keyframes ring {
-  0% {
-    width: 30px;
-    height: 30px;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-  }
-}
-.w-btn-blue-outline {
-  border: 3px solid #6aafe6;
-  color: #6e6e6e;
-}
-.w-btn-blue-outline:hover {
-  background-color: #6aafe6;
-  color: #d4dfe6;
-}
-.w-btn-outline {
-  position: relative;
-  padding: 12px 25px;
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-  right: -230px;
-  top: -50px;
-}
 </style>
