@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,7 +102,7 @@ public class BoardController {
 
     /* 게시글 댓글 등록 */
     @PostMapping("/addComment")
-    public void addComment(@RequestBody BoardDTO boardDTO) {
+    public Board addComment(@RequestBody BoardDTO boardDTO) {
         System.out.println("==============================1===========================");
         System.out.println(boardDTO.getMid());
         System.out.println(boardDTO.getContent());
@@ -109,12 +110,17 @@ public class BoardController {
         System.out.println("===============================================2===========================");
 
         Optional<Board> board1 = boardRepository.findById(boardDTO.getParentBoard());
-
-        System.out.println(boardDTO.getMid());
         Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
 
         System.out.println(board1.get());
         System.out.println(member.get());
+
+        if (boardDTO.getSavedTime() == null)
+            boardDTO.setSavedTime(LocalDate.now().toString());
+
+        Board board = new Board(boardDTO.getContent(), boardDTO.getSavedTime(), member.get(), board1.get());
+        boardRepository.save(board);
+        return board;
 
     }
 
@@ -136,9 +142,7 @@ public class BoardController {
         boardRepository.delete(writer.get());
         return "게시글이 삭제되었습니다.";
 
-
     }
-
 
     /* 게시글 수정 */
     @PutMapping("/update")
@@ -184,6 +188,15 @@ public class BoardController {
         boardRepository.save(board1);
         return board1;
 
+    }
+
+    /* 게시글 조회 UP */
+    @PostMapping("/Board_countView")
+    public void countBoardView(@RequestBody HashMap<String, String> boardViews){
+        System.out.println(boardViews.get("a"));
+        Optional<Board> board = boardRepository.findById((long) Integer.parseInt(boardViews.get("a")));
+        board.get().setBoardViews(board.get().getBoardViews()+1);
+        boardRepository.save(board.get());
     }
 }
 
