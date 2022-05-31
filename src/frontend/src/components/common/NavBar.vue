@@ -21,7 +21,9 @@
           <a href="/Read">게시판</a>
           <ul class="subMenu">
             <li class="menu"><a href="/Read">자유게시판</a></li>
-            <li class="menu"><a href="/board">리뷰게시판</a></li>
+            <li class="menu"><a href="#">빈 메뉴</a></li>
+            <li class="menu"><a href="#">빈 메뉴</a></li>
+            <li class="menu"><a href="#">빈 메뉴</a></li>
           </ul>
         </li>
         <li class="topMenu" v-if="uiLogin==4">
