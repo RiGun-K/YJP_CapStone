@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div id="content">
     <table border="1px">
       <tr>
@@ -12,8 +13,8 @@
         <th>작성일</th>
       </tr>
       <tr v-for="(body) in viewList" :key="body.writer_code">
-        <td>{{ body.writer_code}}</td>
-        <td @click="goBoard(body.writer_code)">{{ body.title}}</td>
+        <td>{{body.boardId}}</td>
+        <td @click="goBoard(body.writer_code)">{{body.title}}</td>
         <td>공란</td>
       </tr>
     </table>
@@ -34,7 +35,8 @@ export default {
     return{
       writerList:[],
       viewList:[],
-      searchWord:''
+      searchWord:'',
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -68,6 +70,13 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .searchBtn{
   margin-left: 1%;
   padding: 0.5%;
@@ -83,11 +92,17 @@ th, td{
   border: 1px solid black;
 }
 #content {
-  margin-left: 25%;
-  margin-top: 1%;
   margin-right: 25%;
-  width: 50%;
+  margin-left: 25%;
+  margin-top: 2%;
+  margin-bottom: 5%;
   text-align: center;
+  width: 50%;
+  height: 93%;
+  padding: 30px;
+  z-index: 2;
+  position: relative;
+  background: white;
 }
 </style>
 

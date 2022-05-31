@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div class="divBody">
     <div class="inputDiv">
       <label class="labelTitle">장비명 </label>
@@ -31,7 +32,8 @@ export default {
       equipName:'',
       equipKind:'',
       equipcount:1,
-      kindList:[]
+      kindList:[],
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -80,30 +82,42 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .divBody{
-  margin-left: 2%;
-  margin-right: 2%;
-  margin-top: 1%;
-  width: 96%;
+  margin-right: 25%;
+  margin-left: 25%;
+  margin-top: 2%;
+  margin-bottom: 5%;
   text-align: center;
+  width: 50%;
+  height: 93%;
+  z-index: 2;
+  position: relative;
+  background: white;
 }
 .inputDiv{
-  left: 35%;
-  width: 65%;
+  left: 25%;
+  width: 75%;
   text-align: left;
   position: relative;
 }
 .labelTitle{
   left: 10%;
-  margin-top: 1%;
+  margin-top: 25px;
   margin-right: 2%;
-  width: 10%;
+  width: 15%;
 }
 .inputBody{
 }
 .addBtn{
   margin-top: 1%;
-  right: 35%;
+  right: 15%;
   position: absolute;
 }
 .countBtn{

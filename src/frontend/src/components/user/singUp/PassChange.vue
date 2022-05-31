@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div id="content">
     <h3 class="join_title">
       <label for="id">비밀번호 변경</label>
@@ -12,7 +13,7 @@
                  aria-label="Recipient's username" aria-describedby="button-addon2">
     </span>
     <span class="input-group mb-3">
-          <input type="text" v-model="authPass" class="form-control" placeholder="변경 비밀번호재입력"
+          <input type="password" v-model="authPass" class="form-control" placeholder="변경 비밀번호재입력"
              aria-label="Recipient's username" aria-describedby="button-addon2">
     </span>
     <p>{{inputCheck}}</p>
@@ -32,7 +33,8 @@ export default {
       currentPass:'',
       clientPass:'',
       authPass:'',
-      passCheck:false
+      passCheck:false,
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -73,20 +75,26 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
+.backImg{
+  margin-top: 1px;
+  width: 100%;
   height: 100%;
-  background-color: #E6E6FA;
-}
-#wrapper {
-  position: relative;
-  height: 100%;
+  position: absolute;
+  z-index: 1;
 }
 #content {
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 8%;
   position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 460px;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+  height: 93%;
+  background: white;
+  z-index: 2;
 }
 /* 입력폼 */
 h3 {

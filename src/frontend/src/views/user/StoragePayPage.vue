@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>겔제</h5>
+    <h5>결제</h5>
     <div>
       <h5>구매자</h5>
       <div>
@@ -225,5 +225,10 @@ export default {
 </script>
 
 <style scoped>
-
+.divBody{
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 1%;
+  width: 50%;
+}
 </style>

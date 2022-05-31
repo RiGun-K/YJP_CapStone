@@ -12,8 +12,8 @@
       </select>
       <label for="storageName" style="margin-left: 10px">보관소이름</label>
       <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
-      style="margin-left: 10px; display: inline; width: 150px">
-      <button @click="storageSearch()" style="margin-left: 10px">검색</button>
+      style="margin-left: 10px; display: inline; width: 100px">
+      <button @click="storageSearch()" style="margin-left: 10px; display: inline">검색</button>
     </div>
     <div class="bottomDiv">
       <table>
@@ -21,7 +21,7 @@
           <tr>
             <th>번호</th>
             <th>지역</th>
-            <th >보관소명</th>
+            <th>보관소명</th>
           </tr>
         </thead>
         <tbody>
@@ -33,9 +33,7 @@
         </tbody>
       </table>
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -171,7 +169,7 @@ export default {
   margin-top: 1%;
 }
 .renewal-box{
-  width: 70%;
+  width: 100%;
 }
 .renewal-box h3{
   width: 100%;

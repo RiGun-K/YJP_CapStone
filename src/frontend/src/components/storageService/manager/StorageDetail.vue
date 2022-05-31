@@ -7,12 +7,10 @@
     <div class="storage-view">
       <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
            @click="modalViewChk(box.storageBoxCode)">
-        <div>
           <ul>
             <li>보관함 : {{ box.storageBoxName }}</li>
             <li>상태 : {{ stateString(box.storageBoxState) }}</li>
           </ul>
-        </div>
       </div>
     </div>
   </div>
@@ -100,7 +98,6 @@ export default {
       }
 
     },
-
   }
 }
 </script>
@@ -117,7 +114,6 @@ export default {
 }
 
 .storage-view {
-  display: -webkit-flex;
   display: flex;
   width: 100%;
 }
