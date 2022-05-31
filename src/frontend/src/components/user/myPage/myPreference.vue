@@ -66,7 +66,7 @@ export default {
     //플래그 실행 타이밍 조작
     setTimeout(()=>{
       this.flag = true
-    },200)
+    },400)
   },
   methods:{
     chBack(index, index2){
