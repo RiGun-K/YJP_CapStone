@@ -12,12 +12,14 @@
         <td style="font-size:20px; color: green;">제목</td>
         <td style="font-size:20px; color: green;">내용</td>
         <td style="font-size:20px; color: green;">글쓴이</td>
+        <td style="font-size:20px; color: green;">조회수</td>
       </tr>
 
       <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
         <td>{{item.title}}</td>
         <td>{{item.content}}</td>
         <td>{{item.mid.mname}}</td>
+        <td>{{item.boardViews}}</td>
       </tr>
       <router-link to="{name: 'View', params: { writer_code:item.writer_code }}"></router-link>
           </table>
@@ -84,11 +86,20 @@ export default {
       })
     },
     detail(item) {
-      this.$router.push({
-        path: `/view/${item.boardId}`
+      console.log(item.boardId);
+      axios.post('/api/Board_countView', {a: item.boardId})
+          .then((res) => {
+            console.log("조회수 증가됨" + res.data);
+            this.$router.push({
+              path: `/view/${item.boardId}`
+            })
+          })
+          .catch(e => {
+            console.log(e)
+          })
 
-      })
     }
+
 
   }
 }
