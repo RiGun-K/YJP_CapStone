@@ -1,15 +1,18 @@
 <template>
-  <div align="center">
-    <textarea readonly v-model="Lorem"
+  <div class="bodyDiv">
+    <div>
+      <textarea readonly v-model="Lorem"
               rows="20" cols="40" style="resize: none; padding: 10px">
-
-    </textarea>
-    <br/>
-    <input type="radio" name="rg1" @change="radioChange()">동의합니다
-    <input type="radio" name="rg1" @change="falseChange()">동의하지 않습니다.
-    <br/>
-    <button @click="next" :disabled="btnCheck">다음</button>
-    <button @click="preExit">취소</button>
+      </textarea>
+    </div>
+    <div>
+      <input type="radio" name="rg1" @change="radioChange()" class="radioBtn">동의합니다
+      <input type="radio" name="rg1" @change="falseChange()" class="radioBtn">동의하지 않습니다.
+    </div>
+    <div>
+      <button @click="next" class="btn" :disabled="btnCheck" >다음</button>
+      <button @click="preExit" class="btn">취소</button>
+    </div>
   </div>
 </template>
 
@@ -45,5 +48,33 @@ export default {
 </script>
 
 <style scoped>
-
+.bodyDiv{
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+  text-align: center;
+}
+.radioBtn{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.btn{
+  margin-left: 5px;
+  margin-right: 5px;
+  background: #E6E6FA;
+  color: black;
+  width: 80px;
+  border: 1px solid black;
+}
+.btn:hover{
+  background: black;
+  color: white;
+  border: 1px solid red;
+}
+.btn:disabled{
+  background: gray;
+  color: white;
+}
 </style>

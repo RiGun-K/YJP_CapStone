@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div id="content">
     <table border="1px" style="margin-top: 1%">
       <tr>
@@ -31,7 +32,8 @@ export default {
   name: "MyEquipmentPage",
   data(){
     return{
-      EquipList:[]
+      EquipList:[],
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -61,6 +63,13 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 th, td{
   border: 1px solid black;
 }
@@ -75,10 +84,17 @@ body {
   background-color: #E6E6FA;
 }
 #content {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 560px;
+  margin-right: 25%;
+  margin-left: 25%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  text-align: center;
+  width: 50%;
+  height: 93%;
+  padding: 30px;
+  z-index: 2;
+  position: relative;
+  background: white;
 }
 </style>
 
