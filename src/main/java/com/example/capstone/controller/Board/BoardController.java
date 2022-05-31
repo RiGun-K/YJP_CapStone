@@ -2,7 +2,6 @@
 package com.example.capstone.controller.Board;
 
 import com.example.capstone.domain.Board.Board;
-import com.example.capstone.domain.Board.BoardCamping;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.dto.Board.BoardDTO;
 import com.example.capstone.repository.Board.BoardRepository;
@@ -143,9 +142,7 @@ public class BoardController {
         boardRepository.delete(writer.get());
         return "게시글이 삭제되었습니다.";
 
-
     }
-}
 
     /* 게시글 수정 */
     @PutMapping("/update")
