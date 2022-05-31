@@ -23,16 +23,21 @@
       <input type="text" v-model="form.storageTel" placeholder="전화번호">
     </div>
     <div class="bodydiv">
-      <label class="labelWidth">이미지</label>
-          <input type="file"
-                 id="file"
-                 @change="handleImage"
-                 enctype="multipart/form-data"
-                 aria-describedby="inputGroupFileAddon04"
-                 aria-label="Upload"
-                 placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                 drop-placeholder="Drop file here..."
-          style="width: 300px;">
+      <form>
+        <label class="labelWidth">이미지</label>
+        <input type="file"
+               id="file"
+               @change="handleImage"
+               enctype="multipart/form-data"
+               aria-describedby="inputGroupFileAddon04"
+               aria-label="Upload"
+               placeholder="보관소 이미지 파일을 업로드하세요."
+               multiple
+               accept="image/*"
+               drop-placeholder="Drop file here..." >
+        <div id="image_container"/>
+      </form>
+      <button @click="clearFile()">파일 취소</button>
     </div>
     <div class="storage-box" v-if="boxC">
       <p>보관함 추가</p>
@@ -70,7 +75,7 @@
     </div>
     <div class="btnDivBody">
       <button class="storage-add-btn" @click="next()" v-if="!boxC">NEXT</button>
-      <button class="homeBtn" @click="this.$router.push({name:'admin'})" >돌아가기</button>
+      <button class="homeBtn" @click="this.$emit('back')" >돌아가기</button>
     </div>
     <div id="map"></div>
   </div>
@@ -130,6 +135,9 @@ export default {
         this.boxC = true
       }
     },
+    clearFile(){
+      this.file = ''
+    },
     geo(index){
       // 주소-좌표 변환 객체를 생성합니다
       var geocoder = new kakao.maps.services.Geocoder();
@@ -166,20 +174,27 @@ export default {
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
-      if (e.target.files[0]) {
+      if(e.target.files[0]) {
         // 파일 읽는 라이브러리
         const reader = new FileReader();
 
         // 파일 읽기가 완료되는 시점
-        reader.addEventListener('load', function (e1) {
+        reader.addEventListener('load', function(e1){
           // 완료되는 시점!!!!!!!!!!!!!!!
           self.imgsrc = e1.target.result;
           // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
         });
+
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
-      } else {
+      }
+      else {
         return false
       }
 

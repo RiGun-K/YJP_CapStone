@@ -24,7 +24,7 @@
               <tr>
                 <td>{{ item.memEquipmentName }}</td>
                 <td>{{ item.memEquipmentCount }}</td>
-                <td><input type="checkbox" :value="item.memEquipmentCode" v-model="repairList"></td>
+                <td><input type="checkbox" :value="item" v-model="repairList"></td>
               </tr>
             </tbody>
           </table>
@@ -39,11 +39,13 @@
       <input type="checkbox" v-model="requestList" value="세탁">세탁 <br>
       <input type="checkbox" v-model="requestList" value="폴대 수리">폴대 수리 <br>
       <input type="checkbox" v-model="reqGita" value="기타">기타 <br>
-      <input type="text" v-model="gitaRepair" placeholder="입력하세요" >
+      <textarea v-model="gitaRepair" />
     </div>
   </div>
   <div>
-    <button>다음</button>
+    <button @click="$router.push({name:'myBox'})">취소</button>
+    <button @click="payPage()">다음</button>
+
   </div>
 </template>
 
@@ -61,6 +63,7 @@ export default {
       requestList:[],
       reqGita:'',
       gitaRepair:'',
+      gita:false
     }
   },
   mounted() {
@@ -70,7 +73,9 @@ export default {
   watch:{
     reqGita:function (){
       if (this.reqGita.length>0){
-
+        this.gita = true
+      }else{
+        this.gita = false
       }
     }
   },
@@ -96,7 +101,16 @@ export default {
             console.log(err)
           })
     },
-
+    payPage(){
+      let item = {}
+      item.repairList = this.repairList
+      item.requestList = this.requestList
+      if(this.gita){
+        item.gitaRepair = this.gitaRepair
+      }
+      this.$store.commit('careItemInfo',item)
+      this.$router.push({name:'repairBoxPay'})
+    }
   },
 }
 </script>

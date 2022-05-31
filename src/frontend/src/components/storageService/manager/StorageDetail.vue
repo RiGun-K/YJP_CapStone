@@ -34,7 +34,7 @@
 <script>
 import axios from "axios";
 import store from "@/store"
-import BoxModalDetail from "@/components/storageService/manager/BoxModalDetail.vue";
+import BoxModalDetail from "@/components/storageService/manager/NotUsingInfo.vue";
 
 export default {
   name: "StorageDetail",

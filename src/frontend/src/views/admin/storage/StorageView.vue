@@ -5,7 +5,7 @@
       <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
     </div>
     <div v-if="input">
-      <InputStorage></InputStorage>
+      <InputStorage @back="getStorage()" ></InputStorage>
     </div>
   </div>
 </template>
