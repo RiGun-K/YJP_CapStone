@@ -6,7 +6,7 @@
     </div>
     <div class="storage-view">
       <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
-           @click="modalViewChk(box.storageBoxCode)">
+           @click="modalViewChk(box)">
         <div>
           <ul>
             <li>보관함 : {{ box.storageBoxName }}</li>
@@ -22,8 +22,14 @@
     <div style="width: 100%; text-align: right">
       <button @click="modalView = false" class="cancleBtn">X</button>
     </div>
+    <div v-if="useChk == 'not'">
+      <NotUsingInfo :boxCode="boxCode" @updata="getBackData()" />
+    </div>
+    <div v-else-if="useChk == 'use'">
+      <UsingBoxInfo :boxCode="boxCode" @updata="getBackData()"/>
+    </div>
     <div>
-      <BoxModalDetail :boxCode="boxCode" @updata="getBackData()" />
+
     </div>
   </div>
 </template>
@@ -31,12 +37,14 @@
 <script>
 import axios from "axios";
 import store from "@/store"
-import BoxModalDetail from "@/components/storageService/manager/BoxModalDetail.vue";
+import NotUsingInfo from "@/components/storageService/manager/NotUsingInfo.vue";
+import UsingBoxInfo from "@/components/storageService/manager/UsingBoxInfo.vue";
 
 export default {
   name: "ManagerStorage",
   components: {
-    BoxModalDetail
+    NotUsingInfo,
+    UsingBoxInfo
   },
   data() {
     return {
@@ -48,6 +56,7 @@ export default {
       message: '',
       boxCode: '',
       boxArray: [],
+      useChk:'',
     }
   },
   mounted() {
@@ -84,13 +93,19 @@ export default {
       axios.get('/api/getManagerStorage/' + this.managerId)
           .then(res => {
             this.storageList = res.data
+
           })
           .catch(err => {
             console.log(err)
           })
     },
     modalViewChk(storage) {
-      this.boxCode = storage
+      this.boxCode = storage.storageBoxCode
+      if (storage.storageBoxState == '0' || storage.storageBoxState == 'x' ){
+        this.useChk = 'not'
+      }else{
+        this.useChk = 'use'
+      }
       if (!this.modalView) {
         this.modalView = !this.modalView
       }

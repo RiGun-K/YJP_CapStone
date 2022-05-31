@@ -196,15 +196,12 @@ export default {
       for (let i = 0; i < this.form.item.length; i++) {
         jsonData.item.push(this.form.item[i].memEquipmentCode)
       }
-      this.$store.commit('storageClear')
-      console.log('data')
-      console.log(jsonData)
       axios.post('/api/payBox', jsonData)
           .then(res => {
             this.$store.commit('cartStorageClear')
-            alert('결제가 완료 되었습니다.')
+            this.$store.commit('storageClear')
             console.log(res)
-            this.$router.push("/storageView");
+            this.$router.push({name:'storageComplete'});
           })
           .catch(err => {
             alert('결제가 실패 되었습니다.')

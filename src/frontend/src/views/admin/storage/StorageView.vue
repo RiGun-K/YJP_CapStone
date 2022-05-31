@@ -7,7 +7,7 @@
       </div>
     </div>
     <div v-if="input">
-      <InputStorage></InputStorage>
+      <InputStorage @back="getStorage()" ></InputStorage>
     </div>
   </div>
 </template>

@@ -11,12 +11,14 @@ import com.example.capstone.repository.Product.CampingAreaRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Storage.*;
 import com.example.capstone.repository.orders.OrdersRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -264,7 +266,7 @@ public class StorageController {
         useStorageBoxRepository.save(useStorageBox);
 
 //         박스 상태 변화
-        storageBox.get().setStorageBoxState("1");
+        storageBox.get().setStorageBoxState("2");
 //         결제된 박스 업데이트
         storageBoxRepository.save(storageBox.get());
 
@@ -392,7 +394,7 @@ public class StorageController {
         return storageBoxList.get();
     }
 
-    //    매니저가 관리하고 있는 보관소의 각 보관함 찾기
+    //    매니저가 관리하고 있는 보관소의 각 보관함 찾기(사용 중)
     @GetMapping("getBox/{storageBoxCode}")
     public Object[] getBox(@PathVariable(value = "storageBoxCode") long boxCode) {
         Optional<StorageBox> box = storageBoxRepository.findById(boxCode);
@@ -404,6 +406,22 @@ public class StorageController {
 
         return object;
     }
+
+    //    구독 연장시 연장된 정보로 조회
+    @GetMapping("moreUseBox/{boxCode}")
+    public Object[] moreUseBox(@PathVariable(value = "boxCode")long boxCode){
+        Object[] infoData = storageBoxRepository.findByBoxInformationOfState(boxCode);
+        return infoData;
+    }
+
+    //  매니저가 관리하고 있는 보관소의 각 보관함 찾기(사용 안함)
+    @GetMapping("notUsingBoxInfo/{boxCode}")
+    public StorageBox notUsingBoxInfo(@PathVariable(value = "boxCode")long boxCode){
+        Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
+
+        return storageBox.get();
+    }
+
 
     //보관소 정보 업데이트
     @PostMapping("updateStorage")
@@ -723,6 +741,42 @@ public class StorageController {
 
         return member.get();
     }
+
+    // 사용중인 보관함코드로 사용자의 주소 조회
+    @GetMapping("UseBoxMemAddress/{useCode}")
+    private Member getMemberAddressUseCode(@PathVariable(value = "useCode") long useCode) {
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
+
+        return useStorageBox.get().getMCode();
+    }
+
+//    구족종료시에 현재시간과 남은시간이 가까울 때 정보보내기
+    @GetMapping("remainderTime/{useCode}")
+    public int remainderTime(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
+
+        Period period = useStorageBox.get().getUseStorageEndTime().until(LocalDate.now());
+
+        return period.getDays();
+    }
+
+//    구독 종료 후 추가 구독했는지 조회
+    @GetMapping("findUseState/{boxCode}")
+    public Boolean findUseState(@PathVariable(value = "boxCode")long boxCode){
+        System.out.println(boxCode);
+        List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByBoxCode(boxCode);
+        System.out.println("//////////////////");
+        for (int i = 0; i < useStorageBoxList.size(); i++) {
+            System.out.println(useStorageBoxList.get(i).getUseStorageState());
+            if (useStorageBoxList.get(i).getUseStorageState().equals("2")){
+                System.out.println(useStorageBoxList.get(i).getUseStorageState());
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     ////////////////////////// 지역 조회  //////////////////////////
 
     @GetMapping("aRound")
