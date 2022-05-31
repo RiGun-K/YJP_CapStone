@@ -30,7 +30,7 @@
   <div :style="{ 'margin-left': sidebarWidth }">
     <router-view />
   </div>
-  
+
   <div class="infoter">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
@@ -119,14 +119,15 @@ export default {
   },
   created() {
     this.goData(),
-        axios.get('/api/campingRound')
-            .then(res => {
-              console.log(res.data)
-              this.bigRound = res.data
-            })
-            .catch(err => {
-              console.log(err)
-            })
+    axios.get('/api/campingRound')
+        .then(res => {
+          console.log(res.data)
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
   },
 
   data() {
@@ -134,6 +135,7 @@ export default {
       selected: false,
       list: [],
       product: '',
+
       bigRound: [],
       smallRound: [],
       bigPick: 0,
@@ -147,6 +149,7 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
+
             axios.get('/api/product_detail_images/' + this.product.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");
@@ -159,6 +162,7 @@ export default {
             console.log(e)
           })
     },
+
     bigCheck(index) {
       if (index == '0') {
         this.smallRound = []
@@ -174,6 +178,7 @@ export default {
               console.log(err)
             })
       }
+
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == "0") {
@@ -199,7 +204,11 @@ export default {
               console.log(e)
             })
       }
+
+
+
     },
+
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
@@ -229,12 +238,13 @@ export default {
               alert("캠핑장이 없습니다.")
               window.location.href = 'http://localhost:8081/infoter'
             }
+
           })
           .catch(e => {
             console.log(e)
           })
     },
-    
+
     campingFilter(index) {
       if (this.searchCamping == '') {
         this.goData();
@@ -253,18 +263,19 @@ export default {
       }
     },
 
-
     orderBy: function (orderBy) {
       if(orderBy == 'latest') {
         this.list.sort(function (a, b) {
           return b.latest - a.latest;
         });
+
       } else if (orderBy == 'latestd') {
         this.list.sort(function (a, b) {
           return b.latestd - a.latestd;
         })
       }
     }
+
   }
 }
 </script>
@@ -304,6 +315,8 @@ export default {
   color: white;
   background-color: #b2e2fd;
 }
+
+
 .table table-striped {
   width : 30%;
   height: 30%;
@@ -312,10 +325,14 @@ export default {
   width : 20%;
   height: 20%;
 }
+
+
+
 img {
   width : 10%;
   height: 10%;
 }
+
 .search {
   width: 300px;
   height: 100px;
@@ -328,6 +345,7 @@ img {
   border: none;
   border-bottom: 1px black solid;
 }
+
 .search button {
   font-size: 18px;
   border: none;
@@ -340,6 +358,7 @@ img {
   margin-left: 85%;
   margin-top: -30%;
 }
+
 .campingkindimage {
   width:380px;
   height:320px;
@@ -348,13 +367,16 @@ img {
 .image-thumbnail{
   float: left;
 }
+
 img {
   width: 40%;
   height: 40%;
 }
+
 .card {
   width: 50%;
 }
+
 .card-body {
   overflow: hidden;
 }
