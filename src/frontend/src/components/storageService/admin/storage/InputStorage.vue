@@ -134,6 +134,7 @@ export default {
       }else{
         this.boxC = true
       }
+      this.geo(this.form.storageAddress)
     },
     clearFile(){
       this.file = ''
@@ -151,8 +152,6 @@ export default {
             }
           }
       );
-      console.log('this.a')
-      console.log(this.a)
     },
     initMap() {
       const container = document.getElementById("map");
@@ -275,13 +274,12 @@ export default {
               console.log(res.data.result)
               if (res.data.result === 'ok') {
                 alert('추가되었습니다')
-                console.log('중복없음')
                 this.clearInput()
                 this.addStorage = true
                 this.claerBox()
                 this.addStorage = false
                 alert('보관소와 보관함이 추가되었습니다.')
-                this.$router.push('/storageAdmin')
+                this.$emit('back')
               } else {
                 console.log('중복')
               }

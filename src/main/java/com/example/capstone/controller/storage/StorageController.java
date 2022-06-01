@@ -59,6 +59,7 @@ public class StorageController {
     public Result postStorage(@RequestBody StorageData storageData) {
         Storage storage = storageData.getStorage();
         Box box = storageData.getBox();
+        storage.setStorageState("1");
 
         Optional<Storage> storageChk = storageRepository.findByStorageName(storage.getStorageName());
         if (!storageChk.isPresent()) {
@@ -145,7 +146,7 @@ public class StorageController {
     //    보관소 리스트
     @GetMapping("/getStorage")
     public List<Storage> getStorages() {
-        List<Storage> storageList = storageRepository.findAll();
+        List<Storage> storageList = storageRepository.findByNotState();
         return storageList;
     }
 
