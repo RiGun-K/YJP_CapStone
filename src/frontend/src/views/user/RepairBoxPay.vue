@@ -39,9 +39,16 @@ export default {
   name: "RepairBoxPay",
   mounted() {
     console.log(this.$store.state.careItemInfo)
+    console.log(this.$route.params.useBoxCode)
+
   },
   data(){
     return{
+      member:{},
+      careItemList:{},
+      careList:{},
+      Option:'',
+      storageInfo:{},
 
     }
   },

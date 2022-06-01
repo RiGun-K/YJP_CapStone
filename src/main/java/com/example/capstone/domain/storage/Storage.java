@@ -38,7 +38,7 @@ public class Storage {  // 보관소
     private double longitude;//경도
 
     @Column
-    private String storageState = "0";
+    private String storageState = "1";
 
     @JsonManagedReference
     @OneToMany(mappedBy = "storageCode",cascade = CascadeType.ALL)
