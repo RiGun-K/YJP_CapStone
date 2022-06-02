@@ -22,6 +22,7 @@
           <th>번호</th>
           <th>지역</th>
           <th>보관소명</th>
+          <th>상태</th>
         </tr>
         </thead>
         <tbody>
@@ -77,7 +78,7 @@ export default {
       }
     },
     GetStorage() {
-      axios.get('/api/getStorage')
+      axios.get('/api/getStorageAdmin')
           .then((res) => {
             this.storageList = res.data
             this.searchList = this.storageList

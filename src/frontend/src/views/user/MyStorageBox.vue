@@ -76,7 +76,7 @@ export default {
                 box.boxName = boxes[i][3]
                 box.boxState = boxes[i][4]
                 box.useCode = boxes[i][5]
-                box.useState = boxes[i][6].charAt(0)
+                box.useState = boxes[i][6].toString().charAt(0)
                 if (boxes[i][6].length > 1) {
                   box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
 

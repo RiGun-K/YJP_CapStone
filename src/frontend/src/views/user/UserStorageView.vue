@@ -14,7 +14,7 @@
     <div class="searchDiv">
       <label for="storageName">보관소이름</label>
       <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
-      style="margin-left: 5px">
+             style="margin-left: 5px">
       <button @click="storageSearch()" style="margin-left: 8px">검색</button>
     </div>
 
@@ -102,7 +102,20 @@ export default {
         center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
         level: 9,
       };
+
       this.map = new kakao.maps.Map(container, options);
+
+      // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+      var mapTypeControl = new kakao.maps.MapTypeControl();
+
+      // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+      // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+      this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+      // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+      var zoomControl = new kakao.maps.ZoomControl();
+      this.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
       this.allMarker();
     },
     allMarker() {
@@ -187,8 +200,8 @@ export default {
             this.storageList = res.data
 
             for (let i = 0; i < this.storageList.length; i++) {
-              if(this.storageList[i].storageState == '1'){
-                this.storageList.splice(i,1)
+              if (this.storageList[i].storageState == '1') {
+                this.storageList.splice(i, 1)
               }
             }
             console.log(this.storageList)
@@ -228,8 +241,8 @@ export default {
             .then(res => {
               this.storageList = res.data
               for (let i = 0; i < this.storageList.length; i++) {
-                if(this.storageList[i].storageState == '1'){
-                  this.storageList.splice(i,1)
+                if (this.storageList[i].storageState == '1') {
+                  this.storageList.splice(i, 1)
                 }
               }
               this.searchList = this.storageList
@@ -243,8 +256,8 @@ export default {
             .then(res => {
               this.storageList = res.data
               for (let i = 0; i < this.storageList.length; i++) {
-                if(this.storageList[i].storageState == '1'){
-                  this.storageList.splice(i,1)
+                if (this.storageList[i].storageState == '1') {
+                  this.storageList.splice(i, 1)
                 }
               }
               this.searchList = this.storageList
@@ -260,11 +273,11 @@ export default {
       this.searchStorageList = []
       if (this.stSearch != '') {
         for (let i = 0; i < this.searchList.length; i++) {
-            if (this.searchList[i].storageName.includes(this.stSearch)) {
-              this.searchStorageList.push(this.searchList[i])
-            }
+          if (this.searchList[i].storageName.includes(this.stSearch)) {
+            this.searchStorageList.push(this.searchList[i])
+          }
         }
-        if (this.searchStorageList.length < 1){
+        if (this.searchStorageList.length < 1) {
           alert('검색하신 보관소은 없습니다')
           return
         }
@@ -287,8 +300,8 @@ export default {
   margin-right: 1%;
   width: 40%;
   float: left;
-  overflow:auto;
-  height:550px;
+  overflow: auto;
+  height: 550px;
 }
 
 .searchDiv {

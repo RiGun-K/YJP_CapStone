@@ -59,7 +59,6 @@ public class StorageController {
     public Result postStorage(@RequestBody StorageData storageData) {
         Storage storage = storageData.getStorage();
         Box box = storageData.getBox();
-        storage.setStorageState("1");
 
         Optional<Storage> storageChk = storageRepository.findByStorageName(storage.getStorageName());
         if (!storageChk.isPresent()) {
@@ -141,6 +140,13 @@ public class StorageController {
             System.out.println(n);
             return new Result("no");
         }
+    }
+
+    //관리자 보관소 리스트
+    @GetMapping("/getStorageAdmin")
+    public List<Storage> getStorageAdmin() {
+        List<Storage> storageList = storageRepository.findAll();
+        return storageList;
     }
 
     //    보관소 리스트
@@ -764,13 +770,9 @@ public class StorageController {
 //    구독 종료 후 추가 구독했는지 조회
     @GetMapping("findUseState/{boxCode}")
     public Boolean findUseState(@PathVariable(value = "boxCode")long boxCode){
-        System.out.println(boxCode);
         List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByBoxCode(boxCode);
-        System.out.println("//////////////////");
         for (int i = 0; i < useStorageBoxList.size(); i++) {
-            System.out.println(useStorageBoxList.get(i).getUseStorageState());
             if (useStorageBoxList.get(i).getUseStorageState().equals("2")){
-                System.out.println(useStorageBoxList.get(i).getUseStorageState());
                 return true;
             }
         }
