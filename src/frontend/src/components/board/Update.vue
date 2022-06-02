@@ -1,9 +1,8 @@
 <template>
   <div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <br><H2 style="font-weight: bold">게시판 수정</H2>
+    <br><H2 style="font-weight: bold">게시글 수정</H2>
     <br>
-    <button @click="list" style="float: left;">목록</button>
     <form>
       <table class="tbAdd">
 
@@ -40,9 +39,13 @@
     </form>
 
   </div>
-  <div class="btnWrap">
+  <div class="update">
+    <div class="button_1">
     <button @click="list" class="btn" style="float: left;">취소</button>
-    <button @click="update" type="submit" class="btnAdd btn">수정</button>
+    </div>
+    <div class="button_2">
+    <button @click="update" type="submit" class="btn">수정</button>
+    </div>
 
   </div>
 </template>
@@ -86,7 +89,7 @@ export default {
       if (confirm("수정하시겠습니까?")) {
         axios.put('/api/update', formData, {headers: {'Content-Type': 'multipart/form-data'}})
         .then((res) => {
-          console.log("수정되었습니다.", res.data)
+          console.log("수정되었습니다.", res  .data)
           alert("수정되었습니다.")
           this.$router.push({
             path: '/Read'
@@ -129,12 +132,6 @@ export default {
 
     },
 
-
-    list(){
-      this.$router.push({
-        path: '/Read'
-      })
-    }
   }
 }
 </script>
@@ -145,16 +142,46 @@ export default {
 .tbAdd td{padding:10px 10px; box-sizing:border-box;}
 .tbAdd td input{width:100%; min-height:30px; box-sizing:border-box; padding:0 10px;}
 .tbAdd td textarea{width:100%; min-height:300px; padding:10px; box-sizing:border-box;}
-.btnWrap{text-align:center; margin:20px 0 0 0;}
 .btnWrap a{margin:0 10px;}
-.btnAdd { width: 17%;
-  padding: 10px 0 10px;
-  border: 0;
-  cursor: pointer;
+.button_1{
+  text-align:center;
+  margin-left: 88%;
+  margin-top: 3%;
+  background-color: #58a8e5;
   color: white;
-  background-color: #5f8c98;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10%;
-  margin-top: 20px;}
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute
+}
+.button_1 a{margin:0 10px;}
+.button_1:hover {background-color: #f7bafa}
+.button_1:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.button_2{text-align:center;
+  margin-left: 93%;
+  margin-top: 3%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute
+}
+.button_2 a{margin:0 10px;}
+.button_2 :hover {background-color: #f7bafa}
+.button_2:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.update{
+  font-weight: bolder;
+  font-size: large;
+}
 </style>
