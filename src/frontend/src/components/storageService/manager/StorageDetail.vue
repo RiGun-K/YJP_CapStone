@@ -20,9 +20,6 @@
     <div style="width: 100%; text-align: right">
       <button @click="close()" class="cancleBtn">X</button>
     </div>
-    <!--    <div style="width: 100%; text-align: right">-->
-    <!--      <button @click="modalView = false" class="cancleBtn">X</button>-->
-    <!--    </div>-->
     <div class="modal-body">
       <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"/>
     </div>
@@ -103,9 +100,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-
-
 .storage-box {
   margin: 10px;
   border: solid 3px #DAA520;
@@ -119,6 +113,7 @@ export default {
 }
 
 .storage {
+  margin-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
   border: solid 3px #42b983;
