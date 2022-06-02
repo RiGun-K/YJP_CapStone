@@ -185,11 +185,13 @@ export default {
       axios.get('/api/getStorage')
           .then((res) => {
             this.storageList = res.data
+
             for (let i = 0; i < this.storageList.length; i++) {
               if(this.storageList[i].storageState == '1'){
                 this.storageList.splice(i,1)
               }
             }
+            console.log(this.storageList)
             this.searchList = this.storageList
 
             this.allMarker()

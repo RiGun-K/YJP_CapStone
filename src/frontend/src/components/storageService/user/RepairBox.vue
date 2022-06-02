@@ -38,7 +38,7 @@
       <input type="checkbox" v-model="requestList" value="건조">건조 <br>
       <input type="checkbox" v-model="requestList" value="세탁">세탁 <br>
       <input type="checkbox" v-model="requestList" value="폴대 수리">폴대 수리 <br>
-      <input type="checkbox" v-model="reqGita" value="기타">기타 <br>
+      <input type="checkbox" v-model="reqGita" value="기타">기타<br>
       <textarea v-model="gitaRepair" />
     </div>
   </div>
@@ -61,23 +61,13 @@ export default {
       myItemList: [],
       repairList: [],
       requestList:[],
-      reqGita:'',
+      reqGita:false,
       gitaRepair:'',
-      gita:false
     }
   },
   mounted() {
     this.getBackData(this.$route.params.useBoxCode)
     this.getBoxData(this.$route.params.useBoxCode)
-  },
-  watch:{
-    reqGita:function (){
-      if (this.reqGita.length>0){
-        this.gita = true
-      }else{
-        this.gita = false
-      }
-    }
   },
   methods: {
     getBoxData(useCode){
@@ -105,7 +95,7 @@ export default {
       let item = {}
       item.repairList = this.repairList
       item.requestList = this.requestList
-      if(this.gita){
+      if(this.reqGita){
         item.gitaRepair = this.gitaRepair
       }
       this.$store.commit('careItemInfo',item)

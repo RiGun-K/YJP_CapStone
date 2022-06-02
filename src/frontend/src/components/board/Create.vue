@@ -1,6 +1,7 @@
 <template>
   <div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
     <br>
     <h1 style="font-weight: bold">게시글 작성</h1>
     <button type="button" class="btn btn-outline-primary" @click="list" style="float: left;" >목록</button>
@@ -37,9 +38,12 @@
 
   </div>
   <div class="btnWrap">
+    <div class="button_3">
     <button @click="main" class="btn" style="float: left;">취소</button>
-    <button type="submit" @click="write" class="btnAdd btn">작성</button>
-
+    </div>
+    <div class="button_4">
+    <button type="submit" @click="write" class="btn">작성</button>
+  </div>
   </div>
 
 </template>
@@ -134,19 +138,58 @@ export default {
 .tbAdd td{padding:10px 10px; box-sizing:border-box;}
 .tbAdd td input{width:100%; min-height:30px; box-sizing:border-box; padding:0 10px;}
 .tbAdd td textarea{width:100%; min-height:300px; padding:10px; box-sizing:border-box;}
-.btnWrap{text-align:center; margin:20px 0 0 0;}
-.btnWrap a{margin:0 10px;}
-.btnAdd {text-align:center;
-  width: 17%;
-  padding: 10px 0 10px;
-  border: 0;
-  cursor: pointer;
+.btn{
+  font-size: 10px;
+  font-weight: bolder;
+  text-align: center;
+  margin-left: 1px;
+  margin-top: 2px;
+}
+.button_3{text-align:center;
+  margin-left: 85%;
+  background-color: #58a8e5;
   color: white;
-  background-color: #5f8c98;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10%;
-  margin-top: 20px;}
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.button_3 a{margin:0 10px;}
+.button_3:hover {background-color: #f7bafa}
+.button_3:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.button_4{
+  text-align:center;
+  margin-left: 90%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.button_4 a{margin:0 10px;
+}
+.button_4:hover {background-color: #f7bafa}
+.button_4:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+/*.btnAdd {text-align:center;*/
+/*  width: 17%;*/
+/*  padding: 10px 0 10px;*/
+/*  border: 0;*/
+/*  cursor: pointer;*/
+/*  color: white;*/
+/*  background-color: #5f8c98;*/
+/*  font-size: 20px;*/
+/*  font-weight: 400;*/
+/*  margin-left: 10%;*/
+/*  margin-top: 20px;}*/
 
 
 </style>
