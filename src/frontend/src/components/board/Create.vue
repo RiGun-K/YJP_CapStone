@@ -38,10 +38,10 @@
 
   </div>
   <div class="btnWrap">
-    <div class="btnAdd_1">
+    <div class="button_3">
     <button @click="main" class="btn" style="float: left;">취소</button>
     </div>
-    <div class="btnAdd_2">
+    <div class="button_4">
     <button type="submit" @click="write" class="btn">작성</button>
   </div>
   </div>
@@ -145,8 +145,8 @@ export default {
   margin-left: 1px;
   margin-top: 2px;
 }
-.btnAdd_1{text-align:center;
-  margin:20px 0 0 0;
+.button_3{text-align:center;
+  margin-left: 85%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;
@@ -154,16 +154,16 @@ export default {
   cursor: pointer;
   border-radius: 7px;
   position: absolute}
-.btnAdd_1 a{margin:0 10px;}
-.btnAdd_1:hover {background-color: #f7bafa}
-.btnAdd_1:active {
+.button_3 a{margin:0 10px;}
+.button_3:hover {background-color: #f7bafa}
+.button_3:active {
   background-color: #b464f6;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-.btnAdd_2{
+.button_4{
   text-align:center;
-  margin:60px 0 0 0;
+  margin-left: 90%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;
@@ -171,10 +171,10 @@ export default {
   cursor: pointer;
   border-radius: 7px;
   position: absolute}
-.btnAdd_2 a{margin:0 10px;
+.button_4 a{margin:0 10px;
 }
-.btnAdd_2:hover {background-color: #f7bafa}
-.btnAdd_2:active {
+.button_4:hover {background-color: #f7bafa}
+.button_4:active {
   background-color: #b464f6;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
