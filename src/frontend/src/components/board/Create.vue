@@ -37,11 +37,11 @@
   </form>
 
   </div>
-  <div class="btnWrap">
-    <div class="button_3">
-    <button @click="main" class="btn" style="float: left;">취소</button>
+  <div class="btnWrap_4">
+    <div class="button_5">
+    <button @click="main" class="btn">취소</button>
     </div>
-    <div class="button_4">
+    <div class="button_6">
     <button type="submit" @click="write" class="btn">작성</button>
   </div>
   </div>
@@ -145,8 +145,8 @@ export default {
   margin-left: 1px;
   margin-top: 2px;
 }
-.button_3{text-align:center;
-  margin-left: 85%;
+.button_6{text-align:center;
+  margin-left: 30%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;
@@ -154,27 +154,39 @@ export default {
   cursor: pointer;
   border-radius: 7px;
   position: absolute}
-.button_3 a{margin:0 10px;}
-.button_3:hover {background-color: #f7bafa}
-.button_3:active {
+.button_6 a{margin:0 10px;}
+.button_6:hover {background-color: #f7bafa}
+.button_6:active {
   background-color: #b464f6;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-.button_4{
-  text-align:center;
+.btnWrap_4{text-align:center;
   margin-left: 90%;
+  margin-top: 3%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
   border-radius: 7px;
-  position: absolute}
-.button_4 a{margin:0 10px;
+  position: absolute
 }
-.button_4:hover {background-color: #f7bafa}
-.button_4:active {
+.button_5{
+  text-align:center;
+  margin-left: -1%;
+  margin-top: 0%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+ }
+.button_5 a{margin:0 10px;
+}
+.button_5:hover {background-color: #f7bafa}
+.button_5:active {
   background-color: #b464f6;
   box-shadow: 0 5px #666;
   transform: translateY(4px);

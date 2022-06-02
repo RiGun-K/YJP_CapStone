@@ -484,19 +484,6 @@ export default {
         }
       })
     },
-
-    addPush(reviews) {
-      console.log(reviews.boardCampingCode)
-      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
-        .then((res) => {
-          alert("추천수가 증가되었습니다.")
-          console.log("추천수가 증가되었습니다.")
-        })
-        .catch(e => {
-          console.log(e)
-        })
-
-    }
   }
 }
 </script>

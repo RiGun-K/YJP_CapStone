@@ -50,7 +50,7 @@
         <button @click="addComments" id="rep_bt" class="re_bt">댓글작성</button>
       </div>
 
-    <div class="dap_ins" v-for="item in Comment" :key="item.id" :item="item">
+    <div class="dap_ins2" v-for="item in Comment" :key="item.id" :item="item">
       <form>
         <div class="tbAdd_a">
           <div class="tbAdd_1">
@@ -62,7 +62,7 @@
             <th></th>
 
             <div class="tbAdd_3">
-          <textarea name="commenttext" v-model="item.content" class="reply_content" id="re_content" disabled />
+              <textarea rows="4" cols="1" name="commenttext" v-model="item.content" class="reply_content2" id="re_content2" disabled />
             </div>
         </div>
       </form>
@@ -173,16 +173,18 @@ export default {
         parentBoard: this.id
       }
       console.log(data);
-      axios.post('/api/addComment/', data)
-      .then((res) => {
-        console.log("성공" + res.data)
-      })
-      .catch((ex) => {
-        console.log("fail", ex)
-      })
-      // this.$router.push({
-      //   path: '/Read'
-      // })
+      if (confirm("작성하시겠습니까?")) {
+        axios.post('/api/addComment/', data)
+            .then((res) => {
+              console.log("성공" + res.data)
+            })
+            .catch((ex) => {
+              console.log("fail", ex)
+            })
+        this.$router.push({
+          path: '/View'
+        })
+      }
     },
 
     commentdelete(item){
@@ -193,7 +195,7 @@ export default {
               console.log("삭제되었습니다.", res)
               alert("댓글이 삭제되었습니다.")
               this.$router.push({
-                path: '/infoter/infoterBoard'
+                path: '/view/:boardId'
               })
             })
             .catch((err) => {
@@ -215,6 +217,8 @@ export default {
   padding:1% 0 3%;
   box-sizing: border-box;
   width: 50%;
+  margin-left: 15%;
+  margin-top: 5%;
 
 }
 .tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
@@ -278,7 +282,8 @@ margin-top: 0%;
   margin-top: 2px;
 }
 .dap_ins {
-  margin-top:50px;
+  margin-top:5%;
+  margin-left: 10%;
 
 
 }
@@ -339,6 +344,22 @@ margin-top: 0%;
 .tbAdd_3{
   margin-top: 3%;
   margin-left: -5%;
+  width: 100%;
+}
+.reply_content2{
+
+}
+.dap_ins2{
+  width: 100%;
 }
 
+#re_content2{
+  width: 90%;
+  height: 10%;
+  margin-left: 10%;
+}
+.AddWrap th{
+  margin-left: 5%;
+
+}
 </style>
