@@ -41,13 +41,11 @@ export default {
 
 <style>
 .background {
-	width: 100vw;
-	height: 100vh;
-	background-color: #84bdff;
 }
 
 .imgbackground {
 	width: 100%;
+
 	object-fit: cover;
 }
 

@@ -2,65 +2,68 @@
 
 <template>
 	<h1>아래 정보는 AI추천기능을 위해 사용됩니다</h1>
-	<h1>날짜선택</h1>
-	<Datepicker
-		v-model="shareDate"
-		:enable-time-picker="false"
-		:min-date="today"
-		range
-		placeholder="Select camping  date range"
-		v-on="toString()"
-		format="yyyy/MM/dd"
-		autoApply
-		:closeOnAutoApply="false"
-	></Datepicker>
-	<h2>{{ this.$store.state.diff - 1 }}박{{ this.$store.state.diff }}일</h2>
-	<h3>캠핑장이름:<input type="text" v-model="campingName" /></h3>
-
-	<span class="input-group mb-3">
-		<input
-			type="text"
-			v-model="postalAddress"
-			class="form-control"
-			placeholder="우편주소 입력"
-			aria-label="Recipient's username"
-			aria-describedby="button-addon2"
-			readonly
-		/>
-		<button
-			class="btn btn-outline-secondary"
-			type="button"
-			id="button-addon2"
-			@click="zcGet"
-		>
-			우편주소검색
-		</button>
-	</span>
-	<div>
+	<div class="date">
+		<p>날짜선택: &nbsp;</p>
+		<p>{{ this.$store.state.diff - 1 }}박{{ this.$store.state.diff }}일</p>
+		<Datepicker
+			class="datePicker"
+			v-model="shareDate"
+			:enable-time-picker="false"
+			:min-date="today"
+			range
+			placeholder="Select camping  date range"
+			v-on="toString()"
+			format="yyyy/MM/dd"
+			autoApply
+			:closeOnAutoApply="false"
+		></Datepicker>
+	</div>
+	<p>캠핑장:<input type="text" v-model="campingName" /></p>
+	<div class="addressDiv">
 		<span class="input-group mb-3">
 			<input
 				type="text"
-				v-model="address"
-				id="email"
+				v-model="postalAddress"
 				class="form-control"
-				maxlength="100"
-				placeholder="도로명입력"
+				placeholder="우편주소 입력"
+				aria-label="Recipient's username"
+				aria-describedby="button-addon2"
 				readonly
 			/>
+			<button
+				class="btn btn-outline-secondary"
+				type="button"
+				id="button-addon2"
+				@click="zcGet"
+			>
+				우편주소검색
+			</button>
 		</span>
-	</div>
-	<div>
-		<span class="input-group mb-3">
-			<input
-				type="text"
-				v-model="detailAddress"
-				id="email"
-				class="form-control"
-				maxlength="100"
-				placeholder="상세주소"
-			/>
-		</span>
-		<span class="error_next_box">상세주소를 다시 확인해주세요.</span>
+		<div>
+			<span class="input-group mb-3">
+				<input
+					type="text"
+					v-model="address"
+					id="email"
+					class="form-control"
+					maxlength="100"
+					placeholder="도로명입력"
+					readonly
+				/>
+			</span>
+		</div>
+		<div>
+			<span class="input-group mb-3">
+				<input
+					type="text"
+					v-model="detailAddress"
+					id="email"
+					class="form-control"
+					maxlength="100"
+					placeholder="상세주소"
+				/>
+			</span>
+		</div>
 	</div>
 	<input type="text" placeholder="플랜이름" v-model="planName" />
 	<h6>{{ checkResult }}</h6>
@@ -259,4 +262,15 @@ export default {
 	},
 };
 </script>
-<style></style>
+<style>
+.datePicker {
+	margin-left: 10px;
+	width: 250px;
+}
+.date {
+	display: flex;
+}
+.addressDiv {
+	width: 500px;
+}
+</style>

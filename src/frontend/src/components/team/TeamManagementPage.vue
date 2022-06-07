@@ -391,10 +391,10 @@ hr {
 }
 
 .request {
-	margin: auto;
+	margin-left: 450px;
 }
 .request p {
-	font-size: 60px;
+	font-size: 50px;
 	display: flex;
 }
 .requestOuter {
@@ -402,7 +402,7 @@ hr {
 }
 
 .requestButton {
-	margin: auto;
+	margin-left: 100px;
 }
 @keyframes gradient1 {
 	0% {

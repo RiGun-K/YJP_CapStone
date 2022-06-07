@@ -2,42 +2,48 @@
 	<input type="text" v-model="searchPlan" placeholder="키워드를 입력하세요" />
 	<button @click="tagFilter(this.searchPlan)">검색</button>
 	<h2>지역설정</h2>
-	<select v-model="planDestination" @click="placeFilter()">
+	<select class="optionTag" v-model="planDestination" @click="placeFilter()">
 		<option>전체</option>
-		<option>강원</option>
-		<option>경기</option>
-		<option>경남</option>
-		<option>경북</option>
-		<option>광주</option>
-		<option>대구</option>
-		<option>대전</option>
-		<option>부산</option>
-		<option>서울</option>
-		<option>인천</option>
-		<option>전남</option>
-		<option>전북</option>
-		<option>제주</option>
-		<option>충북</option>
+		<option>강원도</option>
+		<option>경기도</option>
+		<option>경상도</option>
+		<option>대구시</option>
+		<option>부산시</option>
+		<option>서울시</option>
+		<option>인천시</option>
+		<option>전라도</option>
+		<option>제주도</option>
+		<option>충청도</option>
+		<option>울산시</option>
 	</select>
-
-	<button @click="orderBy('planViews')">조회순</button>
-	<button @click="orderBy('planUsedCount')">카피순</button>
+	<div class="sort">
+		<button class="w-btn1 w-btn-indigo" @click="orderBy('planViews')">
+			조회순
+		</button>
+		<button class="w-btn1 w-btn-indigo" @click="orderBy('planUsedCount')">
+			카피순
+		</button>
+	</div>
 	<hr />
-	<h1>지역: {{ planDestination }}</h1>
-	<h1>검색: {{ searchPlan }}</h1>
-	<div
-		@click="intoPlan(value)"
-		id="plans"
-		v-for="(value, index) in filteredPlanList"
-		:key="index"
-	>
-		{{ value.teamCode.teamName }}팀의{{ value.planName }} 플랜 <br />조회수:
-		{{ value.planViews }}
-		<br />
-		카피수:
-		{{ value.planUsedCount }}
-		<br />
-		지역:{{ value.planDestination }}
+	<div>
+		<h1>지역: {{ planDestination }}</h1>
+		<h1>검색: {{ searchPlan }}</h1>
+
+		<div
+			class="w-btn-outline w-btn-red-outline"
+			@click="intoPlan(value)"
+			v-for="(value, index) in filteredPlanList"
+			:key="index"
+		>
+			{{ value.teamCode.teamName }}팀의{{ value.planName }} 플랜
+			<br />조회수:
+			{{ value.planViews }}
+			<br />
+			카피수:
+			{{ value.planUsedCount }}
+			<br />
+			지역:{{ value.planDestination }}
+		</div>
 	</div>
 </template>
 
@@ -141,10 +147,89 @@ export default {
 </script>
 
 <style>
-#plans {
-	width: 200px;
-	height: 120px;
-	background-color: #f5d682;
-	border: 1px solid red;
+.w-btn-outline {
+	position: relative;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+.w-btn-red-outline {
+	border: 3px solid #ff5f2e;
+	color: #6e6e6e;
+	width: 300px;
+	height: 270px;
+	margin: 20px;
+	font-size: 25px;
+	float: left;
+}
+.w-btn-red-outline:hover {
+	background-color: #ff5f2e;
+	color: #e1eef6;
+}
+.w-btn-outline:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+
+.optionTag {
+	text-align: center;
+	width: 100px;
+	font-weight: 600;
+}
+.sort {
+	float: right;
+	margin: 10px;
+}
+.w-btn1 {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	margin-right: 50px;
+	float: right;
+}
+.w-btn1:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn1:active {
+	transform: scale(1.5);
+}
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn-indigo {
+	background-color: aliceblue;
+	color: #1e6b7b;
+	margin-bottom: 30px;
 }
 </style>
