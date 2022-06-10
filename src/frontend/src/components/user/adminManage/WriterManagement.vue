@@ -18,7 +18,7 @@
       <tr v-for="(obj, index) in viewList" :key="obj.writer_code">
         <td>{{obj.boardId}}</td>
         <td  @click="toWriter(obj.boardId)">{{obj.title}}</td>
-        <td>{{obj.mcode.mnick}}</td>
+        <td>{{obj.mid.mnick}}</td>
         <td>{{}}</td>
         <td>{{obj.savedTime}}</td>
         <td><button @click="deleteWriter(index)">삭제</button></td>
@@ -98,7 +98,6 @@ export default {
   z-index: 1;
 }
 .bodyDiv{
-  opacity: 0.95;
   padding: 30px;
   margin-left: 5%;
   margin-right: 5%;

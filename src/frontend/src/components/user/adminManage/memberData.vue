@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div class="divBody">
     <div style="text-align: center">
       <h1 style="color: black">{{member.mid}}회원 정보조회</h1>
@@ -57,7 +58,8 @@ export default {
   name: "memberData",
   data(){
     return{
-      member:[]
+      member:[],
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -102,11 +104,24 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .divBody{
-  margin-top: 1%;
-  margin-left: 25%;
-  margin-right: 25%;
-  width: 50%;
+  padding: 30px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  background: white;
+  width: 90%;
+  height: 93%;
+  z-index: 2;
+  position: relative;
 }
 label{
   margin-top: 5px;

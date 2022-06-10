@@ -399,7 +399,7 @@ public class MemberController {
     ///전체 게시글 조회///
     @GetMapping("adminAllWriter")
     public List<Board> adminAllWriter(){
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardRepository.findByAllList();
         return boardList;
     }
     ///게시글삭제///
