@@ -113,6 +113,11 @@ const routes = [
     component: () => import('@/components/user/myPage/AddEquip.vue')
   },
   {
+    path:'/updateEquipment/:equipCode',
+    name:'updateEquipment',
+    component: () => import('@/components/user/myPage/MyEquipUpdate.vue')
+  },
+  {
     path:'/memberData/:mid',
     name:'memberData',
     component: () => import('@/components/user/adminManage/memberData.vue')

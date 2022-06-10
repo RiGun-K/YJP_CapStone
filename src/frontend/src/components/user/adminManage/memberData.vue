@@ -24,7 +24,7 @@
       <label>회원 주소</label>
       <p class="inputText" style="width: 320px">{{member.mzadd}}</p>
       <p class="inputAdd">{{member.mradd}}</p>
-      <p class="inputAdd">{{member.madd}}</p>
+      <p class="inputAdd">{{maddCheck(member.madd)}}</p>
     </div>
     <div>
       <label>회원 전화번호</label>
@@ -88,6 +88,13 @@ export default {
     },
     returnMemberList(){
       this.$router.push("/memberAdmin")
+    },
+    maddCheck(text){
+      if(text == null){
+        return "상세주소없음"
+      }else{
+        return text
+      }
     }
   },
   created() {
