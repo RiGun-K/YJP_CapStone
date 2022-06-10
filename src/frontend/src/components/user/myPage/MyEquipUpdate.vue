@@ -18,18 +18,18 @@
       <button class="countBtn" @click="removeCount">감소</button>
     </div>
     <div class="btnDiv">
-      <button class="addBtn" @click="addEquip">추가</button>
-      <button class="addBtn" @click="returnEquip">취소</button>
+      <button class="updateBtn" @click="updateBtn">수정</button>
+      <button class="updateBtn" @click="deleteBtn">삭제</button>
+      <button class="updateBtn" @click="returnBtn">취소</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import store from "@/store";
 
 export default {
-  name: "AddEquip",
+  name: "MyEquipUpdate",
   data(){
     return{
       equipName:'',
@@ -38,6 +38,29 @@ export default {
       kindList:[],
       backImg:require("@/assets/camp1.jpg")
     }
+  },
+  created() {
+    axios.post("/api/searchEquip", {
+      equipCode:this.$route.params.equipCode
+    }).then((res)=>{
+      this.equipName = res.data.memEquipmentName
+      this.equipKind = res.data.kindid.kindname
+      this.equipCount = res.data.memEquipmentCount
+    }).catch((err)=>{
+      console.log(err)
+    })
+
+    axios.get("/api/allKindGet")
+        .then((res)=>{
+          for(var x = 0; x < res.data.length;x++){
+            if(res.data[x].parentkind != null){
+              this.kindList.push(res.data[x])
+            }
+          }
+          this.equipKind = this.kindList[0].kindname
+        }).catch((err)=>{
+      console.log(err)
+    })
   },
   methods:{
     addCount(){
@@ -49,40 +72,40 @@ export default {
         this.equipCount = 1
       }
     },
-    chKindId(index){
-      this.equipKind = index
-      console.log(this.equipKind)
+    returnBtn(){
+      this.$router.push("/myPageEquip")
     },
-    addEquip(){
-      axios.post("/api/addMyEquip",{
-        MID:store.getters.getLoginState.mcode,
-        KindName:this.equipKind,
-        NAME:this.equipName,
-        Count:this.equipCount
+    deleteBtn(){
+      axios.post("/api/myEquipDelete",{
+        equipCode:this.$route.params.equipCode
       }).then((res)=>{
         if(res.data){
+          alert("장비가 삭제되었습니다")
           this.$router.push("/myPageEquip")
+        }else{
+          alert("오류가 발생했습니다")
         }
       }).catch((err)=>{
         console.log(err)
       })
     },
-    returnEquip(){
-      this.$router.push("/myPageEquip")
-    }
-  },
-  created() {
-    axios.get("/api/allKindGet")
-    .then((res)=>{
-      for(var x = 0; x < res.data.length;x++){
-        if(res.data[x].parentkind != null){
-          this.kindList.push(res.data[x])
+    updateBtn(){
+      axios.post("/api/myEquipUpdate",{
+        equipCode:this.$route.params.equipCode,
+        equipName : this.equipName,
+        equipCount : this.equipCount,
+        kindName : this.equipKind
+      }).then((res)=>{
+        if(res.data){
+          alert("장비가 수정되었습니다")
+          this.$router.push("/myPageEquip")
+        }else{
+          alert("오류가 발생했습니다")
         }
-      }
-      this.equipKind = this.kindList[0].kindname
-    }).catch((err)=>{
-      console.log(err)
-    })
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
   }
 }
 </script>
@@ -109,8 +132,8 @@ export default {
   background: white;
 }
 .inputDiv{
-  left: 25%;
-  width: 75%;
+  left: 23%;
+  width: 73%;
   text-align: left;
   position: relative;
 }
@@ -123,11 +146,11 @@ export default {
 .inputBody{
 }
 .btnDiv{
-  width: 100%;
+  width: 96%;
   text-align: right;
 }
-.addBtn{
-  margin-right: 10px;
+.updateBtn{
+  margin-left: 10px;
   margin-top: 1%;
 }
 .countBtn{

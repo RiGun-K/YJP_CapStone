@@ -124,7 +124,6 @@ tr, td{
   text-align: center;
 }
 .viewBody{
-  opacity: 0.95;
   background: white;
   padding: 30px;
   margin-left: 5%;

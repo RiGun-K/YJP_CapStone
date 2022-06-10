@@ -148,12 +148,12 @@ export default {
   z-index: 1;
 }
 .divBody{
-  margin-right: 25%;
-  margin-left: 25%;
+  margin-right: 15%;
+  margin-left: 15%;
   margin-top: 2%;
   margin-bottom: 5%;
   text-align: center;
-  width: 50%;
+  width: 70%;
   height: 93%;
   padding: 30px;
   z-index: 2;
