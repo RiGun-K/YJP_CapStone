@@ -3,7 +3,7 @@
   <div id="content">
     <table border="1px" style="margin-top: 1%">
       <tr>
-        <th colspan="4">
+        <th colspan="5">
           <h1 style="color: black; text-align: center">내 장비</h1>
         </th>
       </tr>
@@ -12,12 +12,14 @@
         <th>장비분류</th>
         <th>장비상태</th>
         <th>장비수량</th>
+        <th>수정</th>
       </tr>
-      <tr v-for="(body) in EquipList" :key="body.memEquipmentCode">
+      <tr v-for="(body, index) in EquipList" :key="body.memEquipmentCode">
         <td>{{ body.memEquipmentName}}</td>
         <td>{{ body.kindid.kindname}}</td>
         <td>{{ stateCheck(body.memEquipmentState)}}</td>
         <td>{{ body.memEquipmentCount}}</td>
+        <td><button @click="updateEquip(index)">수정</button></td>
       </tr>
     </table>
     <button @click="addEquip" class="EquipBtn">장비추가</button>
@@ -47,6 +49,14 @@ export default {
     },
     addEquip(){
       this.$router.push("/addEquipment")
+    },
+    updateEquip(index){
+      this.$router.push({
+        name:"updateEquipment",
+        params:{
+          equipCode:this.EquipList[index].memEquipmentCode
+        }
+      })
     }
   },
   created(){
@@ -78,18 +88,13 @@ th, td{
   float: right;
   padding: 0.5px;
 }
-body {
-  margin: 0;
-  height: 100%;
-  background-color: #E6E6FA;
-}
 #content {
-  margin-right: 25%;
-  margin-left: 25%;
+  margin-right: 15%;
+  margin-left: 15%;
   margin-top: 2%;
   margin-bottom: 5%;
   text-align: center;
-  width: 50%;
+  width: 70%;
   height: 93%;
   padding: 30px;
   z-index: 2;

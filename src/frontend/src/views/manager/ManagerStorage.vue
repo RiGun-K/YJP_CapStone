@@ -131,6 +131,7 @@ export default {
 .storage {
   margin-left: 5%;
   margin-right: 5%;
+  margin-top: 2%;
   border: solid 3px #42b983;
   width: 90%;
 }
