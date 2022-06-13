@@ -120,7 +120,7 @@ const routes = [
   {
     path:'/memberData/:mid',
     name:'memberData',
-    component: () => import('@/components/user/adminManage/memberData.vue')
+    component: () => import('@/components/user/adminManage/memberAdminData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////

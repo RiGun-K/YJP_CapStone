@@ -148,8 +148,18 @@ th, td{
   border: 1px solid #111111;
 }
 .searchBtn{
-  margin-left: 1%;
-  padding: 0.5%;
+  margin-left: 15px;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  width: 60px;
+  color: black;
+}
+.searchBtn:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 .searchDiv{
   margin-left: 5%;

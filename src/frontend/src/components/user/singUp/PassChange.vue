@@ -18,7 +18,7 @@
     </span>
     <p>{{inputCheck}}</p>
     <span class="error_next_box"></span>
-    <button @click="chPass" style="float:right;">확인</button>
+    <button @click="chPass" style="float:right;" class="btnCommon">확인</button>
   </div>
 </template>
 
@@ -96,40 +96,6 @@ export default {
   background: white;
   z-index: 2;
 }
-/* 입력폼 */
-h3 {
-  margin: 19px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.box {
-  display: block;
-  width: 100%;
-  height: 51px;
-  border: solid 1px #dadada;
-  padding: 10px 14px;
-  box-sizing: border-box;
-  background: #fff;
-  position: relative;
-}
-.int {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 29px;
-  border: none;
-  background: #fff;
-  font-size: 15px;
-}
-.box.int_id {
-  padding-right: 110px;
-}
-.box.int_pass {
-  padding-right: 40px;
-}
-.box.int_pass_check {
-  padding-right: 40px;
-}
 select {
   width: 100%;
   height: 29px;
@@ -147,27 +113,19 @@ select {
   color: red;
   display: none;
 }
-#alertTxt {
-  position: absolute;
-  top: 19px;
-  right: 38px;
-  font-size: 12px;
-  color: red;
-  display: none;
+
+.btnCommon{
+  margin-left: 1%;
+  padding: 0.2%;
+  width: 100px;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  color: black;
 }
-/* 버튼 */
-.btn_area {
-  margin: 30px 0 91px;
-}
-#btnJoin {
-  width: 45%;
-  margin-left: 4%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
   color: white;
-  background-color: #52a3ef;
-  font-size: 20px;
-  font-weight: 400;
 }
 </style>

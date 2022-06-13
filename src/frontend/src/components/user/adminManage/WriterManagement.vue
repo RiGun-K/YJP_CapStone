@@ -21,7 +21,7 @@
         <td>{{obj.mid.mnick}}</td>
         <td>{{}}</td>
         <td>{{obj.savedTime}}</td>
-        <td><button @click="deleteWriter(index)">삭제</button></td>
+        <td><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
       </tr>
     </table>
     <div class="searchDiv">
@@ -133,8 +133,30 @@ tr, td{
   text-align: center;
 }
 .searchBtn{
-  margin-left: 1%;
+  margin-left: 15px;
   padding: 0.2%;
   text-align: center;
+  border: black solid 3px;
+  background: white;
+  width: 60px;
+  color: black;
+}
+.searchBtn:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
+}
+.btnCommon{
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  width: 50px;
+  color: black;
+}
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>

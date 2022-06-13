@@ -21,7 +21,7 @@
         <td style="width: 10%;">공란</td>
         <td style="width: 10%;">{{ body.boardViews }}</td>
         <td style="width: 10%;">{{body.savedTime}}</td>
-        <td style="width: 10%;"><button @click="deleteWriter(index)">삭제</button></td>
+        <td style="width: 10%;"><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
       </tr>
     </table>
     <div class="searchDiv">
@@ -98,7 +98,17 @@ export default {
 }
 .searchBtn{
   margin-left: 1%;
-  padding: 0.5%;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  width: 50px;
+  background: white;
+  color: black;
+}
+.searchBtn:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 .searchDiv{
   margin-left: 10%;
@@ -122,6 +132,20 @@ th, td{
   z-index: 2;
   position: relative;
   background: white;
+}
+.btnCommon{
+  margin-left: 1%;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  width: 50px;
+  background: white;
+  color: black;
+}
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>
 

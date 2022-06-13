@@ -148,11 +148,12 @@ label{
   padding-left: 5px;
 }
 .btnCommon{
-  margin-left: 1%;
+  margin-left: 15px;
   padding: 0.2%;
   text-align: center;
-  border: blue solid 3px;
+  border: black solid 3px;
   background: white;
+  width: 100px;
   color: black;
 }
 .btnCommon:hover{
