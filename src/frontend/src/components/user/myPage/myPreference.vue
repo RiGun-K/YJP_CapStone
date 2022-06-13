@@ -185,7 +185,8 @@ export default {
   color: white;
 }
 .clicked{
-  background: red;
+  background: black;
+  color: white;
 }
 h1{
   color: #5f8c98;

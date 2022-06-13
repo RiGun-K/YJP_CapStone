@@ -19,7 +19,7 @@
         <td>{{ body.kindid.kindname}}</td>
         <td>{{ stateCheck(body.memEquipmentState)}}</td>
         <td>{{ body.memEquipmentCount}}</td>
-        <td><button @click="updateEquip(index)">수정</button></td>
+        <td><button @click="updateEquip(index)" class="btnCommon">수정</button></td>
       </tr>
     </table>
     <button @click="addEquip" class="EquipBtn">장비추가</button>
@@ -85,8 +85,21 @@ th, td{
 }
 .EquipBtn{
   margin-top: 1%;
+  margin-left: 1%;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  width: 100px;
+  background: white;
+  color: black;
   float: right;
-  padding: 0.5px;
+}
+.EquipBtn:hover{
+  margin-top: 1%;
+  float: right;
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 #content {
   margin-right: 15%;
@@ -100,6 +113,21 @@ th, td{
   z-index: 2;
   position: relative;
   background: white;
+}
+
+.btnCommon{
+  margin-left: 1%;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  width: 50px;
+  background: white;
+  color: black;
+}
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>
 

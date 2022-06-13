@@ -18,9 +18,9 @@
       <button class="countBtn" @click="removeCount">감소</button>
     </div>
     <div class="btnDiv">
-      <button class="updateBtn" @click="updateBtn">수정</button>
-      <button class="updateBtn" @click="deleteBtn">삭제</button>
-      <button class="updateBtn" @click="returnBtn">취소</button>
+      <button class="btnCommon" @click="updateBtn">수정</button>
+      <button class="btnCommon" @click="deleteBtn">삭제</button>
+      <button class="btnCommon" @click="returnBtn">취소</button>
     </div>
   </div>
 </template>
@@ -149,13 +149,30 @@ export default {
   width: 96%;
   text-align: right;
 }
-.updateBtn{
+.countBtn{
+  margin-left: 10px;
+  border: black solid 2px;
+  background: #41b883;
+}
+.countBtn:hover{
+  margin-left: 10px;
+  border: #7ea6f6 solid 2px;
+  background: black;
+  color: white;
+}
+.btnCommon{
   margin-left: 10px;
   margin-top: 1%;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  width: 50px;
+  background: white;
+  color: black;
 }
-.countBtn{
-  margin-left: 1%;
-  border: 0px;
-  background: #41b883;
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>
