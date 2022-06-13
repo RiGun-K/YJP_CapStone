@@ -182,9 +182,9 @@
           </div>
 
           <div class="review">
-            <div class="review-title">캠핑장명 {{ reviews.campingId.campingName}} </div><br>
-            <div class="review-mid">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
-              <div class="review-text">설명 {{ reviews.campingContent }}</div>
+            <div class="review-title">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
+              <div class="review-text">{{ reviews.campingTitle }}</div>
+              <div class="review-text">{{ reviews.campingContent }}</div>
 
             <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
 
@@ -485,18 +485,7 @@ export default {
       })
     },
 
-    addPush(reviews) {
-      console.log(reviews.boardCampingCode)
-      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
-        .then((res) => {
-          alert("추천수가 증가되었습니다.")
-          console.log("추천수가 증가되었습니다.")
-        })
-        .catch(e => {
-          console.log(e)
-        })
 
-    }
   }
 }
 </script>
@@ -717,9 +706,9 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   .review-title{
     /*background-color: blue;*/
     position: relative;
-    margin-top: 1%;
+    margin-top: -22%;
     left:20%;
-    font-size: 40px;
+    font-size: 25px;
   }
 .review-mid{
   position: relative;
@@ -734,9 +723,9 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .review-text{
   position: relative;
   left: 50px;
-  font-size: 38px;
+  font-size: 22px;
   margin-top: 20%;
-  margin-left: 40%;
+  /*margin-left: 40%;*/
 }
 .btn_Bottom_2{
   width: 30%;

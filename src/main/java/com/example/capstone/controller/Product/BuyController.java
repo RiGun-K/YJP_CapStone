@@ -213,7 +213,7 @@ BuyController {
 
             menuBuy.setOrigFilename(origFilename);
             menuBuy.setFilename(filename);
-            menuBuy.setFilePath(filePath);
+            menuBuy.setFilePath("\\src\\frontend\\src\\assets\\"+ filename);
 
 
         } catch (Exception e) {
