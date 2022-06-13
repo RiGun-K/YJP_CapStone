@@ -35,10 +35,18 @@
   <div>
     <h5>수리 맡길 장비 기본 사항 선택+ 기타(직접입력)</h5>
     <div>
-      <input type="checkbox" v-model="requestList" value="건조">건조 <br>
-      <input type="checkbox" v-model="requestList" value="세탁">세탁 <br>
-      <input type="checkbox" v-model="requestList" value="폴대 수리">폴대 수리 <br>
-      <input type="checkbox" v-model="reqGita" value="기타">기타<br>
+      <table>
+        <tbody>
+        <tr v-for="re in reList">
+          <td>{{re.buyName}}</td>
+          <td>{{re.buyEx}}</td>
+          <td><input  type="checkbox" v-model="requestList" :value="re"></td>
+        </tr>
+        <td>기타</td>
+        <td></td>
+        <td><input type="checkbox" v-model="reqGita" value="기타"></td>
+        </tbody>
+      </table>
       <textarea v-model="gitaRepair" />
     </div>
   </div>
@@ -63,11 +71,13 @@ export default {
       requestList:[],
       reqGita:false,
       gitaRepair:'',
+      reList:{},
     }
   },
   mounted() {
     this.getBackData(this.$route.params.useBoxCode)
     this.getBoxData(this.$route.params.useBoxCode)
+    this.getRepairList()
   },
   methods: {
     getBoxData(useCode){
@@ -86,6 +96,16 @@ export default {
           .then(res => {
             console.log(res.data)
             this.myItemList = res.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getRepairList(){
+      axios.get("/api/repairItemList")
+          .then(res => {
+            console.log(res.data)
+            this.reList = res.data
           })
           .catch(err => {
             console.log(err)

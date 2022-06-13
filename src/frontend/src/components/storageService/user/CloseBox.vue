@@ -1,9 +1,9 @@
 <template>
-  보관함 사용 해지
+  <h5>보관함 사용 해지</h5>
   <div>
     <button @click="this.$router.push({name:'myBox'})" class="renewal-box-back-btn">뒤로가기</button>
   </div>
-  사용중인보관함
+  <h5>사용중인보관함</h5>
   <div>
     <table>
       <tbody>
@@ -19,7 +19,7 @@
     </table>
   </div>
 
-  보관중인장비
+  <h5>보관중인장비</h5>
   <div>
     <table>
       <tbody>
@@ -31,7 +31,7 @@
       </tbody>
     </table>
   </div>
-  사용기간
+  <h5>사용기간</h5>
   <div>
     <table border="1" width="500px">
       <tbody>

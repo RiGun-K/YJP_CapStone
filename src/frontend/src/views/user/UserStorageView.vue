@@ -1,6 +1,6 @@
 <template>
   <div class="user-storage-view">
-    <h3>보관소 리스트 페이지</h3>
+    <h3>보관소</h3>
     <div class="searchDiv">
       <select v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
@@ -22,6 +22,9 @@
       <div v-for="(storage,index) in storageList" :key="index"
            @click="GetStorageDetail(storage.storageCode)" class="listObj">
         <div class="card">
+          <div>
+            <img :src="'/api/storageImage/'+storage.filename">
+          </div>
           <div class="card-body">
             이름: {{ storage.storageName }}
           </div>

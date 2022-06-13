@@ -76,7 +76,7 @@ BuyController {
             uploadFile.transferTo(new File(filePath));
             MenuBuyDTO.setOrigFilename(origFilename);
             MenuBuyDTO.setFilename(filename);
-            MenuBuyDTO.setFilePath(filePath);
+            MenuBuyDTO.setFilePath("\\src\\frontend\\src\\assets\\"+ filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
