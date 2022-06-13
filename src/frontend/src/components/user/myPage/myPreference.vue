@@ -178,7 +178,7 @@ export default {
   margin-bottom: 10px;
   background: #b2e2fd;
   color: black;
-  width: 60px;
+  width: 100px;
 }
 .btn:hover{
   background: #000a69;
