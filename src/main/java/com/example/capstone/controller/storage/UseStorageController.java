@@ -1,6 +1,7 @@
 package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.MemberEquipment;
@@ -338,6 +339,11 @@ public class UseStorageController {
     }
 
     ////////////////////////// 수리상품 조회 ////////////////////////
+
+    @GetMapping("itemList")
+    private List<Kind> getStoreItemList(){
+        List<Kind> kindList = kindRepository.findByParentkindid
+    }
 
     @GetMapping("repairItemList")
     private List<MenuBuy> getRepairList(){

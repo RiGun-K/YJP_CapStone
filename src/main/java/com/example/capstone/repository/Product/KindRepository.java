@@ -12,4 +12,7 @@ public interface KindRepository extends JpaRepository<Kind, Integer> {
     //
     public List<Kind> findAll();
     public Optional<Kind> findByKindname(String kindname);
+
+    @
+    List<Kind> findByParentkindKindid();
 }
