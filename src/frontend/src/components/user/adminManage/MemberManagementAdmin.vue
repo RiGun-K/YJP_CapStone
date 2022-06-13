@@ -151,6 +151,14 @@ tr, td{
   margin-left: 1%;
   padding: 0.2%;
   text-align: center;
+  border: blue solid 3px;
+  background: white;
+  color: black;
+}
+.searchBtn:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 .idSet, .nickSet, .leaveSet, .startSet, .stateSet{
   width: 10%;

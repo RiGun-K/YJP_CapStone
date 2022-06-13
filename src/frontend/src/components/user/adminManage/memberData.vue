@@ -46,7 +46,7 @@
       <p class="inputText">{{chMld(member.mld)}}</p>
     </div>
     <div style="text-align: right;">
-      <button @click="returnMemberList">돌아가기</button>
+      <button @click="returnMemberList" class="btnCommon">돌아가기</button>
     </div>
   </div>
 </template>
@@ -146,5 +146,18 @@ label{
   margin-left: 120px;
   width: 320px;
   padding-left: 5px;
+}
+.btnCommon{
+  margin-left: 1%;
+  padding: 0.2%;
+  text-align: center;
+  border: blue solid 3px;
+  background: white;
+  color: black;
+}
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>
