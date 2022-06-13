@@ -139,7 +139,7 @@ export default {
               console.log("삭제되었습니다.", res)
               alert("게시글이 삭제되었습니다.")
               this.$router.push({
-                path: '/infoter/infoterBoard'
+                path: '/Read'
               })
             })
             .catch((err) => {
@@ -182,7 +182,7 @@ export default {
               console.log("fail", ex)
             })
         this.$router.push({
-          path: '/View'
+          path: '/Read'
         })
       }
     },

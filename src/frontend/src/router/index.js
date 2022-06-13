@@ -150,6 +150,17 @@ const routes = [
     name: 'Update',
     component: () => import('@/components/board/Update.vue')
   },
+  {
+    path: '/noticeboard',
+    name: 'Noticeboard',
+    component: () => import('@/components/board/NoticeBoard.vue')
+  },
+  {
+    path: '/noticedetail/:boardId',
+    name: 'Noticedetail',
+    component: () => import('@/components/board/NoticeDetail.vue')
+  },
+
 
     ///////////////////////////////상품관리///////////////////////////////////
 
