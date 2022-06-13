@@ -16,29 +16,28 @@ public class Storage {  // 보관소
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO) //int.autoincrement
     private long storageCode;
-
     @Column
     private String storageName;
-
     @Column
     private String storageZipcode;
-
     @Column
     private String storageAddress;
-
     @Column
     private String storageDetailAddress;
-
     @Column
     private String storageTel;
-
     @Column
     private double latitude;//위도
     @Column
     private double longitude;//경도
-
     @Column
     private String storageState = "1";
+    @Column
+    private String origFilename;
+    @Column
+    private String filename;
+    @Column
+    private String filePath;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "storageCode",cascade = CascadeType.ALL)
@@ -137,5 +136,29 @@ public class Storage {  // 보관소
 
     public void setStorageBoxes(List<StorageBox> storageBoxes) {
         this.storageBoxes = storageBoxes;
+    }
+
+    public String getOrigFilename() {
+        return origFilename;
+    }
+
+    public void setOrigFilename(String origFilename) {
+        this.origFilename = origFilename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

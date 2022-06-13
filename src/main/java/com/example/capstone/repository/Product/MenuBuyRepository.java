@@ -26,4 +26,7 @@ public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
     @Query(value = "SELECT * FROM MENUBUY M WHERE M.BUY_NAME LIKE %:searchBuy%", nativeQuery = true)
     List<MenuBuy> findAllBysearchBuyContains(@Param("searchBuy") String searchBuy);
 
+    @Query(value = "SELECT * FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20",nativeQuery = true)
+    List<MenuBuy> findByRepairList();
+
 }
