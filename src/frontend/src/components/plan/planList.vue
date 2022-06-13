@@ -1,21 +1,33 @@
 <template>
-	<input type="text" v-model="searchPlan" placeholder="키워드를 입력하세요" />
-	<button @click="tagFilter(this.searchPlan)">검색</button>
-	<h2>지역설정</h2>
-	<select class="optionTag" v-model="planDestination" @click="placeFilter()">
-		<option>전체</option>
-		<option>강원도</option>
-		<option>경기도</option>
-		<option>경상도</option>
-		<option>대구시</option>
-		<option>부산시</option>
-		<option>서울시</option>
-		<option>인천시</option>
-		<option>전라도</option>
-		<option>제주도</option>
-		<option>충청도</option>
-		<option>울산시</option>
-	</select>
+	<div class="search">
+		<select
+			class="optionTag"
+			v-model="planDestination"
+			@click="placeFilter()"
+		>
+			<option>전체</option>
+			<option>강원도</option>
+			<option>경기도</option>
+			<option>경상도</option>
+			<option>대구시</option>
+			<option>부산시</option>
+			<option>서울시</option>
+			<option>인천시</option>
+			<option>전라도</option>
+			<option>제주도</option>
+			<option>충청도</option>
+			<option>울산시</option></select
+		><input
+			type="text"
+			v-model="searchPlan"
+			placeholder="키워드를 입력하세요"
+		/>
+		<button class="w-btn1 w-btn-indigo" @click="tagFilter(this.searchPlan)">
+			검색
+		</button>
+	</div>
+	<hr />
+
 	<div class="sort">
 		<button class="w-btn1 w-btn-indigo" @click="orderBy('planViews')">
 			조회순
@@ -24,7 +36,6 @@
 			카피순
 		</button>
 	</div>
-	<hr />
 	<div>
 		<h1>지역: {{ planDestination }}</h1>
 		<h1>검색: {{ searchPlan }}</h1>
@@ -200,7 +211,6 @@ export default {
 	font-weight: 600;
 	transition: 0.25s;
 	margin-right: 50px;
-	float: right;
 }
 .w-btn1:hover {
 	letter-spacing: 2px;
@@ -231,5 +241,25 @@ export default {
 	background-color: aliceblue;
 	color: #1e6b7b;
 	margin-bottom: 30px;
+}
+.search {
+	height: 100px;
+	background-color: #e1eef6;
+	text-align: center;
+}
+.search input {
+	width: 500px;
+	height: 40px;
+	margin-top: 30px;
+}
+.search select {
+	height: 40px;
+	margin-top: 30px;
+}
+
+.search button {
+	position: relative;
+	display: inline-block;
+	margin-top: 30px;
 }
 </style>

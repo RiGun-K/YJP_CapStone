@@ -39,80 +39,106 @@
 			this.$store.state.planCode.planTotalDate
 		}}일
 	</h2>
+	<div class="frame">
+		<div
+			class="dates"
+			v-for="index in this.$store.state.planCode.planTotalDate"
+			:key="index"
+		>
+			<button class="w-btn w-btn-blue" @click="datesButton(index)">
+				{{ index }}일차
+			</button>
+		</div>
 
-	<div v-for="index in this.$store.state.planCode.planTotalDate" :key="index">
-		<button @click="datesButton(index)">{{ index }}</button>일차
+		<hr />
+
+		<div class="detailPlan">
+			<h1>{{ dateIndex }}일차 계획</h1>
+			<p>시작 <input type="time" v-model="detailStart" /><br /></p>
+			<p>종료<input type="time" v-model="detailEnd" /></p>
+			<p>
+				Name
+				<input
+					type="text"
+					v-model="detailName"
+					placeholder="일정 이름을 입력하세요"
+				/>
+			</p>
+
+			Memo<input
+				type="text"
+				v-model="detailMemo"
+				placeholder="메모를 입력하세요"
+			/>
+			<div v-for="(value, index) in showChecklist" :key="index">
+				<h2>{{ value }}</h2>
+			</div>
+			<button @click="insert">삽입</button>
+		</div>
 		<br />
-	</div>
-	<button @click="editPlan">플랜수정</button>
-
-	<hr />
-	<h1>{{ dateIndex }}일차 계획</h1>
-	시작
-	<input type="time" v-model="detailStart" /><br />
-	종료
-	<input type="time" v-model="detailEnd" />
-	<br />
-	Name<input
-		type="text"
-		v-model="detailName"
-		placeholder="일정 이름을 입력하세요"
-	/>
-	<br />
-
-	Memo<input
-		type="text"
-		v-model="detailMemo"
-		placeholder="메모를 입력하세요"
-	/>
-	<br />
-
-	<div v-for="(value, index) in showChecklist" :key="index">
-		<h2>{{ value }}</h2>
-	</div>
-	<button @click="insert">삽입</button>
-	<hr />
-
-	<div>
-		<table border="1" bordercolor="blue" align="center">
-			<th bgcolor="skybule">{{ dateIndex }}일차</th>
-			<th>시작</th>
-			<th>종료</th>
-			<th>이름</th>
-			<th>메모</th>
-			<th>체크리스트</th>
-			<tr v-for="(value, index) in detailPlanOfDayList" :key="index">
-				<td>{{ value.detailStart }}</td>
-				<td>{{ value.detailEnd }}</td>
-				<td>{{ value.detailName }}</td>
-				<td>{{ value.detailMemo }}</td>
-				<td>
-					<span v-for="(value1, index) in allCheckList" :key="index">
-						<button
-							v-if="value1.detailCode == value.detailCode"
-							title="더블클릭하면 삭제됩니다"
-							:class="[
-								{ color_n: value1.checkState == 'n' },
-								{ color_y: value1.checkState == 'y' },
-							]"
-							@click="updateState(index)"
-							@dblclick="deleteChecklist(value1)"
-						>
-							{{ value1.checkContent }}
-						</button>
-					</span>
-				</td>
-				<td>
-					<button @click="insertChecklist(value.detailCode)">
-						checkList
-					</button>
-					<button @click="deleteDetailPlan(value)">일정 삭제</button>
-				</td>
-			</tr>
-		</table>
+		<hr />
 
 		<div>
-			<button @click="savePlan">플랜저장</button>
+			<table border="1" bordercolor="blue" align="center">
+				<th bgcolor="skybule">{{ dateIndex }}일차</th>
+				<th>시작</th>
+				<th>종료</th>
+				<th>이름</th>
+				<th>메모</th>
+				<th>체크리스트</th>
+				<tr v-for="(value, index) in detailPlanOfDayList" :key="index">
+					<td>{{ value.detailStart }}</td>
+					<td>{{ value.detailEnd }}</td>
+					<td>{{ value.detailName }}</td>
+					<td>{{ value.detailMemo }}</td>
+					<td>
+						<span
+							v-for="(value1, index) in allCheckList"
+							:key="index"
+						>
+							<button
+								v-if="value1.detailCode == value.detailCode"
+								title="더블클릭하면 삭제됩니다"
+								:class="[
+									{ color_n: value1.checkState == 'n' },
+									{ color_y: value1.checkState == 'y' },
+								]"
+								@click="updateState(index)"
+								@dblclick="deleteChecklist(value1)"
+							>
+								{{ value1.checkContent }}
+							</button>
+						</span>
+					</td>
+					<td>
+						<button @click="insertChecklist(value.detailCode)">
+							checkList
+						</button>
+						<button @click="deleteDetailPlan(value)">
+							일정 삭제
+						</button>
+					</td>
+				</tr>
+			</table>
+
+			<div class="buttonDiv">
+				<div>
+					<button
+						class="w-btn-outline w-btn-red-outline"
+						@click="savePlan"
+					>
+						플랜저장
+					</button>
+				</div>
+				<div class="editButton">
+					<button
+						class="w-btn-outline w-btn-red-outline"
+						@click="editPlan"
+					>
+						플랜수정
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -316,10 +342,10 @@ export default {
 }
 table,
 th {
-	border: 3px solid black;
+	border: 2px solid black;
 }
 td {
-	border: 2px solid black;
+	border: 1px solid black;
 }
 :root {
 	--sidebar-bg-color: #e6f4ff;
@@ -360,5 +386,82 @@ td {
 .rotate-180 {
 	transform: rotate(180deg);
 	transition: 0.2s linear;
+}
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	border-radius: 5px;
+	text-align: center;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	margin-left: 10px;
+	margin-right: 5px;
+	width: 60px;
+	height: 60px;
+}
+.w-btn-blue {
+	background-color: #6aafe6;
+	color: #d4dfe6;
+}
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn:active {
+	transform: scale(1.5);
+}
+.dates {
+	display: inline-block;
+}
+
+.detailPlan {
+	height: 200px;
+}
+.detailPlan input {
+	border-radius: 7px;
+}
+.frame {
+	background-color: rgb(247, 246, 230);
+	width: 1000px;
+	height: 800px;
+	margin: auto;
+	border-radius: 20px;
+	padding-top: 50px;
+}
+
+.w-btn-outline {
+	padding: 10px 20px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+.w-btn-red-outline {
+	border: 3px solid #ff5f2e;
+	color: #6e6e6e;
+}
+.w-btn-red-outline:hover {
+	background-color: #ff5f2e;
+	color: #e1eef6;
+}
+.w-btn-outline:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+.buttonDiv button {
+	margin-right: 30px;
+	margin-top: 90px;
+	float: right;
 }
 </style>

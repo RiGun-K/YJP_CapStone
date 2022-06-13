@@ -1,75 +1,6 @@
 <template>
-	<!-- <div class="accordion" id="accordionExample">
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingOne">
-				<button
-					class="accordion-button"
-					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#collapseOne"
-					aria-expanded="true"
-					aria-controls="collapseOne"
-				>
-					Accordion Item #1
-				</button>
-			</h2>
-			<div
-				id="collapseOne"
-				class="accordion-collapse collapse show"
-				aria-labelledby="headingOne"
-				data-bs-parent="#accordionExample"
-			>
-				<div class="accordion-body">
-					<strong>This is the first item's accordion body.</strong> It
-					is shown by default, until the collapse plugin adds the
-					appropriate classes that we use to style each element. These
-					classes control the overall appearance, as well as the
-					showing and hiding via CSS transitions. You can modify any
-					of this with custom CSS or overriding our default variables.
-					It's also worth noting that just about any HTML can go
-					within the <code>.accordion-body</code>, though the
-					transition does limit overflow.
-				</div>
-			</div>
-		</div>
-
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingThree">
-				<button
-					class="accordion-button collapsed"
-					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#collapseThree"
-					aria-expanded="false"
-					aria-controls="collapseThree"
-				>
-					Accordion Item #3
-				</button>
-			</h2>
-			<div
-				id="collapseThree"
-				class="accordion-collapse collapse"
-				aria-labelledby="headingThree"
-				data-bs-parent="#accordionExample"
-			>
-				<div class="accordion-body">
-					<strong>This is the third item's accordion body.</strong> It
-					is hidden by default, until the collapse plugin adds the
-					appropriate classes that we use to style each element. These
-					classes control the overall appearance, as well as the
-					showing and hiding via CSS transitions. You can modify any
-					of this with custom CSS or overriding our default variables.
-					It's also worth noting that just about any HTML can go
-					within the <code>.accordion-body</code>, though the
-					transition does limit overflow.
-				</div>
-			</div>
-		</div>
-	</div> -->
 	<div class="background">
 		<div class="outer">
-			<!-- <img class="imgbackground" src="@/assets/campfire.gif" /> -->
-
 			<div class="boardDiv">
 				<p class="boardP">팀게시판</p>
 				<table class="tbAdd">
@@ -127,14 +58,17 @@
 
 			<div class="boardDiv">
 				<p class="memberListP">MemberList</p>
-				<div>
+				<div class="addMember">
 					회원추가하기
 					<input
 						type="text"
 						v-model="newMemberCode"
 						placeholder="회원번호"
 					/>
-					<button @click="addTeamMember(this.newMemberCode)">
+					<button
+						class="w-btn-outline2 w-btn-blue-outline2"
+						@click="addTeamMember(this.newMemberCode)"
+					>
 						추가하기
 					</button>
 				</div>
@@ -640,6 +574,22 @@ export default {
 	margin-left: 20px;
 	font-size: 20px;
 }
+
+.addMember button {
+	position: relative;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	width: 80px;
+	margin-left: 20px;
+	font-size: 12px;
+}
+.addMember input {
+	border-radius: 5px;
+}
 .w-btn-outline2:hover {
 	letter-spacing: 2px;
 	transform: scale(1.2);
@@ -664,6 +614,7 @@ export default {
 	margin-right: 50px;
 	float: right;
 }
+
 .w-btn-indigo {
 	background-color: aliceblue;
 	color: #1e6b7b;
