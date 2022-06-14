@@ -340,17 +340,43 @@ public class UseStorageController {
 
     ////////////////////////// 수리상품 조회 ////////////////////////
 
-    @GetMapping("itemList")
-    private List<Kind> getStoreItemList(){
-        List<Kind> kindList = kindRepository.findByParentkindid
+    @GetMapping("RepairGroupList")
+    private List<Kind> getRepairGroupList(){
+        List<Kind> kindList = kindRepository.findByRepairGroupList();
+        return kindList;
     }
 
     @GetMapping("repairItemList")
     private List<MenuBuy> getRepairList(){
-        List<MenuBuy> menuBuyList = menuBuyRepository.findByRepairList();
+        int id =20;
+        List<MenuBuy> menuBuyList = menuBuyRepository.findByParentKindId(id);
+        for (int i = 0; i < menuBuyList.size(); i++) {
+            System.out.println(menuBuyList.get(i).toString());
+        }
+        return menuBuyList;
+    }
+    @GetMapping("PickRepairList/{kindId}")
+    private List<MenuBuy> getPickRepairList(@PathVariable(value = "kindId")int kindId){
+        List<MenuBuy> menuBuyList = menuBuyRepository.findBykindId(kindId);
         return menuBuyList;
     }
 
+    @GetMapping("searchRepairList/{searchText}/{groupKindId}")
+    private List<MenuBuy> getSearchRepairList(@PathVariable(value = "searchText")String search,
+                                              @PathVariable(value = "groupKindId")int kindId){
 
+        System.out.println(search + kindId);
+        List<MenuBuy> menuBuyList;
+        if (kindId==0){
+            menuBuyList = menuBuyRepository.findBySearchName(search);
+        }else{
+            menuBuyList = menuBuyRepository.findByNameAndKindid(search, kindId);
+        }
+        if (menuBuyList.isEmpty()){
+            return null;
+        }
+        return menuBuyList;
+
+    }
 
 }

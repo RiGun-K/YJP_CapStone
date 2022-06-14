@@ -23,9 +23,9 @@
   <div>
     <h5>수리 맡길 장비 기본 사항 선택+ 기타(직접입력)</h5>
     <div>
-      <select>
-        <option>전체</option>
-        <option>수리</option>
+      <select v-model="groupPick" @change="pickGroup(groupPick)">
+        <option value="0">전체</option>
+        <option v-for="group in GroupList" :value="group.kindid">{{group.kindname}}</option>
       </select>
       <input type="text" v-model="searchText">
       <button @click="sch()">검색</button>
@@ -61,22 +61,50 @@ export default {
       requestList: [],
       reList: [],
       GroupList: [],
+      searchList:[],
       searchText: '',
+      groupPick:0,
     }
   },
   mounted() {
     this.getBackData(this.$route.params.useBoxCode)
-    this.getRepairList()
+    this.pickGroup(this.groupPick)
+    this.getList()
   },
   methods: {
     getList(){
-      axios.get()
+      axios.get("/api/RepairGroupList")
+          .then(res => {
+            console.log(res.data)
+            this.GroupList = res.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    pickGroup(kindId){
+      if(kindId == 0){
+        this.getRepairList()
+      }else {
+        axios.get("/api/PickRepairList/"+kindId)
+            .then(res => {
+              this.reList = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
     },
     sch() {
-      axios.get()
+        axios.get("/api/searchRepairList/"+this.searchText+"/"+this.groupPick)
+            .then(res => {
+              this.reList = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
     },
     getBackData(useCode) {
-      console.log(useCode)
       axios.get("/api/getBoxInItem/" + useCode)
           .then(res => {
             this.myItemList = res.data
