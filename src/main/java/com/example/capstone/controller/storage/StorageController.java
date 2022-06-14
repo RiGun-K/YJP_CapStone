@@ -14,12 +14,17 @@ import com.example.capstone.repository.orders.OrdersRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -56,12 +61,53 @@ public class StorageController {
     CampingAreaRepository campingAreaRepository;
 
     @PostMapping("/postStorage")
-    public Result postStorage(@RequestBody StorageData storageData) {
-        Storage storage = storageData.getStorage();
-        Box box = storageData.getBox();
-        storage.setStorageState("1");
+    public Result postStorage(@RequestParam(value = "file", required = false) MultipartFile uploadFile, StorageData storageData)throws IllegalStateException, IOException {
+//        Storage storage = storageData.getStorage();
+//        Box box = storageData.getBox();
+        Storage storage = new Storage();
+        storage.setStorageName(storageData.getStorageName());
+        storage.setStorageZipcode(storageData.getStorageZipcode());
+        storage.setStorageAddress(storageData.getStorageAddress());
+        storage.setStorageDetailAddress(storageData.getStorageDetailAddress());
+        storage.setStorageTel(storageData.getStorageTel());
+        storage.setLatitude(storageData.getLatitude());
+        storage.setLongitude(storageData.getLongitude());
+        Box box = new Box();
+        box.setSmall(storageData.getSmall());
+        box.setMedium(storageData.getMedium());
+        box.setLarge(storageData.getLarge());
 
         Optional<Storage> storageChk = storageRepository.findByStorageName(storage.getStorageName());
+
+        try {
+            String origFilename = uploadFile.getOriginalFilename();
+            String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+            String filename = now + "_" + origFilename;
+
+            /* 실행되는 위치의 'files' 폴더에 파일이 저장 */
+            String savePath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets";
+            /* 파일이 저장되는 폴더가 없으면 폴더 생성 */
+            if (!new File(savePath).exists()) {
+                try {
+                    new File(savePath).mkdir();
+                }
+                catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            String filePath = savePath + "\\" + filename;
+            uploadFile.transferTo(new File(filePath));
+            storageData.setOrigFilename(origFilename);
+            storageData.setFilename(filename);
+            storageData.setFilePath("\\src\\frontend\\src\\assets\\"+ filename);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        storage.setFilename(storageData.getFilename());
+        storage.setOrigFilename(storageData.getOrigFilename());
+        storage.setFilePath(storageData.getFilePath());
+
         if (!storageChk.isPresent()) {
             // 보관소 추가
             storageRepository.save(storage);
@@ -141,6 +187,13 @@ public class StorageController {
             System.out.println(n);
             return new Result("no");
         }
+    }
+
+    //관리자 보관소 리스트
+    @GetMapping("/getStorageAdmin")
+    public List<Storage> getStorageAdmin() {
+        List<Storage> storageList = storageRepository.findAll();
+        return storageList;
     }
 
     //    보관소 리스트
@@ -232,110 +285,6 @@ public class StorageController {
         return new Result("ok");
     }
 
-    //보관함 연장 결제
-    @PostMapping("/renewalPay")
-    public Result renewalPay(@RequestBody RenewalBox renewalBox) {
-        Optional<UseStorageBox> beforeUseStorageBox = useStorageBoxRepository.findById(renewalBox.getUseBoxCode());
-        Optional<Member> user = memberRepository.findByMCode(beforeUseStorageBox.get().getMCode().getMCode());
-        Optional<StorageBox> storageBox = storageBoxRepository.findById(beforeUseStorageBox.get().getStorageBoxCode().getStorageBoxCode());
-
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
-        for (int i = 0; i < memberEquipmentList.size(); i++) {
-            memberEquipmentList.get(i).setUseStorageBoxCode(null);
-        }
-        LocalDate start = renewalBox.getStartTime();
-        LocalDate end = renewalBox.getEndTime();
-
-        Orders orderList = new Orders(user.get());
-        orderList.setOrderPrice(renewalBox.getPrice());
-        orderList.setPaymentDate(LocalDateTime.now());
-        ordersRepository.save(orderList);
-
-        beforeUseStorageBox.get().setUseStorageState("1");
-        useStorageBoxRepository.save(beforeUseStorageBox.get());
-
-        UseStorageBox useStorageBox = new UseStorageBox();
-        useStorageBox.setStorageBoxCode(storageBox.get());
-        useStorageBox.setOrderCode(orderList);
-        useStorageBox.setUseStorageStartTime(start);
-        useStorageBox.setUseStorageEndTime(end);
-        useStorageBox.setMCode(user.get());
-        useStorageBox.setUseStorageState("2");
-        for (int i = 0; i < memberEquipmentList.size(); i++) {
-            memberEquipmentList.get(i).setUseStorageBoxCode(useStorageBox);
-        }
-        useStorageBoxRepository.save(useStorageBox);
-
-//         박스 상태 변화
-        storageBox.get().setStorageBoxState("2");
-//         결제된 박스 업데이트
-        storageBoxRepository.save(storageBox.get());
-
-        return new Result("ok");
-    }
-
-    //보관함 계약 해지
-    @PostMapping("/closeBox/{useBoxCode}")
-    public Result closeBox(@PathVariable(value = "useBoxCode")long useBoxCode) {
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
-        long boxCode = useStorageBox.get().getStorageBoxCode().getStorageBoxCode();
-        Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
-
-        UseStorageBox useBox = useStorageBox.get();
-        StorageBox box = storageBox.get();
-
-        useBox.setUseStorageState("1");
-        box.setStorageBoxState("6");
-
-        useStorageBoxRepository.save(useBox);
-        storageBoxRepository.save(box);
-
-        return new Result("ok");
-    }
-
-    // 보관함 결제
-    @PostMapping("/payBox")
-    public Result payStorageBox(@RequestBody payStorageBox payStorageBox) {
-        Optional<Member> user = memberRepository.findByMID(payStorageBox.getUserId());
-        Optional<StorageBox> storageBox = storageBoxRepository.findById(payStorageBox.getStorageBoxCode());
-        Optional<Storage> storage = storageRepository.findByStorageBoxCode(storageBox.get().getStorageBoxCode());
-        LocalDate start = payStorageBox.getUseStorageStartTime();
-
-        LocalDate end = payStorageBox.getUseStorageEndTime();
-
-        Orders orders = new Orders(user.get(), payStorageBox.getPrice());
-        orders.setPaymentDate(LocalDateTime.now());
-        orders.setDeliveryAddress(storage.get().getStorageAddress());
-        orders.setDeliveryZipcode(storage.get().getStorageZipcode());
-        orders.setDeliveryGetterTel(storage.get().getStorageTel());
-        orders.setOrderState("2");
-        ordersRepository.save(orders);
-
-        UseStorageBox useStorageBox = new UseStorageBox();
-        useStorageBox.setUseStorageStartTime(start);
-        useStorageBox.setUseStorageEndTime(end);
-        useStorageBox.setStorageBoxCode(storageBox.get());
-        useStorageBox.setOrderCode(orders);
-        useStorageBox.setMCode(user.get());
-        useStorageBoxRepository.save(useStorageBox);
-
-        if (payStorageBox.getItem().size() > 0) {
-            for (int i = 0; i < payStorageBox.getItem().size(); i++) {
-                Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItem().get(i));
-                memberEquipment.get().setUseStorageBoxCode(useStorageBox);
-                memberEquipmentRepository.save(memberEquipment.get());
-            }
-        } else {
-            System.out.println("없다");
-        }
-        // 박스 상태 변화
-        storageBox.get().setStorageBoxState("1");
-        // 결제된 박스 업데이트
-        storageBoxRepository.save(storageBox.get());
-
-        return new Result("ok");
-
-    }
 
     //보관함 보관 확인
     @PutMapping("/boxStateUpdate/{updateState}")
@@ -508,66 +457,6 @@ public class StorageController {
         return storageManagerList;
     }
 
-    // 보관함 장소 이동
-    @PostMapping("roundMoveBox")
-    private Result roundMovePay(@RequestBody RoundMove roundMove) {
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(roundMove.getUseBoxCode());
-        if (useStorageBox.get().getUseStorageState().equals("2")) {
-            useStorageBox.get().setUseStorageState("9");
-            useStorageBoxRepository.save(useStorageBox.get());
-
-            StorageBox storageBox = useStorageBox.get().getStorageBoxCode();
-            storageBox.setStorageBoxState("7");
-            storageBoxRepository.save(storageBox);
-
-            Optional<Member> member = memberRepository.findByMID(roundMove.getUserId());
-
-            Orders orderList = new Orders(member.get());
-            orderList.setDeliveryZipcode(roundMove.getZipCode());
-            orderList.setDeliveryAddress(roundMove.getAddress()+roundMove.getDetailAddress());
-            ordersRepository.save(orderList);
-
-            return new Result("ok");
-        } else if (useStorageBox.get().getUseStorageState() == "1") {
-            return new Result("umm");
-        } else {
-            return new Result("no");
-        }
-
-    }
-
-//    사용중인 보관함 시간 조회
-    @GetMapping("findUseBoxTimes/{stCode}/{boxCode}/{mid}")
-    public LocalDateTime[][] findUseBoxTimes(@PathVariable(value = "stCode")long stCode,
-                                               @PathVariable(value = "boxCode")long boxCode,
-                                               @PathVariable(value = "mid")String mid) throws ParseException {
-        Optional<Member> member = memberRepository.findByMID(mid);
-
-        List<List<String>> useStorageBoxList = useStorageBoxRepository.findByUseTimes(stCode,boxCode, member.get().getMCode());
-
-        int x = useStorageBoxList.size();
-        int y = 0;
-        for (int i = 0; i < useStorageBoxList.size(); i++) {
-            for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
-                if (i == 0){
-                    y = useStorageBoxList.get(i).size();
-                }
-                if (i>0 && useStorageBoxList.get(i).size() > useStorageBoxList.get(i-1).size()){
-                    y = useStorageBoxList.get(i).size();
-                }
-            }
-        }
-
-        LocalDateTime[][] array = new LocalDateTime[x][y];
-        for (int i = 0; i < useStorageBoxList.size(); i++) {
-            for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.s");
-                LocalDateTime dateTime = LocalDateTime.parse(useStorageBoxList.get(i).get(j), formatter);
-                array[i][j] = dateTime;
-            }
-        }
-        return array;
-    }
 
 //    보관함 사용 연장을 위한 시간조회
     @GetMapping("useTime/{useCode}")
@@ -583,120 +472,6 @@ public class StorageController {
         return storageBox.get().getStorageBoxPrice();
     }
 
-    // 보관함 보관소 이동
-    @PostMapping("boxToBoxPay")
-    private Result boxToBoxPay(@RequestBody StorageMove move) {
-        // 결제 시간
-        LocalDateTime orderTime = LocalDateTime.now();
-
-        // 사용자 조회
-        Optional<Member> member = memberRepository.findByMID(move.getUserId());
-
-        // 이동할 사용중인 보관함
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(move.getUse());
-
-        // 결제,
-        Orders orders = new Orders(member.get());
-        orders.setPaymentDate(orderTime);
-        orders.setMCode(member.get());
-        ordersRepository.save(orders);
-
-        // 보관함 상태 코드 변경경
-        Optional<StorageBox> beforeBox = storageBoxRepository.findById(move.getBefore());
-        beforeBox.get().setStorageBoxState("3"); // 장비 이동 신청옴 출발지
-        storageBoxRepository.save(beforeBox.get());
-
-        // 이동될 보관함 상태 코드 변경
-        Optional<StorageBox> afterBox = storageBoxRepository.findById(move.getAfter());
-        afterBox.get().setStorageBoxState("4");  // 장비 이동 신청 옴 도착지
-        storageBoxRepository.save(afterBox.get());
-
-        // 이동될 사용 보관함 상태코드(상태 + 이전 사용보관함코드)
-        UseStorageBox newUseStorageBox = new UseStorageBox(orderTime.toLocalDate(),
-                useStorageBox.get().getUseStorageEndTime(),
-                "4" + useStorageBox.get().getUseStorageBoxCode(),
-                afterBox.get(), orders);
-        newUseStorageBox.setMCode(member.get());
-        useStorageBoxRepository.save(newUseStorageBox);
-
-        // 이동할 사용중인 보관함 상태코드에서 이동될 사용중 보관함 코드 추가
-        // 이동될 사용 보관함 찾기
-        String state = "4" + useStorageBox.get().getUseStorageBoxCode();
-        Optional<UseStorageBox> newUSB = useStorageBoxRepository.findByUseStorageState(state);
-        useStorageBox.get().setUseStorageState("3" + newUSB.get().getUseStorageBoxCode());
-        useStorageBoxRepository.save(useStorageBox.get());
-
-        return new Result("ok");
-    }
-
-    // 보관소 에서 보관소로 이동시 어디로 가는 지에 대한 정보
-    @GetMapping("moveBoxInfo/{userBoxCode}")
-    private Object[] moveBoxInfo(@PathVariable(value = "userBoxCode") long userBoxCode) {
-        Object[] useStorageBox = useStorageBoxRepository.findByInFo(userBoxCode);
-        return useStorageBox;
-    }
-
-    //  보관소 보관소 이동 시작 -> 이동중으로 변경
-    @GetMapping("moveStateUpdate/{beforeBox}/{afterBox}")
-    private Result moveStateUpdate(@PathVariable(value = "beforeBox")long beforeBox,@PathVariable(value = "afterBox")long afterBox ){
-        Optional<UseStorageBox> beforeUSBox = useStorageBoxRepository.findById(beforeBox);
-        Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUSBox.get());
-
-        for (int i = 0; i < memberEquipmentList.size(); i++) {
-            memberEquipmentList.get(i).setUseStorageBoxCode(afterUSBox.get());
-            memberEquipmentRepository.save(memberEquipmentList.get(i));
-        }
-
-        LocalDate nowTime = LocalDate.now();
-
-        UseStorageBox before = beforeUSBox.get();
-        before.setUseStorageState("1");
-        before.setUseStorageEndTime(nowTime);
-        afterUSBox.get().setUseStorageState("5" + beforeUSBox.get().getUseStorageBoxCode());
-
-        StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();
-        storageBox.setStorageBoxState("0");
-        storageBoxRepository.save(storageBox);
-        useStorageBoxRepository.save(before);
-        useStorageBoxRepository.save(afterUSBox.get());
-
-        return new Result("ok");
-    }
-
-    // 보관소 이동 도착
-    @GetMapping("endmoveUpdate/{afterBox}")
-    private Result endmoveUpdate(@PathVariable(value = "afterBox")long afterBox ){
-        Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
-
-        afterUSBox.get().setUseStorageState("2");
-
-        StorageBox storageBox = afterUSBox.get().getStorageBoxCode();
-        storageBox.setStorageBoxState("2");
-
-        storageBoxRepository.save(storageBox);
-        useStorageBoxRepository.save(afterUSBox.get());
-
-        return new Result("ok");
-    }
-
-    // 내가 사용중인 보관함 조회
-    @GetMapping("getUseBox/{useBoxCode}")
-    private UseStorageBox getUseBox(@PathVariable(value = "useBoxCode")long useBoxCode){
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
-
-        return useStorageBox.get();
-    }
-
-    // 보관함에 보관안하는 내장비 조회
-    @GetMapping("myItem/{userId}")
-    private List<MemberEquipment> myItem(@PathVariable(value = "userId") String userId) {
-        Optional<Member> member = memberRepository.findByMID(userId);
-        long mCode = member.get().getMCode();
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByMemEquipment(mCode);
-
-        return memberEquipmentList;
-    }
 
     // 보관함에 장비 추가
     @PostMapping("addBoxInItem")
@@ -764,20 +539,14 @@ public class StorageController {
 //    구독 종료 후 추가 구독했는지 조회
     @GetMapping("findUseState/{boxCode}")
     public Boolean findUseState(@PathVariable(value = "boxCode")long boxCode){
-        System.out.println(boxCode);
         List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByBoxCode(boxCode);
-        System.out.println("//////////////////");
         for (int i = 0; i < useStorageBoxList.size(); i++) {
-            System.out.println(useStorageBoxList.get(i).getUseStorageState());
             if (useStorageBoxList.get(i).getUseStorageState().equals("2")){
-                System.out.println(useStorageBoxList.get(i).getUseStorageState());
                 return true;
             }
         }
         return false;
     }
-
-
     ////////////////////////// 지역 조회  //////////////////////////
 
     @GetMapping("aRound")

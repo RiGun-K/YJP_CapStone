@@ -267,8 +267,21 @@ export default {
         box: this.box,
         storage: this.form
       }
+      const formData = new FormData()
+      formData.append('small',this.box.small)
+      formData.append('medium',this.box.medium)
+      formData.append('large',this.box.large)
+      formData.append('storageName',this.form.storageName)
+      formData.append('storageZipcode',this.form.storageZipcode)
+      formData.append('storageAddress',this.form.storageAddress)
+      formData.append('storageDetailAddress',this.form.storageDetailAddress)
+      formData.append('latitude',this.form.latitude)
+      formData.append('longitude',this.form.longitude)
+      formData.append('file',this.file)
+
+
       if (this.errorCheck) {
-        axios.post('/api/postStorage', data)
+        axios.post('/api/postStorage', formData,{headers: {'Content-Type': 'multipart/form-data'}})
             .then((res) => {
               console.log(this.form)
               console.log(res.data.result)

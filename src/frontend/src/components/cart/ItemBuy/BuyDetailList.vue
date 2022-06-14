@@ -1,108 +1,97 @@
 <template>
   <br>
-  <ul class="slides">
-    <input type="radio" name="radio-btn" id="img-1" checked />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + images[0].filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-6" class="prev">&#x2039;</label>
-        <label for="img-2" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-2" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + images[1].filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-1" class="prev">&#x2039;</label>
-        <label for="img-3" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-3" />
-    <li class="slide-container">
-      <div class="slide">
-        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
-      </div>
-      <div class="nav">
-        <label for="img-2" class="prev">&#x2039;</label>
-        <label for="img-4" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-4" />
-    <li class="slide-container">
-      <div class="slide">
-        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
-      </div>
-      <div class="nav">
-        <label for="img-3" class="prev">&#x2039;</label>
-        <label for="img-5" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-5" />
-    <li class="slide-container">
-      <div class="slide">
-        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
-      </div>
-      <div class="nav">
-        <label for="img-4" class="prev">&#x2039;</label>
-        <label for="img-6" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-6" />
-    <li class="slide-container">
-      <div class="slide">
-        <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
-      </div>
-      <div class="nav">
-        <label for="img-5" class="prev">&#x2039;</label>
-        <label for="img-1" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <li class="nav-dots">
-      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
-      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
-      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
-      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
-      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
-      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
-    </li>
-  </ul>
-
-      <div class="mt-4">
-    <b-card-text>
-      <div class="content-detail-list">
-        <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
-        <div class="card" style="width: 18rem;">
-          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
-            <p class="card-text">가격: {{ this.content.buyPrice }}</p>
-            <p class="card-text">설명: {{ this.content.buyEx }}</p>
-            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
-            <a href="#" class="btn btn-primary" @click="buyData">구매</a>
-          </div>
-        </div>
-      </div>
+  <div class="img-block">
+    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
+    <div class="blocks">
+      <h1>{{ this.content.buyName }}</h1>
+      <br>
+      <h1>가격</h1><h2> {{ this.content.buyPrice }}</h2>
+      <br>
+      <h1>설명</h1> <h2>{{ this.content.buyEx }}</h2>
+      <br>
+      <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">찜</b-button>
       </div>
-    </b-card-text>
+    </div>
   </div>
-  <!--  <h2>상품분류 : {{ this.content.kindid.kindname }}</h2><br>-->
-  <!--  <h2>상품명 : {{ this.content.buyName }}</h2><br>-->
-  <!--  <h2>상품가격 : {{ this.content.buyPrice }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filePath }}</h2><br>-->
-  <!--  <h2>상품 이미지경로: {{ this.content.filename }}</h2><br>-->
+
+  <div class="mt-4">
+
+    <div class="btn_area">
+      <button type="button" @click="detail_1" class="btn_Bottom">
+        <span>상품 상세</span>
+      </button>
+      <button type="button" @click="detail_2" class="btn_Bottom_3">
+        <span>상품평</span>
+      </button>
+      <button type="button" @click="detail_3" class="btn_Bottom_3">
+        <span>상품문의</span>
+      </button>
+      <button type="button" @click="detail_4" class="btn_Bottom_3">
+        <span>배송/교환/반품 안내</span>
+      </button>
+    </div>
+
+    <div v-if="areaCheckB">
+      <br>
+      <img :src="'/api/product_detail_images/' + images[0].filename" class="card-img-top" alt="...">
+    </div>
+
+      <div v-if="areaCheckA">
+      <br>
+      <div class="review-t">
+        <h2>리뷰</h2>
+      </div>
+      <div class="content-detail-list-1">
+        <br>
+        <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
+          <div class="Recommend">
+            <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
+          </div>
+
+          <div class="review">
+            <div class="review-title">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
+            <div class="review-text">{{ reviews.campingTitle }}</div>
+            <div class="review-text">{{ reviews.campingContent }}</div>
+
+            <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
+
+            <div class="my-box-3">
+            </div>
+            <div class="image_1">
+              <p class="review-image">이미지</p>
+              <img :src="'/api/product_detail_images/' + reviews.filename" />
+            </div>
+            <div class="btn_area_2">
+              <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
+                <span>삭제</span>
+              </button>
+            </div>
+
+            <div class="btn_area_2">
+              <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
+                <span>수정</span>
+              </button>
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+        <br>
+        <div class="btn_area_1">
+          <button type="button" @click="detail_5" class="btn_Bottom_1">
+            <span>리뷰 작성</span>
+          </button>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
 
 </template>
 
@@ -122,7 +111,10 @@ export default {
       // file: this.content.origFilename
 
       count: 1,
-      buyMenuCheckPut: false
+      buyMenuCheckPut: false,
+      areaCheckA: false,
+      areaCheckB: false,
+
     }
   },
   methods: {
@@ -194,12 +186,86 @@ export default {
       }else{
         this.count++
       }
-    }
+    },
+
+    fetchData() {
+      console.log(this.id)
+      axios.get('/api/CampingBoardlist/' + this.id)
+          // 캠핑장 아이디를 넘겨줌 = 이 캠핑장에 해당하는 게시글 가져오기
+          .then((res) => {
+            console.log("게시글 조회 성공" + res.data);
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch((ex) => {
+            console.log("게시글 조회 실패", ex)
+          })
+    },
+    delete_1(reviews) {
+      console.log("삭제하실 리뷰번호는" + reviews.boardCampingCode)
+      const boardCampingCode = reviews.boardCampingCode;
+      if (confirm("삭제하시겠습니까?")) {
+        axios.delete('/api/CampingBoardDelete/' + boardCampingCode)
+            .then((res) => {
+              console.log("삭제되었습니다.", res)
+              alert("리뷰가 삭제되었습니다.")
+              this.$router.push({
+                path: `/infoter/infoterList/${this.id}`
+              })
+            })
+            .catch((err) => {
+              console.log("삭제실패" + err)
+            })
+      }
+    },
+    update_1(reviews) {
+      console.log(reviews.campingId.campingId);
+      console.log(reviews.boardCampingCode);
+      console.log(reviews.campingContent, reviews.campingTitle, reviews.filename);
+      this.$router.push({
+        path: `/infoter/infoterupdate/${reviews.boardCampingCode}`,
+        query: {
+          title: reviews.campingTitle,
+          content: reviews.campingContent,
+          mname: reviews.mcode.mname,
+          filename: reviews.filename,
+          campingId: reviews.campingId.campingId,
+          recommend: reviews.recommend
+        }
+      })
+    },
+    addPush(reviews) {
+      console.log(reviews.boardCampingCode)
+      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
+          .then((res) => {
+            alert("추천수가 증가되었습니다.")
+            console.log("추천수가 증가되었습니다.")
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+
+    detail_1() {
+      this.areaCheckB = true;
+      this.areaCheckA = false;
+
+    },
+    detail_4() {
+      this.areaCheckA = true;
+      this.areaCheckB = false
+
+    },
+
   }
 }
 </script>
 
 <style scoped>
+img {
+  width: 50%;
+  height: 50%;
+}
 .slide img {
   width: 10%;
   height: 10%;
@@ -315,5 +381,153 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-size: 0.5em;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.img-block {
+  display: flex;
+  justify-content: center;
+  /*align-items: center;*/
+}
+.blocks {
+  border: 1px solid skyblue;
+  width: 30%;
+  height: 500px;
+  /*margin-top: -100%;*/
+
+}
+.btn_area {
+  margin: 20px 0 91px;
+}
+.btn_Bottom {
+  width: 20%;
+  padding: 21px 0 17px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #96adc0;
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 10%;
+  position: center;
+}
+.btn_Bottom_3{
+  width: 20%;
+  padding: 21px 0 17px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #96adc0;
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 10px;
+  position: center;
+}
+.my-box {               /*리뷰 젤 큰 박스*/
+  border:3px solid;
+  padding:50px 0 5%;
+  box-sizing: border-box;
+  width: 70%;
+  margin:0 auto;
+  margin-bottom: 1%;
+}
+.review{
+  font-size: 20px;
+  margin-right: 70%;
+}
+.btn_Bottom_1{
+  width: 10%;
+  padding: 15px 0 15px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  background-color: #9dc7ea;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 70%;
+  margin-top: 20px;
+}
+.review-image{
+  margin-top: 10%;
+  margin-right: 5%;
+
+}
+.button{
+  margin-left : 40%;
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #0152b9;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.button:hover {background-color: #61cce0
+}
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.Recommend{
+  margin-left: 70%;
+}
+
+.review-title{
+  /*background-color: blue;*/
+  position: relative;
+  margin-top: -22%;
+  left:20%;
+  font-size: 25px;
+}
+.review-mid{
+  position: relative;
+  margin-top: -7%;
+  /*border:1px solid;*/
+  /*box-sizing: border-box;*/
+  width: 57%;
+  margin-left: 40%;
+  font-size: 20px;
+
+}
+.review-text{
+  position: relative;
+  left: 50px;
+  font-size: 22px;
+  margin-top: 20%;
+  /*margin-left: 40%;*/
+}
+.btn_Bottom_2{
+  width: 30%;
+  padding: 10px 0 10px;
+  border: 0;
+  cursor: pointer;
+  color: black;
+  background-color: #9dc7ea;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 5%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  float: right;
+  border-radius: 15px;
+}
+
+.image_1{
+  width: 200%;
+  height: 200%;
+  margin-left: 230%;
+  margin-bottom: 10%;
+  margin-top: -50%;
+  /*width: 300px;*/
+  /*height: 180px;*/
+
+}
+.review-t{
+  text-align: center;
 }
 </style>
