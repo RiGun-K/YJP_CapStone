@@ -465,7 +465,7 @@ export default {
             console.log(e)
           })
     },
-    
+
     toString() {
       const start = dayjs(this.reservationDate[0]);
       this.startDate = start.format('YYYYMMDD');
@@ -484,11 +484,6 @@ export default {
         }
       })
     },
-<<<<<<< yeahjin
-=======
-
-
->>>>>>> master
   }
 }
 </script>
