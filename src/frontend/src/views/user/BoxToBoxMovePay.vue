@@ -50,10 +50,13 @@
       </div>
     </div>
     <div>
-      이동에 대한 금액 + 보관함 사이즈 변경 추가 금액
-    </div>
-    <div>
-      <button @click="pay()">결제</button>
+      <div>
+        <h5>이동에 대한 금액 + 보관함 사이즈 변경 추가 금액
+          {{addPrice + price}}원</h5>
+      </div>
+      <div>
+        <button @click="paymentBtn()">결제</button>
+      </div>
     </div>
   </div>
 </template>
@@ -67,10 +70,38 @@ export default {
   mounted() {
     this.newBoxCode = this.$route.params.newStorageBoxCode
     this.beforeBoxInfo = this.$store.state.moveBoxInfo
-    console.log(this.newBoxCode)
-    console.log(this.beforeBoxInfo)
     this.getBoxInfo()
     this.getItem()
+    let b = this.beforeBoxInfo.boxName.toString().charAt(0)
+    let a = this.afterBoxInfo.boxName.toString().charAt(0)
+    if( b == 'S'){
+      if (a == "S"){
+        this.addPrice = 0
+      }else if ( a == 'M'){
+        this.addPrice = 13000
+      }else{
+        this.addPrice = 20000
+      }
+    }
+    if( b == 'M'){
+      if (a == "S"){
+        this.addPrice = 0
+      }else if ( a == 'M'){
+        this.addPrice = 0
+      }else{
+        this.addPrice = 8000
+      }
+    }
+    if( b == 'L'){
+      if (a == "S"){
+        this.addPrice = 0
+      }else if ( a == 'M'){
+        this.addPrice = 0
+      }else{
+        this.addPrice = 0
+      }
+    }
+
   },
   data() {
     return {
@@ -78,6 +109,8 @@ export default {
       beforeBoxInfo:{},
       afterBoxInfo: {},
       myItem:{},
+      addPrice:0,
+      price:5000,
     }
   },
   methods: {
@@ -98,6 +131,33 @@ export default {
             this.beforeBoxInfo.boxCode = res.data[0][2]
           })
     },
+    paymentBtn() {
+      // if (confirm('결제 하시겠습니까?')) {
+      //   const IMP = window.IMP
+      //   IMP.init('imp35975601')
+      //   IMP.request_pay({
+      //     pg: 'html5_inicis',
+      //     pay_method: 'card',
+      //     merchant_uid: 'merchant_' + new Date().getTime(),
+      //     name: this.form.storageName +'보관소'+this.form.storageBoxName+'보관함',
+      //     amount: this.form.price/100,
+      //     buyer_tel: '01012345678',
+      //     confirm_url: ''
+      //   }, (rsp) => {
+      //     if (rsp.success) {
+      //
+      //       this.savePay()
+      //
+      //     } else {
+      //       let msg = '결제에 실패하였습니다.'
+      //       msg += '에러 내용 : ' + rsp.error_msg
+      //       alert(msg)
+      //
+      //     }
+      //   })
+      // }
+      this.pay()
+    },
     pay() {
       const data = {
         userId: store.getters.getLoginState.loginState,
@@ -109,8 +169,7 @@ export default {
       axios.post('/api/boxToBoxPay', data)
           .then(res => {
             console.log(res)
-            alert('결제되었습니다')
-
+            this.$router.push({name:'storageComplete'});
           }).catch(err => {
         console.log(err)
       })

@@ -21,7 +21,9 @@
           <a href="/Read">게시판</a>
           <ul class="subMenu">
             <li class="menu"><a href="/Read">자유게시판</a></li>
-            <li class="menu"><a href="/board">리뷰게시판</a></li>
+            <li class="menu"><a href="#">빈 메뉴</a></li>
+            <li class="menu"><a href="#">빈 메뉴</a></li>
+            <li class="menu"><a href="#">빈 메뉴</a></li>
           </ul>
         </li>
         <li class="topMenu" v-if="uiLogin==4">
@@ -41,7 +43,7 @@
           </ul>
         </li>
         <li class="topMenu" v-if="uiLogin==5" @click="storageManager">
-          <a href="/storageManager">보관소관리자</a>
+          <a href="/storageManager">보관함관리자</a>
         </li>
         <li class="topMenu" v-if="uiLogin==5">
           <a href="/memberAdmin">관리자업무</a>
@@ -54,7 +56,7 @@
             <li class="menu"><a href="/board">문의관리</a></li>
           </ul>
         </li>
-        <li class="topMenu" v-if="uiLogin">
+        <li class="topMenu" v-if="uiLogin && uiLogin !=5">
           <a href="/">고객센터</a>
         </li>
       </ul>

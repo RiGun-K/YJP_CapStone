@@ -2,10 +2,12 @@
   <div class="allBody">
     <div v-if="get">
       <GetStorage></GetStorage>
-      <button class="storage-back-btn" style="margin-top: -120%; margin-left: 80%; " @click="inputStorage">추가</button>
+      <div style="text-align: right">
+        <button class="storage-back-btn" style="margin-right: 15%" @click="inputStorage">추가</button>
+      </div>
     </div>
     <div v-if="input">
-      <InputStorage></InputStorage>
+      <InputStorage @back="getStorage()" ></InputStorage>
     </div>
   </div>
 </template>

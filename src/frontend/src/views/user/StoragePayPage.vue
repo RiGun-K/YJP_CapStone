@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>겔제</h5>
+    <h5>결제</h5>
     <div>
       <h5>구매자</h5>
       <div>
@@ -196,15 +196,12 @@ export default {
       for (let i = 0; i < this.form.item.length; i++) {
         jsonData.item.push(this.form.item[i].memEquipmentCode)
       }
-      this.$store.commit('storageClear')
-      console.log('data')
-      console.log(jsonData)
       axios.post('/api/payBox', jsonData)
           .then(res => {
             this.$store.commit('cartStorageClear')
-            alert('결제가 완료 되었습니다.')
+            this.$store.commit('storageClear')
             console.log(res)
-            this.$router.push("/storageView");
+            this.$router.push({name:'storageComplete'});
           })
           .catch(err => {
             alert('결제가 실패 되었습니다.')
@@ -225,5 +222,10 @@ export default {
 </script>
 
 <style scoped>
-
+.divBody{
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 1%;
+  width: 50%;
+}
 </style>

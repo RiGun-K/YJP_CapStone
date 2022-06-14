@@ -27,6 +27,15 @@ public interface StorageBoxRepository extends JpaRepository<StorageBox, Long> {
             "and sysdate between u.USE_STORAGE_START_TIME and u.USE_STORAGE_END_TIME" , nativeQuery = true)
     public Object[] findByBoxInformation(@Param("storageBoxCode")long storageBoxCode);
 
+    @Query(value = "select m.MNICK, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME,b.STORAGE_BOX_STATE, b.STORAGE_CODE, u.USE_STORAGE_BOX_CODE,u.USE_STORAGE_STATE \n" +
+            "from STORAGEBOX b \n" +
+            "join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE\n" +
+            "join MEMBER m on u.MCODE = m.MCODE \n" +
+            "where b.STORAGE_BOX_CODE = :storageBoxCode \n" +
+            "and u.USE_STORAGE_STATE = '2'", nativeQuery = true)
+    public Object[] findByBoxInformationOfState(@Param("storageBoxCode")long storageBoxCode);
+
+
     @Query(value = "select * from STORAGE s\n"+
             "join STORAGEBOX b on s.STORAGE_CODE = b.STORAGE_CODE \n" +
             "where s.STORAGE_NAME = :storageName and b.STORAGE_BOX_NAME = :boxName",nativeQuery = true)

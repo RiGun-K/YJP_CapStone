@@ -20,6 +20,22 @@
       </table>
     </div>
     <div>
+      <table>
+        <thead>
+        <tr>
+          <th>이름</th>
+          <th>수량</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in myItem">
+          <td>{{ item.memEquipmentName }}</td>
+          <td>{{ item.memEquipmentCount }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
       <label for="zipCode">우편주소</label>
       <input type="text" id="zipCode" v-model="zipCode">
       <button @click="showApi()">우편번호 찾기</button>
@@ -49,10 +65,12 @@ export default {
       zipCode: '',
       address: '',
       detailAddress: '',
+      myItem:{},
     }
   },
   mounted() {
     this.boxInfo()
+    this.getItem()
   },
   methods: {
     boxInfo(){
@@ -60,6 +78,15 @@ export default {
           .then(res => {
             this.moveBoxInfo.storageName = res.data[0][1]
             this.moveBoxInfo.boxName = res.data[0][3]
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getItem(){
+      axios.get('/api/getBoxInItem/' + this.useBoxCode)
+          .then(res => {
+            this.myItem = res.data
           })
           .catch(err => {
             console.log(err)

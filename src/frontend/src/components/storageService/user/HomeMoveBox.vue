@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div>
       <table>
         <thead>
@@ -66,11 +65,11 @@
       </table>
     </div>
     <div>
-      가격
+      <h5>가격 {{price}}원</h5>
     </div>
     <div>
       <hr>
-      <button @click="pay()">결제</button>
+      <button @click="paymentBtn()">결제</button>
     </div>
   </div>
 </template>
@@ -92,6 +91,7 @@ export default {
       address:'',
       member:{},
       moveBoxInfo:{},
+      price : 4500,
     }
   },
   mounted() {
@@ -130,8 +130,41 @@ export default {
             console.log(err)
           })
     },
+    paymentBtn() {
+      // if (confirm('결제 하시겠습니까?')) {
+      //   const IMP = window.IMP
+      //   IMP.init('imp35975601')
+      //   IMP.request_pay({
+      //     pg: 'html5_inicis',
+      //     pay_method: 'card',
+      //     merchant_uid: 'merchant_' + new Date().getTime(),
+      //     name: this.moveBoxInfo.storageName +'보관소'+this.moveBoxInfo.BoxName+'보관함 집 배송',
+      //     amount: this.price/100,
+      //     buyer_tel: '01012345678',
+      //     confirm_url: ''
+      //   }, (rsp) => {
+      //     if (rsp.success) {
+      //
+      //       this.savePay()
+      //
+      //     } else {
+      //       let msg = '결제에 실패하였습니다.'
+      //       msg += '에러 내용 : ' + rsp.error_msg
+      //       alert(msg)
+      //
+      //     }
+      //   })
+      // }
+      this.pay()
+    },
     pay(){
+      let data = {}
+      data.useBoxCode = this.useBoxCode
+      data.member = this.member
+      axios.post('/api/homeToMovePay',data)
+      .then(res=>{
 
+      })
     }
   }
 }
