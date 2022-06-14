@@ -83,11 +83,6 @@ const routes = [
     component: () => import('@/components/user/myPage/MyWritter.vue')
   },
   {
-    path:'/myPageComment',
-    name:'myPageComment',
-    component: () => import('@/components/user/myPage/MyCommentList.vue')
-  },
-  {
     path:'/myPageOrder',
     name:'myPageOrder',
     component: () => import('@/components/user/myPage/MyOrder.vue')
@@ -95,7 +90,7 @@ const routes = [
   {
     path:'/myPreference',
     name:'myPreference',
-    component: () => import('@/components/user/myPage/MyPreference.vue')
+    component: () => import('@/components/user/myPage/myPreference.vue')
   },
   {
     path:'/memberAdmin',
@@ -125,7 +120,7 @@ const routes = [
   {
     path:'/memberData/:mid',
     name:'memberData',
-    component: () => import('@/components/user/adminManage/MemberAdminData.vue')
+    component: () => import('@/components/user/adminManage/memberAdminData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////

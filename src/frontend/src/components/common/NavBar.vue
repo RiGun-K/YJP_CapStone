@@ -100,8 +100,6 @@ a{
   text-decoration: none;
   color: black;
   display: block;
-  text-align: center;
-  width: 100%;
 }
 a:hover{
   color: white;
@@ -111,31 +109,28 @@ router-link{
   color: black;
 }
 .navBody{
-  background: ivory;
+  background: #E6E6FA;
   border: 1px solid black;
   width: 100%;
-  height: 6%;
   text-align: left;
 }
 .divBody{
-  width: 100%;
 }
 .topMenu{
   margin-top: 1%;
-  margin-left: 0.5%;
+  margin-left: 1%;
+  padding: 0.5%;
   width: 10%;
-  text-align: center;
   display: inline-block;
+  text-align: center;
   list-style: none;
   position: relative;
-  border-radius: 10px;
-  font-size: 18px;
 }
 .topMenu:hover > .subMenu{
   display: block;
 }
 .topMenu:hover{
-  background: lightgreen;
+  background: #00a3de;
 }
 .subMenu{
   padding: 0.5%;
@@ -148,18 +143,14 @@ router-link{
   top: 100%;
   text-align: center;
   border: 1px solid black;
-  border-radius: 10px;
   z-index: 3;
-  font-size: 16px;
-  background: white;
 }
 .menu{
   margin-top: 1%;
-  background: white;
-  border-radius: 10px;
+  background: #41b883;
   border: 1px solid black;
 }
 .menu:hover{
-  background: crimson;
+  background: #7ea6f6;
 }
 </style>

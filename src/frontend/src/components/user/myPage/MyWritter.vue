@@ -27,7 +27,6 @@
     <div class="searchDiv">
       <input type="text" v-model="searchWord">
       <button class="searchBtn" @click="searchTitle">검색</button>
-      <button class="commentBtn" @click="goComment">댓글</button>
     </div>
   </div>
 </template>
@@ -74,13 +73,10 @@ export default {
       }).catch((err)=>{
         console.log(err)
       })
-    },
-    goComment(){
-      this.$router.push("/myPageComment")
     }
   },
   created() {
-    axios.post("/api/userAllWriter",{
+    axios.post("/api/myWritter",{
       MID:store.getters.getLoginState.mcode
     }).then((res)=>{
       this.writerList = res.data
@@ -147,23 +143,6 @@ th, td{
   color: black;
 }
 .btnCommon:hover{
-  border: red solid 3px;
-  background: black;
-  color: white;
-}
-.commentBtn{
-  float: right;
-  margin-left: 1%;
-  margin-right: 1%;
-  padding: 0.2%;
-  text-align: center;
-  border: black solid 3px;
-  width: 100px;
-  background: white;
-  color: black;
-}
-
-.commentBtn:hover{
   border: red solid 3px;
   background: black;
   color: white;
