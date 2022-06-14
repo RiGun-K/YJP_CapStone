@@ -18,7 +18,6 @@
       <br>
       <h1>설명</h1> <h2>{{ this.content.buyEx }}</h2>
       <br>
-      <h1>수량</h1>
       <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
@@ -261,7 +260,7 @@ export default {
       this.areaCheckA = false;
 
     },
-    detail_3() {
+    detail_4() {
       this.areaCheckA = true;
       this.areaCheckB = false
 
