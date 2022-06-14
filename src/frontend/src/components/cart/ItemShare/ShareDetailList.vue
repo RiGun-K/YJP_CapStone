@@ -288,7 +288,7 @@ export default {
       this.areaCheckA = false;
 
     },
-    detail_4() {
+    detail_3() {
       this.areaCheckA = true;
       this.areaCheckB = false
 
