@@ -1,8 +1,17 @@
 <template>
   <br>
-  <div class="img-block">
-    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
-    <div class="blocks">
+  <div class="mt-4">
+    <b-card-text>
+      <div class="content-detail-list">
+        <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
+        <div class="card" style="width: 18rem;">
+          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
+            <p class="card-text">가격: {{ this.content.buyPrice }}</p>
+            <p class="card-text">설명: {{ this.content.buyEx }}</p>
+            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
+            <a href="#" class="btn btn-primary" @click="buyData">구매</a>
       <h1>{{ this.content.buyName }}</h1>
       <br>
       <h1>가격</h1><h2> {{ this.content.buyPrice }}</h2>
