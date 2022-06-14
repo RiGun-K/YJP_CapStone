@@ -4,22 +4,18 @@
     <table border="1px">
       <tr>
         <th colspan="6">
-          <h1 style="color: black; text-align: center">내 게시글</h1>
+          <h1 style="color: black; text-align: center">내 댓글</h1>
         </th>
       </tr>
       <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>댓글</th>
-        <th>조회수</th>
+        <th>게시글번호</th>
+        <th>내용</th>
         <th>작성일</th>
         <th>삭제</th>
       </tr>
       <tr v-for="(body, index) in viewList" :key="body.writer_code">
-        <td style="width: 10%;">{{body.boardId}}</td>
-        <td @click="goBoard(body.boardId)" style="width: 40%">{{body.title}}</td>
-        <td style="width: 10%;">공란</td>
-        <td style="width: 10%;">{{ body.boardViews }}</td>
+        <td style="width: 10%;">{{body.parentBoard.boardId}}</td>
+        <td @click="goBoard(body.boardId)" style="width: 60%">{{body.content}}</td>
         <td style="width: 10%;">{{body.savedTime}}</td>
         <td style="width: 10%;"><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
       </tr>
@@ -27,7 +23,7 @@
     <div class="searchDiv">
       <input type="text" v-model="searchWord">
       <button class="searchBtn" @click="searchTitle">검색</button>
-      <button class="commentBtn" @click="goComment">댓글</button>
+      <button class="commentBtn" @click="goWrite">게시글</button>
     </div>
   </div>
 </template>
@@ -37,7 +33,7 @@ import axios from "axios";
 import store from "@/store";
 
 export default {
-  name: "MyWritter",
+  name: "MyCommentList",
   data(){
     return{
       writerList:[],
@@ -48,12 +44,12 @@ export default {
   },
   methods:{
     searchTitle(){
-        this.viewList = []
-        for(var i = 0; i < this.writerList.length; i++){
-          if(this.writerList[i].title.includes(this.searchWord)){
-            this.viewList.push(this.writerList[i])
-          }
+      this.viewList = []
+      for(var i = 0; i < this.writerList.length; i++){
+        if(this.writerList[i].title.includes(this.searchWord)){
+          this.viewList.push(this.writerList[i])
         }
+      }
     },
     reStart(){
       this.$router.go()
@@ -75,12 +71,12 @@ export default {
         console.log(err)
       })
     },
-    goComment(){
-      this.$router.push("/myPageComment")
+    goWrite(){
+      this.$router.push("/myPageWritter")
     }
   },
   created() {
-    axios.post("/api/userAllWriter",{
+    axios.post("/api/userAllComment",{
       MID:store.getters.getLoginState.mcode
     }).then((res)=>{
       this.writerList = res.data
@@ -169,4 +165,3 @@ th, td{
   color: white;
 }
 </style>
-
