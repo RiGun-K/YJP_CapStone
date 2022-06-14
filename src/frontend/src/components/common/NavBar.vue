@@ -114,7 +114,7 @@ router-link{
   background: ivory;
   border: 1px solid black;
   width: 100%;
-  height: 5%;
+  height: 6%;
   text-align: left;
 }
 .divBody{
@@ -151,6 +151,7 @@ router-link{
   border-radius: 10px;
   z-index: 3;
   font-size: 16px;
+  background: white;
 }
 .menu{
   margin-top: 1%;
