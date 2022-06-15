@@ -6,7 +6,7 @@
         <th colspan="10"><h1 style="color: black">판매 관리자</h1></th>
       </tr>
       <tr>
-        <th>신청자</th>
+        <th>회원아이디</th>
         <th>신청일자</th>
         <th>회사명</th>
         <th>사업자코드</th>
@@ -18,7 +18,7 @@
         <th>상태</th>
       </tr>
       <tr v-for="(company) in viewList" v-bind:key="company.ccode">
-        <td >{{company.member.mid}}</td>
+        <td @click="showMemberCompany(company.member.mcode)">{{company.member.mid}}</td>
         <td>{{company.cst}}</td>
         <td>{{company.cname}}</td>
         <td>{{company.ccode}}</td>
@@ -110,6 +110,14 @@ export default {
     },
     reStart(){
       this.$router.go()
+    },
+    showMemberCompany(mid){
+      this.$router.push({
+        name:"companyData",
+        params:{
+          mid:mid
+        }
+      })
     }
   },
   created() {

@@ -73,6 +73,11 @@ const routes = [
     component: () => import('@/components/user/myPage/MyPage.vue')
   },
   {
+    path:'/myCompanyPage',
+    name:'myCompanyPage',
+    component: () => import('@/components/user/myPage/MyCompany.vue')
+  },
+  {
     path:'/myPageEquip',
     name:'myPageEquip',
     component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
@@ -126,6 +131,11 @@ const routes = [
     path:'/memberData/:mid',
     name:'memberData',
     component: () => import('@/components/user/adminManage/MemberAdminData.vue')
+  },
+  {
+    path:'/companyData/:mid',
+    name:'companyData',
+    component: () => import('@/components/user/adminManage/CompanyAdminData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////

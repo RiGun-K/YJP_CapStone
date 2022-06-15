@@ -113,9 +113,11 @@ router-link{
   width: 100%;
   height: 6%;
   text-align: left;
+  z-index: 3;
 }
 .divBody{
   width: 100%;
+  z-index: 3;
 }
 .topMenu{
   margin-top: 1%;
@@ -127,6 +129,7 @@ router-link{
   position: relative;
   border-radius: 10px;
   font-size: 18px;
+  z-index: 3;
 }
 .topMenu:hover > .subMenu{
   display: block;
@@ -155,6 +158,7 @@ router-link{
   background: white;
   border-radius: 10px;
   border: 1px solid black;
+  z-index: 3;
 }
 .menu:hover{
   background: crimson;

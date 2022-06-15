@@ -18,7 +18,7 @@
       <tr v-for="(body, index) in viewList" :key="body.writer_code">
         <td style="width: 10%;">{{body.boardId}}</td>
         <td @click="goBoard(body.boardId)" style="width: 40%">{{body.title}}</td>
-        <td style="width: 10%;">공란</td>
+        <td style="width: 10%;">{{commentNum(index)}}</td>
         <td style="width: 10%;">{{ body.boardViews }}</td>
         <td style="width: 10%;">{{body.savedTime}}</td>
         <td style="width: 10%;"><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
@@ -43,6 +43,7 @@ export default {
       writerList:[],
       viewList:[],
       searchWord:'',
+      commentList:[],
       backImg:require("@/assets/camp1.jpg")
     }
   },
@@ -77,6 +78,15 @@ export default {
     },
     goComment(){
       this.$router.push("/myPageComment")
+    },
+    commentNum(index){
+      var num = 0
+      for(var i = 0; i < this.commentList.length; i++){
+        if(this.viewList[index].boardId == this.commentList[i].parentBoard.boardId){
+          num++
+        }
+      }
+      return num
     }
   },
   created() {
@@ -85,6 +95,13 @@ export default {
     }).then((res)=>{
       this.writerList = res.data
       this.viewList = this.writerList
+    }).catch((err)=>{
+      console.log(err)
+    })
+    axios.post("/api/userAllComment",{
+      MID:store.getters.getLoginState.mcode
+    }).then((res)=>{
+      this.commentList = res.data
     }).catch((err)=>{
       console.log(err)
     })

@@ -497,6 +497,16 @@ public class MemberController {
         return memberPreferences;
     }
 
+    ///판매자 정보 조회///
+    @PostMapping("myCompanySearch")
+    public Company myCompanySearch(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        Optional<Company> company = companyRepository.findCompanyByMember(member.get());
+        if(company.isEmpty()){
+            return null;
+        }
+        return company.get();
+    }
 
     ///테스트///
     @PostMapping("testCheck")
