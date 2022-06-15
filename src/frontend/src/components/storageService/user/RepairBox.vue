@@ -5,47 +5,66 @@
   <div>
     <h5>장비리스트 수리 맡길 장비 선택</h5>
     <div>
-      <ul v-for="(item,index) in myItemList" :key="index">
-        <li>
-          <table style="width: 300px" border="1">
-            <tbody>
-            <tr>
-              <td>{{ item.memEquipmentName }}</td>
-              <td>{{ item.memEquipmentCount }}</td>
-              <td><input type="checkbox" :value="item" v-model="repairList"></td>
-            </tr>
-            </tbody>
-          </table>
-        </li>
-      </ul>
+      <div v-for="(item,index) in myItemList" :key="index" @click="addRepairListInItem(item)">
+        <table style="width: 300px" border="1">
+          <tbody>
+          <tr>
+            <td>{{ item.memEquipmentName }}</td>
+            <td>{{ item.memEquipmentCount }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div>
-    <h5>수리 맡길 장비 기본 사항 선택+ 기타(직접입력)</h5>
+    <h5>{{itemName}}의 수리 사항 선택</h5>
     <div>
-      <select v-model="groupPick" @change="pickGroup(groupPick)">
-        <option value="0">전체</option>
-        <option v-for="group in GroupList" :value="group.kindid">{{group.kindname}}</option>
-      </select>
-      <input type="text" v-model="searchText">
-      <button @click="sch()">검색</button>
+      <div>
+        <select v-model="groupPick" @change="pickGroup(groupPick)">
+          <option value="0">전체</option>
+          <option v-for="group in GroupList" :value="group.kindid">{{group.kindname}}</option>
+        </select>
+        <input type="text" v-model="searchText" @keyup.enter="sch()">
+        <button @click="sch()">검색</button>
+      </div>
+      <div>
+        <div v-for="re in reList" @click="addRepairListInOption(re)">
+          <table style="width: 300px" border="1" >
+            <tbody>
+            <tr >
+              <td>{{ re.buyName }}</td>
+              <td>{{ re.buyEx }}</td>
+              <td>{{re.buyPrice}}원</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div>
-      <table>
+      <button @click="addRepairList()">적용</button>
+    </div>
+  </div>
+  <div>
+    <div v-for="(repair,index) in repairList">
+      <table style="width: 300px" border="1">
         <tbody>
-        <tr v-for="re in reList">
-          <td>{{ re.buyName }}</td>
-          <td>{{ re.buyEx }}</td>
-          <td><input type="checkbox" v-model="requestList" :value="re"></td>
+        <tr>
+          <td>{{ repair.item.memEquipmentName }}</td>
+          <td>{{ repair.option.buyName }}</td>
+          <td><button @click="deleteRepairList(index)">제거</button></td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
   <div>
+    <div>
+
+    </div>
     <button @click="$router.push({name:'myBox'})">취소</button>
     <button @click="payPage()">다음</button>
-
   </div>
 </template>
 
@@ -58,12 +77,13 @@ export default {
     return {
       myItemList: [],
       repairList: [],
-      requestList: [],
+      repair:{},
       reList: [],
       GroupList: [],
       searchList:[],
       searchText: '',
       groupPick:0,
+      itemName:'',
     }
   },
   mounted() {
@@ -72,10 +92,25 @@ export default {
     this.getList()
   },
   methods: {
+    addRepairListInItem(item){
+      this.repair.item = item
+      this.itemName = item.memEquipmentName
+    },
+    addRepairListInOption(re){
+      this.repair.option = re
+    },
+    addRepairList(){
+      this.repairList.push(this.repair)
+      this.repair = {}
+      this.itemName = ''
+    },
+    deleteRepairList(index){
+      this.repairList.splice(index,1)
+
+    },
     getList(){
       axios.get("/api/RepairGroupList")
           .then(res => {
-            console.log(res.data)
             this.GroupList = res.data
           })
           .catch(err => {
@@ -96,6 +131,9 @@ export default {
       }
     },
     sch() {
+      if(this.searchText == ''){
+        this.pickGroup(this.groupPick)
+      }else{
         axios.get("/api/searchRepairList/"+this.searchText+"/"+this.groupPick)
             .then(res => {
               this.reList = res.data
@@ -103,6 +141,7 @@ export default {
             .catch(err => {
               console.log(err)
             })
+      }
     },
     getBackData(useCode) {
       axios.get("/api/getBoxInItem/" + useCode)
@@ -116,7 +155,6 @@ export default {
     getRepairList() {
       axios.get("/api/repairItemList")
           .then(res => {
-            console.log(res.data)
             this.reList = res.data
           })
           .catch(err => {
@@ -124,10 +162,8 @@ export default {
           })
     },
     payPage() {
-      let item = {}
-      item.repairList = this.repairList
-      item.requestList = this.requestList
-      this.$store.commit('careItemInfo', item)
+      console.log(this.repairList)
+      this.$store.commit('careItemInfo', this.repairList)
       this.$router.push({name: 'repairBoxPay'})
     },
   },

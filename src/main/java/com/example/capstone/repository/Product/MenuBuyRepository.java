@@ -32,7 +32,7 @@ public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
     @Query(value = "select * FROM MENUBUY WHERE BUY_NAME LIKE %:search% AND kindId = :kindid",nativeQuery = true)
     List<MenuBuy> findByNameAndKindid(@Param("search")String search, @Param("kindid")int kindid);
 
-    @Query(value = "SELECT M.* FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20 AND M.buyName LIKE %:search% ",nativeQuery = true)
+    @Query(value = "SELECT M.* FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20 AND M.BUY_NAME LIKE %:search% ",nativeQuery = true)
     List<MenuBuy> findBySearchName(@Param("search")String search);
 
 

@@ -379,4 +379,17 @@ public class UseStorageController {
 
     }
 
+    @PostMapping("postCarePay")
+    private void postCarePay(@RequestBody CareListPayDTO care){
+        System.out.println(care.getText());
+        System.out.println(care.getPrice());
+        System.out.println(care.getMCode());
+        for (int i = 0; i < care.getList().size(); i++) {
+            System.out.println(care.getList().get(i).getMemEquipmentCode());
+            System.out.println(care.getList().get(i).getBuyId());
+
+        }
+
+    }
+
 }

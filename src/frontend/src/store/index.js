@@ -22,7 +22,7 @@ export default createStore({
 		CampingIdOfRooms: '',
 		member: '',
 		moveBoxInfo:{},
-		careItemInfo:{},
+		careItemInfo:[],
 	},
 	getters: {
 		getLoginState(state) {
@@ -99,6 +99,8 @@ export default createStore({
 			state.moveBoxInfo = {};
 		},
 		careItemInfo(state, item){
+			console.log('item')
+			console.log(item)
 			state.careItemInfo = item;
 		},
 		clearCareItem(state){
