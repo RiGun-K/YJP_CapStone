@@ -11,17 +11,15 @@
         <th>게시글번호</th>
         <th>게시글제목</th>
         <th>작성자</th>
-        <th>게시판</th>
         <th>작성일</th>
         <th>삭제</th>
       </tr>
       <tr v-for="(obj, index) in viewList" :key="obj.writer_code">
-        <td>{{obj.boardId}}</td>
+        <td style="width: 10%">{{obj.boardId}}</td>
         <td  @click="toWriter(obj.boardId)">{{obj.title}}</td>
-        <td>{{obj.mid.mnick}}</td>
-        <td>{{}}</td>
-        <td>{{obj.savedTime}}</td>
-        <td><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
+        <td style="width: 10%">{{obj.mid.mnick}}</td>
+        <td style="width: 10%">{{obj.savedTime}}</td>
+        <td style="width: 10%"><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
       </tr>
     </table>
     <div class="searchDiv">
