@@ -3,6 +3,8 @@ package com.example.capstone.controller.storage;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.order.Cart;
+import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.domain.storage.Storage;
@@ -14,6 +16,8 @@ import com.example.capstone.repository.Product.CampingAreaRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
 import com.example.capstone.repository.Storage.*;
+import com.example.capstone.repository.orders.CartRepository;
+import com.example.capstone.repository.orders.OrderMenuRepository;
 import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +61,9 @@ public class UseStorageController {
 
     @Autowired
     MenuBuyRepository menuBuyRepository;
+
+    @Autowired
+    OrderMenuRepository orderMenuRepository;
 
     //보관함 연장 결제
     @PostMapping("/renewalPay")
@@ -380,16 +387,32 @@ public class UseStorageController {
     }
 
     @PostMapping("postCarePay")
-    private void postCarePay(@RequestBody CareListPayDTO care){
-        System.out.println(care.getText());
-        System.out.println(care.getPrice());
-        System.out.println(care.getMCode());
+    private Result postCarePay(@RequestBody CareListPayDTO care){
+        System.out.println(care.getMid());
+        Optional<Member> member = memberRepository.findByMID(care.getMid());
+        Member member1 = member.get();
+        Orders orders = new Orders();
+        orders.setOrderPrice(care.getPrice());
+        orders.setPaymentDate(LocalDateTime.now());
+        orders.setMCode(member1);
+        orders.setDeliveryRequest(care.getText());
+        ordersRepository.save(orders);
         for (int i = 0; i < care.getList().size(); i++) {
-            System.out.println(care.getList().get(i).getMemEquipmentCode());
-            System.out.println(care.getList().get(i).getBuyId());
+            Optional<MenuBuy> menuBuy = menuBuyRepository.findById(care.getList().get(i).getBuyId());
+            OrderMenu orderMenu = new OrderMenu();
+            orderMenu.setOrderMenuCount(1);
+            orderMenu.setMenuBuy(menuBuy.get());
+            orderMenu.setOrders(orders);
+            orderMenuRepository.save(orderMenu);
 
+            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(care.getList().get(i).getMemEquipmentCode());
+//            memberEquipment.get().setMemEquipmentState("2");
+//            memberEquipmentRepository.save(memberEquipment.get());
+            UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
+            useStorageBox.setUseStorageState("6");
+            useStorageBoxRepository.save(useStorageBox);
         }
-
+        return new Result("ok");
     }
 
 }

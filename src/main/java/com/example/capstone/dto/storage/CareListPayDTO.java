@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class CareListPayDTO {
     private List<RepairDTO> list;
-    private long mCode;
+    private String mid;
     private String text;
     private int price;
 

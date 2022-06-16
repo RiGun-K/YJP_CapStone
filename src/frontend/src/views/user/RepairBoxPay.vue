@@ -166,13 +166,20 @@ export default {
         data.push(form)
       }
       formData.list = data
-      formData.mCode = this.member.mcode
+      formData.mid = this.member.mid
       formData.text = this.requestText
       formData.price = this.price
       // data =
       console.log(formData)
       axios.post('/api/postCarePay',formData)
-      // this.$store.commit('clearCareItem')
+          .then(res => {
+            console.log(res.data.result)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      this.$store.commit('clearCareItem')
+      this.$router.push({name:'storageComplete'})
     }
   },
 }
