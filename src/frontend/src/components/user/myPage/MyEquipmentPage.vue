@@ -43,6 +43,8 @@ export default {
       switch (sCode) {
         case "1":
           return "정상"
+        case "2":
+          return "수리중"
         default:
           return "비정상"
       }

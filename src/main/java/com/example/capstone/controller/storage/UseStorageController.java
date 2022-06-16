@@ -84,7 +84,7 @@ public class UseStorageController {
         orderList.setPaymentDate(LocalDateTime.now());
         ordersRepository.save(orderList);
 
-        beforeUseStorageBox.get().setUseStorageState("1");
+        beforeUseStorageBox.get().setUseStorageState("2");
         useStorageBoxRepository.save(beforeUseStorageBox.get());
 
         UseStorageBox useStorageBox = new UseStorageBox();
@@ -386,9 +386,9 @@ public class UseStorageController {
 
     }
 
+//    장비수리 신청 결제
     @PostMapping("postCarePay")
     private Result postCarePay(@RequestBody CareListPayDTO care){
-        System.out.println(care.getMid());
         Optional<Member> member = memberRepository.findByMID(care.getMid());
         Member member1 = member.get();
         Orders orders = new Orders();
@@ -406,8 +406,8 @@ public class UseStorageController {
             orderMenuRepository.save(orderMenu);
 
             Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(care.getList().get(i).getMemEquipmentCode());
-//            memberEquipment.get().setMemEquipmentState("2");
-//            memberEquipmentRepository.save(memberEquipment.get());
+            memberEquipment.get().setMemEquipmentState("2");
+            memberEquipmentRepository.save(memberEquipment.get());
             UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
             useStorageBox.setUseStorageState("6");
             useStorageBoxRepository.save(useStorageBox);
