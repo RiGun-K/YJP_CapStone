@@ -10,7 +10,7 @@
         <th>신청일자</th>
         <th>회사명</th>
         <th>사업자코드</th>
-        <th>사업자</th>
+        <th>CEO</th>
         <th>주소</th>
         <th>이메일</th>
         <th>홈페이지</th>
