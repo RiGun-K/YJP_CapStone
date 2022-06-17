@@ -24,7 +24,7 @@ public class Kind {
     private Kind parentkind;
 
     //자식
-    @OneToMany(mappedBy = "parentkind")
+    @OneToMany(mappedBy = "parentkind", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Kind> childrenkinds = new ArrayList<>();
 
