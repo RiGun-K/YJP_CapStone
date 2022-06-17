@@ -35,7 +35,7 @@
       <p class="inputText">{{company.cemail}}</p>
     </div>
     <div style="text-align: right;">
-      <button @click="returnMemberList" class="btnCommon">돌아가기</button>
+      <button @click="returnCompanyList" class="btnCommon">돌아가기</button>
     </div>
   </div>
 </template>
@@ -53,8 +53,8 @@ export default {
     }
   },
   methods:{
-    returnMemberList(){
-      this.$router.push("sellerAccept")
+    returnCompanyList(){
+      this.$router.push("/sellerAccept")
     },
     addCheck(str){
       if(str == null){
