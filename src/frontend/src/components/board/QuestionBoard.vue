@@ -1,0 +1,71 @@
+<template>
+  <div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <br>
+    <h2 style="font-weight: bold">문의 리스트</h2>
+    <br>
+    <div class="listWrap">
+      <table class="tbList">
+        <tr>
+          <td style="font-size:20px; padding: 10px 20px 10px 180px">제목</td>
+          <td style="font-size:20px; padding: 10px 10px 10px 10px">글쓴이</td>
+          <td style="font-size:20px;">등록일</td>
+          <td style="font-size:20px;">조회수</td>
+
+        </tr>
+
+        <tr v-for="questionin in list" :key="questionin.id" :item="question" @click="detail(question)">
+          <td style="padding: 10px 20px 10px 180px" >{{question.q_title}}</td>
+          <td style="padding: 10px 10px 10px 10px">{{question.mid.mname}}</td>
+          <td>{{question.savedTime}}</td>
+          <td>{{question.boardViews}}</td>
+        </tr>
+
+      </table>
+      <div class="btnWrap">
+        <button @click="write" class="btn" style="float: right" >글쓰기</button>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  name: 'QuestionBoard',
+  created() {
+    this.fetchData()
+  },
+  data() {
+    return {
+      list: [],
+      questionin: '',
+    }
+  },
+
+  methods: {
+    fetchData() {
+      axios.get('/api/QuestionList')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch((ex) => {
+            console.log("fail", ex)
+          })
+    },
+    write() {
+      this.$router.push({
+        path: 'questioncreate'
+      })
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>

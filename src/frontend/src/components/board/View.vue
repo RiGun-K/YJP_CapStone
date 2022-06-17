@@ -19,6 +19,10 @@
             <td>{{ List.title }}</td>
           </tr>
           <tr>
+            <th>작성일</th>
+            <td>{{ List.savedTime}}</td>
+          </tr>
+          <tr>
             <th>내용</th>
             <td>{{ List.content }}</td>
           </tr>

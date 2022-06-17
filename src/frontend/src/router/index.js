@@ -156,9 +156,21 @@ const routes = [
     component: () => import('@/components/board/NoticeBoard.vue')
   },
   {
-    path: '/noticedetail/:boardId',
-    name: 'Noticedetail',
-    component: () => import('@/components/board/NoticeDetail.vue')
+    path: '/noticeDetail',
+    name: 'NoticeDetail',
+    component: () => import('@/components/board/NoticeDetail.vue'),
+    props: true
+  },
+
+  {
+    path: '/questionboard',
+    name: 'QuestionBoard',
+    component: () => import('@/components/board/QuestionBoard.vue')
+  },
+  {
+    path: '/questioncreate',
+    name: 'QuestionCreate',
+    component: () => import('@/components/board/QuestionCreate.vue')
   },
 
 

@@ -8,17 +8,17 @@
         <div class="Servicelist">
           <table class="slist">
             <tr>
-              <td style="font-size:20px; color: green; padding: 10px 20px 10px 180px">제목</td>
-              <td style="font-size:20px; color: green; padding: 10px 10px 10px 10px">글쓴이</td>
-              <td style="font-size:20px; color: green;">등록일</td>
-              <td style="font-size:20px; color: green;">조회수</td>
+              <td style="font-size:20px; padding: 10px 20px 10px 180px">제목</td>
+              <td style="font-size:20px; padding: 10px 10px 10px 10px">글쓴이</td>
+              <td style="font-size:20px;">등록일</td>
+              <td style="font-size:20px;">조회수</td>
             </tr>
 
             <tr v-for="(notice, index) in list" :key="index.id" :item="notice" @click="detail(notice)">
-              <td style="padding: 10px 20px 10px 180px" >{{notice.title}}</td>
+              <td style="padding: 10px 20px 10px 180px" >{{notice.s_title}}</td>
               <!--        <td>{{item.content}}</td>-->
               <td style="padding: 10px 10px 10px 10px">{{notice.mcode.mname}}</td>
-              <td>{{notice.savedTime}}</td>
+              <td>{{notice.s_savedTime}}</td>
               <td>{{notice.boardViews}}</td>
             </tr>
             <router-link to="{name: 'Noticedetail', params: { writer_code:item.writer_code }}"></router-link>
@@ -54,11 +54,15 @@ export  default {
     },
     detail(notice) {
       console.log(notice.serviceId);
+      let serviceId = notice.serviceId
       axios.post('/api/Notice_countView', {a: notice.serviceId})
           .then((res) => {
             console.log("조회수 증가됨" + res.data);
             this.$router.push({
-              path: `/noticedetail/${notice.serviceId}`
+              path: '/noticeDetail',
+              query: {
+                serviceId: notice.serviceId
+              }
             })
           })
           .catch(e => {
@@ -68,3 +72,27 @@ export  default {
   }
 }
 </script>
+<style>
+#divPaging {
+  clear:both;
+  margin:0 auto;
+  width:220px;
+  height:50px;
+}
+
+#divPaging > div {
+  float:left;
+  width: 30px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.slist th{border-top:1px solid #888;}
+.slist th, .slist td{border-bottom:1px solid #eee; padding:5px 0;}
+.slist td.txt_left{text-align:left;}
+
+.searchWrap{border:1px solid #888; border-radius:5px; text-align:center; padding:20px 0; margin-bottom:40px;}
+.searchWrap input{width:60%; height:36px; border-radius:3px; padding:0 10px; border:1px solid #888;}
+.searchWrap .btnSearch{display:inline-block; margin-left:10px;}
+
+</style>
