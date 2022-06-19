@@ -1,7 +1,13 @@
 <template>
-  <input type="radio" name="move-option" v-model="moveOption" value="home">집 <br>
-  <input type="radio" name="move-option" v-model="moveOption" value="round">장소 <br>
-  <input type="radio" name="move-option" v-model="moveOption" value="storage">보관소
+  <div>
+    <button @click="$router.push({name:'myBox'})">취소</button>
+  </div>
+  <hr>
+  <div>
+    <input type="radio" name="move-option" v-model="moveOption" value="home">집 <br>
+    <input type="radio" name="move-option" v-model="moveOption" value="round">장소 <br>
+    <input type="radio" name="move-option" v-model="moveOption" value="storage">보관소
+  </div>
   <hr>
   <div v-if="moveOption=='home'">
     <HomeMoveBox :useBoxCode="useBoxCode"/>
@@ -12,8 +18,8 @@
   <div v-if="moveOption=='storage'">
     <StorageMoveBox :useBoxCode="useBoxCode"/>
   </div>
+<!--  <router-view />-->
 
-  <router-view />
 </template>
 
 <script>

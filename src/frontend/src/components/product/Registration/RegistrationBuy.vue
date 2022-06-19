@@ -34,6 +34,10 @@
               <option value="17">과일</option>
               <option value="18">음료</option>
             </optgroup>
+            <optgroup label="장비관리">
+              <option value="21">세탁</option>
+              <option value="22">수리</option>
+            </optgroup>
           </select>
           <br>
           <br>

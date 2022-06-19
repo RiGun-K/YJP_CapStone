@@ -73,6 +73,11 @@ const routes = [
     component: () => import('@/components/user/myPage/MyPage.vue')
   },
   {
+    path:'/myCompanyPage',
+    name:'myCompanyPage',
+    component: () => import('@/components/user/myPage/MyCompany.vue')
+  },
+  {
     path:'/myPageEquip',
     name:'myPageEquip',
     component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
@@ -83,6 +88,11 @@ const routes = [
     component: () => import('@/components/user/myPage/MyWritter.vue')
   },
   {
+    path:'/myPageComment',
+    name:'myPageComment',
+    component: () => import('@/components/user/myPage/MyCommentList.vue')
+  },
+  {
     path:'/myPageOrder',
     name:'myPageOrder',
     component: () => import('@/components/user/myPage/MyOrder.vue')
@@ -90,7 +100,7 @@ const routes = [
   {
     path:'/myPreference',
     name:'myPreference',
-    component: () => import('@/components/user/myPage/myPreference.vue')
+    component: () => import('@/components/user/myPage/MyPreference.vue')
   },
   {
     path:'/memberAdmin',
@@ -113,9 +123,19 @@ const routes = [
     component: () => import('@/components/user/myPage/AddEquip.vue')
   },
   {
+    path:'/updateEquipment/:equipCode',
+    name:'updateEquipment',
+    component: () => import('@/components/user/myPage/MyEquipUpdate.vue')
+  },
+  {
     path:'/memberData/:mid',
     name:'memberData',
-    component: () => import('@/components/user/adminManage/memberData.vue')
+    component: () => import('@/components/user/adminManage/MemberAdminData.vue')
+  },
+  {
+    path:'/companyData/:mid',
+    name:'companyData',
+    component: () => import('@/components/user/adminManage/CompanyAdminData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////
@@ -150,6 +170,17 @@ const routes = [
     name: 'Update',
     component: () => import('@/components/board/Update.vue')
   },
+  {
+    path: '/noticeboard',
+    name: 'Noticeboard',
+    component: () => import('@/components/board/NoticeBoard.vue')
+  },
+  {
+    path: '/noticedetail/:boardId',
+    name: 'Noticedetail',
+    component: () => import('@/components/board/NoticeDetail.vue')
+  },
+
 
     ///////////////////////////////상품관리///////////////////////////////////
 
@@ -418,11 +449,6 @@ const routes = [
     component: ()=> import('@/components/storageService/admin/storage/StorageRevise.vue')
   },
   {
-    path: "/storageAdmin/inputManager",
-    name:"InputStorageManager",
-    component: ()=> import('@/components/storageService/admin/manager/InputStorageManager.vue')
-  },
-  {
     path: "/storageView",
     name:"userStorage",
     component: ()=> import('@/views/user/UserStorageView.vue')
@@ -443,7 +469,7 @@ const routes = [
     component:()=>import('@/views/user/MyStorageBox.vue')
   },
   {
-    path: "/myBox/renewalBox",
+    path: "/myBox/renewalBox/:useBoxCode",
     name: "renewalBox",
     component:()=>import('@/components/storageService/user/RenewalBox.vue')
   },
@@ -463,7 +489,7 @@ const routes = [
     component:()=>import('@/components/storageService/user/StorageMoveBoxDetail.vue')
   },
   {
-    path: "/myBox/moveBox/:useBoxCode/storagePay/:newStorageBoxCode",
+    path: "/myBox/moveBox/:useBoxCode/:newStorageBoxCode/storagePay",
     name: "BoxToBoxMovePay",
     component:()=>import('@/views/user/BoxToBoxMovePay.vue'),
     props: true
@@ -480,6 +506,16 @@ const routes = [
     component:()=>import('@/components/storageService/user/RepairBox.vue')
   },
   {
+    path: "/myBox/repairBox/:useBoxCode/repairPay",
+    name: "repairBoxPay",
+    component:()=>import('@/views/user/RepairBoxPay.vue')
+  },
+  {
+    path: "/storageComplete",
+    name: "storageComplete",
+    component:()=>import('@/views/user/StorageComplete.vue')
+  },
+  {
     path:'/storageManager',
     name:'storageManager',
     component: ()=> import('@/views/manager/ManagerStorage.vue'),
@@ -487,7 +523,7 @@ const routes = [
       {
         path: ":storage",
         name: "boxDetail",
-        component: ()=> import('@/components/storageService/manager/BoxModalDetail.vue')
+        component: ()=> import('@/components/storageService/manager/NotUsingInfo.vue')
       }
     ]
   },

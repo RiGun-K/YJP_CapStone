@@ -3,7 +3,6 @@
     <Header />
     <NavBar />
     <router-view />
-
   </div>
 </template>
 
@@ -24,8 +23,12 @@ export default {
 
 <style lang="scss">
 @import 'bootstrap/scss/bootstrap';
-html,body{padding:0; margin:0;}
+html,body{padding:0; margin:0;height: 100%}
+router-view{
+  height: 100%;
+}
 #app {
+  height: 100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
