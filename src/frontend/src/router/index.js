@@ -276,6 +276,11 @@ const routes = [
     component: () => import('@/components/product/ProductDetail.vue'),
     props: true
   },
+  {
+    path: '/ProductMyPage',
+    name: 'ProductMyPage',
+    component: () => import('@/components/product/ProductMyPage.vue')
+  },
 
     ////////////////////////주문, 결제/////////////////////////////////
   {

@@ -65,6 +65,15 @@ public class ProductController {
     ProductService productService;
 
 
+    /* 판매자 정보 */
+    @GetMapping("getMymember/{user}")
+    public Optional<Member> getAllmember(@PathVariable("user") String user){
+        Optional<Member> members = memberRepository.findByMID(user);
+
+        return members;
+    }
+
+
     /* 구매상품 리스트 */
     @GetMapping("/product_BuyList")
     public List<MenuBuy> menuBuysList() {

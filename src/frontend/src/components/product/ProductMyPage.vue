@@ -1,7 +1,7 @@
 <template>
   <table class="tableBody">
     <tr>
-      <th colspan="7"><h1 style="color: #111111">회원 관리자</h1></th>
+      <th colspan="7"><h1 style="color: #111111">판매자 정보</h1></th>
     </tr>
     <tr>
       <th class="idSet">아이디</th>
@@ -12,7 +12,7 @@
       <th class="startSet">가입일자</th>
       <th class="leaveSet">탈퇴일자</th>
     </tr>
-    <tr v-for="(member, index) in viewList" v-bind:key="member.mcode" v-show="showDisable(index)">
+    <tr v-if="MyData()" v-for="(member, index) in viewList" v-bind:key="member.mcode" v-show="showDisable(index)">
       <td class="idSet" @click="showMemberData(member.mid)">{{member.mid}}</td>
       <td class="nickSet" @click="showMemberData(member.mid)">{{member.mnick}}</td>
       <td class="emailSet" @click="showMemberData(member.mid)">{{member.mmail}}</td>
@@ -39,24 +39,26 @@
 
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
-  name: "MemberManagementAdmin",
+  name: "ProductMyPage",
   data(){
     return{
       members:[],
       searchWord:'',
-      viewList:[]
+      viewList:[],
+      myList:[]
     }
   },
   methods:{
     searchList(){
-        this.viewList = []
-        for(var i = 0; i < this.members.length; i++){
-          if(this.members[i].mid.includes(this.searchWord)){
-            this.viewList.push(this.members[i])
-          }
+      this.viewList = []
+      for(var i = 0; i < this.members.length; i++){
+        if(this.members[i].mid.includes(this.searchWord)){
+          this.viewList.push(this.members[i])
         }
+      }
     },
     mscDisable(index){
       if(this.viewList[index].msc == 0){
@@ -83,20 +85,23 @@ export default {
       })
     },
     showMemberData(index){
-        this.$router.push({
-          name:"memberData",
-          params:{
-            mid:index
-          }
-        })
+      this.$router.push({
+        name:"memberData",
+        params:{
+          mid:index
+        }
+      })
+    },
+    MyData() {
+      this.myList = this.viewList[0]
     }
   },
   created() {
-    axios.get("api/getAllmember")
+    this.user = store.getters.getLoginState.loginState
+    axios.get("api/getAllmember/")
         .then((res)=>{
           this.members = res.data
           this.viewList = this.members
-          console.log(this.viewList)
         })
         .catch((err)=>{
           console.log(err)
