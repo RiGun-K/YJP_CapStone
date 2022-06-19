@@ -19,6 +19,12 @@ public interface CampingRepository extends JpaRepository<Camping, Integer> {
     List<Camping> findByMID(Member member);
     List<Camping> findByMIDMID(String mid);
 
+    @Query(value = "SELECT * FROM camping c ORDER BY c.saved_Time DESC", nativeQuery = true)
+    public List<Camping> findAllListDesc();
+
+    @Query(value = "SELECT * FROM camping c ORDER BY c.camping_Views DESC", nativeQuery = true)
+    public List<Camping> findAllListViewDesc();
+
     @Query(value = "SELECT * FROM camping c WHERE c.infoterId = :infoterId", nativeQuery = true)
     public List<Camping> findByinfoterId(@Param("infoterId") int infoterId);
 

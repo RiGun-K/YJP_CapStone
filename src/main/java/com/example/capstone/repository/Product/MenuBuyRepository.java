@@ -26,4 +26,16 @@ public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
     @Query(value = "SELECT * FROM MENUBUY M WHERE M.BUY_NAME LIKE %:searchBuy%", nativeQuery = true)
     List<MenuBuy> findAllBysearchBuyContains(@Param("searchBuy") String searchBuy);
 
+    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.saved_time DESC", nativeQuery = true)
+    List<MenuBuy> findByLatest();
+
+    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_views DESC", nativeQuery = true)
+    List<MenuBuy> findByViews();
+
+    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_price", nativeQuery = true)
+    List<MenuBuy> findByLowPrice();
+
+    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_price DESC", nativeQuery = true)
+    List<MenuBuy> findByHighPrice();
+
 }

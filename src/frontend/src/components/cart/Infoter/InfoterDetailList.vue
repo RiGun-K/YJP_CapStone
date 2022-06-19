@@ -164,13 +164,12 @@
     </div>
 
 
-  <div v-if="areaCheck3">
     <br>
     <h2>캠핑장 위치정보</h2>
     <div class="mapDiv">
       <div id="map"></div>
     </div>
-  </div>
+
 
   <div v-if="areaCheck1">
     <br>
@@ -184,6 +183,10 @@
     <img :src=imageCC>
     <br>
     <img :src=imageCC2>
+  </div>
+
+  <div v-if="areaCheck3">
+    <br>
   </div>
 
     <div v-if="areaCheck4">
@@ -365,8 +368,8 @@ export default {
       this.areaCheck2 = false
       this.areaCheck4 = false
 
-      let check = prompt("1+1 은?");
-      alert("귀요미 ㅋ");
+      // let check = prompt("1+1 은?");
+      // alert("귀요미 ㅋ");
       // const point = [this.content.longitude, this.content.latitude]
       // console.log(point);
       // this.displayMarker([point])
@@ -561,9 +564,10 @@ img {
 }
 .mapDiv{
   margin-top: -17%;
-  width: 63%;
-  float: right;
-  margin-right: -47%;
+  width: 10%;
+  height: 10%;
+  float: contour;
+  margin-right: -27%;
 }
 #map {
   width: 400px;

@@ -25,5 +25,10 @@ public interface MenuRentalRepository extends JpaRepository<MenuRental, Integer>
     @Query(value = "SELECT * FROM MENURENTAL M WHERE M.RENTAL_NAME LIKE %:searchRental%", nativeQuery = true)
     List<MenuRental> findAllBysearchRentalContains(@Param("searchRental") String searchRental);
 
+    @Query(value = "SELECT * FROM MENURENTAL M ORDER BY M.saved_time DESC", nativeQuery = true)
+    List<MenuRental> findByLatest();
+
+    @Query(value = "SELECT * FROM MENURENTAL M ORDER BY M.rental_views DESC", nativeQuery = true)
+    List<MenuRental> findByViews();
 
 }

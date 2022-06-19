@@ -292,7 +292,8 @@ BuyController {
 
 
     }
-
+    
+    /* 구매상품 검색 */
     @GetMapping("/search_BuyList")
     public List<MenuBuy> searchBuyList(@RequestParam("searchBuy") String searchBuy) {
 //        List<MenuBuy> menuBuys = productService.searchBuy(searchBuy);
@@ -300,5 +301,37 @@ BuyController {
         System.out.println("결과는" + menuBuys);
         return menuBuys;
 
+    }
+
+    /* 구매상품 최신순 */
+    @GetMapping("/product_ByBuyLatest")
+    public List<MenuBuy> menuBuysByLatest() {
+        List<MenuBuy> menus = menuBuyRepository.findByLatest();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 구매상품 조회순 */
+    @GetMapping("/product_ByBuyViews")
+    public List<MenuBuy> menuBuysByViews() {
+        List<MenuBuy> menus = menuBuyRepository.findByViews();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 구매상품 낮은 가격순 */
+    @GetMapping("/product_ByBuyLowPrice")
+    public List<MenuBuy> menuBuysByLowPrice() {
+        List<MenuBuy> menus = menuBuyRepository.findByLowPrice();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 구매상품 높은 가격순 */
+    @GetMapping("/product_ByBuyHighPrice")
+    public List<MenuBuy> menuBuysByHighPrice() {
+        List<MenuBuy> menus = menuBuyRepository.findByHighPrice();
+        System.out.println(menus);
+        return menus;
     }
 }

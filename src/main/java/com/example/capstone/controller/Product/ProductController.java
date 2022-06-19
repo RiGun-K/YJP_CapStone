@@ -173,6 +173,22 @@ public class ProductController {
         return campings;
     }
 
+    /* 캠핑장 종류별 조회하기 ( 조회순 ) */
+    @GetMapping("/product_detail_campingManyViews")
+    public List<Camping> campingManyViews() {
+        List<Camping> campings = campingRepository.findAllListViewDesc();
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 최신순 ) */
+    @GetMapping("/product_detail_campingDesc")
+    public List<Camping> campingDesc() {
+        List<Camping> campings = campingRepository.findAllListDesc();
+        System.out.println(campings);
+        return campings;
+    }
+
 
     /* 나의상품 리스트 */
 //    @GetMapping("/myProduct_list/{userid}")
