@@ -100,6 +100,7 @@ export default {
         .then((res)=>{
           this.members = res.data
           this.viewList = this.members
+          console.log(this.viewList)
         })
         .catch((err)=>{
           console.log(err)

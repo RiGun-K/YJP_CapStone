@@ -145,13 +145,7 @@
     </div>
 
     <br>
-  <div v-if="areaCheck">
-    <br>
-      <h2>캠핑장 위치정보</h2>
-      <div class="mapDiv">
-        <div id="map"></div>
-      </div>
-   </div>
+
 
     <br>
     <div class="btn_area">
@@ -169,7 +163,33 @@
       </button>
     </div>
 
-    <div v-if="areaCheckA">
+
+    <br>
+    <h2>캠핑장 위치정보</h2>
+    <div class="mapDiv">
+      <div id="map"></div>
+    </div>
+
+
+  <div v-if="areaCheck1">
+    <br>
+    <img :src=imageC>
+    <br>
+    <img :src=imageC2>
+  </div>
+
+  <div v-if="areaCheck2">
+    <br>
+    <img :src=imageCC>
+    <br>
+    <img :src=imageCC2>
+  </div>
+
+  <div v-if="areaCheck3">
+    <br>
+  </div>
+
+    <div v-if="areaCheck4">
       <br>
       <div class="review-t">
       <h2>리뷰</h2>
@@ -250,9 +270,7 @@ export default {
       map: null,
       markers: [],
       markPositions1: [],
-      areaCheck: false,
       list: [],
-      areaCheckA: false,
       // likecnt: 0
       disabledDates: [],
       reservationDate: [],
@@ -261,6 +279,16 @@ export default {
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
       endDate: new Date(),
+
+      areaCheck1: false,
+      areaCheck2: false,
+      areaCheck3: false,
+      areaCheck4: false,
+
+      imageC: require('@/assets/캠핑장 소개.png'),
+      imageC2: require('@/assets/캠핑장 소개2.png'),
+      imageCC: require('@/assets/이용안내.png'),
+      imageCC2: require('@/assets/이용안내 2.png'),
     }
   },
   setup() {
@@ -335,9 +363,13 @@ export default {
     }},
 
     detail_3() {
-      this.areaCheck = true
-      let check = prompt("1+1 은?");
-      alert("귀요미 ㅋ");
+      this.areaCheck3 = true
+      this.areaCheck1 = false
+      this.areaCheck2 = false
+      this.areaCheck4 = false
+
+      // let check = prompt("1+1 은?");
+      // alert("귀요미 ㅋ");
       // const point = [this.content.longitude, this.content.latitude]
       // console.log(point);
       // this.displayMarker([point])
@@ -474,7 +506,10 @@ export default {
     },
 
     detail_4() {
-      this.areaCheckA = true;
+      this.areaCheck4 = true;
+      this.areaCheck1 = false;
+      this.areaCheck2 = false;
+      this.areaCheck3 = false;
     },
     detail_5() {
       this.$router.push({
@@ -484,6 +519,21 @@ export default {
         }
       })
     },
+
+    detail_1() {
+      this.areaCheck4 = false;
+      this.areaCheck1 = true;
+      this.areaCheck2 = false;
+      this.areaCheck3 = false;
+    },
+
+    detail_2() {
+      this.areaCheck4 = false;
+      this.areaCheck1 = false;
+      this.areaCheck2 = true;
+      this.areaCheck3 = false;
+    },
+
   }
 }
 </script>
@@ -514,9 +564,10 @@ img {
 }
 .mapDiv{
   margin-top: -17%;
-  width: 63%;
-  float: right;
-  margin-right: -47%;
+  width: 10%;
+  height: 10%;
+  float: contour;
+  margin-right: -27%;
 }
 #map {
   width: 400px;

@@ -65,6 +65,15 @@ public class ProductController {
     ProductService productService;
 
 
+    /* 판매자 정보 */
+    @GetMapping("getMymember/{user}")
+    public Optional<Member> getAllmember(@PathVariable("user") String user){
+        Optional<Member> members = memberRepository.findByMID(user);
+
+        return members;
+    }
+
+
     /* 구매상품 리스트 */
     @GetMapping("/product_BuyList")
     public List<MenuBuy> menuBuysList() {
@@ -160,6 +169,22 @@ public class ProductController {
     public List<Camping> campingAreaDetails(@PathVariable("areaId") int areaId) {
         System.out.println(areaId);
         List<Camping> campings = campingRepository.findByareaDetailId(areaId);
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 조회순 ) */
+    @GetMapping("/product_detail_campingManyViews")
+    public List<Camping> campingManyViews() {
+        List<Camping> campings = campingRepository.findAllListViewDesc();
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 최신순 ) */
+    @GetMapping("/product_detail_campingDesc")
+    public List<Camping> campingDesc() {
+        List<Camping> campings = campingRepository.findAllListDesc();
         System.out.println(campings);
         return campings;
     }

@@ -39,19 +39,14 @@
     <h2>Item Buy</h2>
     <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-outline-primary" for="btnradio1">전체</label>
+    <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio2">최신순</label>
+    <label class="btn btn-outline-primary" for="btnradio2" @click="RentalByLatest">최신순</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio3">인기순</label>
+    <label class="btn btn-outline-primary" for="btnradio3" @click="RentalByViews">인기순</label>
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio4">낮은 가격순</label>
-
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
   </span>
 
     <section>
@@ -175,12 +170,36 @@ export default {
             })
       }
 
+    },
+    RentalByLatest() {
+      axios.get('/api/product_ByRentalLatest')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    RentalByViews() {
+      axios.get('/api/product_ByRentalViews')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
     }
   }
 }
 </script>
 
 <style scoped>
+.card {
+  width: 50%;
+}
+
 .ItemBuy{
   width: 100%;
   height: 100%;

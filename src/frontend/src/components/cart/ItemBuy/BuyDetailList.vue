@@ -49,10 +49,17 @@
       <img :src="'/api/product_detail_images/' + images[0].filename" class="card-img-top" alt="...">
     </div>
 
+    <div v-if="areaCheckC">
+      <br>
+      <img :src=image>
+      <br>
+      <img :src=image2>
+    </div>
+
       <div v-if="areaCheckA">
       <br>
       <div class="review-t">
-        <h2>리뷰</h2>
+        <h2>문의</h2>
       </div>
       <div class="content-detail-list-1">
         <br>
@@ -95,7 +102,7 @@
         <br>
         <div class="btn_area_1">
           <button type="button" @click="detail_5" class="btn_Bottom_1">
-            <span>리뷰 작성</span>
+            <span>문의 작성</span>
           </button>
         </div>
         <br>
@@ -117,13 +124,17 @@ export default {
       id: '',
       content: [],
       images: [],
-      image: require('@/assets/camp1.jpg'),
+      image: require('@/assets/배송정보.png'),
+      image2: require('@/assets/배송정보2.png'),
       // file: this.content.origFilename
 
       count: 1,
       buyMenuCheckPut: false,
+
       areaCheckA: false,
       areaCheckB: false,
+      areaCheckC: false,
+
 
     }
   },
@@ -259,13 +270,20 @@ export default {
     detail_1() {
       this.areaCheckB = true;
       this.areaCheckA = false;
+      this.areaCheckC = false;
 
     },
     detail_4() {
       this.areaCheckA = true;
       this.areaCheckB = false
+      this.areaCheckC = false;
 
     },
+    detail_4() {
+      this.areaCheckA = false;
+      this.areaCheckB = false;
+      this.areaCheckC = true;
+    }
 
   }
 }
@@ -273,8 +291,8 @@ export default {
 
 <style scoped>
 img {
-  width: 50%;
-  height: 50%;
+  width: 40%;
+  height: 40%;
 }
 .slide img {
   width: 10%;
@@ -396,8 +414,13 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .img-block {
   display: flex;
   justify-content: center;
-  /*align-items: center;*/
+  transition: all 0.2s linear;
+  align-items: center;
 }
+.img-block:hover img {
+  /*transform: scale(1.2);*/
+}
+
 .blocks {
   border: 1px solid skyblue;
   width: 30%;
