@@ -1,103 +1,164 @@
 <template>
-	<div>
-		<h2>{{ $store.state.teamCode.teamCode.teamName }}팀의 상세정보</h2>
+	<div class="background">
+		<div class="outer">
+			<div class="boardDiv">
+				<p class="boardP">팀게시판</p>
+				<table class="tbAdd">
+					<th>작성자</th>
+					<th>내용</th>
+					<th>작성일</th>
+					<tr
+						:class="{
+							master:
+								this.$store.state.teamCode.teamCode
+									.teamMaster == value.memberDto.mcodeDto,
+						}"
+						v-for="(value, index) in contentList"
+						:key="index"
+					>
+						<td>{{ value.memberDto.mname }}</td>
+						<td class="tdContent">{{ value.contentDto }}</td>
+						<td>{{ value.boardDateDto }}</td>
+						<td
+							v-if="
+								value.memberDto.mname ===
+									this.$store.state.member.mname ||
+								this.$store.state.teamCode.teamCode
+									.teamMaster ===
+									this.$store.state.member.mcode
+							"
+						>
+							<button
+								@click="editContent(value.teamBoardCodeDto)"
+								class="editButton"
+							>
+								수정
+							</button>
 
-		<h3>팀 관리자 -{{ $store.state.teamCode.teamCode.teamMaster }}-</h3>
-		<h1>팀게시판</h1>
-
-		<table class="tbAdd">
-			<colgroup>
-				<col width="15%" />
-			</colgroup>
-			<th>작성자</th>
-			<th>내용</th>
-			<th>작성일</th>
-			<tr
-				:class="{
-					master:
-						this.$store.state.teamCode.teamCode.teamMaster ==
-						value.memberDto.mcodeDto,
-				}"
-				v-for="(value, index) in contentList"
-				:key="index"
-			>
-				<td>{{ value.memberDto.mname }}</td>
-				<td>{{ value.contentDto }}</td>
-				<td>{{ value.boardDateDto }}</td>
-				<td
-					v-if="
-						value.memberDto.mname ===
-							this.$store.state.member.mname ||
-						this.$store.state.teamCode.teamCode.teamMaster ===
-							this.$store.state.member.mcode
-					"
-				>
-					<button @click="editContent(value.teamBoardCodeDto)">
-						수정
+							<button
+								@click="deleteContent(value.teamBoardCodeDto)"
+								class="editButton"
+							>
+								삭제
+							</button>
+						</td>
+					</tr>
+				</table>
+				<div class="textDiv">
+					<textarea
+						class="textArea"
+						v-model="content"
+						placeholder="게시글을 작성하세요"
+					></textarea>
+					<button @click="insertContent(content)" class="textButton">
+						작성
 					</button>
-					<button @click="deleteContent(value.teamBoardCodeDto)">
-						삭제
+				</div>
+			</div>
+
+			<div class="boardDiv">
+				<p class="memberListP">MemberList</p>
+				<div class="addMember">
+					회원추가하기
+					<input
+						type="text"
+						v-model="newMemberCode"
+						placeholder="회원번호"
+					/>
+					<button
+						class="w-btn-outline2 w-btn-blue-outline2"
+						@click="addTeamMember(this.newMemberCode)"
+					>
+						추가하기
 					</button>
-				</td>
-			</tr>
-		</table>
+				</div>
 
-		<textarea v-model="content">게시글을 작성하세요</textarea>
-		<button @click="insertContent(content)">작성</button>
-		<hr />
-		<div v-if="showingDeleteTeamButton">
-			<button @click="deleteTeam()">팀 삭제하기</button>
-		</div>
-		팀원 리스트
-
-		<div v-for="(value, index) in $store.state.teamMemberList" :key="index">
-			<button>
-				{{ value.mcode.mname }}
-			</button>
-			<form>
-				<input
-					v-model="value.teamMemberAuthority"
-					type="radio"
-					name="manager"
-					value="y"
-					@click="changeManager(value)"
-				/>운영자
-				<input
-					v-model="value.teamMemberAuthority"
-					type="radio"
-					name="manager"
-					value="n"
-					@click="changeManager(value)"
-				/>일반회원
-			</form>
-			<button
-				v-if="showingDeleteTeamButton"
-				@click="banishment(value.teamMemberCode, index)"
-			>
-				추방하기
-			</button>
-		</div>
-		<div>
-			회원추가하기
-			<input type="text" v-model="newMemberCode" placeholder="회원번호" />
-			<button @click="addTeamMember(this.newMemberCode)">추가하기</button>
-		</div>
-
-		<div>
-			<h2>플랜목록</h2>
-			<div v-for="(value, index) in planList" :key="index">
-				<button @Click="updatePlanCode(value)">
-					{{ value.planName }}
-				</button>
-				<button @click="deletePlan(value)">플랜삭제</button>
+				<div class="memberListDiv">
+					<div
+						v-for="(value, index) in $store.state.teamMemberList"
+						:key="index"
+						class="teamListDiv"
+					>
+						<p>
+							name:
+							{{ value.mcode.mname }}
+						</p>
+						<p>phone: {{ value.mcode.mph }}</p>
+						<p>email: {{ value.mcode.mmail }}</p>
+						<form>
+							<input
+								v-model="value.teamMemberAuthority"
+								type="radio"
+								name="manager"
+								value="y"
+								@click="changeManager(value)"
+							/>운영자
+							<input
+								v-model="value.teamMemberAuthority"
+								type="radio"
+								name="manager"
+								value="n"
+								@click="changeManager(value)"
+							/>일반회원
+						</form>
+						<button
+							class="banishment"
+							v-if="showingDeleteTeamButton"
+							@click="banishment(value.teamMemberCode, index)"
+						>
+							추방하기
+						</button>
+					</div>
+				</div>
 			</div>
-			<div v-if="showingDeleteTeamButton">
-				<button @click="openWindow('/selectCopy')">
-					새 플랜 만들기
-				</button>
+			<div class="boardDiv">
+				<div class="planListDiv">
+					<div v-if="showingDeleteTeamButton" class="createNewPlan">
+						<p>PlanList</p>
+						<button
+							class="w-btn-outline2 w-btn-blue-outline2"
+							type="button"
+							@click="openWindow('/selectCopy')"
+							title="새 플랜 만들기"
+						>
+							+
+						</button>
+					</div>
+					<div
+						v-for="(value, index) in planList"
+						:key="index"
+						class="planInfo"
+					>
+						<div>
+							<button
+								@Click="updatePlanCode(value)"
+								class="w-btn-outline w-btn-red-outline"
+							>
+								<p>{{ value.planName }}</p>
+								<p>인원: {{ value.planNumber }}</p>
+								<p>{{ value.planDestination }}</p>
+								<p>{{ value.planStart }}~{{ value.planEnd }}</p>
+							</button>
+							<button
+								class="w-btn w-btn-red deleteButton"
+								@click="deletePlan(value)"
+							>
+								플랜삭제
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<button class="w-btn1 w-btn-indigo" @click="deleteTeam()">
+						팀 삭제하기
+					</button>
+					<button class="w-btn1 w-btn-indigo" @click="refuse()">
+						탈퇴하기
+					</button>
+				</div>
 			</div>
 		</div>
-		<button @click="refuse()">탈퇴하기</button>
 	</div>
 </template>
 
@@ -354,6 +415,10 @@ export default {
 	border-bottom: 1px solid #eee;
 	padding: 5px 0;
 }
+.tbAdd tr:nth-child(even) {
+	background-color: rgba(240, 240, 240, 0.37);
+}
+
 .tbAdd td {
 	padding: 10px 10px;
 	box-sizing: border-box;
@@ -365,5 +430,225 @@ export default {
 }
 .master {
 	color: red;
+}
+.editButton {
+	background-color: rgba(136, 136, 136, 0);
+	border: none;
+	font-size: 10px;
+	margin: 5px;
+	color: rgba(136, 136, 136, 0.534);
+}
+.textArea {
+	width: 1000px;
+	height: 100px;
+	margin-top: 40px;
+	margin-left: 100px;
+}
+.textButton {
+	width: 90px;
+	height: 100px;
+	position: relative;
+	top: -45px;
+	border: none;
+}
+.memberListDiv {
+	display: inline-block;
+}
+.teamListDiv {
+	background-color: rgb(231, 231, 231);
+	margin: 60px;
+	margin-top: 40px;
+	width: 300px;
+	height: 100px;
+	float: left;
+	border-radius: 15px;
+}
+.banishment {
+	border-radius: 10px;
+	border: none;
+	background-color: rgb(240, 150, 32);
+}
+.planListDiv {
+	margin-top: 50px;
+	display: inline-block;
+}
+.planListDiv div.planInfo {
+	float: left;
+	margin: 40px;
+}
+.planListButton {
+	border-radius: 5px;
+	background-color: rgba(255, 0, 0, 0.205);
+	border: none;
+}
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+.w-btn-red {
+	background-color: #ff5f2e;
+	color: #e1eef6;
+}
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn-outline {
+	position: relative;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+.w-btn-red-outline {
+	border: 3px solid #ff5f2e;
+	color: #6e6e6e;
+}
+.w-btn-red-outline:hover {
+	background-color: #ff5f2e;
+	color: #e1eef6;
+}
+.w-btn-outline:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+
+.createNewPlan {
+	background-color: rgb(199, 201, 200);
+}
+
+.createNewPlan p {
+	font-size: 30px;
+	display: inline;
+}
+
+.memberListP {
+	font-size: 25px;
+	background-color: rgb(199, 201, 200);
+}
+
+.boardP {
+	font-size: 30px;
+	margin-top: 50px;
+	margin-bottom: 30px;
+	background-color: rgb(199, 201, 200);
+}
+
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+.w-btn-blue-outline2:hover {
+	background-color: #6aafe6;
+	color: #d4dfe6;
+}
+.w-btn-blue-outline2 {
+	border: 3px solid #6aafe6;
+	color: #6e6e6e;
+}
+.w-btn-outline2 {
+	position: relative;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	width: 40px;
+	margin-left: 20px;
+	font-size: 20px;
+}
+
+.addMember button {
+	position: relative;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	width: 80px;
+	margin-left: 20px;
+	font-size: 12px;
+}
+.addMember input {
+	border-radius: 5px;
+}
+.w-btn-outline2:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.tdContent {
+	max-width: 800px;
+	word-break: break-all;
+}
+
+.w-btn1 {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	margin-right: 50px;
+	float: right;
+}
+
+.w-btn-indigo {
+	background-color: aliceblue;
+	color: #1e6b7b;
+	margin-bottom: 30px;
+}
+.w-btn1:active {
+	transform: scale(1.5);
+}
+
+.w-btn1:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.boardDiv {
+	border: none;
+	border-radius: 50px;
+	background-color: rgb(247, 246, 230);
+	width: 90%;
+	height: auto;
+	display: inline-block;
+	margin: 50px;
+}
+.outer {
+	text-align: center;
+	position: absolute;
+	background-image: url(@/assets/campwall2.webp);
+	background-size: 100%;
+	background-repeat: repeat-y;
+}
+
+/* .imgbackground {
+
+} */
+.background {
 }
 </style>
