@@ -171,155 +171,134 @@ const routes = [
 		component: () => import('@/components/board/Update.vue'),
 	},
 
+
+	///////////////////////////////상품관리///////////////////////////////////
+
+	{
+		path: '/ProductMain',
+		name: 'ProductMain',
+		component: () => import('@/components/product/ProductMain.vue')
+	},
+	{
+		path: '/ProductPage',
+		name: 'ProductPage',
+		component: () => import('@/components/product/ProductPage.vue')
+	},
+	////////////////////////////////////////////////////
+	{
+		path: '/ProductBuy',
+		name: 'ProductBuy',
+		component: () => import('@/components/product/Registration/RegistrationBuy.vue')
+	},
+	{
+		path: '/ProductRental',
+		name: 'ProductRental',
+		component: () => import('@/components/product/Registration/RegistrationRental.vue')
+	},
+	{
+		path: '/ProductCamping',
+		name: 'ProductCamping',
+		component: () => import('@/components/product/Registration/RegistrationCamping.vue')
+	},
+	{
+		path: '/RegistrationCampingDetail/:campingName',
+		name: 'RegistrationCampingDetail',
+		component: () => import('@/components/product/Registration/RegistrationCampingDetail.vue')
+	},
+	/////////////////////////////////////////////////////////
+	{
+		path: '/BuyProductList',
+		name: 'BuyProductList',
+		component: () => import('@/components/product/Buy/BuyProductList.vue')
+	},
+	{
+		path: '/BuyProductDetail/:buyId',
+		name: 'BuyProductDetail',
+		component: () => import('@/components/product/Buy/BuyProductDetail.vue'),
+		props: true
+	},
+	{
+		path: '/BuyProductEdit',
+		name: 'BuyProductEdit',
+		component: () => import('@/components/product/Buy/BuyProductEdit.vue'),
+		props: true,
+	},
+	////////////////////////////////////////////////////////////////
+	{
+		path: '/RentalProductList',
+		name: 'RentalProductList',
+		component: () => import('@/components/product/Rental/RentalProductList.vue')
+	},
+	{
+		path: '/RentalProductDetail/:rentalId',
+		name: 'RentalProductDetail',
+		component: () => import('@/components/product/Rental/RentalProductDetail.vue'),
+		props: true
+	},
+	{
+		path: '/RentalProductEdit',
+		name: 'RentalProductEdit',
+		component: () => import('@/components/product/Rental/RentalProductEdit.vue'),
+		props: true,
+	},
+	///////////////////////////////////////////////////////////////////
+	{
+		path: '/CampingProductList',
+		name: 'CampingProductList',
+		component: () => import('@/components/product/Camping/CampingProductList.vue')
+	},
+	{
+		path: '/CampingProductDetail/:campingId',
+		name: 'CampingProductDetail',
+		component: () => import('@/components/product/Camping/CampingProductDetail.vue'),
+		props: true
+	},
+	{
+		path: '/CampingProductEdit/:campingId',
+		name: 'CampingProductEdit',
+		component: () => import('@/components/product/Camping/CampingProductEdit.vue'),
+		props: true,
+	},
+	///////////////////////////////////////////////////////////////////
+	{
+		path: '/RoomProductList/:campingId',
+		name: 'RoomProductList',
+		component: () => import('@/components/product/Room/RoomProductList.vue'),
+		props: true,
+	},
+	{
+		path: '/RoomProductDetail/:detailId',
+		name: 'RoomProductDetail',
+		component: () => import('@/components/product/Room/RoomProductDetail.vue'),
+		props: true
+	},
+	{
+		path: '/RoomProductEdit',
+		name: 'RoomProductEdit',
+		component: () => import('@/components/product/Room/RoomProductEdit.vue'),
+		props: true,
+	},
+	{
+		path: '/RoomProductCreate/:campingId',
+		name: 'RoomProductCreate',
+		component: () => import('@/components/product/Room/RoomProductCreate.vue'),
+		props: true,
+	},
+	///////////////////////////////////////////////////////////////////
+
 	{
 		path: '/ProductList',
 		name: 'ProductList',
-		component: () => import('@/components/product/ProductList.vue'),
+		component: () => import('@/components/product/ProductList.vue')
 	},
 	{
 		path: '/ProductDetail/:menuid',
 		name: 'productDetail',
 		component: () => import('@/components/product/ProductDetail.vue'),
-		props: true,
+		props: true
 	},
 
-	////////////////////////주문, 결제/////////////////////////////////
 	{
-		path: '/itemBuy',
-		name: 'ItemBuy',
-		component: () => import('@/components/cart/ItemBuy/BuyList.vue'),
-	},
-	{
-		path: '/itemBuy/buyList/:buyId',
-		name: 'BuyDetailList',
-		component: () => import('@/components/cart/ItemBuy/BuyDetailList.vue'),
-		props: true,
-	},
-	{
-		path: '/itemBuy/buyNow/:buyId',
-		name: 'BuyNow',
-		component: () => import('@/components/cart/ItemBuy/BuyNow.vue'),
-		props: true,
-	},
-	{
-		path: '/itemBuy/buyComplete',
-		name: 'BuyComplete',
-		component: () => import('@/components/cart/ItemBuy/BuyComplete.vue'),
-		props: true,
-	},
-	{
-		path: '/itemShare',
-		name: 'ShareList',
-		component: () => import('@/components/cart/ItemShare/ShareList.vue'),
-	},
-	{
-		path: '/itemShare/shareNow/:rentalId',
-		name: 'ShareNow',
-		component: () => import('@/components/cart/ItemShare/ShareNow.vue'),
-	},
-	{
-		path: '/itemBuy/shareComplete',
-		name: 'shareComplete',
-		component: () =>
-			import('@/components/cart/ItemShare/ShareComplete.vue'),
-	},
-	{
-		path: '/infoter',
-		name: 'InfoterList',
-		component: () => import('@/components/cart/Infoter/InfoterList.vue'),
-	},
-	{
-		path: '/infoter/infoterList/:campingId',
-		name: 'InfoterDetailList',
-		component: () =>
-			import('@/components/cart/Infoter/InfoterDetailList.vue'),
-		props: true,
-	},
-	{
-		path: '/infoter/infoterBoard',
-		name: 'InfoterDetailBoard',
-		component: () =>
-			import('@/components/cart/Infoter/InfoterDetailBoard.vue'),
-	},
-	{
-		path: '/infoter/infoterNow/:campingId/:detailId',
-		name: 'InfoterNow',
-		component: () => import('@/components/cart/Infoter/InfoterNow.vue'),
-	},
-	{
-		path: '/infoter/infoterComplete',
-		name: 'InfoterComplete',
-		component: () => import('@/components/cart/Infoter/InfoterNow.vue'),
-	},
-	{
-		path: '/cart',
-		name: 'CartList',
-		component: () => import('@/components/cart/Cart/CartList.vue'),
-	},
-	{
-		path: '/cart/buy/:mcode',
-		name: 'BuyCart',
-		component: () => import('@/components/cart/Cart/BuyCart.vue'),
-	},
-	{
-		path: '/cart/share',
-		name: 'ShareCart',
-		component: () => import('@/components/cart/Cart/ShareCart.vue'),
-	},
-	{
-		path: '/cart/reservation',
-		name: 'ReservationCart',
-		component: () => import('@/components/cart/Cart/ReservationCart.vue'),
-	},
-	{
-		path: '/ordersList',
-		name: 'Orders',
-		component: () => import('@/components/cart/ordersInfo/Orders.vue'),
-		props: true,
-	},
-	{
-		path: '/ordersList/buyOrders/:mid',
-		name: 'BuyOrders',
-		component: () => import('@/components/cart/ordersInfo/BuyOrders.vue'),
-		props: true,
-	},
-	{
-		path: '/ordersList/shareOrders/:mid',
-		name: 'ShareOrders',
-		component: () => import('@/components/cart/ordersInfo/ShareOrders.vue'),
-	},
-	{
-		path: '/ordersList/reservationOrders/:mid',
-		name: 'ReservationOrders',
-		component: () =>
-			import('@/components/cart/ordersInfo/ReservationOrders.vue'),
-	},
-	//////////////////////////////보관함관리/////////////////////////////////
-
-	{
-		path: '/ProductList',
-		name: 'ProductList',
-		component: () => import('@/components/product/ProductList.vue'),
-	},
-	{
-		path: '/ProductDetail/:menuid',
-		name: 'productDetail',
-		component: () => import('@/components/product/ProductDetail.vue'),
-		props: true,
-	},
-
-  {
-    path: '/ProductList',
-    name: 'ProductList',
-    component: () => import('@/components/product/ProductList.vue')
-  },
-  {
-    path: '/ProductDetail/:menuid',
-    name: 'productDetail',
-    component: () => import('@/components/product/ProductDetail.vue'),
-    props: true
-  },
-  {
     path: '/ProductMyPage',
     name: 'ProductMyPage',
     component: () => import('@/components/product/ProductMyPage.vue')
