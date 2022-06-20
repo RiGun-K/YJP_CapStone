@@ -4,6 +4,7 @@ import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Plan.PlanTag;
 import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.order.OrderMenu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,4 +39,11 @@ public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
     @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_price DESC", nativeQuery = true)
     List<MenuBuy> findByHighPrice();
 
+
+    @Query(value = "select ORDER_MENU.*, B.* \n" +
+            "from ORDERS join ORDER_MENU on ORDERS.ORDER_CODE = ORDER_MENU.ORDER_CODE \n" +
+            "join MENUBUY B on B.BUY_ID = ORDER_MENU.MENU_BUY_ID \n" +
+            "join MEMBER M on M.MID = M.MCODE \n" +
+            "where M.MCODE = :mcode", nativeQuery = true)
+    List<MenuBuy> findBySaleMyId(@Param("mcode") Long mcode);
 }

@@ -3,7 +3,7 @@
   <nav class="nav nav-pills nav-justified">
     <a class="nav-link active" href="/ProductMain">상품 등록</a>
     <a class="nav-link" href="/BuyProductList">나의 상품</a>
-    <a class="nav-link" href="/ProductMyPage">판매자 정보</a>
+    <a class="nav-link" href="/ProductMyPage">주문 정보</a>
     <a class="nav-link disabled">준비중</a>
   </nav>
 </template>

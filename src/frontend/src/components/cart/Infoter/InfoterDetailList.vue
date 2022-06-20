@@ -164,11 +164,14 @@
     </div>
 
 
+
+  <div v-if="areaCheck3">
     <br>
-    <h2>캠핑장 위치정보</h2>
     <div class="mapDiv">
       <div id="map"></div>
     </div>
+  </div>
+
 
 
   <div v-if="areaCheck1">
@@ -183,10 +186,6 @@
     <img :src=imageCC>
     <br>
     <img :src=imageCC2>
-  </div>
-
-  <div v-if="areaCheck3">
-    <br>
   </div>
 
     <div v-if="areaCheck4">

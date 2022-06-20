@@ -281,6 +281,21 @@ const routes = [
     name: 'ProductMyPage',
     component: () => import('@/components/product/ProductMyPage.vue')
   },
+  {
+    path: '/SaleMyCamping/:mid',
+    name: 'SaleMyCamping',
+    component: () => import('@/components/product/Sale/SaleMyCamping.vue')
+  },
+  {
+    path: '/SaleMyRental/:mid',
+    name: 'SaleMyRental',
+    component: () => import('@/components/product/Sale/SaleMyRental.vue')
+  },
+  {
+    path: '/SaleMyBuy/:mid',
+    name: 'SaleMyBuy',
+    component: () => import('@/components/product/Sale/SaleMyBuy.vue')
+  },
 
     ////////////////////////주문, 결제/////////////////////////////////
   {

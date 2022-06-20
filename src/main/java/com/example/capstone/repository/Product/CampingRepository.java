@@ -3,6 +3,7 @@ package com.example.capstone.repository.Product;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Camping;
 import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.order.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
