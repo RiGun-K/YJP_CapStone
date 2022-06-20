@@ -129,7 +129,6 @@ router-link{
   border-radius: 10px;
   font-size: 18px;
   z-index: 3;
-  background: black;
 }
 .topMenu:hover > .subMenu{
   display: block;
