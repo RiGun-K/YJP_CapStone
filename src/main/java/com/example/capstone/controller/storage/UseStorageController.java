@@ -372,7 +372,6 @@ public class UseStorageController {
     private List<MenuBuy> getSearchRepairList(@PathVariable(value = "searchText")String search,
                                               @PathVariable(value = "groupKindId")int kindId){
 
-        System.out.println(search + kindId);
         List<MenuBuy> menuBuyList;
         if (kindId==0){
             menuBuyList = menuBuyRepository.findBySearchName(search);
@@ -406,8 +405,10 @@ public class UseStorageController {
             orderMenuRepository.save(orderMenu);
 
             Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(care.getList().get(i).getMemEquipmentCode());
-            memberEquipment.get().setMemEquipmentState("2");
-            memberEquipmentRepository.save(memberEquipment.get());
+            MemberEquipment memberEquipment1 = memberEquipment.get();
+            memberEquipment1.setMemEquipmentState("2");
+            memberEquipmentRepository.save(memberEquipment1);
+
             UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
             useStorageBox.setUseStorageState("6");
             useStorageBoxRepository.save(useStorageBox);
