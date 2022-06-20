@@ -350,7 +350,6 @@ export default {
   margin-top: 1%;
   width: 100%;
   text-align: right;
-
 }
 
 /*기존*/
