@@ -243,5 +243,46 @@ public class RentalController {
         menuRental.get().setRentalViews(menuRental.get().getRentalViews()+1);
         menuRentalRepository.save(menuRental.get());
     }
-    
+
+    /* 렌탈물품 종류별 조회하기 */
+    @GetMapping("/product_detail_rental/{kindId}")
+    public List<MenuRental> menuRentals(@PathVariable("kindId") int kindId) {
+        System.out.println("상품번호는 " + kindId);
+        if(kindId == 1) {
+            List<MenuRental> menuRentals = menuRentalRepository.findByParentRentalId(kindId);
+            System.out.println(menuRentals);
+            return menuRentals;
+        } else {
+            List<MenuRental> menuRentalss = menuRentalRepository.findByrentalId(kindId);
+            System.out.println(menuRentalss);
+            return menuRentalss;
+        }
+
+
+    }
+
+    @GetMapping("/search_RentalList")
+    public List<MenuRental> searchBuyList(@RequestParam("searchRental") String searchRental) {
+//        List<MenuBuy> menuBuys = productService.searchBuy(searchBuy);
+        List<MenuRental> menuRentals = menuRentalRepository.findAllBysearchRentalContains(searchRental);
+        System.out.println("결과는" + menuRentals);
+        return menuRentals;
+
+    }
+
+    /* 렌탈상품 최신순 */
+    @GetMapping("/product_ByRentalLatest")
+    public List<MenuRental> menuBuysByLatest() {
+        List<MenuRental> menus = menuRentalRepository.findByLatest();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 렌탈상품 조회순 */
+    @GetMapping("/product_ByRentalViews")
+    public List<MenuRental> menuBuysByViews() {
+        List<MenuRental> menus = menuRentalRepository.findByViews();
+        System.out.println(menus);
+        return menus;
+    }
 }

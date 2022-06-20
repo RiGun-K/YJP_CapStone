@@ -1,79 +1,162 @@
 <template>
   박스 이동 결제
+  <div>
+    <div>
+      보관 정보
+    </div>
+    <div>
+      <table>
+        <tr>
+          <td>보관소 명</td>
+          <td>{{ moveBoxInfo.storageName }}</td>
+        </tr>
+        <tr>
+          <td>보관함</td>
+          <td>{{ moveBoxInfo.boxName }}</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      보관장비
+      <div v-if="myItem.length > 1">
+        <table>
+          <thead>
+          <tr>
+            <th colspan="2">장비</th>
+            <th>수량</th>
+          </tr>
+          </thead>
+          <tbody v-for="(item,index) in myItem" :key="index">
+          <tr>
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.memEquipmentName }}</td>
+            <td>{{ item.memEquipmentCount }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>
+        보관중인 장비가 없습니다.
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div>
+    이동 장소
+    <div>
+      <table>
+        <tr>
+          <td>주소</td>
+          <td>{{ data.address }}</td>
+        </tr>
+        <tr v-if="data.detailAddress != ''">
+          <td>상세주소</td>
+          <td>{{ data.detailAddress }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <h5>가격 : {{price}}원</h5>
 
-  이동할 박스
-    <table>
-      <tr>
-        <td>보관소 명</td>
-        <td>{{data.storageName}}</td>
-      </tr>
-      <tr>
-        <td>보관함</td>
-        <td>{{data.boxName}}</td>
-      </tr>
-    </table>
-  <hr>
-  이동 장소
-  <table>
-    <tr>
-      <td>주소</td>
-      <td>{{data.address}}</td>
-    </tr>
-    <tr v-if="data.detailAddress != ''">
-      <td>상세주소</td>
-      <td>{{data.detailAddress}}</td>
-    </tr>
-  </table>
-  <hr>
-  도착 예정 일:
-   <button @click="pay">결제</button>
+  </div>
+  <div>
+    <button @click="paymentBtn()">결제</button>
+  </div>
+
 </template>
 
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
   name: "roundToBoxMovePay",
   mounted() {
+    this.data = this.$store.state.moveBoxInfo
+    this.getBoxInfo()
+    this.boxinItem()
   },
-  data(){
-    return{
-      data: {
-        userId:this.$route.params.userId,
-        storageName:this.$route.params.storageName,
-        boxName:this.$route.params.boxName,
-        useBoxCode:this.$route.params.useBoxCode,
-        zipCode:this.$route.params.zipCode,
-        address:this.$route.params.address,
-        detailAddress:this.$route.params.detailAddress
-      }
+  data() {
+    return {
+      data: {},
+      moveBoxInfo: {},
+      myItem: {},
+      price:10000
     }
   },
-  methods:{
-    pay(){
-      const form={
-        userId: this.data.userId,
+  methods: {
+    boxinItem() {
+      axios.get('/api/getBoxInItem/' + this.data.useBoxCode)
+          .then(res => {
+            this.myItem = res.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getBoxInfo() {
+      axios.get('/api/moveBoxInfo/' + this.data.useBoxCode)
+          .then(res => {
+            this.moveBoxInfo.storageName = res.data[0][1]
+            this.moveBoxInfo.boxName = res.data[0][3]
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    paymentBtn() {
+      // if (confirm('결제 하시겠습니까?')) {
+      //   const IMP = window.IMP
+      //   IMP.init('imp35975601')
+      //   IMP.request_pay({
+      //     pg: 'html5_inicis',
+      //     pay_method: 'card',
+      //     merchant_uid: 'merchant_' + new Date().getTime(),
+      //     name: this.moveBoxInfo.storageName +'보관소'+this.moveBoxInfo.BoxName+'보관함 장소 배송',
+      //     amount: this.price/100,
+      //     buyer_tel: '01012345678',
+      //     confirm_url: ''
+      //   }, (rsp) => {
+      //     if (rsp.success) {
+      //
+      //       this.savePay()
+      //
+      //     } else {
+      //       let msg = '결제에 실패하였습니다.'
+      //       msg += '에러 내용 : ' + rsp.error_msg
+      //       alert(msg)
+      //
+      //     }
+      //   })
+      // }
+      this.pay()
+    },
+    pay() {
+      const form = {
+        userId: store.getters.getLoginState.loginState,
         useBoxCode: this.data.useBoxCode,
-        zipCode:this.data.zipCode,
-        address:this.data.address,
-        detailAddress:this.data.detailAddress
+        zipCode: this.data.zipCode,
+        address: this.data.address,
+        detailAddress: this.data.detailAddress
       }
       console.log(form)
-      axios.post('/api/roundMoveBox',form)
-      .then(res=>{
-        console.log(res)
-        if(res.data.result == 'ok'){
-          alert('결제되었습니다')
-          this.$router.push({name:"myBox"})
-        }else if(res.data.result == 'umm'){
-          alert('장비가 보관중이 아닙니다')
-        }else{
-          alert('보관중이 아니거나 보관함에 장비가 없습니다.')
-        }
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+      axios.post('/api/roundMoveBox', form)
+          .then(res => {
+            console.log(res)
+            if (res.data.result == 'ok') {
+              this.$store.commit('clearMoveBoxInfo')
+              this.$router.push({name: "storageComplete"})
+            } else if (res.data.result == 'umm') {
+              alert('장비가 보관중이 아닙니다')
+            } else {
+              alert('보관중이 아니거나 보관함에 장비가 없습니다.')
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
     }
   }
 }

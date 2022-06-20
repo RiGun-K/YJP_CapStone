@@ -64,5 +64,18 @@ button {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-weight: 700;
 	font-size: 1em;
+	// =======
+	// html,body{padding:0; margin:0;height: 100%}
+	// router-view{
+	//   height: 100%;
+	// }
+	// #app {
+	//   height: 100%;
+	//   font-family: Avenir, Helvetica, Arial, sans-serif;
+	//   -webkit-font-smoothing: antialiased;
+	//   -moz-osx-font-smoothing: grayscale;
+	//   //text-align: center;
+	//   color: #2c3e50;
+	// >>>>>>> 6184d9e3cf1aba91bb826f47810834fee612abde
 }
 </style>

@@ -13,6 +13,11 @@ import java.util.Optional;
 
 public interface StorageRepository extends JpaRepository<Storage, Long> {
     Optional<Storage> findByStorageName(String storageName);
+    Optional<Storage> findByFilename(String filename);
+
+
+    @Query(value = "select * from STORAGE where STORAGE_STATE = 0 order by STORAGE_NAME",nativeQuery = true)
+    List<Storage> findByNotState();
 
     @Query(value = "select s.STORAGE_CODE, s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_BOX_CODE, u.USE_STORAGE_STATE \n" +
                     "from STORAGE s\n" +

@@ -65,6 +65,15 @@ public class ProductController {
     ProductService productService;
 
 
+    /* 판매자 정보 */
+    @GetMapping("getMymember/{user}")
+    public Optional<Member> getAllmember(@PathVariable("user") String user){
+        Optional<Member> members = memberRepository.findByMID(user);
+
+        return members;
+    }
+
+
     /* 구매상품 리스트 */
     @GetMapping("/product_BuyList")
     public List<MenuBuy> menuBuysList() {
@@ -97,6 +106,13 @@ public class ProductController {
         return menuDetailList;
     }
 
+    /* 렌탈상품 결제전 상세 페이지 */
+    @GetMapping("/product_detailRR/{rentalId}")
+    public Optional<MenuRental> getProduct_DetailRR(@PathVariable("rentalId") int rentalId) {
+        Optional<MenuRental> rentalDetailList = menuRentalRepository.findById(rentalId);
+        return rentalDetailList;
+    }
+
     /* 캠핑장 결제전 상세 페이지 */
     @GetMapping("/product_detailC/{campingId}")
     public Optional<Camping> getProduct_DetailC(@PathVariable("campingId") int campingId) {
@@ -127,6 +143,7 @@ public class ProductController {
 
         String requestPath = "C:\\Users\\bon300-6\\YJP_CapStone16\\src\\frontend\\src\\assets\\" + filename;
 
+
         InputStream imageStream = new FileInputStream(requestPath);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
@@ -154,6 +171,22 @@ public class ProductController {
     public List<Camping> campingAreaDetails(@PathVariable("areaId") int areaId) {
         System.out.println(areaId);
         List<Camping> campings = campingRepository.findByareaDetailId(areaId);
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 조회순 ) */
+    @GetMapping("/product_detail_campingManyViews")
+    public List<Camping> campingManyViews() {
+        List<Camping> campings = campingRepository.findAllListViewDesc();
+        System.out.println(campings);
+        return campings;
+    }
+
+    /* 캠핑장 종류별 조회하기 ( 최신순 ) */
+    @GetMapping("/product_detail_campingDesc")
+    public List<Camping> campingDesc() {
+        List<Camping> campings = campingRepository.findAllListDesc();
         System.out.println(campings);
         return campings;
     }

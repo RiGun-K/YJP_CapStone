@@ -2,11 +2,8 @@ package com.example.capstone.controller.Product;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.*;
-import com.example.capstone.dto.Board.BoardDTO;
 import com.example.capstone.dto.Product.ImagesDTO;
 import com.example.capstone.dto.Product.MenuBuyDTO;
-import com.example.capstone.dto.Product.MenuDTO;
-import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.*;
 import com.example.capstone.service.ProductService;
@@ -29,7 +26,9 @@ import java.util.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @NoArgsConstructor
 @RequestMapping("/api")
-public class BuyController {
+public class
+
+BuyController {
 
     @Autowired
     MemberRepository memberRepository;
@@ -77,7 +76,7 @@ public class BuyController {
             uploadFile.transferTo(new File(filePath));
             MenuBuyDTO.setOrigFilename(origFilename);
             MenuBuyDTO.setFilename(filename);
-            MenuBuyDTO.setFilePath(filePath);
+            MenuBuyDTO.setFilePath("\\src\\frontend\\src\\assets\\"+ filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -214,7 +213,7 @@ public class BuyController {
 
             menuBuy.setOrigFilename(origFilename);
             menuBuy.setFilename(filename);
-            menuBuy.setFilePath(filePath);
+            menuBuy.setFilePath("\\src\\frontend\\src\\assets\\"+ filename);
 
 
         } catch (Exception e) {
@@ -293,7 +292,8 @@ public class BuyController {
 
 
     }
-
+    
+    /* 구매상품 검색 */
     @GetMapping("/search_BuyList")
     public List<MenuBuy> searchBuyList(@RequestParam("searchBuy") String searchBuy) {
 //        List<MenuBuy> menuBuys = productService.searchBuy(searchBuy);
@@ -301,5 +301,37 @@ public class BuyController {
         System.out.println("결과는" + menuBuys);
         return menuBuys;
 
+    }
+
+    /* 구매상품 최신순 */
+    @GetMapping("/product_ByBuyLatest")
+    public List<MenuBuy> menuBuysByLatest() {
+        List<MenuBuy> menus = menuBuyRepository.findByLatest();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 구매상품 조회순 */
+    @GetMapping("/product_ByBuyViews")
+    public List<MenuBuy> menuBuysByViews() {
+        List<MenuBuy> menus = menuBuyRepository.findByViews();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 구매상품 낮은 가격순 */
+    @GetMapping("/product_ByBuyLowPrice")
+    public List<MenuBuy> menuBuysByLowPrice() {
+        List<MenuBuy> menus = menuBuyRepository.findByLowPrice();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 구매상품 높은 가격순 */
+    @GetMapping("/product_ByBuyHighPrice")
+    public List<MenuBuy> menuBuysByHighPrice() {
+        List<MenuBuy> menus = menuBuyRepository.findByHighPrice();
+        System.out.println(menus);
+        return menus;
     }
 }

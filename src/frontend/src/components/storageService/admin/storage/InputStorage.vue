@@ -23,16 +23,21 @@
       <input type="text" v-model="form.storageTel" placeholder="전화번호">
     </div>
     <div class="bodydiv">
-      <label class="labelWidth">이미지</label>
-          <input type="file"
-                 id="file"
-                 @change="handleImage"
-                 enctype="multipart/form-data"
-                 aria-describedby="inputGroupFileAddon04"
-                 aria-label="Upload"
-                 placeholder="상품을 설명할 이미지 파일을 업로드하세요."
-                 drop-placeholder="Drop file here..."
-          style="width: 300px;">
+      <form>
+        <label class="labelWidth">이미지</label>
+        <input type="file"
+               id="file"
+               @change="handleImage"
+               enctype="multipart/form-data"
+               aria-describedby="inputGroupFileAddon04"
+               aria-label="Upload"
+               placeholder="보관소 이미지 파일을 업로드하세요."
+               multiple
+               accept="image/*"
+               drop-placeholder="Drop file here..." >
+        <div id="image_container"/>
+      </form>
+      <button @click="clearFile()">파일 취소</button>
     </div>
     <div class="storage-box" v-if="boxC">
       <p>보관함 추가</p>
@@ -70,7 +75,7 @@
     </div>
     <div class="btnDivBody">
       <button class="storage-add-btn" @click="next()" v-if="!boxC">NEXT</button>
-      <button class="homeBtn" @click="returnList()" >돌아가기</button>
+      <button class="homeBtn" @click="this.$emit('back')" >돌아가기</button>
     </div>
     <div id="map"></div>
   </div>
@@ -129,6 +134,10 @@ export default {
       }else{
         this.boxC = true
       }
+      this.geo(this.form.storageAddress)
+    },
+    clearFile(){
+      this.file = ''
     },
     geo(index){
       // 주소-좌표 변환 객체를 생성합니다
@@ -143,8 +152,6 @@ export default {
             }
           }
       );
-      console.log('this.a')
-      console.log(this.a)
     },
     initMap() {
       const container = document.getElementById("map");
@@ -166,20 +173,27 @@ export default {
     handleImage(e) {
       this.file = e.target.files[0];
       let self = this;
-      if (e.target.files[0]) {
+      if(e.target.files[0]) {
         // 파일 읽는 라이브러리
         const reader = new FileReader();
 
         // 파일 읽기가 완료되는 시점
-        reader.addEventListener('load', function (e1) {
+        reader.addEventListener('load', function(e1){
           // 완료되는 시점!!!!!!!!!!!!!!!
           self.imgsrc = e1.target.result;
           // 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+
+          let img = document.createElement("img");
+          img.setAttribute("src", e1.target.result);
+          document.querySelector("div#image_container").appendChild(img);
         });
+
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
-      } else {
+      }
+      else {
         return false
       }
 
@@ -253,20 +267,32 @@ export default {
         box: this.box,
         storage: this.form
       }
+      const formData = new FormData()
+      formData.append('small',this.box.small)
+      formData.append('medium',this.box.medium)
+      formData.append('large',this.box.large)
+      formData.append('storageName',this.form.storageName)
+      formData.append('storageZipcode',this.form.storageZipcode)
+      formData.append('storageAddress',this.form.storageAddress)
+      formData.append('storageDetailAddress',this.form.storageDetailAddress)
+      formData.append('latitude',this.form.latitude)
+      formData.append('longitude',this.form.longitude)
+      formData.append('file',this.file)
+
+
       if (this.errorCheck) {
-        axios.post('/api/postStorage', data)
+        axios.post('/api/postStorage', formData,{headers: {'Content-Type': 'multipart/form-data'}})
             .then((res) => {
               console.log(this.form)
               console.log(res.data.result)
               if (res.data.result === 'ok') {
                 alert('추가되었습니다')
-                console.log('중복없음')
                 this.clearInput()
                 this.addStorage = true
                 this.claerBox()
                 this.addStorage = false
                 alert('보관소와 보관함이 추가되었습니다.')
-                this.$router.push('/storageAdmin')
+                this.$emit('back')
               } else {
                 console.log('중복')
               }
@@ -275,9 +301,6 @@ export default {
         })
       }
     },
-    returnList(){
-      this.$router.go()
-    }
   }
 }
 </script>

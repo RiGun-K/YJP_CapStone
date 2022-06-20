@@ -17,4 +17,11 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query(value = "SELECT * FROM Board b WHERE b.TITLE IS NOT NULL", nativeQuery = true)
     public List<Board> findByAllList();
+    @Query(value = "SELECT * FROM Board b WHERE b.TITLE IS not NULL and b.MID=:mid", nativeQuery = true)
+    public List<Board> findByAllWrite(Member mid);
+    @Query(value = "SELECT * FROM Board b WHERE b.TITLE IS NULL and b.MID=:mid", nativeQuery = true)
+    public List<Board> findByAllComment(Member mid);
+
+    public List<Board> findByMID(Member member);
+
 }

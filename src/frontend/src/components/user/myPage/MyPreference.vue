@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div class="divBody">
     <div class="btnOuter" v-for="(obj, index) in largeList">
       <div class="labelDiv">
@@ -25,7 +26,8 @@ export default {
       smallList:[], //소분류
       checkList:[], //대분류 보이기-숨기기
       userList:[],  //유저 선호도
-      flag:false    //초기화 플래그 변수
+      flag:false,    //초기화 플래그 변수
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   created() {
@@ -64,7 +66,7 @@ export default {
     //플래그 실행 타이밍 조작
     setTimeout(()=>{
       this.flag = true
-    },200)
+    },400)
   },
   methods:{
     chBack(index, index2){
@@ -138,12 +140,25 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .divBody{
-  margin-right: 25%;
-  margin-left: 25%;
-  margin-top: 1%;
+  margin-right: 15%;
+  margin-left: 15%;
+  margin-top: 2%;
+  margin-bottom: 5%;
   text-align: center;
-  width: 50%;
+  width: 70%;
+  height: 93%;
+  padding: 30px;
+  z-index: 2;
+  position: relative;
+  background: white;
 }
 .btnDiv{
   display: inline;
@@ -163,14 +178,15 @@ export default {
   margin-bottom: 10px;
   background: #b2e2fd;
   color: black;
-  width: 60px;
+  width: 100px;
 }
 .btn:hover{
   background: #000a69;
   color: white;
 }
 .clicked{
-  background: red;
+  background: black;
+  color: white;
 }
 h1{
   color: #5f8c98;

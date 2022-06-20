@@ -1,35 +1,46 @@
 <template>
-  <div class="infoter">
-    <h2>캠핑장 예약</h2>
-    <br>
-    <div class="campingkindimage">
-      <img src="@/assets/전체.png" class="image-thumbnail" alt="..." @click="goData">
-      <img src="@/assets/캠핑.png" class="image-thumbnail" alt="..." @click="cam(1)">
-      <img src="@/assets/카라반.png" class="image-thumbnail" alt="..." @click="cam(2)">
-      <img src="@/assets/글램핑.png" class="image-thumbnail" alt="..." @click="cam(3)">
-      <img src="@/assets/팬션.png" class="image-thumbnail" alt="..." @click="cam(4)">
-      <img src="@/assets/차박.png" class="image-thumbnail" alt="..." @click="cam(5)">
-      <img src="@/assets/당일피크닉.png" class="image-thumbnail" alt="..." @click="cam(6)">
-      <img src="@/assets/기타.png" class="image-thumbnail" alt="..." @click="cam(7)">
-    </div>
-    <br>
-    <br>
+  <div class="sidebar" :style="{ width: sidebarWidth }">
+    <h1>
+      <span v-if="collapsed">
+        <div>C</div>
+      </span>
+      <span v-else >Category</span>
+    </h1>
 
+    <h5><span v-if="collapsed">
+      </span>
+      <span v-else>캠핑 분류</span></h5>
+    <SidebarLink class="sidebar-link" icon="@/assets/전체.png" to="/infoter" @click="goData">캠핑장 전체</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(1)">캠핑</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(2)">카라반</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(3)">글램핑</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(4)">팬션</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(5)">차박</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(6)">당일 피크닉</SidebarLink>
+    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(7)">기타</SidebarLink>
+
+    <span
+        class="collapse-icon"
+        :class="{ 'rotate-180': collapsed }"
+        @click="toggleSidebar">
+          <i class='fas fa-angle-double-left'>  〈〈  </i>
+      </span>
+  </div>
+
+  <div :style="{ 'margin-left': sidebarWidth }">
+    <router-view />
+  </div>
+
+  <div class="infoter">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio2" @click="orderBy('latest')">최신순</label>
+      <label class="btn btn-outline-primary" for="btnradio2" @click="orderByLatest">최신순</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio3" @click="orderBy('latestd')">인기순</label>
-
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio4">낮은 가격순</label>
-
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
+      <label class="btn btn-outline-primary" for="btnradio3" @click="orderByView">인기순</label>
     </div>
 
     <h3>지역분류</h3>
@@ -53,8 +64,8 @@
       </div>
     </section>
 
+
     <div class="listBody">
-      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
       <div v-for="(product,index) in list" :key="product.id"
            :item="product" @click="toDetail(product)" class="listObj">
         <div class="card">
@@ -81,6 +92,7 @@
       </div>
     </div>
 
+
   </div>
 
 </template>
@@ -88,27 +100,39 @@
 <script>
 import axios from 'axios'
 import ProductList from "@/components/product/ProductList";
+import { collapsed, toggleSidebar } from '@/components/cart/Sidebar/state'
+import Sidebar from '@/components/cart/Sidebar/Sidebar'
+import { sidebarWidth } from '@/components/cart/Sidebar/state'
+import SidebarLink from '@/components/cart/Sidebar/SidebarLink'
+
 export default {
   name: 'InfoterList',
+  components: { SidebarLink },
   return: {
-    ProductList
+    ProductList, sidebarWidth
+  },
+  setup () {
+    return { collapsed, toggleSidebar, sidebarWidth }
   },
   created() {
     this.goData(),
-        axios.get('/api/campingRound')
-            .then(res => {
-              console.log(res.data)
-              this.bigRound = res.data
-            })
-            .catch(err => {
-              console.log(err)
-            })
+    axios.get('/api/campingRound')
+        .then(res => {
+          console.log(res.data)
+          this.bigRound = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
   },
+
   data() {
     return {
       selected: false,
       list: [],
       product: '',
+
       bigRound: [],
       smallRound: [],
       bigPick: 0,
@@ -122,6 +146,7 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
+
             axios.get('/api/product_detail_images/' + this.product.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");
@@ -134,6 +159,7 @@ export default {
             console.log(e)
           })
     },
+
     bigCheck(index) {
       if (index == '0') {
         this.smallRound = []
@@ -149,6 +175,7 @@ export default {
               console.log(err)
             })
       }
+
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == "0") {
@@ -174,7 +201,11 @@ export default {
               console.log(e)
             })
       }
+
+
+
     },
+
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
@@ -202,14 +233,15 @@ export default {
             this.list = res.data;
             if (this.list.length == 0) {
               alert("캠핑장이 없습니다.")
-              return;
+              window.location.href = 'http://localhost:8081/infoter'
             }
+
           })
           .catch(e => {
             console.log(e)
           })
     },
-    
+
     campingFilter(index) {
       if (this.searchCamping == '') {
         this.goData();
@@ -217,36 +249,46 @@ export default {
         axios.get('/api/search_CampingList', { params: { searchCamping: index }})
          .then((res) => {
            this.list = res.data;
-           console.log(this.list);
-         })
+           if (this.list.length == 0) {
+             alert("해당 상품은 존재하지 않습니다.")
+             window.location.href = 'http://localhost:8081/infoter'
+           }
+           })
          .catch(e => {
            console.log(e)
          })
       }
     },
 
-
-    orderBy: function (orderBy) {
-      if(orderBy == 'latest') {
-        this.list.sort(function (a, b) {
-          return b.latest - a.latest;
-        });
-      } else if (orderBy == 'latestd') {
-        this.list.sort(function (a, b) {
-          return b.latestd - a.latestd;
-        })
-      }
+    orderByView() {
+      axios.get('/api/product_detail_campingManyViews')
+          .then((res) => {
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    orderByLatest() {
+      axios.get('/api/product_detail_campingDesc')
+          .then((res) => {
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
     }
+
   }
 }
 </script>
 
 <style scoped>
 .infoter{
-  width: 90%;
+  width: 60%;
   height: 100%;
-  margin-top: 3%;
-  margin-left: 5%;
+  margin-top: 1%;
+  margin-left: 21%;
 }
 .infoter button{
   margin: 5%;
@@ -276,6 +318,8 @@ export default {
   color: white;
   background-color: #b2e2fd;
 }
+
+
 .table table-striped {
   width : 30%;
   height: 30%;
@@ -284,13 +328,18 @@ export default {
   width : 20%;
   height: 20%;
 }
+
+
+
 img {
   width : 10%;
   height: 10%;
 }
+
 .search {
   width: 300px;
   height: 100px;
+  margin-left: 75%;
 }
 .search input {
   width: 80%;
@@ -299,6 +348,7 @@ img {
   border: none;
   border-bottom: 1px black solid;
 }
+
 .search button {
   font-size: 18px;
   border: none;
@@ -308,7 +358,10 @@ img {
   border-radius: 15px;
   color: #fff;
   cursor: pointer;
+  margin-left: 85%;
+  margin-top: -30%;
 }
+
 .campingkindimage {
   width:380px;
   height:320px;
@@ -317,10 +370,16 @@ img {
 .image-thumbnail{
   float: left;
 }
+
 img {
   width: 40%;
   height: 40%;
 }
+
+.card {
+  width: 50%;
+}
+
 .card-body {
   overflow: hidden;
 }
@@ -329,5 +388,47 @@ img {
 }
 .card-body:hover img {
   transform: scale(1.5);
+}
+.sidebar {
+   color: black;
+   background-color: var(--sidebar-bg-color);
+   float: left;
+   z-index: 1;
+   height: 100%;
+   left: 0;
+   bottom: 0;
+   padding-bottom: 3%;
+   margin-right: 3%;
+   transition: 0.3s ease;
+   display: flex;
+   flex-direction: column;
+ }
+.sidebar h5{
+  margin-left: 10%;
+  margin-top: 15%;
+  margin-bottom: 3%;
+}
+.sidebar-link{
+  color: black;
+}
+.collapse-icon{
+  position: absolute;
+  top: 80% ;
+  padding: 0.75em;
+  color: black;
+  transition: 0.2s linear;
+}
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: 0.2s linear;
+}
+
+.listObj {
+  width: 50%;
+  float: left;
+  position: relative;
+  flex-direction: row;
+  margin: 0 auto;
+  text-align: center;
 }
 </style>

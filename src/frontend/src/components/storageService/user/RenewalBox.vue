@@ -20,8 +20,8 @@
         <table>
           <tbody>
           <tr>
-            <td>{{form.storageName}}</td>
-            <td>{{form.boxName}}</td>
+            <td>{{ storageName }}</td>
+            <td>{{ boxName }}</td>
           </tr>
           </tbody>
         </table>
@@ -34,10 +34,10 @@
     </div>
     <div class="card" style="display: flex; width: 25%; margin-left: 7%; margin-bottom: 3%">
       <div class="card-body">
-        시작: {{form.startTime}}
+        시작: {{ startTime }}
       </div>
       <div class="card-body">
-        종료: {{form.endTime}}
+        종료: {{ endTime }}
       </div>
     </div>
 
@@ -48,15 +48,17 @@
     </div>
     <div class="card" style="display: flex; width: 25%; margin-left: 7%">
       <div class="card-body">
-        시작: {{startTime}}
+        시작: {{ newStartTime }}
       </div>
       <div class="card-body">
-        종료: {{endTime}}
+        종료: {{ newEndTime }}
       </div>
     </div>
-
     <div>
-      <button @click="renewalBoxPay" class="renewal-box-pay">연장결제</button>
+      <h5>가격 : {{ price }} 원</h5>
+    </div>
+    <div>
+      <button @click="paymentBtn()" class="renewal-box-pay">연장결제</button>
 
     </div>
   </div>
@@ -70,70 +72,124 @@ export default {
   name: "RenewalBox",
   components: {},
   mounted() {
-
-    this.form.userId = this.$route.params.userId
-    this.form.storageName = this.$route.params.storageName
-    this.form.boxName = this.$route.params.boxName
-    this.form.startTime = this.$route.params.startTime
-    this.form.endTime = this.$route.params.endTime
-    this.form.start = this.$route.params.start
-    this.form.end = this.$route.params.end
-    this.form.useBoxCode = this.$route.params.useBoxCode
-
-    //  연장 할 기간 보여주시
-    const arrDayStr = ['일','월','화','수','목','금','토']
-    const newStart = new Date(this.form.end)
-    this.range.start =  newStart.setDate((newStart.getDate()+1))
-    this.startTime = newStart.getFullYear()+'년'+(newStart.getMonth()+1)+'월'+ newStart.getDate()+'일 ('+ arrDayStr[ newStart.getDay()] +')'
-    this.range.end = newStart.setDate((newStart.getDate()+29))
-    this.endTime = newStart.getFullYear()+'년'+(newStart.getMonth()+1)+'월'+newStart.getDate()+'일 ('+ arrDayStr[ newStart.getDay()] +')'
-
+    this.useBoxCode = this.$route.params.useBoxCode
+    this.getTimes()
+    this.getBoxData()
+    this.getPrice()
   },
   data() {
     return {
-      form: {
-        userId: '',    // 사용자 아이디
-        storageName:'',    // 보관소 이름
-        boxName: '',   // 보관함 이름
-        startTime: '',  // 시작년월일
-        endTime: '',   // 종료년월일
-        start:'',       // 시작date
-        end:''          // 종료date
+      useBoxCode: '',
+      range: {
+        start: '',       // 시작date
+        end: ''          // 종료date
       },
-      range :{
-        start:'',       // 시작date
-        end:''          // 종료date
-      },
+      storageName: '',
+      boxName: '',
       startTime: '',  // 시작년월일
       endTime: '',   // 종료년월일
+      newStartTime: '',
+      newEndTime: '',
+      price: ''
     }
   },
   methods: {
-    renewalBoxPay(){
-      const startTime = new Date(this.range.start)
-      const endTime = new Date(this.range.end)
-      const data = {
-        userId:this.form.userId,
-        storageName: this.form.storageName,
-        boxName:this.form.boxName,
-        startTime:startTime,
-        endTime:endTime,
-        useBoxCode : this.form.useBoxCode
-      }
+    getTimes() {
+      axios.get('/api/useTime/' + this.useBoxCode)
+          .then(res => {
+            this.startTime = res.data.useStorageStartTime[0] + '년' +
+                res.data.useStorageStartTime[1] + '월' +
+                res.data.useStorageStartTime[2] + '일'
+            this.endTime = res.data.useStorageEndTime[0] + '년' +
+                res.data.useStorageEndTime[1] + '월' +
+                res.data.useStorageEndTime[2] + '일'
 
-      console.log('data')
-      console.log(data)
+            let start = new Date(res.data.useStorageEndTime[0],
+                res.data.useStorageEndTime[1] - 1, res.data.useStorageEndTime[2] + 1)
+            this.range.start = new Date(res.data.useStorageEndTime[0],
+                res.data.useStorageEndTime[1] - 1, res.data.useStorageEndTime[2] + 1)
+            this.range.end = new Date(start.setDate(start.getDate() + 29))
+            this.newDate()
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getPrice() {
+      axios.get('/api/getUseBox/'+this.useBoxCode)
+      .then(res=>{
+        let data = res.data
+        this.price = data.storageBoxCode.storageBoxPrice
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
+    newDate() {
+      let day = new Date(this.range.start)
+      this.newStartTime = day.getFullYear() + '년' +
+          (day.getMonth() + 1) + '월' +
+          day.getDate() + '일'
+      day = new Date(this.range.end)
+      this.newEndTime = day.getFullYear() + '년' +
+          (day.getMonth() + 1) + '월' +
+          day.getDate() + '일'
+    },
+    getBoxData() {
+      axios.get('/api/moveBoxInfo/' + this.useBoxCode)
+          .then(res => {
+            this.storageName = res.data[0][1]
+            this.boxName = res.data[0][3]
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    paymentBtn() {
+      // if (confirm('결제 하시겠습니까?')) {
+      //   const IMP = window.IMP
+      //   IMP.init('imp35975601')
+      //   IMP.request_pay({
+      //     pg: 'html5_inicis',
+      //     pay_method: 'card',
+      //     merchant_uid: 'merchant_' + new Date().getTime(),
+      //     name: this.storageName +'보관소'+this.BoxName+'보관함 연장 구독',
+      //     amount: this.price/100,
+      //     buyer_tel: '01012345678',
+      //     confirm_url: ''
+      //   }, (rsp) => {
+      //     if (rsp.success) {
+      //
+      //       this.savePay()
+      //
+      //     } else {
+      //       let msg = '결제에 실패하였습니다.'
+      //       msg += '에러 내용 : ' + rsp.error_msg
+      //       alert(msg)
+      //
+      //     }
+      //   })
+      // }
+      this.renewalBoxPay()
+    },
+    renewalBoxPay() {
+      const data = {
+        startTime: this.range.start,
+        endTime: this.range.end,
+        useBoxCode: this.useBoxCode,
+        price : this.price
+      }
       axios.post('/api/renewalPay', data)
-          .then(res=>{
+          .then(res => {
             console.log(res.data.result)
-            if(res.data.result == 'ok'){
+            if (res.data.result == 'ok') {
               alert('다음달 사용 연장 되었습니다 ')
-              this.$router.push({name:"myBox"})
-            }else {
+              this.$router.push({name: "storageComplete"})
+            } else {
               alert('error')
             }
           })
-          .catch(err=>{
+          .catch(err => {
             console.log(err)
           })
     },
@@ -144,7 +200,7 @@ export default {
 </script>
 
 <style scoped>
-.renewal-box-back-btn{
+.renewal-box-back-btn {
   margin-left: 2%;
   margin-top: 1%;
   text-align: center;
@@ -155,16 +211,19 @@ export default {
   color: #00a3de;
   border-color: #00a3de;
 }
-.renewal-box-back-btn:hover{
+
+.renewal-box-back-btn:hover {
   color: white;
   background-color: #b2e2fd;
 }
-.renewal-box h3{
+
+.renewal-box h3 {
   margin-top: 3%;
   margin-left: 7%;
   margin-bottom: 3%;
 }
-.renewal-box-pay, .renewal-box-cancel{
+
+.renewal-box-pay, .renewal-box-cancel {
   margin-right: -5%;
   margin-left: 10%;
   margin-top: 3%;
@@ -176,7 +235,8 @@ export default {
   color: #00a3de;
   border-color: #00a3de;
 }
-.renewal-box-pay:hover, .renewal-box-cancel:hover{
+
+.renewal-box-pay:hover, .renewal-box-cancel:hover {
   color: white;
   background-color: #b2e2fd;
 }

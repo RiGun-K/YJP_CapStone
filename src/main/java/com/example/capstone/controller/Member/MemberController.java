@@ -384,32 +384,85 @@ public class MemberController {
         return true;
     }
 
+    ///장비조회///
+    @PostMapping("searchEquip")
+    public MemberEquipment searchEquip(@RequestBody HashMap<String, String> body){
+        Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(Long.parseLong(body.get("equipCode")));
+        if(memberEquipment.isEmpty()){
+            return null;
+        }else{
+            return memberEquipment.get();
+        }
+    }
+
+    ///장비삭제///
+    @PostMapping("myEquipDelete")
+    public Boolean myEquipDelete(@RequestBody HashMap<String, String> body){
+        Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(Long.parseLong(body.get("equipCode")));
+        if(memberEquipment.isEmpty()){
+            return false;
+        }else{
+            memberEquipmentRepository.delete(memberEquipment.get());
+            return true;
+        }
+    }
+
+    ///장비업데이트///
+    @PostMapping("myEquipUpdate")
+    public Boolean myEquipUpdate(@RequestBody HashMap<String, String> body){
+        Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(Long.parseLong(body.get("equipCode")));
+        Optional<Kind> kind = kindRepository.findByKindname(body.get("kindName"));
+        if(memberEquipment.isEmpty()){
+            return false;
+        }else{
+            memberEquipment.get().setMemEquipmentName(body.get("equipName"));
+            memberEquipment.get().setKindid(kind.get());
+            memberEquipment.get().setMemEquipmentCount(Integer.parseInt(body.get("equipCount")));
+            memberEquipmentRepository.save(memberEquipment.get());
+            return true;
+        }
+    }
+
     ///내게시글페이지///
-//    @PostMapping("myWritter")
-//    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
-//        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
-//        List<Board> writerList = boardRepository.findByMCODE(member.get());
-//        if(writerList.isEmpty()){
-//            return null;
-//        }
-//
-//        return writerList;
-//    }
+    @PostMapping("myWritter")
+    public List<Board> myPageWritter(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<Board> boardList = boardRepository.findByMID(member.get());
+        if(boardList.isEmpty()){
+            return null;
+        }
+
+        return boardList;
+    }
 
     ///전체 게시글 조회///
     @GetMapping("adminAllWriter")
     public List<Board> adminAllWriter(){
-        List<Board> writerList = boardRepository.findAll();
-        return writerList;
+        List<Board> boardList = boardRepository.findByAllList();
+        return boardList;
+    }
+    ///유저게시글 조회///
+    @PostMapping("userAllWriter")
+    public List<Board> userAllWrite(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<Board> boardList = boardRepository.findByAllWrite(member.get());
+        return boardList;
+    }
+    ///유저 댓글 조회///
+    @PostMapping("userAllComment")
+    public List<Board> userAllComment(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<Board> boardList = boardRepository.findByAllComment(member.get());
+        return boardList;
     }
     ///게시글삭제///
     @PostMapping("adminDeleteWriter")
     public Boolean adminDeleteWriter(@RequestBody HashMap<String, String> body){
-        Optional<Board> writer = boardRepository.findById(Long.parseLong(body.get("wcode")));
-        if(writer.isEmpty()){
+        Optional<Board> board = boardRepository.findById(Long.parseLong(body.get("wcode")));
+        if(board.isEmpty()){
             return false;
         }
-        boardRepository.delete(writer.get());
+        boardRepository.delete(board.get());
         return true;
     }
 
@@ -444,6 +497,16 @@ public class MemberController {
         return memberPreferences;
     }
 
+    ///판매자 정보 조회///
+    @PostMapping("myCompanySearch")
+    public Company myCompanySearch(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        Optional<Company> company = companyRepository.findCompanyByMember(member.get());
+        if(company.isEmpty()){
+            return null;
+        }
+        return company.get();
+    }
 
     ///테스트///
     @PostMapping("testCheck")

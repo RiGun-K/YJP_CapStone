@@ -18,8 +18,8 @@
         <h3 class="join_title">
           <label for="id">비밀번호</label>
         </h3>
-        <span class="box int_id">
-                        <input type="password" v-model="password" id="id" placeholder="비밀번호 입력" class="int"
+        <span class="input-group mb-3">
+                        <input type="password" v-model="password" placeholder="비밀번호 입력" class="form-control"
                                maxlength="20">
                     </span>
         <span class="error_next_box"></span>
@@ -31,14 +31,13 @@
           <label for="password">비밀번호 재입력</label>
         </h3>
         <!--        <input type="password" v-model="pasCheck">-->
-        {{ paCheck }}
 
-        <span class="box int_id">
-                        <input type="password" v-model="pasCheck" id="id" placeholder="비밀번호 재입력" class="int"
-                               maxlength="20">
+        <span class="input-group mb-3">
+                        <input type="password" v-model="pasCheck" placeholder="비밀번호 재입력" class="form-control"
+                               maxlength="20" >
                     </span>
         <span class="error_next_box"></span>
-
+        <p>{{ paCheck }}</p>
       </div>
       <div>
         <h3 class="join_title">

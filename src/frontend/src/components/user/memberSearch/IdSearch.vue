@@ -1,5 +1,6 @@
 <template>
-  <div id="wrapper">
+  <img :src="backImg" class="backImg">
+  <div class="bodyDiv">
     <div id="content">
     아이디 찾기
     <div>
@@ -26,7 +27,7 @@
         <br/>
       </div>
       <div style="text-align: center">
-        <button @click="returnLogin">돌아가기</button>
+        <button @click="returnLogin" class="btnCommon">돌아가기</button>
       </div>
   </div>
   </div>
@@ -43,7 +44,8 @@ export default {
       serverAuth:'',
       authCheck:false,
       clientID:'',
-      resultString:''
+      resultString:'',
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -84,105 +86,39 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
+.backImg{
+  margin-top: 1px;
+  width: 100%;
   height: 100%;
-  background-color: #E6E6FA;
-}
-
-#wrapper {
-  position: relative;
-  height: 100%;
-}
-
-#content {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 460px;
+  z-index: 1;
 }
-
-/* 입력폼 */
-h3 {
-  margin: 19px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.box {
-  display: block;
-  width: 100%;
-  height: 51px;
-  border: solid 1px #dadada;
-  padding: 10px 14px;
-  box-sizing: border-box;
-  background: #fff;
-  position: relative;
-}
-
-.int {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 29px;
-  border: none;
-  background: #fff;
-  font-size: 15px;
-}
-
-.box.int_id {
-  padding-right: 110px;
-}
-
-.box.int_pass {
-  padding-right: 40px;
-}
-
-.box.int_pass_check {
-  padding-right: 40px;
-}
-
-select {
-  width: 100%;
-  height: 29px;
-  font-size: 15px;
-  background-size: 20px 8px;
-  -webkit-appearance: none;
-  display: inline-block;
-  text-align: start;
-  border: none;
-  cursor: default;
-}
-
-.error_next_box {
-  margin-top: 9px;
-  font-size: 12px;
-  color: red;
-  display: none;
-}
-
-#alertTxt {
+.bodyDiv {
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 8%;
   position: absolute;
-  top: 19px;
-  right: 38px;
-  font-size: 12px;
-  color: red;
-  display: none;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+  height: 93%;
+  background: white;
+  z-index: 2;
 }
-
-/* 버튼 */
-.btn_area {
-  margin: 30px 0 91px;
+.btnCommon{
+  margin-left: 1%;
+  padding: 0.2%;
+  width: 100px;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  color: black;
 }
-
-#btnJoin {
-  width: 100%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
   color: white;
-  background-color: #52a3ef;
-  font-size: 20px;
-  font-weight: 400;
 }
 </style>

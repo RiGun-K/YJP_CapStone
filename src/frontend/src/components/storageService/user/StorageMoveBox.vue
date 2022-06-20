@@ -1,6 +1,6 @@
 <template>
   <div class="user-storage-view">
-    <h3>보관소 리스트 페이지</h3>
+    <h3>보관소</h3>
     <div class="searchDiv">
       <select v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
@@ -48,6 +48,7 @@ export default {
   created() {
     this.memberId = store.getters.getLoginState.loginState
     this.allroundsearch()
+    this.getmoveBoxInfo()
     axios.get('/api/aRound')
         .then(res => {
           this.bigRound = res.data
@@ -70,7 +71,7 @@ export default {
     }
   },
   props:{
-    form: {}
+    useBoxCode: '',
   },
   data() {
     return {
@@ -86,9 +87,23 @@ export default {
       smallRound: [],
       bigPick: 0,
       smallPick: 0,
+      moveBox:{}
     }
   },
   methods: {
+    getmoveBoxInfo(){
+      axios.get('/api/moveBoxInfo/' + this.useBoxCode)
+          .then(res => {
+            this.moveBox.storageCode = res.data[0][0]
+            this.moveBox.storageName = res.data[0][1]
+            this.moveBox.boxCode = res.data[0][2]
+            this.moveBox.boxName = res.data[0][3]
+            this.moveBox.useBoxCode = this.useBoxCode
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -96,6 +111,18 @@ export default {
         level: 9,
       };
       this.map = new kakao.maps.Map(container, options);
+
+      // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+      var mapTypeControl = new kakao.maps.MapTypeControl();
+
+      // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+      // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+      this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+      // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+      var zoomControl = new kakao.maps.ZoomControl();
+      this.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
       this.allMarker();
     },
     allMarker() {
@@ -171,13 +198,10 @@ export default {
     },
 
     askBox(storageCode) {
+      this.$store.commit('moveBoxInfo',this.moveBox)
       this.$router.push({name: 'StorageMoveBoxDetail',
                          params: {
-                           storageCode: storageCode.storageCode,
-                           storageName:this.form.storageName,
-                           boxName:this.form.boxName,
-                           boxCode: this.form.boxCode,
-                           useBoxCode:this.form.useBoxCode
+                           storageCode: storageCode.storageCode
                          }
       })
     },
