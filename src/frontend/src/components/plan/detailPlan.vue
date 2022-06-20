@@ -1,4 +1,5 @@
 <template>
+	<!-- 커핏됐나요? -->
 	<div class="back">
 		<div class="sidebar" :style="{ width: sidebarWidth }">
 			<h2>
