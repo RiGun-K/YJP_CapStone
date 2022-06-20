@@ -156,8 +156,6 @@ export default {
       this.$emit('close')
     },
     detailBox(us) {
-      console.log('us')
-      console.log(us)
       this.moveInfo = false
       this.pickUseBox = us.useCode
       this.detailUseState = us.useState

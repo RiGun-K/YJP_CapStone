@@ -5,123 +5,137 @@ const routes = [
 	{
 		path: '/',
 		name: 'Main',
-		component: () => import('@/components/HelloWorld.vue'),
+		component: () => import('@/components/HelloWorld.vue')
 	},
 	{
 		path: '/signup',
 		name: 'SignUp',
-		component: () => import('@/components/user/singUp/Signup.vue'),
+		component: () => import('@/components/user/singUp/Signup.vue')
 	},
 	{
 		path: '/mAdmin',
 		name: 'mAdmin',
-		component: () => import('@/components/user/adminManage/Admin.vue'),
+		component: () => import('@/components/user/adminManage/Admin.vue')
 	},
 	{
 		path: '/company',
 		name: 'Company',
-		component: () => import('@/components/user/Company.vue'),
+		component: () => import('@/components/user/Company.vue')
 	},
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('@/components/user/singUp/Login.vue'),
+		component: () => import('@/components/user/singUp/Login.vue')
 	},
 	{
 		path: '/memberupdate',
 		name: 'MemberData',
-		component: () => import('@/components/user/singUp/MemberData.vue'),
+		component: () => import('@/components/user/singUp/MemberData.vue')
 	},
 	{
 		path: '/horby',
 		name: 'Horby',
-		component: () => import('@/components/user/Horby/Horby.vue'),
+		component: () => import('@/components/user/Horby/Horby.vue')
 	},
 	{
-		path: '/agreement',
-		name: 'Agreement',
-		component: () => import('@/components/user/singUp/Agreement.vue'),
+		path:'/agreement',
+		name:'Agreement',
+		component: () => import('@/components/user/singUp/Agreement.vue')
 	},
 	{
-		path: '/sellerAccept',
-		name: 'SellerAccept',
-		component: () =>
-			import('@/components/user/adminManage/SellerAccept.vue'),
+		path:'/sellerAccept',
+		name:'SellerAccept',
+		component: () => import('@/components/user/adminManage/SellerAccept.vue')
 	},
 	{
-		path: '/searchSelect',
-		name: 'SearchSelect',
-		component: () =>
-			import('@/components/user/memberSearch/SearchSelect.vue'),
+		path:'/searchSelect',
+		name:'SearchSelect',
+		component: () => import('@/components/user/memberSearch/SearchSelect.vue')
 	},
 	{
-		path: '/searchId',
-		name: 'SearchId',
-		component: () => import('@/components/user/memberSearch/IdSearch.vue'),
+		path:'/searchId',
+		name:'SearchId',
+		component: () => import('@/components/user/memberSearch/IdSearch.vue')
 	},
 	{
-		path: '/searchPass',
-		name: 'SearchPass',
-		component: () =>
-			import('@/components/user/memberSearch/PassSearch.vue'),
+		path:'/searchPass',
+		name:'SearchPass',
+		component: () => import('@/components/user/memberSearch/PassSearch.vue')
 	},
 	{
-		path: '/changePass',
-		name: 'changePass',
-		component: () => import('@/components/user/singUp/PassChange.vue'),
+		path:'/changePass',
+		name:'changePass',
+		component: () => import('@/components/user/singUp/PassChange.vue')
 	},
 	{
-		path: '/myPage',
-		name: 'mypage',
-		component: () => import('@/components/user/myPage/MyPage.vue'),
+		path:'/myPage',
+		name:'mypage',
+		component: () => import('@/components/user/myPage/MyPage.vue')
 	},
 	{
-		path: '/myPageEquip',
-		name: 'myPageEquip',
-		component: () => import('@/components/user/myPage/MyEquipmentPage.vue'),
+		path:'/myCompanyPage',
+		name:'myCompanyPage',
+		component: () => import('@/components/user/myPage/MyCompany.vue')
 	},
 	{
-		path: '/myPageWritter',
-		name: 'myPageWritter',
-		component: () => import('@/components/user/myPage/MyWritter.vue'),
+		path:'/myPageEquip',
+		name:'myPageEquip',
+		component: () => import('@/components/user/myPage/MyEquipmentPage.vue')
 	},
 	{
-		path: '/myPageOrder',
-		name: 'myPageOrder',
-		component: () => import('@/components/user/myPage/MyOrder.vue'),
+		path:'/myPageWritter',
+		name:'myPageWritter',
+		component: () => import('@/components/user/myPage/MyWritter.vue')
 	},
 	{
-		path: '/myPreference',
-		name: 'myPreference',
-		component: () => import('@/components/user/myPage/myPreference.vue'),
+		path:'/myPageComment',
+		name:'myPageComment',
+		component: () => import('@/components/user/myPage/MyCommentList.vue')
 	},
 	{
-		path: '/memberAdmin',
-		name: 'memberAdmin',
-		component: () =>
-			import('@/components/user/adminManage/MemberManagementAdmin.vue'),
+		path:'/myPageOrder',
+		name:'myPageOrder',
+		component: () => import('@/components/user/myPage/MyOrder.vue')
 	},
 	{
-		path: '/orderAdmin',
-		name: 'orderAdmin',
-		component: () =>
-			import('@/components/user/adminManage/OrderManagement.vue'),
+		path:'/myPreference',
+		name:'myPreference',
+		component: () => import('@/components/user/myPage/MyPreference.vue')
 	},
 	{
-		path: '/writerAdmin',
-		name: 'writerAdmin',
-		component: () =>
-			import('@/components/user/adminManage/WriterManagement.vue'),
+		path:'/memberAdmin',
+		name:'memberAdmin',
+		component: () => import('@/components/user/adminManage/MemberManagementAdmin.vue')
 	},
 	{
-		path: '/addEquipment',
-		name: 'addEquipment',
-		component: () => import('@/components/user/myPage/AddEquip.vue'),
+		path:'/orderAdmin',
+		name:'orderAdmin',
+		component: () => import('@/components/user/adminManage/OrderManagement.vue')
 	},
 	{
-		path: '/memberData/:mid',
-		name: 'memberData',
-		component: () => import('@/components/user/adminManage/memberData.vue'),
+		path:'/writerAdmin',
+		name:'writerAdmin',
+		component: () => import('@/components/user/adminManage/WriterManagement.vue')
+	},
+	{
+		path:'/addEquipment',
+		name:'addEquipment',
+		component: () => import('@/components/user/myPage/AddEquip.vue')
+	},
+	{
+		path:'/updateEquipment/:equipCode',
+		name:'updateEquipment',
+		component: () => import('@/components/user/myPage/MyEquipUpdate.vue')
+	},
+	{
+		path:'/memberData/:mid',
+		name:'memberData',
+		component: () => import('@/components/user/adminManage/MemberAdminData.vue')
+	},
+	{
+		path:'/companyData/:mid',
+		name:'companyData',
+		component: () => import('@/components/user/adminManage/CompanyAdminData.vue')
 	},
 
 	//////////////////////////////게시판////////////////////////////////////

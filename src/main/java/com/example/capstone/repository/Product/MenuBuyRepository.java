@@ -26,26 +26,7 @@ public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
     @Query(value = "SELECT * FROM MENUBUY M WHERE M.BUY_NAME LIKE %:searchBuy%", nativeQuery = true)
     List<MenuBuy> findAllBysearchBuyContains(@Param("searchBuy") String searchBuy);
 
-    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.saved_time DESC", nativeQuery = true)
-    List<MenuBuy> findByLatest();
-
-    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_views DESC", nativeQuery = true)
-    List<MenuBuy> findByViews();
-
-    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_price", nativeQuery = true)
-    List<MenuBuy> findByLowPrice();
-
-    @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_price DESC", nativeQuery = true)
-    List<MenuBuy> findByHighPrice();
-
-    @Query(value = "SELECT M.* FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20", nativeQuery = true)
+    @Query(value = "SELECT * FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20",nativeQuery = true)
     List<MenuBuy> findByRepairList();
-
-    @Query(value = "select * FROM MENUBUY WHERE BUY_NAME LIKE %:search% AND kindId = :kindid",nativeQuery = true)
-    List<MenuBuy> findByNameAndKindid(@Param("search")String search, @Param("kindid")int kindid);
-
-    @Query(value = "SELECT M.* FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20 AND M.BUY_NAME LIKE %:search% ",nativeQuery = true)
-    List<MenuBuy> findBySearchName(@Param("search")String search);
-
 
 }
