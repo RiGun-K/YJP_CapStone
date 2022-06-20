@@ -5,6 +5,7 @@
     <a class="nav-link" href="/BuyProductList">나의 상품</a>
     <a class="nav-link" href="/ProductMyPage">주문 정보</a>
     <a class="nav-link disabled">준비중</a>
+
   </nav>
 </template>
 <script>

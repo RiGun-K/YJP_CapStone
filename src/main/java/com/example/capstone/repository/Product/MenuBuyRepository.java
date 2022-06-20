@@ -4,7 +4,6 @@ import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Plan.PlanTag;
 import com.example.capstone.domain.Product.Menu;
 import com.example.capstone.domain.Product.MenuBuy;
-import com.example.capstone.domain.order.OrderMenu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,6 +38,14 @@ public interface MenuBuyRepository extends JpaRepository<MenuBuy, Integer> {
     @Query(value = "SELECT * FROM MENUBUY M ORDER BY M.buy_price DESC", nativeQuery = true)
     List<MenuBuy> findByHighPrice();
 
+    @Query(value = "SELECT M.* FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20", nativeQuery = true)
+    List<MenuBuy> findByRepairList();
+
+    @Query(value = "select * FROM MENUBUY WHERE BUY_NAME LIKE %:search% AND kindId = :kindid",nativeQuery = true)
+    List<MenuBuy> findByNameAndKindid(@Param("search")String search, @Param("kindid")int kindid);
+
+    @Query(value = "SELECT M.* FROM MENUBUY M JOIN KIND K ON M.kindId = K.kindid WHERE K.PARENTKINDID = 20 AND M.BUY_NAME LIKE %:search% ",nativeQuery = true)
+    List<MenuBuy> findBySearchName(@Param("search")String search);
 
     @Query(value = "select ORDER_MENU.*, B.* \n" +
             "from ORDERS join ORDER_MENU on ORDERS.ORDER_CODE = ORDER_MENU.ORDER_CODE \n" +

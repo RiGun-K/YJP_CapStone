@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class BoardDTO {
 
+    private Long boardId;
     private String title;
     private String content;
     private String origFilename;

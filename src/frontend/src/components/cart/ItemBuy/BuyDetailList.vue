@@ -1,15 +1,24 @@
 <template>
   <br>
-  <div class="img-block">
-    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
-    <div class="blocks">
+  <div class="mt-4">
+      <div class="content-detail-list">
+        <!--        <h2><img :src="'/api/product_detail_images/' + content.filename"></h2><br>-->
+        <div class="card" style="width: 18rem;">
+          <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">상품명: {{ this.content.buyName }}</h5>
+            <p class="card-text">가격: {{ this.content.buyPrice }}</p>
+            <p class="card-text">설명: {{ this.content.buyEx }}</p>
+            <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
+            <a href="#" class="btn btn-primary" @click="buyData">구매</a>
+          </div>
+        </div>
       <h1>{{ this.content.buyName }}</h1>
       <br>
       <h1>가격</h1><h2> {{ this.content.buyPrice }}</h2>
       <br>
       <h1>설명</h1> <h2>{{ this.content.buyEx }}</h2>
       <br>
-      <h1>수량</h1>
       <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
@@ -264,7 +273,7 @@ export default {
       this.areaCheckC = false;
 
     },
-    detail_3() {
+    detail_4() {
       this.areaCheckA = true;
       this.areaCheckB = false
       this.areaCheckC = false;

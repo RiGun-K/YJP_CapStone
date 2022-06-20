@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper">
+  <img :src="backImg" class="backImg">
     <div id="content">
       <br>
       <h2>판매자 등록</h2>
@@ -17,8 +17,8 @@
         <h3 class="join_title">
           <label for="id">회사명</label>
         </h3>
-        <span class="box int_id">
-                        <input type="text" v-model="CName" id="id" placeholder="회사명 입력" class="int" maxlength="20">
+        <span class="input-group mb-3">
+                        <input type="text" v-model="CName" id="id" placeholder="회사명 입력" class="form-control" maxlength="20">
                     </span>
         <span class="error_next_box"></span>
       </div>
@@ -28,8 +28,8 @@
           <label for="pswd1" >CEO</label>
         </h3>
 
-        <span class="box int_id">
-                        <input type="text" v-model="CEO" id="id" placeholder="필수입력" class="int" maxlength="20">
+        <span class="input-group mb-3">
+                        <input type="text" v-model="CEO" id="id" placeholder="필수입력" class="form-control" maxlength="20">
                     </span>
         <span class="error_next_box"></span>
 
@@ -60,8 +60,8 @@
         <h3 class="join_title">
           <label for="email">홈페이지</label>
         </h3>
-        <span class="box int_email">
-                        <input type="text" v-model="Chp" id="email" class="int" maxlength="100" placeholder="필수입력">
+        <span class="input-group mb-3">
+                        <input type="text" v-model="Chp" id="email" class="form-control" maxlength="100" placeholder="필수입력">
                     </span>
         <span class="error_next_box">홈페이지 주소를 다시 확인해주세요.</span>
       </div>
@@ -70,13 +70,12 @@
         <h3 class="join_title">
           <label for="phoneNo">전화번호</label>
         </h3>
-        <span class="box int_mobile">
-                        <input type="tel" v-model="Cph" id="mobile" class="int" maxlength="11" placeholder="전화번호 입력"
+        <span class="input-group mb-3">
+                        <input type="tel" v-model="Cph" id="mobile" class="form-control" maxlength="11" placeholder="전화번호 입력"
                                oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');">
                     </span>
         <span class="error_next_box"></span>
       </div>
-
       <div>
         <h3 class="join_title">
           <label for="email">이메일</label>
@@ -92,17 +91,13 @@
           <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="mailAuthCheck" :disabled="emailAuthBoolean">인증확인</button>
         </span>
         <span class="error_next_box"></span>
-
       </div>
-
       <div class="btn_area">
         <button type="button" @click="signPost" id="btnJoin">
           <span>가입하기</span>
         </button>
-
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -125,7 +120,8 @@ export default {
       cCheck:false,
       CEmailAuthInput:'',
       emailAuthBoolean:false,
-      emailAuth:''
+      emailAuth:'',
+      backImg:require("@/assets/camp1.jpg")
     }
   },methods:{
     Exit(){
@@ -229,20 +225,24 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
-  height: 100%;
-  background-color: #E6E6FA;
-}
-#wrapper {
-  position: relative;
-  height: 100%;
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 150%;
+  position: absolute;
+  z-index: 1;
 }
 #content {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 460px;
+  margin-right: 25%;
+  margin-left: 25%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  width: 50%;
+  height: 143%;
+  padding: 30px;
+  z-index: 2;
+  position: relative;
+  background: white;
 }
 /* 입력폼 */
 h3 {

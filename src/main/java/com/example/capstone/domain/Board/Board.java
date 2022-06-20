@@ -51,7 +51,7 @@ public class Board {
     private Board parentBoard;
 
     // 자식
-    @OneToMany(mappedBy = "parentBoard")
+    @OneToMany(mappedBy = "parentBoard", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JsonBackReference
     private List<Board> childrenBoard = new ArrayList<>();
 
@@ -69,6 +69,16 @@ public class Board {
         this.MID = MID;
     }
 
+    public Board(Long boardId, String title, String content, String origFilename, String filePath, String filename, String savedTime, Member MID) {
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
+        this.savedTime = savedTime;
+        this.MID = MID;
+    }
 
     public Board(String title, String content, String origFilename, String filePath, String filename,  String savedTime, Member MID) {
         this.title = title;
@@ -78,5 +88,12 @@ public class Board {
         this.filename = filename;
         this.savedTime = savedTime;
         this.MID = MID;
+    }
+
+    public Board(String content, String savedTime, Member MID, Board parentBoard) {
+        this.content = content;
+        this.savedTime = savedTime;
+        this.MID = MID;
+        this.parentBoard = parentBoard;
     }
 }

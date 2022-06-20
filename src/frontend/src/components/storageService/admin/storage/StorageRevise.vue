@@ -230,7 +230,7 @@ export default {
                 this.memberIdCheck = false
               } else {
                 console.log('없음')
-                alert('입력하신 아이디가 없습니다')
+                alert('입력하신 아이디는 불가능 합니다')
                 this.memberIdCheck = false
               }
             })
@@ -305,7 +305,7 @@ export default {
 }
 .textItem{
   border: 1px solid black;
-  width: 250px;
+  width: 350px;
   padding-left: 5px;
   display: inline-flex;
 }

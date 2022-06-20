@@ -52,6 +52,7 @@
 
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
   name: "InputStorageManager",
@@ -70,6 +71,10 @@ export default {
   },
   mounted() {
     this.allroundsearch()
+    if (store.getters.getLoginState.stateCode != 5) {
+      this.$router.push('/')
+      alert('보관소 매니저만 확인이 가능합니다')
+    }
   },
   methods: {
     allroundsearch() {
