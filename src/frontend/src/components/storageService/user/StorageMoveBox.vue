@@ -6,29 +6,42 @@
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick" @change="search()">
+      <select v-model="smallPick" @change="search()" style="margin-left: 5px">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
+    </div>
+    <div class="searchDiv">
       <label for="storageName">보관소이름</label>
-      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()">
-      <button @click="storageSearch()">검색</button>
+      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
+             style="margin-left: 5px">
+      <button @click="storageSearch()" style="margin-left: 8px">검색</button>
     </div>
 
     <div class="listBody">
       <div v-for="(storage,index) in storageList" :key="index"
            @click="GetStorageDetail(storage.storageCode)" class="listObj">
         <div class="card">
-          <div class="card-body">
-            이름: {{ storage.storageName }}
-          </div>
-          <div class="card-body">
-            주소: {{ storage.storageAddress }}
-          </div>
-          <div class="card-body">
-            전화번호: {{ storage.storageTel }}
-          </div>
-          <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+          <table >
+            <tbody>
+            <tr>
+              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.filename"></td>
+              <td>이름</td>
+              <td>{{ storage.storageName }}</td>
+            </tr>
+            <tr>
+              <td>주소</td>
+              <td>{{ storage.storageAddress }}</td>
+            </tr>
+            <tr>
+              <td>전화번호</td>
+              <td>{{ storage.storageTel }}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><button @click="askBox(storage)" class="storage-submit-btn">신청</button></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -36,7 +49,10 @@
     <div class="mapDiv">
       <div id="map"></div>
     </div>
+
   </div>
+
+
 </template>
 <script>
 import axios from "axios";
@@ -293,12 +309,12 @@ export default {
   margin-right: 1%;
   width: 40%;
   float: left;
-  overflow:auto;
-  height:550px;
+  overflow: auto;
+  height: 550px;
 }
 
 .searchDiv {
-  margin-left: 2%;
+  margin-left: 5.5%;
   margin-top: 1%;
 }
 
@@ -345,10 +361,21 @@ export default {
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
+  float: right;
 }
 
 .storage-submit-btn:hover {
   color: white;
   background-color: #b2e2fd;
 }
+
+.storage-image{
+  float: left;
+  width: 30%;
+  height: 30%;
+}
+td{
+  width: 20%;
+}
+
 </style>

@@ -514,24 +514,24 @@ const routes = [
 			import('@/components/storageService/user/CloseBox.vue'),
 	},
 	{
-		path: '/myBox/moveBox',
+		path: '/myBox/:useBoxCode/moveBox',
 		name: 'moveBox',
 		component: () => import('@/components/storageService/user/MoveBox.vue'),
 	},
 	{
-		path: '/myBox/moveBox/boxToBox',
+		path: '/myBox/:useBoxCode/moveBox/boxToBox',
 		name: 'StorageMoveBoxDetail',
 		component: () =>
 			import('@/components/storageService/user/StorageMoveBoxDetail.vue'),
 	},
 	{
-		path: '/myBox/moveBox/storagePay',
+		path: '/myBox/:useBoxCode/moveBox/storagePay',
 		name: 'BoxToBoxMovePay',
 		component: () => import('@/views/user/BoxToBoxMovePay.vue'),
 		props: true,
 	},
 	{
-		path: '/myBox/moveBox/roundPay',
+		path: '/myBox/:useBoxCode/moveBox/roundPay',
 		name: 'roundToBoxMovePay',
 		component: () => import('@/views/user/roundToBoxMovePay.vue'),
 		props: true,
