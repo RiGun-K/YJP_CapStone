@@ -22,7 +22,7 @@
       <div v-for="(storage,index) in storageList" :key="index"
            @click="GetStorageDetail(storage.storageCode)" class="listObj">
         <div class="card">
-          <table >
+          <table>
             <tbody>
             <tr>
               <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.filename"></td>
@@ -38,7 +38,9 @@
               <td>{{ storage.storageTel }}</td>
             </tr>
             <tr>
-              <td colspan="2"><button @click="askBox(storage)" class="storage-submit-btn">신청</button></td>
+              <td colspan="2">
+                <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+              </td>
             </tr>
             </tbody>
           </table>
@@ -51,8 +53,6 @@
     </div>
 
   </div>
-
-
 </template>
 <script>
 import axios from "axios";
@@ -370,12 +370,13 @@ export default {
   background-color: #b2e2fd;
 }
 
-.storage-image{
+.storage-image {
   float: left;
   width: 30%;
   height: 30%;
 }
-td{
+
+td {
   width: 20%;
 }
 
