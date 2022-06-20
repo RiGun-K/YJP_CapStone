@@ -22,7 +22,9 @@
         <td><button @click="updateEquip(index)" class="btnCommon">수정</button></td>
       </tr>
     </table>
-    <button @click="addEquip" class="EquipBtn">장비추가</button>
+    <div class="btnDiv">
+      <button @click="addEquip" class="EquipBtn">장비추가</button>
+    </div>
   </div>
 </template>
 
@@ -94,7 +96,6 @@ th, td{
   width: 100px;
   background: white;
   color: black;
-  float: right;
 }
 .EquipBtn:hover{
   margin-top: 1%;
@@ -130,6 +131,10 @@ th, td{
   border: red solid 3px;
   background: black;
   color: white;
+}
+.btnDiv{
+  width: 100%;
+  text-align: right;
 }
 </style>
 
