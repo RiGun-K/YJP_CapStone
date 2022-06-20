@@ -111,7 +111,7 @@ router-link{
   width: 100%;
   height: 6%;
   z-index: 3;
-  text-align: center;
+  text-align: left;
 }
 .divBody{
   width: 100%;
