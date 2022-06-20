@@ -1,6 +1,7 @@
 package com.example.capstone.domain.order;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Plan.Plan;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,6 +47,11 @@ public class Orders {
     @JoinColumn(name = "MCode")
     private Member MCode;
 
+    @ManyToOne
+    @JoinColumn(name = "PLAN_CODE")
+    private Plan plan;
+
+
     public Orders() {
 
     }
@@ -57,6 +63,14 @@ public class Orders {
     public Orders(Member MCode, int orderPrice) {
         this.orderPrice = orderPrice;
         this.MCode = MCode;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 
     public int getOrderCode() {

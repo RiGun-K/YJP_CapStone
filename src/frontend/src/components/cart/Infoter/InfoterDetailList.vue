@@ -243,343 +243,332 @@
 </template>
 
 <script>
-import axios from "axios";
-import Datepicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
-import dayjs from "dayjs"
+import axios from 'axios';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import dayjs from 'dayjs';
 
 export default {
-  name: "BuyDetailList",
-  created() {
-    this.DataList();
-    this.fetchData();
-  },
-  mounted() {
-  },
-  data() {
-    return {
-      id: '',
-      content: [],
-      roomContent: [],
-      campingImages: [],
-      image: require('@/assets/camp1.jpg'),
-      // file: this.content.origFilename
-      images: '',
-      stateCheck: false,
-      map: null,
-      markers: [],
-      markPositions1: [],
-      list: [],
-      // likecnt: 0
-      disabledDates: [],
-      reservationDate: [],
-      // date: [],
+	name: 'BuyDetailList',
+	created() {
+		this.DataList();
+		this.fetchData();
+	},
+	mounted() {},
+	data() {
+		return {
+			id: '',
+			content: [],
+			roomContent: [],
+			image: require('@/assets/camp1.jpg'),
+			// file: this.content.origFilename
+			images: '',
+			stateCheck: false,
+			map: null,
+			markers: [],
+			markPositions1: [],
+			areaCheck: false,
+			list: [],
+			areaCheckA: false,
+			// likecnt: 0
+			disabledDates: [],
+			reservationDate: [],
+			// date: [],
 
-      // end: new Data(this.today.setDate(this.today.getDate() + 7))
-      startDate: new Date(),
-      endDate: new Date(),
+			// end: new Data(this.today.setDate(this.today.getDate() + 7))
+			startDate: new Date(),
+			endDate: new Date(),
+		};
+	},
+	setup() {
+		const today = new Date();
+		const todayEnd = new Date();
+		const end = new Date(todayEnd.setDate(todayEnd.getDate() + 30));
+		return {
+			today,
+			end,
+		};
+	},
+	methods: {
+		// orderMenus 가 있으면 예약일자가 있음 , 없으면 예약없다는 뜻
+		DayList(orderMenus) {
+			this.disabledDates = [];
+			for (var i = 0; i < orderMenus.length; i++) {
+				let startDate = new Date(
+					orderMenus[i].orders.startDate[0],
+					orderMenus[i].orders.startDate[1] - 1,
+					orderMenus[i].orders.startDate[2],
+				);
+				let endDate = new Date(
+					orderMenus[i].orders.endDate[0],
+					orderMenus[i].orders.endDate[1] - 1,
+					orderMenus[i].orders.endDate[2],
+				);
 
-      areaCheck1: false,
-      areaCheck2: false,
-      areaCheck3: false,
-      areaCheck4: false,
+				var length = Math.ceil(
+					(endDate.getTime() - startDate.getTime()) /
+						(1000 * 3600 * 24),
+				);
+				const tomorrow = startDate;
+				this.disabledDates.push(tomorrow.toString());
 
-      imageC: require('@/assets/캠핑장 소개.png'),
-      imageC2: require('@/assets/캠핑장 소개2.png'),
-      imageCC: require('@/assets/이용안내.png'),
-      imageCC2: require('@/assets/이용안내 2.png'),
-    }
-  },
-  setup() {
-    const today = new Date()
-    const todayEnd = new Date()
-    const end = new Date(todayEnd.setDate(todayEnd.getDate() + 30))
-    return {
-      today,
-      end
-    }
-  },
-  methods: {
-    // orderMenus 가 있으면 예약일자가 있음 , 없으면 예약없다는 뜻
-    DayList(orderMenus) {
-      this.disabledDates = []
-      for (var i = 0; i < orderMenus.length; i++) {
-        let startDate = new Date(
-            orderMenus[i].orders.startDate[0],
-            orderMenus[i].orders.startDate[1] - 1,
-            orderMenus[i].orders.startDate[2])
-        let endDate = new Date(
-            orderMenus[i].orders.endDate[0],
-            orderMenus[i].orders.endDate[1] - 1,
-            orderMenus[i].orders.endDate[2])
+				for (var j = 0; j < length; j++) {
+					tomorrow.setDate(tomorrow.getDate() + 1);
+					this.disabledDates.push(tomorrow.toString());
+				}
+			}
+		},
+		DataList() {
+			this.id = this.$route.params.campingId;
+			console.log(this.id);
+			axios
+				.get('http://localhost:9002/api/product_detailC/' + this.id)
+				.then((res) => {
+					console.log(res.data);
+					this.content = res.data;
+					this.roomContent = this.content.campingDetails;
+					console.log(this.roomContent);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+		detailData() {
+			this.stateCheck = true;
+		},
 
-        var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
-        const tomorrow = startDate
-        this.disabledDates.push(tomorrow.toString())
+		buyData(detailId) {
+			console.log(this.startDate);
+			console.log(this.endDate);
+			const period = this.endDate - this.startDate;
+			if (this.startDate == this.endDate) {
+				alert('예약 날짜를 선택해주세요.');
+				return;
+			} else {
+				this.$router.push({
+					path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
+					query: {
+						startDate: this.startDate,
+						endDate: this.endDate,
+						period: period,
+					},
+				});
+			}
+		},
 
-        for (var j = 0; j < length; j++) {
-          tomorrow.setDate(tomorrow.getDate() + 1)
-          this.disabledDates.push(tomorrow.toString())
-        }
-      }
-    },
-    DataList() {
-      this.id = this.$route.params.campingId;
-      console.log(this.id);
-      axios.get('http://localhost:9002/api/product_detailC/' + this.id)
-          .then(res => {
-            console.log(res.data);
-            this.content = res.data;
-            this.roomContent = this.content.campingDetails;
-            this.campingImages = this.content.images;
-            console.log(this.roomContent);
-            console.log(this.campingImages);
-          })
-          .catch(e => {
-            console.log(e);
-          })
-    },
-    detailData() {
-      this.stateCheck = true;
-    },
+		detail_3() {
+			this.areaCheck = true;
+			let check = prompt('1+1 은?');
+			alert('귀요미 ㅋ');
+			// const point = [this.content.longitude, this.content.latitude]
+			// console.log(point);
+			// this.displayMarker([point])
+			//  카카오맵
+			if (window.kakao && window.kakao.maps) {
+				this.initMap();
+			} else {
+				const script = document.createElement('script');
+				/* global kakao */
+				script.onload = () => kakao.maps.load(this.initMap);
+				script.src =
+					'//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services';
+				document.head.appendChild(script);
+			}
+		},
+		initMap() {
+			const container = document.getElementById('map');
+			const options = {
+				center: new kakao.maps.LatLng(
+					35.89527721605076,
+					128.62277217540984,
+				),
+				level: 8,
+			};
+			console.log(options);
+			this.map = new kakao.maps.Map(container, options);
+			// 마커 만들기
+			let position = [];
+			position = [this.content.longitude, this.content.latitude];
+			this.markPositions1.push(position);
+			this.displayMarker(this.markPositions1);
+		},
+		displayMarker(markerPositions) {
+			if (this.markers.length > 0) {
+				this.markers.forEach((marker) => marker.setMap(null));
+			}
+			const positions = markerPositions.map(
+				(position) => new kakao.maps.LatLng(...position),
+			);
+			console.log('길이는' + positions.length);
+			if (positions.length > 0) {
+				this.markers = positions.map(
+					(position) =>
+						new kakao.maps.Marker({
+							map: this.map,
+							position,
+						}),
+				);
+				const bounds = positions.reduce(
+					(bounds, latlng) => bounds.extend(latlng),
+					new kakao.maps.LatLngBounds(),
+				);
+				this.map.setBounds(bounds);
+			}
+		},
+		create() {
+			this.id = store.getters.getLoginState.loginState;
+			console.log(this.id);
+			const formData = new FormData();
+			formData.append('campingTitle', this.title);
+			formData.append('campingContent', this.content);
+			formData.append('mcode', this.id);
+			formData.append('boardMenuCode', '1');
+			formData.append('file', this.file);
+			axios
+				.post('/api/CampingBoard', formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				})
+				.then((res) => {
+					console.log(res.data);
+					alert('게시글이 등록되었습니다.');
+				})
+				.catch((ex) => {
+					console.log('fail', ex);
+				});
+		},
 
-    buyData(detailId) {
-      console.log(this.startDate)
-      console.log(this.endDate)
-      const period = this.endDate - this.startDate
-      if (this.startDate == this.endDate) {
-        alert('예약 날짜를 선택해주세요.')
-        return
-      } else {
-        this.$router.push({
-          path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
-          query: {
-            startDate: this.startDate,
-            endDate: this.endDate,
-            period: period
-          }
-        })
-    }},
+		detail_4() {
+			this.areaCheckA = true;
+		},
 
-    detail_3() {
-      this.areaCheck3 = true
-      this.areaCheck1 = false
-      this.areaCheck2 = false
-      this.areaCheck4 = false
+		toString() {
+			const start = dayjs(this.reservationDate[0]);
+			this.startDate = start.format('YYYYMMDD');
+			const end = dayjs(this.reservationDate[1]);
+			this.endDate = end.format('YYYYMMDD');
+		},
 
-      // let check = prompt("1+1 은?");
-      // alert("귀요미 ㅋ");
-      // const point = [this.content.longitude, this.content.latitude]
-      // console.log(point);
-      // this.displayMarker([point])
-      //  카카오맵
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
-        script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
-        document.head.appendChild(script);
-      }
-    },
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(35.89527721605076, 128.62277217540984),
-        level: 8,
-      };
-      console.log(options)
-      this.map = new kakao.maps.Map(container, options);
-      // 마커 만들기
-      let position = []
-      position = [this.content.longitude, this.content.latitude]
-      this.markPositions1.push(position)
-      this.displayMarker(this.markPositions1)
-    },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
-      const positions = markerPositions.map(
-          (position) => new kakao.maps.LatLng(...position)
-      );
-      console.log("길이는" + positions.length)
-      if (positions.length > 0) {
-        this.markers = positions.map(
-            (position) =>
-                new kakao.maps.Marker({
-                  map: this.map,
-                  position,
-                })
-        );
-        const bounds = positions.reduce(
-            (bounds, latlng) => bounds.extend(latlng),
-            new kakao.maps.LatLngBounds()
-        );
-        this.map.setBounds(bounds);
-      }
-    },
-    create() {
-      this.id = store.getters.getLoginState.loginState;
-      console.log(this.id);
-      const formData = new FormData();
-      formData.append('campingTitle', this.title);
-      formData.append('campingContent', this.content);
-      formData.append('mcode', this.id);
-      formData.append('boardMenuCode', '1');
-      formData.append('file', this.file);
-      axios.post('/api/CampingBoard', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-          .then((res) => {
-            console.log(res.data);
-            alert("게시글이 등록되었습니다.");
-          })
-          .catch((ex) => {
-            console.log("fail", ex)
-          })
-    },
-    fetchData() {
-      console.log(this.id)
-      axios.get('/api/CampingBoardlist/' + this.id)
-          // 캠핑장 아이디를 넘겨줌 = 이 캠핑장에 해당하는 게시글 가져오기
-          .then((res) => {
-            console.log("게시글 조회 성공" + res.data);
-            console.log(res.data);
-            this.list = res.data;
-          })
-          .catch((ex) => {
-            console.log("게시글 조회 실패", ex)
-          })
-    },
-    delete_1(reviews) {
-      console.log("삭제하실 리뷰번호는" + reviews.boardCampingCode)
-      const boardCampingCode = reviews.boardCampingCode;
-      if (confirm("삭제하시겠습니까?")) {
-        axios.delete('/api/CampingBoardDelete/' + boardCampingCode)
-            .then((res) => {
-              console.log("삭제되었습니다.", res)
-              alert("리뷰가 삭제되었습니다.")
-              this.$router.push({
-                path: `/infoter/infoterList/${this.id}`
-              })
-            })
-            .catch((err) => {
-              console.log("삭제실패" + err)
-            })
-      }
-    },
-    update_1(reviews) {
-      console.log(reviews.campingId.campingId);
-      console.log(reviews.boardCampingCode);
-      console.log(reviews.campingContent, reviews.campingTitle, reviews.filename);
-      this.$router.push({
-        path: `/infoter/infoterupdate/${reviews.boardCampingCode}`,
-        query: {
-          title: reviews.campingTitle,
-          content: reviews.campingContent,
-          mname: reviews.mcode.mname,
-          filename: reviews.filename,
-          campingId: reviews.campingId.campingId,
-          recommend: reviews.recommend
-        }
-      })
-    },
-    addPush(reviews) {
-      console.log(reviews.boardCampingCode)
-      axios.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
-          .then((res) => {
-            alert("추천수가 증가되었습니다.")
-            console.log("추천수가 증가되었습니다.")
-          })
-          .catch(e => {
-            console.log(e)
-          })
-    },
+		detail_5() {
+			this.$router.push({
+				path: '/infoter/infoterBoard',
+				query: {
+					campingId: this.id,
+				},
+			});
+		},
+		fetchData() {
+			console.log(this.id);
+			axios
+				.get('/api/CampingBoardlist/' + this.id)
+				// 캠핑장 아이디를 넘겨줌 = 이 캠핑장에 해당하는 게시글 가져오기
+				.then((res) => {
+					console.log('게시글 조회 성공' + res.data);
+					console.log(res.data);
+					this.list = res.data;
+				})
+				.catch((ex) => {
+					console.log('게시글 조회 실패', ex);
+				});
+		},
+		delete_1(reviews) {
+			console.log('삭제하실 리뷰번호는' + reviews.boardCampingCode);
+			const boardCampingCode = reviews.boardCampingCode;
 
-    toString() {
-      const start = dayjs(this.reservationDate[0]);
-      this.startDate = start.format('YYYYMMDD');
-      const end = dayjs(this.reservationDate[1]);
-      this.endDate = end.format('YYYYMMDD');
-    },
+			if (confirm('삭제하시겠습니까?')) {
+				axios
+					.delete('/api/CampingBoardDelete/' + boardCampingCode)
+					.then((res) => {
+						console.log('삭제되었습니다.', res);
+						alert('리뷰가 삭제되었습니다.');
+						this.$router.push({
+							path: `/infoter/infoterList/${this.id}`,
+						});
+					})
+					.catch((err) => {
+						console.log('삭제실패' + err);
+					});
+			}
+		},
 
-    detail_4() {
-      this.areaCheck4 = true;
-      this.areaCheck1 = false;
-      this.areaCheck2 = false;
-      this.areaCheck3 = false;
-    },
-    detail_5() {
-      this.$router.push({
-        path: '/infoter/infoterBoard',
-        query: {
-          campingId: this.id
-        }
-      })
-    },
+		update_1(reviews) {
+			console.log(reviews.campingId.campingId);
+			console.log(reviews.boardCampingCode);
+			console.log(
+				reviews.campingContent,
+				reviews.campingTitle,
+				reviews.filename,
+			);
+			this.$router.push({
+				path: `/infoter/infoterupdate/${reviews.boardCampingCode}`,
+				query: {
+					title: reviews.campingTitle,
+					content: reviews.campingContent,
+					mname: reviews.mcode.mname,
+					filename: reviews.filename,
+					campingId: reviews.campingId.campingId,
+					recommend: reviews.recommend,
+				},
+			});
+		},
 
-    detail_1() {
-      this.areaCheck4 = false;
-      this.areaCheck1 = true;
-      this.areaCheck2 = false;
-      this.areaCheck3 = false;
-    },
-
-    detail_2() {
-      this.areaCheck4 = false;
-      this.areaCheck1 = false;
-      this.areaCheck2 = true;
-      this.areaCheck3 = false;
-    },
-
-  }
-}
+		addPush(reviews) {
+			console.log(reviews.boardCampingCode);
+			axios
+				.post('/api/Reviews_countView', { a: reviews.boardCampingCode })
+				.then((res) => {
+					alert('추천수가 증가되었습니다.');
+					console.log('추천수가 증가되었습니다.');
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+	},
+};
 </script>
 
 <style scoped>
 img {
-  width: 40%;
-  height: 40%;
+	width: 40%;
+	height: 40%;
 }
 .mt-4 {
-  text-align: center;
+	text-align: center;
 }
 .content-detail-list {
-  margin-top: 1rem;
-  padding: 1rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+	margin-top: 1rem;
+	padding: 1rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
 }
 .d-grid gap-2 d-md-flex justify-content-md-end {
-  margin: auto;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
+	margin: auto;
+	width: 100%;
+	display: inline-block;
+	text-align: center;
 }
 .card {
-  text-align: center;
+	text-align: center;
 }
-.mapDiv{
-  margin-top: -17%;
-  width: 10%;
-  height: 10%;
-  float: contour;
-  margin-right: -27%;
+.mapDiv {
+	margin-top: -17%;
+	width: 63%;
+	float: right;
+	margin-right: -47%;
 }
 #map {
-  width: 400px;
-  height: 400px;
+	width: 400px;
+	height: 400px;
 }
 .slides {
-  padding: 0;
-  width: 609px;
-  height: 420px;
-  right: 2.5%;
-  display: block;
-  margin: 0 auto;
-  position: relative;
+	padding: 0;
+	width: 609px;
+	height: 420px;
+	right: 2.5%;
+	display: block;
+	margin: 0 auto;
+	position: relative;
 }
 /*.slides * {*/
 /*  user-select: none;*/
@@ -589,70 +578,82 @@ img {
 /*  -webkit-user-select: none;*/
 /*  -webkit-touch-callout: none;*/
 /*}*/
-.slides input { display: none; }
-.slide-container { display: block; }
+.slides input {
+	display: none;
+}
+.slide-container {
+	display: block;
+}
 .slide {
-  top: 0;
-  opacity: 0;
-  width: 609px;
-  height: 420px;
-  display: block;
-  position: absolute;
-  transform: scale(0);
-  transition: all .7s ease-in-out;
+	top: 0;
+	opacity: 0;
+	width: 609px;
+	height: 420px;
+	display: block;
+	position: absolute;
+	transform: scale(0);
+	transition: all 0.7s ease-in-out;
 }
 .slide img {
-  width: 120%;
-  height: 100%;
+	width: 120%;
+	height: 100%;
 }
 .nav label {
-  width: 150px;
-  height: 100%;
-  display: none;
-  position: absolute;
-  opacity: 0;
-  z-index: 9;
-  cursor: pointer;
-  transition: opacity .2s;
-  color: #FFF;
-  font-size: 156pt;
-  text-align: center;
-  line-height: 380px;
-  font-family: "Varela Round", sans-serif;
-  background-color: rgba(255, 255, 255, .3);
-  text-shadow: 0px 0px 15px rgb(119, 119, 119);
+	width: 150px;
+	height: 100%;
+	display: none;
+	position: absolute;
+	opacity: 0;
+	z-index: 9;
+	cursor: pointer;
+	transition: opacity 0.2s;
+	color: #fff;
+	font-size: 156pt;
+	text-align: center;
+	line-height: 380px;
+	font-family: 'Varela Round', sans-serif;
+	background-color: rgba(255, 255, 255, 0.3);
+	text-shadow: 0px 0px 15px rgb(119, 119, 119);
 }
-.slide:hover + .nav label { opacity: 0.5; }
-.nav label:hover { opacity: 1; }
-.nav .next { right: -20%; }
-input:checked + .slide-container  .slide {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 1s ease-in-out;
+.slide:hover + .nav label {
+	opacity: 0.5;
 }
-input:checked + .slide-container .nav label { display: block; }
+.nav label:hover {
+	opacity: 1;
+}
+.nav .next {
+	right: -20%;
+}
+input:checked + .slide-container .slide {
+	opacity: 1;
+	transform: scale(1);
+	transition: opacity 1s ease-in-out;
+}
+input:checked + .slide-container .nav label {
+	display: block;
+}
 .nav-dots {
-  width: 100%;
-  bottom: 9px;
-  height: 11px;
-  display: block;
-  position: absolute;
-  text-align: center;
-  left: 10%;
+	width: 100%;
+	bottom: 9px;
+	height: 11px;
+	display: block;
+	position: absolute;
+	text-align: center;
+	left: 10%;
 }
 .nav-dots .nav-dot {
-  top: -5px;
-  width: 11px;
-  height: 11px;
-  margin: 0 4px;
-  position: relative;
-  border-radius: 100%;
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.6);
+	top: -5px;
+	width: 11px;
+	height: 11px;
+	margin: 0 4px;
+	position: relative;
+	border-radius: 100%;
+	display: inline-block;
+	background-color: rgba(0, 0, 0, 0.6);
 }
 .nav-dots .nav-dot:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.8);
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, 0.8);
 }
 input#img-1:checked ~ .nav-dots label#img-dot-1,
 input#img-2:checked ~ .nav-dots label#img-dot-2,
@@ -660,161 +661,159 @@ input#img-3:checked ~ .nav-dots label#img-dot-3,
 input#img-4:checked ~ .nav-dots label#img-dot-4,
 input#img-5:checked ~ .nav-dots label#img-dot-5,
 input#img-6:checked ~ .nav-dots label#img-dot-6 {
-  background: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.8);
 }
-.listBody{
-  padding: 0.5%;
-  margin-left: 30%;
-  margin-top: 1%;
-  margin-right: 1%;
-  width: 45%;
+.listBody {
+	padding: 0.5%;
+	margin-left: 30%;
+	margin-top: 1%;
+	margin-right: 1%;
+	width: 45%;
 }
 .btn_area {
-  margin: 20px 0 91px;
+	margin: 20px 0 91px;
 }
 .btn_Bottom {
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10%;
-  position: center;
+	width: 20%;
+	padding: 21px 0 17px;
+	border: 0;
+	cursor: pointer;
+	color: white;
+	background-color: #96adc0;
+	font-size: 20px;
+	font-weight: 400;
+	margin-left: 10%;
+	position: center;
 }
-.btn_Bottom_3{
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10px;
-  position: center;
+.btn_Bottom_3 {
+	width: 20%;
+	padding: 21px 0 17px;
+	border: 0;
+	cursor: pointer;
+	color: white;
+	background-color: #96adc0;
+	font-size: 20px;
+	font-weight: 400;
+	margin-left: 10px;
+	position: center;
 }
-.my-box {               /*리뷰 젤 큰 박스*/
-  border:3px solid;
-  padding:50px 0 5%;
-  box-sizing: border-box;
-  width: 70%;
-  margin:0 auto;
-  margin-bottom: 1%;
+.my-box {
+	/*리뷰 젤 큰 박스*/
+	border: 3px solid;
+	padding: 50px 0 5%;
+	box-sizing: border-box;
+	width: 70%;
+	margin: 0 auto;
+	margin-bottom: 1%;
 }
-.review{
-  font-size: 20px;
-  margin-right: 70%;
+.review {
+	font-size: 20px;
+	margin-right: 70%;
 }
-.btn_Bottom_1{
-  width: 10%;
-  padding: 15px 0 15px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #9dc7ea;
-  font-size: 20px;
-  font-weight: 400;
-  margin-right: 70%;
-  margin-top: 20px;
+.btn_Bottom_1 {
+	width: 10%;
+	padding: 15px 0 15px;
+	border: 0;
+	cursor: pointer;
+	color: white;
+	background-color: #9dc7ea;
+	font-size: 20px;
+	font-weight: 400;
+	margin-right: 70%;
+	margin-top: 20px;
 }
-.review-image{
-  margin-top: 10%;
-  margin-right: 5%;
-
+.review-image {
+	margin-top: 10%;
+	margin-right: 5%;
 }
-.button{
-  margin-left : 40%;
-  display: inline-block;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #0152b9;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+.button {
+	margin-left: 40%;
+	display: inline-block;
+	padding: 10px 15px;
+	font-size: 16px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	color: #fff;
+	background-color: #0152b9;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 9px #999;
 }
-.button:hover {background-color: #61cce0
+.button:hover {
+	background-color: #61cce0;
 }
 .button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+	background-color: #3e8e41;
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
 }
-.Recommend{
-  margin-left: 70%;
-}
-
-  .review-title{
-    /*background-color: blue;*/
-    position: relative;
-    margin-top: -22%;
-    left:20%;
-    font-size: 25px;
-  }
-.review-mid{
-  position: relative;
-  margin-top: -7%;
-  /*border:1px solid;*/
-  /*box-sizing: border-box;*/
-  width: 57%;
-  margin-left: 40%;
-  font-size: 20px;
-
-}
-.review-text{
-  position: relative;
-  left: 50px;
-  font-size: 22px;
-  margin-top: 20%;
-  /*margin-left: 40%;*/
-}
-.btn_Bottom_2{
-  width: 30%;
-  padding: 10px 0 10px;
-  border: 0;
-  cursor: pointer;
-  color: black;
-  background-color: #9dc7ea;
-  font-size: 20px;
-  font-weight: 400;
-  margin-right: 5%;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  float: right;
-  border-radius: 15px;
+.Recommend {
+	margin-left: 70%;
 }
 
-.image_1{
-  width: 200%;
-  height: 200%;
-  margin-left: 230%;
-  margin-bottom: 10%;
-  margin-top: -50%;
-  /*width: 300px;*/
-  /*height: 180px;*/
-
+.review-title {
+	/*background-color: blue;*/
+	position: relative;
+	margin-top: 1%;
+	left: 20%;
+	font-size: 40px;
 }
-.review-t{
-  text-align: center;
+.review-mid {
+	position: relative;
+	margin-top: -7%;
+	/*border:1px solid;*/
+	/*box-sizing: border-box;*/
+	width: 57%;
+	margin-left: 40%;
+	font-size: 20px;
+}
+.review-text {
+	position: relative;
+	left: 50px;
+	font-size: 38px;
+	margin-top: 20%;
+	margin-left: 40%;
+}
+.btn_Bottom_2 {
+	width: 30%;
+	padding: 10px 0 10px;
+	border: 0;
+	cursor: pointer;
+	color: black;
+	background-color: #9dc7ea;
+	font-size: 20px;
+	font-weight: 400;
+	margin-right: 5%;
+	margin-top: 5px;
+	margin-bottom: 20px;
+	float: right;
+	border-radius: 15px;
+}
+
+.image_1 {
+	width: 200%;
+	height: 200%;
+	margin-left: 230%;
+	margin-bottom: 10%;
+	margin-top: -50%;
+	/*width: 300px;*/
+	/*height: 180px;*/
+}
+.review-t {
+	text-align: center;
 }
 
 .reservation {
-  width: 285%;
-  margin-left: 80px
+	width: 285%;
+	margin-left: 80px;
 }
 
 .card-body img {
-  transition: all 0.2s linear;
+	transition: all 0.2s linear;
 }
 .card-body:hover img {
-  transform: scale(1.5);
+	transform: scale(1.5);
 }
-
 </style>
