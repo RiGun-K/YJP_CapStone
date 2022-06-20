@@ -51,8 +51,8 @@
     </div>
     <div>
       <div>
-        <h5>이동에 대한 금액 + 보관함 사이즈 변경 추가 금액
-          {{addPrice + price}}원</h5>
+        <h5>금액
+          {{ price }}원</h5>
       </div>
       <div>
         <button @click="paymentBtn()">결제</button>
@@ -72,49 +72,43 @@ export default {
     this.beforeBoxInfo = this.$store.state.moveBoxInfo
     this.getBoxInfo()
     this.getItem()
-    let b = this.beforeBoxInfo.boxName.toString().charAt(0)
-    let a = this.afterBoxInfo.boxName.toString().charAt(0)
-    if( b == 'S'){
-      if (a == "S"){
-        this.addPrice = 0
-      }else if ( a == 'M'){
-        this.addPrice = 13000
-      }else{
-        this.addPrice = 20000
-      }
-    }
-    if( b == 'M'){
-      if (a == "S"){
-        this.addPrice = 0
-      }else if ( a == 'M'){
-        this.addPrice = 0
-      }else{
-        this.addPrice = 8000
-      }
-    }
-    if( b == 'L'){
-      if (a == "S"){
-        this.addPrice = 0
-      }else if ( a == 'M'){
-        this.addPrice = 0
-      }else{
-        this.addPrice = 0
-      }
-    }
-
+    this.getPrice()
   },
   data() {
     return {
       newBoxCode: '',
-      beforeBoxInfo:{},
+      beforeBoxInfo: {},
       afterBoxInfo: {},
-      myItem:{},
-      addPrice:0,
-      price:5000,
+      myItem: {},
+      beforeBoxPrice:0,
+      price: 0,
     }
   },
   methods: {
-    getItem(){
+    beforePrice(){
+      axios.get('/api/boxPrice/' + this.$store.state.moveBoxInfo.boxCode)
+          .then(res => {
+            this.beforeBoxPrice = res.data
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+    },
+    getPrice() {
+      axios.get('/api/boxPrice/' + this.beforeBoxInfo.boxCode)
+          .then(res => {
+            this.beforePrice()
+            this.price = res.data
+            if (this.price < this.beforeBoxPrice) {
+              this.stateCheck = false
+            }else if(this.price == this.beforeBoxPrice){
+              this.price = 5000
+            }else{
+              this.price = 5000 + this.price - this.beforeBoxPrice
+            }
+          })
+    },
+    getItem() {
       axios.get('/api/getBoxInItem/' + this.beforeBoxInfo.useBoxCode)
           .then(res => {
             this.myItem = res.data
@@ -146,7 +140,7 @@ export default {
       //   }, (rsp) => {
       //     if (rsp.success) {
       //
-      //       this.savePay()
+      //       this.pay()
       //
       //     } else {
       //       let msg = '결제에 실패하였습니다.'
@@ -169,7 +163,7 @@ export default {
       axios.post('/api/boxToBoxPay', data)
           .then(res => {
             console.log(res)
-            this.$router.push({name:'storageComplete'});
+            this.$router.push({name: 'storageComplete'});
           }).catch(err => {
         console.log(err)
       })
