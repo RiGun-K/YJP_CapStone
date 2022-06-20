@@ -294,6 +294,38 @@ const routes = [
 		props: true,
 	},
 
+  {
+    path: '/ProductList',
+    name: 'ProductList',
+    component: () => import('@/components/product/ProductList.vue')
+  },
+  {
+    path: '/ProductDetail/:menuid',
+    name: 'productDetail',
+    component: () => import('@/components/product/ProductDetail.vue'),
+    props: true
+  },
+  {
+    path: '/ProductMyPage',
+    name: 'ProductMyPage',
+    component: () => import('@/components/product/ProductMyPage.vue')
+  },
+  {
+    path: '/SaleMyCamping/:mid',
+    name: 'SaleMyCamping',
+    component: () => import('@/components/product/Sale/SaleMyCamping.vue')
+  },
+  {
+    path: '/SaleMyRental/:mid',
+    name: 'SaleMyRental',
+    component: () => import('@/components/product/Sale/SaleMyRental.vue')
+  },
+  {
+    path: '/SaleMyBuy/:mid',
+    name: 'SaleMyBuy',
+    component: () => import('@/components/product/Sale/SaleMyBuy.vue')
+  },
+
 	////////////////////////주문, 결제/////////////////////////////////
 	{
 		path: '/itemBuy',
