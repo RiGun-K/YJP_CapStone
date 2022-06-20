@@ -1,10 +1,7 @@
 package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
-import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.MenuBuy;
-import com.example.capstone.domain.order.Cart;
-import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.domain.storage.Storage;
@@ -16,8 +13,6 @@ import com.example.capstone.repository.Product.CampingAreaRepository;
 import com.example.capstone.repository.Product.KindRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
 import com.example.capstone.repository.Storage.*;
-import com.example.capstone.repository.orders.CartRepository;
-import com.example.capstone.repository.orders.OrderMenuRepository;
 import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,9 +57,6 @@ public class UseStorageController {
     @Autowired
     MenuBuyRepository menuBuyRepository;
 
-    @Autowired
-    OrderMenuRepository orderMenuRepository;
-
     //보관함 연장 결제
     @PostMapping("/renewalPay")
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
@@ -84,7 +76,7 @@ public class UseStorageController {
         orderList.setPaymentDate(LocalDateTime.now());
         ordersRepository.save(orderList);
 
-        beforeUseStorageBox.get().setUseStorageState("2");
+        beforeUseStorageBox.get().setUseStorageState("1");
         useStorageBoxRepository.save(beforeUseStorageBox.get());
 
         UseStorageBox useStorageBox = new UseStorageBox();
@@ -347,19 +339,9 @@ public class UseStorageController {
 
     ////////////////////////// 수리상품 조회 ////////////////////////
 
-    @GetMapping("RepairGroupList")
-    private List<Kind> getRepairGroupList(){
-        List<Kind> kindList = kindRepository.findByRepairGroupList();
-        return kindList;
-    }
-
     @GetMapping("repairItemList")
     private List<MenuBuy> getRepairList(){
-        int id =20;
-        List<MenuBuy> menuBuyList = menuBuyRepository.findByParentKindId(id);
-        for (int i = 0; i < menuBuyList.size(); i++) {
-            System.out.println(menuBuyList.get(i).toString());
-        }
+        List<MenuBuy> menuBuyList = menuBuyRepository.findByRepairList();
         return menuBuyList;
     }
     @GetMapping("PickRepairList/{kindId}")
@@ -382,9 +364,6 @@ public class UseStorageController {
             return null;
         }
         return menuBuyList;
-
-    }
-
 //    장비수리 신청 결제
     @PostMapping("postCarePay")
     private Result postCarePay(@RequestBody CareListPayDTO care){
@@ -415,5 +394,4 @@ public class UseStorageController {
         }
         return new Result("ok");
     }
-
 }

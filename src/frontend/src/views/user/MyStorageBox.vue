@@ -15,10 +15,13 @@
               <td>{{ useBox.storageName }}</td>
               <td>{{ useBox.boxName }}</td>
               <td v-if="useBox.useState == 0">결제완료</td>
-              <td v-if="useBox.useState == 2 || useBox.useState == 6">사용중</td>
+              <td v-if="useBox.useState == 2">사용중</td>
               <td v-if="useBox.useState == 3">보관함이동</td>
               <td v-if="useBox.useState == 4">보관함이동</td>
               <td v-if="useBox.useState == 5">배송</td>
+              <td v-if="useBox.useState == 6">수리신청</td>
+              <td v-if="useBox.useState == 7">수리 중</td>
+              <td v-if="useBox.useState == 8">수리완료</td>
               <td v-if="useBox.useState == 9">배송</td>
             </tr>
             </tbody>
