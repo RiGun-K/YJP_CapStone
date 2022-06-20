@@ -1,277 +1,245 @@
 <template>
-	<br />
-	<ul class="slides">
-		<input type="radio" name="radio-btn" id="img-1" checked />
-		<li class="slide-container">
-			<div class="slide">
-				<img :src="'/api/product_detail_images/' + content.filename" />
-			</div>
-			<div class="nav">
-				<label for="img-6" class="prev">&#x2039;</label>
-				<label for="img-2" class="next">&#x203a;</label>
-			</div>
-		</li>
+    <br>
+    <ul class="slides">
+      <input type="radio" name="radio-btn" id="img-1" checked />
+      <li class="slide-container">
+        <div class="slide">
+          <img :src="'/api/product_detail_images/' + content.filename"/>
+        </div>
+        <div class="nav">
+          <label for="img-6" class="prev">&#x2039;</label>
+          <label for="img-2" class="next">&#x203a;</label>
+        </div>
+      </li>
 
-		<input type="radio" name="radio-btn" id="img-2" />
-		<li class="slide-container">
-			<div class="slide">
-				<img
-					src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg"
-				/>
-			</div>
-			<div class="nav">
-				<label for="img-1" class="prev">&#x2039;</label>
-				<label for="img-3" class="next">&#x203a;</label>
-			</div>
-		</li>
+      <input type="radio" name="radio-btn" id="img-2" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-1" class="prev">&#x2039;</label>
+          <label for="img-3" class="next">&#x203a;</label>
+        </div>
+      </li>
 
-		<input type="radio" name="radio-btn" id="img-3" />
-		<li class="slide-container">
-			<div class="slide">
-				<img
-					src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg"
-				/>
-			</div>
-			<div class="nav">
-				<label for="img-2" class="prev">&#x2039;</label>
-				<label for="img-4" class="next">&#x203a;</label>
-			</div>
-		</li>
+      <input type="radio" name="radio-btn" id="img-3" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-2" class="prev">&#x2039;</label>
+          <label for="img-4" class="next">&#x203a;</label>
+        </div>
+      </li>
 
-		<input type="radio" name="radio-btn" id="img-4" />
-		<li class="slide-container">
-			<div class="slide">
-				<img
-					:src="
-						'/api/product_detail_images/' +
-						content.campingDetails[0].filename
-					"
-				/>
-			</div>
-			<div class="nav">
-				<label for="img-3" class="prev">&#x2039;</label>
-				<label for="img-5" class="next">&#x203a;</label>
-			</div>
-		</li>
+      <input type="radio" name="radio-btn" id="img-4" />
+      <li class="slide-container">
+        <div class="slide">
+          <img :src="'/api/product_detail_images/' + content.campingDetails[0].filename" />
+        </div>
+        <div class="nav">
+          <label for="img-3" class="prev">&#x2039;</label>
+          <label for="img-5" class="next">&#x203a;</label>
+        </div>
+      </li>
 
-		<input type="radio" name="radio-btn" id="img-5" />
-		<li class="slide-container">
-			<div class="slide">
-				<img
-					src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg"
-				/>
-			</div>
-			<div class="nav">
-				<label for="img-4" class="prev">&#x2039;</label>
-				<label for="img-6" class="next">&#x203a;</label>
-			</div>
-		</li>
+      <input type="radio" name="radio-btn" id="img-5" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-4" class="prev">&#x2039;</label>
+          <label for="img-6" class="next">&#x203a;</label>
+        </div>
+      </li>
 
-		<input type="radio" name="radio-btn" id="img-6" />
-		<li class="slide-container">
-			<div class="slide">
-				<img
-					src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg"
-				/>
-			</div>
-			<div class="nav">
-				<label for="img-5" class="prev">&#x2039;</label>
-				<label for="img-1" class="next">&#x203a;</label>
-			</div>
-		</li>
+      <input type="radio" name="radio-btn" id="img-6" />
+      <li class="slide-container">
+        <div class="slide">
+          <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
+        </div>
+        <div class="nav">
+          <label for="img-5" class="prev">&#x2039;</label>
+          <label for="img-1" class="next">&#x203a;</label>
+        </div>
+      </li>
 
-		<li class="nav-dots">
-			<label for="img-1" class="nav-dot" id="img-dot-1"></label>
-			<label for="img-2" class="nav-dot" id="img-dot-2"></label>
-			<label for="img-3" class="nav-dot" id="img-dot-3"></label>
-			<label for="img-4" class="nav-dot" id="img-dot-4"></label>
-			<label for="img-5" class="nav-dot" id="img-dot-5"></label>
-			<label for="img-6" class="nav-dot" id="img-dot-6"></label>
-		</li>
-	</ul>
+      <li class="nav-dots">
+        <label for="img-1" class="nav-dot" id="img-dot-1"></label>
+        <label for="img-2" class="nav-dot" id="img-dot-2"></label>
+        <label for="img-3" class="nav-dot" id="img-dot-3"></label>
+        <label for="img-4" class="nav-dot" id="img-dot-4"></label>
+        <label for="img-5" class="nav-dot" id="img-dot-5"></label>
+        <label for="img-6" class="nav-dot" id="img-dot-6"></label>
+      </li>
+    </ul>
 
-	<!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
-	<!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
-	<!--  </div>-->
-	<!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
-	<!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
-	<!--  -->
+    <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+    <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+    <!--  </div>-->
+    <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+    <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+    <!--  -->
 
-	<div class="mt-4">
-		<h4>{{ this.content.campingName }}</h4>
-		<p class="card-text">010-9699-4238</p>
-		<p class="card-text">{{ this.content.campingInfo }}</p>
-		<p class="card-text">{{ this.content.address }}</p>
-		<p class="card-text">
-			등록 객실 수: {{ this.content.campingDetailState }}
-		</p>
-		<p class="card-text">조회 수: {{ this.content.campingViews }}</p>
-		<p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
 
-		<br />
+    <div class="mt-4">
 
-		<div class="listBody">
-			<h2>캠핑장 내 객실 선택 및 예약</h2>
-			<div
-				v-for="(room, index) in roomContent"
-				:key="index"
-				@click=""
-				class="listObj"
-			>
-				<div class="card">
-					<div class="card-body">
-						<img
-							:src="'/api/product_detail_images/' + room.filename"
-							alt="..."
-						/>
-					</div>
-					<div class="card-body">객실명 - {{ room.detailName }}</div>
-					<div class="card-body">
-						설명 - {{ room.detailFunction }}
-					</div>
-					<div class="card-body">
-						최대인원 - {{ room.maximumNumber }}
-					</div>
-					<div class="card-body">
-						객실 가격 - {{ room.detailPrice }}
-					</div>
-					<br />
-					<p>예약기간 설정</p>
-					<div class="reservation">
-						<Datepicker
-							style="
-								margin-left: 3%;
-								margin-bottom: 3%;
-								width: 20%;
-							"
-							locale="ko-KR"
-							:min-date="today"
-							:max-date="end"
-							type="date"
-							range
-							format="yyyy/MM/dd"
-							value-format="yyyyMMdd"
-							:enableTimePicker="false"
-							autoApply
-							v-on="toString()"
-							:closeOnAutoApply="false"
-							placeholder="예약 날짜를 선택해주세요."
-							v-model="reservationDate"
-							@click="DayList(room.orderMenus)"
-							:disabledDates="disabledDates"
-						/>
-					</div>
-					<button
-						@click="buyData(room.detailId)"
-						class="btn btn-primary"
-					>
-						예약 및 결제
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+      <h4>{{ this.content.campingName }}</h4>
+      <p class="card-text">010-9699-4238</p>
+      <p class="card-text">{{ this.content.campingInfo }}</p>
+      <p class="card-text">{{ this.content.address }}</p>
+      <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
+      <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
+      <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
 
-	<br />
-	<div v-if="areaCheck">
-		<br />
-		<h2>캠핑장 위치정보</h2>
-		<div class="mapDiv">
-			<div id="map"></div>
-		</div>
-	</div>
+      <br>
 
-	<br />
-	<div class="btn_area">
-		<button type="button" @click="detail_1" class="btn_Bottom">
-			<span>캠핑장 소개</span>
-		</button>
-		<button type="button" @click="detail_2" class="btn_Bottom_3">
-			<span>이용 안내</span>
-		</button>
-		<button type="button" @click="detail_3" class="btn_Bottom_3">
-			<span>위치/주변정보</span>
-		</button>
-		<button type="button" @click="detail_4" class="btn_Bottom_3">
-			<span>캠핑/여행후기</span>
-		</button>
-	</div>
 
-	<div v-if="areaCheckA">
-		<br />
-		<div class="review-t">
-			<h2>리뷰</h2>
-		</div>
-		<div class="content-detail-list-1">
-			<br />
-			<div
-				class="my-box"
-				v-for="(reviews, index) in list"
-				:key="index.id"
-				:item="reviews"
-			>
-				<div class="Recommend">
-					<button class="button" @click="addPush(reviews)">
-						추천수 : {{ reviews.recommend }}
-					</button>
-				</div>
+      <div class="listBody">
+        <h2> 캠핑장 내 객실 선택 및 예약 </h2>
+        <div v-for="(room,index) in roomContent" :key="index"
+             @click="" class="listObj">
+          <div class="card">
+            <div class="card-body">
+              <img :src="'/api/product_detail_images/' + room.filename" alt="...">
+            </div>
+            <div class="card-body">
+              객실명 - {{ room.detailName }}
+            </div>
+            <div class="card-body">
+              설명 - {{ room.detailFunction }}
+            </div>
+            <div class="card-body">
+              최대인원 - {{ room.maximumNumber }}
+            </div>
+            <div class="card-body">
+              객실 가격 - {{ room.detailPrice }}
+            </div>
+            <br>
+            <p>예약기간 설정</p>
+            <div class="reservation">
+            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+                        locale="ko-KR"
+                        :min-date="today"
+                        :max-date="end"
+                        type="date"
+                        range
+                        format="yyyy/MM/dd"
+                        value-format="yyyyMMdd"
+                        :enableTimePicker="false"
+                        autoApply
+                        v-on="toString()"
+                        :closeOnAutoApply="false"
+                        placeholder="예약 날짜를 선택해주세요."
+                        v-model="reservationDate"
+                        @click="DayList(room.orderMenus)"
+                        :disabledDates="disabledDates"/>
+            </div>
+          <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
+        </div>
+      </div>
+    </div>
+    </div>
 
-				<div class="review">
-					<div class="review-title">
-						캠핑장명 {{ reviews.campingId.campingName }}
-					</div>
-					<br />
-					<div class="review-mid">
-						{{ reviews.mcode.mname }} | {{ reviews.savedTime }}
-					</div>
-					<div class="review-text">
-						설명 {{ reviews.campingContent }}
-					</div>
+    <br>
 
-					<router-link
-						to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"
-					></router-link>
 
-					<div class="my-box-3"></div>
-					<div class="image_1">
-						<p class="review-image">이미지</p>
-						<img
-							:src="
-								'/api/product_detail_images/' + reviews.filename
-							"
-						/>
-					</div>
-					<div class="btn_area_2">
-						<button
-							type="button"
-							@click="delete_1(reviews)"
-							class="btn_Bottom_2"
-						>
-							<span>삭제</span>
-						</button>
-					</div>
+    <br>
+    <div class="btn_area">
+      <button type="button" @click="detail_1" class="btn_Bottom">
+        <span>캠핑장 소개</span>
+      </button>
+      <button type="button" @click="detail_2" class="btn_Bottom_3">
+        <span>이용 안내</span>
+      </button>
+      <button type="button" @click="detail_3" class="btn_Bottom_3">
+        <span>위치/주변정보</span>
+      </button>
+      <button type="button" @click="detail_4" class="btn_Bottom_3">
+        <span>캠핑/여행후기</span>
+      </button>
+    </div>
 
-					<div class="btn_area_2">
-						<button
-							type="button"
-							@click="update_1(reviews)"
-							class="btn_Bottom_2"
-						>
-							<span>수정</span>
-						</button>
-					</div>
-				</div>
-			</div>
 
-			<br />
-			<div class="btn_area_1">
-				<button type="button" @click="detail_5" class="btn_Bottom_1">
-					<span>리뷰 작성</span>
-				</button>
-			</div>
-			<br />
-		</div>
-	</div>
+
+  <div v-if="areaCheck3">
+    <br>
+    <div class="mapDiv">
+      <div id="map"></div>
+    </div>
+  </div>
+
+
+
+  <div v-if="areaCheck1">
+    <br>
+    <img :src=imageC>
+    <br>
+    <img :src=imageC2>
+  </div>
+
+  <div v-if="areaCheck2">
+    <br>
+    <img :src=imageCC>
+    <br>
+    <img :src=imageCC2>
+  </div>
+
+    <div v-if="areaCheck4">
+      <br>
+      <div class="review-t">
+      <h2>리뷰</h2>
+      </div>
+      <div class="content-detail-list-1">
+        <br>
+        <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
+          <div class="Recommend">
+            <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
+          </div>
+
+          <div class="review">
+            <div class="review-title">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
+              <div class="review-text">{{ reviews.campingTitle }}</div>
+              <div class="review-text">{{ reviews.campingContent }}</div>
+
+            <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
+
+            <div class="my-box-3">
+            </div>
+          <div class="image_1">
+            <p class="review-image">이미지</p>
+            <img :src="'/api/product_detail_images/' + reviews.filename" />
+          </div>
+          <div class="btn_area_2">
+            <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
+              <span>삭제</span>
+            </button>
+          </div>
+
+          <div class="btn_area_2">
+            <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
+              <span>수정</span>
+            </button>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+      <br>
+      <div class="btn_area_1">
+        <button type="button" @click="detail_5" class="btn_Bottom_1">
+          <span>리뷰 작성</span>
+        </button>
+      </div>
+      <br>
+    </div>
+  </div>
 </template>
 
 <script>
