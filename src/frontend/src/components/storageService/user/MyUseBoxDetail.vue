@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <button @click="close()">X</button>
+  <div class="container">
+    <button class="close-box" @click="close()">X</button>
     <div>
       <div>
         <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="moveBox(pickUseBox)">장비 이동</button>
@@ -80,7 +80,7 @@
               </tr>
               </tbody>
             </table>
-            <button @click="addItem()">추가하기</button>
+            <button class="add-item" @click="addItem()">추가하기</button>
           </div>
         </div>
       </div>
@@ -95,7 +95,7 @@
               <th>수량</th>
               <th>상태</th>
               <th>선택
-                <button @click="outItem()">빼내기</button>
+                <button class="out-item" @click="outItem()">빼내기</button>
               </th>
             </tr>
             </thead>
@@ -338,6 +338,13 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  position: center;
+  height: 100%;
+  width: 95%;
+  margin: 5%;
+}
+
 .scrolltbody {
   display: block;
   border-collapse: collapse;
@@ -370,6 +377,20 @@ export default {
   color: #00a3de;
   border-color: #00a3de;
 }
+
+.close-box{
+  margin-left: 4%;
+  margin-bottom: 1%;
+  text-align: center;
+  width: 30px;
+  padding: 0.5%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: right;
+}
+
 
 .mystoragebox-re:hover {
   color: white;
