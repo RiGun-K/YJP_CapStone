@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div class="divBody">
     <div style="text-align: center">
       <h1 style="color: black">{{member.mid}}회원 정보조회</h1>
@@ -23,7 +24,7 @@
       <label>회원 주소</label>
       <p class="inputText" style="width: 320px">{{member.mzadd}}</p>
       <p class="inputAdd">{{member.mradd}}</p>
-      <p class="inputAdd">{{member.madd}}</p>
+      <p class="inputAdd">{{maddCheck(member.madd)}}</p>
     </div>
     <div>
       <label>회원 전화번호</label>
@@ -45,7 +46,7 @@
       <p class="inputText">{{chMld(member.mld)}}</p>
     </div>
     <div style="text-align: right;">
-      <button @click="returnMemberList">돌아가기</button>
+      <button @click="returnMemberList" class="btnCommon">돌아가기</button>
     </div>
   </div>
 </template>
@@ -57,7 +58,8 @@ export default {
   name: "memberData",
   data(){
     return{
-      member:[]
+      member:[],
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -86,6 +88,13 @@ export default {
     },
     returnMemberList(){
       this.$router.push("/memberAdmin")
+    },
+    maddCheck(text){
+      if(text == null){
+        return "상세주소없음"
+      }else{
+        return text
+      }
     }
   },
   created() {
@@ -102,11 +111,24 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .divBody{
-  margin-top: 1%;
-  margin-left: 25%;
-  margin-right: 25%;
-  width: 50%;
+  padding: 30px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  background: white;
+  width: 90%;
+  height: 93%;
+  z-index: 2;
+  position: relative;
 }
 label{
   margin-top: 5px;
@@ -124,5 +146,19 @@ label{
   margin-left: 120px;
   width: 320px;
   padding-left: 5px;
+}
+.btnCommon{
+  margin-left: 15px;
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  width: 100px;
+  color: black;
+}
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>

@@ -1,111 +1,66 @@
 <template>
-  <div id="wrapper">
-    <div id="content">
-      <br><br>
+  <img :src="backImg" class="backImg">
+  <div class="bodyDiv">
+    <div>
       <h2>정보수정</h2>
+    </div>
+    <div class="inputDiv">
+      <label>아이디</label>
+      <input type="text" readonly v-model="MID" placeholder="아이디 입력" maxlength="20">
+    </div>
+    <div class="inputDiv">
+      <label>닉네임</label>
+      <input type="text" v-model="MNick" placeholder="닉네임 입력">
+      <button @click="nameCheck" :disabled="btnNch" class="inputBtn">중복확인</button>
+    </div>
+    <div class="inputDiv">
       <div>
-        <br>
-        <h3 class="join_title">
-          <label for="id">아이디</label>
-        </h3>
-        <span class="box int_id">
-                        <input type="text" readonly v-model="MID" id="id" placeholder="아이디 입력" class="int" maxlength="20">
-                    </span>
-        <span class="error_next_box"></span>
-        <div>
-          <h3 class="join_title">
-            <label for="id">닉네임</label>
-          </h3>
-
-          <span class="input-group mb-3">
-          <input type="text" v-model="MNick" class="form-control" placeholder="닉네임 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="nameCheck" :disabled="btnNch">중복확인</button>
-        </span>
-          <span class="error_next_box"></span>
-        </div>
-        <div>
-          <h3 class="join_title">
-            <label for="zCode">주소</label>
-          </h3>
-          <span class="input-group mb-3">
-        <input type="text" v-model="MZadd" class="form-control" placeholder="우편주소"
-               aria-label="Recipient's username" aria-describedby="button-addon2" readonly="true">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="zcGet">우편주소검색</button>
-        </span>
-        </div>
-
-        <div>
-          <span class="input-group mb-3">
-                        <input type="text" v-model="MRadd" id="email" class="form-control" maxlength="100" placeholder="도로명주소" readonly>
-          </span>
-          <span class="error_next_box">도로명주소를 다시 확인해주세요.</span>
-        </div>
-
-        <div>
-          <span class="input-group mb-3">
-                        <input type="text" v-model="MAdd" id="email" class="form-control" maxlength="100" placeholder="상세주소">
-          </span>
-          <span class="error_next_box">상세주소를 다시 확인해주세요.</span>
-        </div>
-        <div>
-          <h3 class="join_title">
-            <label for="email">이름</label>
-          </h3>
-          <span class="input-group mb-3">
-          <input type="text" v-model="Mname" class="form-control" placeholder="이름입력" aria-label="Recipient's username"
-                 aria-describedby="button-addon2" readonly>
-         </span>
-          <span class="error_next_box"></span>
-        </div>
-
-        <div>
-          <h3 class="join_title">
-            <label for="email">전화번호</label>
-          </h3>
-          <span class="input-group mb-3">
-          <input type="text" v-model="MPH" class="form-control" placeholder="전화번호 입력" aria-label="Recipient's username" maxlength="11"
-                 aria-describedby="button-addon2" :disabled="authCheck" oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="phSend" :disabled="authCheck">전송</button>
-        </span>
-          <span class="input-group mb-3">
-          <input type="text" v-model="clientAuth" class="form-control" placeholder="인증번호입력" aria-label="Recipient's username"
-                 aria-describedby="button-addon2" :disabled="authCheck">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="phAuthCheck" :disabled="authCheck">인증확인</button>
-        </span>
-          <span class="error_next_box"></span>
-        </div>
-
-
-        <div>
-          <h3 class="join_title">
-            <label for="email">이메일</label>
-          </h3>
-          <span class="input-group mb-3">
-          <input type="text" v-model="MEmail" class="form-control" placeholder="이메일 입력" aria-label="Recipient's username"
-                 aria-describedby="button-addon2" :disabled="emailAuthBoolean">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="emailSend" :disabled="emailAuthBoolean">전송</button>
-        </span>
-          <span class="input-group mb-3">
-          <input type="text" v-model="MEmailAuthInput" class="form-control" placeholder="인증번호입력" aria-label="Recipient's username"
-                 aria-describedby="button-addon2" :disabled="emailAuthBoolean">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="mailAuthCheck" :disabled="emailAuthBoolean">인증확인</button>
-        </span>
-          <span class="error_next_box"></span>
-
-        </div>
-        <br>
-        <div class="btn_area">
-          <button type="button" @click="update" id="btnJoin">
-            <span>수정</span>
-          </button>
-          <button type="button" @click="deleteMem" id="btnJoin">
-            <span>탈퇴</span>
-
-          </button>
-        </div>
+        <label>주소</label>
+        <input type="text" v-model="MZadd" placeholder="우편주소" class="inputTextAdd" readonly="true">
+        <button id="button-addon2" @click="zcGet" class="inputBtn" style="width: 120px;">우편주소검색</button>
+      </div>
+      <div class="lineDiv">
+        <input type="text" v-model="MRadd" maxlength="100" class="inputTextAdd" placeholder="도로명주소" readonly>
+      </div>
+      <div class="lineDiv">
+        <input type="text" v-model="MAdd" maxlength="100" class="inputTextAdd" placeholder="상세주소">
       </div>
     </div>
+    <div class="inputDiv">
+      <label>이름</label>
+      <input type="text" v-model="Mname" placeholder="이름입력" readonly>
+    </div>
+    <div class="inputDiv">
+      <div>
+        <label>전화번호</label>
+        <input type="text" v-model="MPH" placeholder="전화번호 입력" maxlength="11"
+               :disabled="authCheck" oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');">
+        <button @click="phSend" :disabled="authCheck" class="inputBtn">전송</button>
+      </div>
+      <div class="lineDiv">
+        <input type="text" v-model="clientAuth" placeholder="인증번호입력" :disabled="authCheck">
+        <button @click="phAuthCheck" :disabled="authCheck" class="inputBtn">인증확인</button>
+      </div>
+    </div>
+    <div class="inputDiv">
+      <div>
+        <label>이메일</label>
+        <input type="text" v-model="MEmail" placeholder="이메일 입력" :disabled="emailAuthBoolean"
+               style="width: 250px">
+        <button @click="emailSend" :disabled="emailAuthBoolean" class="inputBtn">전송</button>
+      </div>
+      <div class="lineDiv">
+        <input type="text" v-model="MEmailAuthInput" placeholder="인증번호입력" :disabled="emailAuthBoolean"
+               style="width: 250px">
+        <button @click="mailAuthCheck" :disabled="emailAuthBoolean" class="inputBtn">인증확인</button>
+      </div>
+    </div>
+    <div class="inputDiv" style="text-align: center;">
+      <button type="button" @click="update" class="updateBtn">수정</button>
+      <button type="button" @click="deleteMem" class="updateBtn">탈퇴</button>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -134,7 +89,8 @@ export default {
       serverAuth:'',
       authCheck:false,
       clientCheckMail:true,
-      clientCheckPH:true
+      clientCheckPH:true,
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -315,93 +271,64 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
+.backImg{
+  margin-top: 1px;
+  width: 100%;
   height: 100%;
-  background-color: #E6E6FA;
-}
-#wrapper {
-  position: relative;
-  height: 100%;
-}
-#content {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 460px;
+  z-index: 1;
 }
-/* 입력폼 */
-h3 {
-  margin: 19px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.box {
-  display: block;
-  width: 100%;
-  height: 51px;
-  border: solid 1px #dadada;
-  padding: 10px 14px;
-  box-sizing: border-box;
-  background: #fff;
+.bodyDiv{
+  padding: 30px;
+  padding-top: 8%;
+  padding-bottom: 5%;
+  background: white;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 2%;
+  margin-bottom: 7%;
+  width: 50%;
+  height: 93%;
+  z-index: 2;
   position: relative;
+  border-radius: 100px;
 }
-.int {
-  display: block;
-  position: relative;
+label{
+  width: 80px;
+}
+.inputDiv{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.inputBtn{
+  margin-left: 10px;
+  padding: 1px;
+  width: 80px;
+  color: black;
+  background: #E6E6FA;
+  border: 1px solid black;
+}
+.lineDiv{
+  margin-left: 80px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.inputTextAdd{
+  width: 320px;
+}
+.updateBtn{
+  margin-top: 20px;
   width: 100%;
-  height: 29px;
-  border: none;
-  background: #fff;
-  font-size: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 30px;
+  color: black;
+  background: #E6E6FA;
+  border: 1px solid black;
 }
-.box.int_id {
-  padding-right: 110px;
-}
-.box.int_pass {
-  padding-right: 40px;
-}
-.box.int_pass_check {
-  padding-right: 40px;
-}
-select {
-  width: 100%;
-  height: 29px;
-  font-size: 15px;
-  background-size: 20px 8px;
-  -webkit-appearance: none;
-  display: inline-block;
-  text-align: start;
-  border: none;
-  cursor: default;
-}
-.error_next_box {
-  margin-top: 9px;
-  font-size: 12px;
-  color: red;
-  display: none;
-}
-#alertTxt {
-  position: absolute;
-  top: 19px;
-  right: 38px;
-  font-size: 12px;
-  color: red;
-  display: none;
-}
-/* 버튼 */
-.btn_area {
-  margin: 30px 0 91px;
-}
-#btnJoin {
-  width: 45%;
-  margin-left: 4%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
+.updateBtn:hover, .inputBtn:hover{
   color: white;
-  background-color: #52a3ef;
-  font-size: 20px;
-  font-weight: 400;
+  background: black;
+  border: 1px solid red;
 }
 </style>

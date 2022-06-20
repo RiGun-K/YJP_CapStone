@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div class="divBody">
     <div class="inputDiv">
       <label class="labelTitle">장비명 </label>
@@ -12,11 +13,14 @@
     </div>
     <div class="inputDiv">
       <label class="labelTitle">장비수량</label>
-      <input type="text" class="inputBody" style="width: 50px;text-align: center" v-model="equipcount" readonly>
+      <input type="text" class="inputBody" style="width: 50px;text-align: center" v-model="equipCount" readonly>
       <button class="countBtn" @click="addCount">증가</button>
       <button class="countBtn" @click="removeCount">감소</button>
     </div>
-    <button class="addBtn" @click="addEquip">추가</button>
+    <div class="btnDiv">
+      <button class="addBtn" @click="addEquip">추가</button>
+      <button class="addBtn" @click="returnEquip">취소</button>
+    </div>
   </div>
 </template>
 
@@ -30,18 +34,19 @@ export default {
     return{
       equipName:'',
       equipKind:'',
-      equipcount:1,
-      kindList:[]
+      equipCount:1,
+      kindList:[],
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
     addCount(){
-      this.equipcount++
+      this.equipCount++
     },
     removeCount(){
-      this.equipcount--
-      if (this.equipcount <= 0){
-        this.equipcount = 1
+      this.equipCount--
+      if (this.equipCount <= 0){
+        this.equipCount = 1
       }
     },
     chKindId(index){
@@ -53,7 +58,7 @@ export default {
         MID:store.getters.getLoginState.mcode,
         KindName:this.equipKind,
         NAME:this.equipName,
-        Count:this.equipcount
+        Count:this.equipCount
       }).then((res)=>{
         if(res.data){
           this.$router.push("/myPageEquip")
@@ -61,6 +66,9 @@ export default {
       }).catch((err)=>{
         console.log(err)
       })
+    },
+    returnEquip(){
+      this.$router.push("/myPageEquip")
     }
   },
   created() {
@@ -80,31 +88,47 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .divBody{
-  margin-left: 2%;
-  margin-right: 2%;
-  margin-top: 1%;
-  width: 96%;
+  margin-right: 15%;
+  margin-left: 15%;
+  margin-top: 2%;
+  margin-bottom: 5%;
   text-align: center;
+  width: 70%;
+  height: 93%;
+  padding: 30px;
+  z-index: 2;
+  position: relative;
+  background: white;
 }
 .inputDiv{
-  left: 35%;
-  width: 65%;
+  left: 25%;
+  width: 75%;
   text-align: left;
   position: relative;
 }
 .labelTitle{
   left: 10%;
-  margin-top: 1%;
+  margin-top: 25px;
   margin-right: 2%;
-  width: 10%;
+  width: 15%;
 }
 .inputBody{
 }
+.btnDiv{
+  width: 100%;
+  text-align: right;
+}
 .addBtn{
+  margin-right: 10px;
   margin-top: 1%;
-  right: 35%;
-  position: absolute;
 }
 .countBtn{
   margin-left: 1%;

@@ -113,9 +113,14 @@ const routes = [
     component: () => import('@/components/user/myPage/AddEquip.vue')
   },
   {
+    path:'/updateEquipment/:equipCode',
+    name:'updateEquipment',
+    component: () => import('@/components/user/myPage/MyEquipUpdate.vue')
+  },
+  {
     path:'/memberData/:mid',
     name:'memberData',
-    component: () => import('@/components/user/adminManage/memberData.vue')
+    component: () => import('@/components/user/adminManage/memberAdminData.vue')
   },
 
     //////////////////////////////게시판////////////////////////////////////
@@ -436,11 +441,6 @@ const routes = [
     component: ()=> import('@/components/storageService/admin/storage/StorageRevise.vue')
   },
   {
-    path: "/storageAdmin/inputManager",
-    name:"InputStorageManager",
-    component: ()=> import('@/components/storageService/admin/manager/InputStorageManager.vue')
-  },
-  {
     path: "/storageView",
     name:"userStorage",
     component: ()=> import('@/views/user/UserStorageView.vue')
@@ -481,7 +481,7 @@ const routes = [
     component:()=>import('@/components/storageService/user/StorageMoveBoxDetail.vue')
   },
   {
-    path: "/myBox/moveBox/:useBoxCode/storagePay/:newStorageBoxCode",
+    path: "/myBox/moveBox/:useBoxCode/:newStorageBoxCode/storagePay",
     name: "BoxToBoxMovePay",
     component:()=>import('@/views/user/BoxToBoxMovePay.vue'),
     props: true
@@ -498,6 +498,16 @@ const routes = [
     component:()=>import('@/components/storageService/user/RepairBox.vue')
   },
   {
+    path: "/myBox/repairBox/:useBoxCode/repairPay",
+    name: "repairBoxPay",
+    component:()=>import('@/views/user/RepairBoxPay.vue')
+  },
+  {
+    path: "/storageComplete",
+    name: "storageComplete",
+    component:()=>import('@/views/user/StorageComplete.vue')
+  },
+  {
     path:'/storageManager',
     name:'storageManager',
     component: ()=> import('@/views/manager/ManagerStorage.vue'),
@@ -505,7 +515,7 @@ const routes = [
       {
         path: ":storage",
         name: "boxDetail",
-        component: ()=> import('@/components/storageService/manager/BoxModalDetail.vue')
+        component: ()=> import('@/components/storageService/manager/NotUsingInfo.vue')
       }
     ]
   },

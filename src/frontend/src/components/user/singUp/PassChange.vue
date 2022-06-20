@@ -1,4 +1,5 @@
 <template>
+  <img :src="backImg" class="backImg">
   <div id="content">
     <h3 class="join_title">
       <label for="id">비밀번호 변경</label>
@@ -12,12 +13,12 @@
                  aria-label="Recipient's username" aria-describedby="button-addon2">
     </span>
     <span class="input-group mb-3">
-          <input type="text" v-model="authPass" class="form-control" placeholder="변경 비밀번호재입력"
+          <input type="password" v-model="authPass" class="form-control" placeholder="변경 비밀번호재입력"
              aria-label="Recipient's username" aria-describedby="button-addon2">
     </span>
     <p>{{inputCheck}}</p>
     <span class="error_next_box"></span>
-    <button @click="chPass" style="float:right;">확인</button>
+    <button @click="chPass" style="float:right;" class="btnCommon">확인</button>
   </div>
 </template>
 
@@ -32,7 +33,8 @@ export default {
       currentPass:'',
       clientPass:'',
       authPass:'',
-      passCheck:false
+      passCheck:false,
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
@@ -73,54 +75,26 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
+.backImg{
+  margin-top: 1px;
+  width: 100%;
   height: 100%;
-  background-color: #E6E6FA;
-}
-#wrapper {
-  position: relative;
-  height: 100%;
+  position: absolute;
+  z-index: 1;
 }
 #content {
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 8%;
   position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  width: 460px;
-}
-/* 입력폼 */
-h3 {
-  margin: 19px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.box {
-  display: block;
-  width: 100%;
-  height: 51px;
-  border: solid 1px #dadada;
-  padding: 10px 14px;
-  box-sizing: border-box;
-  background: #fff;
-  position: relative;
-}
-.int {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 29px;
-  border: none;
-  background: #fff;
-  font-size: 15px;
-}
-.box.int_id {
-  padding-right: 110px;
-}
-.box.int_pass {
-  padding-right: 40px;
-}
-.box.int_pass_check {
-  padding-right: 40px;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+  height: 93%;
+  background: white;
+  z-index: 2;
 }
 select {
   width: 100%;
@@ -139,27 +113,19 @@ select {
   color: red;
   display: none;
 }
-#alertTxt {
-  position: absolute;
-  top: 19px;
-  right: 38px;
-  font-size: 12px;
-  color: red;
-  display: none;
+
+.btnCommon{
+  margin-left: 1%;
+  padding: 0.2%;
+  width: 100px;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  color: black;
 }
-/* 버튼 */
-.btn_area {
-  margin: 30px 0 91px;
-}
-#btnJoin {
-  width: 45%;
-  margin-left: 4%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
   color: white;
-  background-color: #52a3ef;
-  font-size: 20px;
-  font-weight: 400;
 }
 </style>

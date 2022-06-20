@@ -7,12 +7,10 @@
     <div class="storage-view">
       <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
            @click="modalViewChk(box.storageBoxCode)">
-        <div>
           <ul>
             <li>보관함 : {{ box.storageBoxName }}</li>
             <li>상태 : {{ stateString(box.storageBoxState) }}</li>
           </ul>
-        </div>
       </div>
     </div>
   </div>
@@ -22,9 +20,6 @@
     <div style="width: 100%; text-align: right">
       <button @click="close()" class="cancleBtn">X</button>
     </div>
-    <!--    <div style="width: 100%; text-align: right">-->
-    <!--      <button @click="modalView = false" class="cancleBtn">X</button>-->
-    <!--    </div>-->
     <div class="modal-body">
       <BoxModalDetail :boxCode="boxCode" @updata="getBackData()"/>
     </div>
@@ -34,7 +29,7 @@
 <script>
 import axios from "axios";
 import store from "@/store"
-import BoxModalDetail from "@/components/storageService/manager/BoxModalDetail.vue";
+import BoxModalDetail from "@/components/storageService/manager/NotUsingInfo.vue";
 
 export default {
   name: "StorageDetail",
@@ -100,15 +95,11 @@ export default {
       }
 
     },
-
   }
 }
 </script>
 
 <style lang="css" scoped>
-
-
-
 .storage-box {
   margin: 10px;
   border: solid 3px #DAA520;
@@ -117,12 +108,12 @@ export default {
 }
 
 .storage-view {
-  display: -webkit-flex;
   display: flex;
   width: 100%;
 }
 
 .storage {
+  margin-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
   border: solid 3px #42b983;

@@ -13,7 +13,12 @@ import java.util.Optional;
 
 public interface UseStorageBoxRepository extends JpaRepository<UseStorageBox, Long> {
     List<UseStorageBox> findByStorageBoxCode(StorageBox storageBox);
+
+    @Query(value = "select * from USESTORAGEBOX where STORAGE_BOX_CODE = :boxCode", nativeQuery = true)
+    List<UseStorageBox> findByBoxCode(@Param("boxCode")long boxCode);
+
     List<UseStorageBox> findByOrderCode(Orders orders);
+
     @Query(value = "select * from USESTORAGEBOX where USE_STORAGE_STATE = :state",nativeQuery = true)
     Optional<UseStorageBox> findByUseStorageState(@Param("state")String state);
 

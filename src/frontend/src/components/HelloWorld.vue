@@ -56,9 +56,12 @@ export default {
   flex-flow: row;
 }
 .main .main-event-image-bar{
+  margin-left: 25%;
+  margin-right: 25%;
   margin-top: 5%;
+  margin-bottom: 5%;
   width: 50%;
-  height: 40%;
+  height: 600px;
   display: inline-block;
   overflow: hidden;
   flex-flow: row;

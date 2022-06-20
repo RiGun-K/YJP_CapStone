@@ -12,30 +12,30 @@
       </select>
       <label for="storageName" style="margin-left: 10px">보관소이름</label>
       <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
-      style="margin-left: 10px; display: inline; width: 150px">
+             style="margin-left: 10px; display: inline; width: 150px">
       <button @click="storageSearch()" style="margin-left: 10px">검색</button>
     </div>
     <div class="bottomDiv">
       <table>
         <thead>
-          <tr>
-            <th>번호</th>
-            <th>지역</th>
-            <th >보관소명</th>
-          </tr>
+        <tr>
+          <th>번호</th>
+          <th>지역</th>
+          <th>보관소명</th>
+          <th>상태</th>
+        </tr>
         </thead>
         <tbody>
-          <tr v-for="(storage,index) in storageList" :key="index" @click="GetStorageDetail(storage.storageCode)">
-            <td>{{ index+1 }}</td>
-            <td style="width: 300px;">{{ storage.storageAddress }}</td>
-            <td>{{ storage.storageName }}</td>
-          </tr>
+        <tr v-for="(storage,index) in storageList" :key="index" @click="GetStorageDetail(storage.storageCode)">
+          <td>{{ index + 1 }}</td>
+          <td style="width: 300px;">{{ storage.storageAddress }}</td>
+          <td>{{ storage.storageName }}</td>
+          <td>{{ stateString(storage.storageState) }}</td>
+        </tr>
         </tbody>
       </table>
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -69,8 +69,16 @@ export default {
     }
   },
   methods: {
+    stateString(state) {
+      switch (state){
+        case '0':
+          return 'on'
+        case '1':
+          return  'off'
+      }
+    },
     GetStorage() {
-      axios.get('/api/getStorage')
+      axios.get('/api/getStorageAdmin')
           .then((res) => {
             this.storageList = res.data
             this.searchList = this.storageList
@@ -81,7 +89,7 @@ export default {
     },
     GetStorageDetail(storageCode) {
 
-      this.$router.push({name:'StorageRevise', params:{storageCode:storageCode}})
+      this.$router.push({name: 'StorageRevise', params: {storageCode: storageCode}})
 
       axios.get('/api/storageView/' + storageCode)
           .then((res) => {
@@ -129,8 +137,8 @@ export default {
             .then(res => {
               this.storageList = res.data
               for (let i = 0; i < this.storageList.length; i++) {
-                if(this.storageList[i].storageState == '1'){
-                  this.storageList.splice(i,1)
+                if (this.storageList[i].storageState == '1') {
+                  this.storageList.splice(i, 1)
                 }
               }
               this.searchList = this.storageList
@@ -148,7 +156,7 @@ export default {
             this.searchStorageList.push(this.searchList[i])
           }
         }
-        if (this.searchStorageList.length < 1){
+        if (this.searchStorageList.length < 1) {
           alert('검색하신 보관소은 없습니다')
           return
         }
@@ -163,17 +171,20 @@ export default {
 </script>
 
 <style scoped>
-.searchDiv{
+.searchDiv {
   margin-top: 10px;
   margin-bottom: 20px;
 }
-.bottomDiv{
+
+.bottomDiv {
   margin-top: 1%;
 }
-.renewal-box{
+
+.renewal-box {
   width: 70%;
 }
-.renewal-box h3{
+
+.renewal-box h3 {
   width: 100%;
 }
 </style>

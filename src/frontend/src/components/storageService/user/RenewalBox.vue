@@ -184,7 +184,7 @@ export default {
             console.log(res.data.result)
             if (res.data.result == 'ok') {
               alert('다음달 사용 연장 되었습니다 ')
-              this.$router.push({name: "myBox"})
+              this.$router.push({name: "storageComplete"})
             } else {
               alert('error')
             }

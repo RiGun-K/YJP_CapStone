@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <img :src="backImg" class="backImg">
+  <div class="bodyDiv">
     <table class="tableBody">
       <tr>
         <th colspan="6" class="tableHead">
@@ -15,19 +16,18 @@
         <th>삭제</th>
       </tr>
       <tr v-for="(obj, index) in viewList" :key="obj.writer_code">
-        <td>{{obj.writer_code}}</td>
-        <td  @click="toWriter(obj.writer_code)">{{obj.title}}</td>
+        <td>{{obj.boardId}}</td>
+        <td  @click="toWriter(obj.boardId)">{{obj.title}}</td>
         <td>{{obj.mid.mnick}}</td>
-        <td></td>
-        <td></td>
-        <td><button @click="deleteWriter(index)">삭제</button></td>
+        <td>{{}}</td>
+        <td>{{obj.savedTime}}</td>
+        <td><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
       </tr>
     </table>
-  </div>
-  <div class="searchDiv">
-    <input type="text" v-model="searchWord">
-    <button class="searchBtn" @click="searchTitle">검색</button>
-    <button @click="reStart" class="resetBtn">목록 초기화</button>
+    <div class="searchDiv">
+      <input type="text" v-model="searchWord">
+      <button class="searchBtn" @click="searchTitle">검색</button>
+    </div>
   </div>
 </template>
 
@@ -40,13 +40,14 @@ export default {
     return{
       writerList:[],
       viewList:[],
-      searchWord:''
+      searchWord:'',
+      backImg:require("@/assets/camp1.jpg")
     }
   },
   methods:{
     deleteWriter(index){
       axios.post("api/adminDeleteWriter",{
-        wcode:this.viewList[index].writer_code
+        wcode:this.viewList[index].boardId
       }).then((res)=>{
         if(res.data){
           alert("삭제되었습니다")
@@ -71,9 +72,6 @@ export default {
         }
       }
     },
-    reStart(){
-      this.$router.go()
-    },
     toWriter(index){
       this.$router.push("/view/"+index)
     }
@@ -92,23 +90,30 @@ export default {
 </script>
 
 <style scoped>
+.backImg{
+  margin-top: 1px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+.bodyDiv{
+  padding: 30px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  background: white;
+  width: 90%;
+  height: 93%;
+  z-index: 2;
+  position: relative;
+}
 th, td{
   border: 1px solid #111111;
 }
 tr, td{
   text-align: center;
-}
-.resetBtn{
-  float: right;
-  position: relative;
-  padding: 0.5%;
-  background: #7ea6f6;
-  color: white;
-  text-align: center;
-}
-.resetBtn:hover{
-  background: #b2e2fd;
-  color: black;
 }
 .tableHead{
 }
@@ -128,8 +133,30 @@ tr, td{
   text-align: center;
 }
 .searchBtn{
-  margin-left: 1%;
+  margin-left: 15px;
   padding: 0.2%;
   text-align: center;
+  border: black solid 3px;
+  background: white;
+  width: 60px;
+  color: black;
+}
+.searchBtn:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
+}
+.btnCommon{
+  padding: 0.2%;
+  text-align: center;
+  border: black solid 3px;
+  background: white;
+  width: 50px;
+  color: black;
+}
+.btnCommon:hover{
+  border: red solid 3px;
+  background: black;
+  color: white;
 }
 </style>

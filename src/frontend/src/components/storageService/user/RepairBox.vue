@@ -24,7 +24,7 @@
               <tr>
                 <td>{{ item.memEquipmentName }}</td>
                 <td>{{ item.memEquipmentCount }}</td>
-                <td><input type="checkbox" :value="item.memEquipmentCode" v-model="repairList"></td>
+                <td><input type="checkbox" :value="item" v-model="repairList"></td>
               </tr>
             </tbody>
           </table>
@@ -35,15 +35,25 @@
   <div>
     <h5>수리 맡길 장비 기본 사항 선택+ 기타(직접입력)</h5>
     <div>
-      <input type="checkbox" v-model="requestList" value="건조">건조 <br>
-      <input type="checkbox" v-model="requestList" value="세탁">세탁 <br>
-      <input type="checkbox" v-model="requestList" value="폴대 수리">폴대 수리 <br>
-      <input type="checkbox" v-model="reqGita" value="기타">기타 <br>
-      <input type="text" v-model="gitaRepair" placeholder="입력하세요" >
+      <table>
+        <tbody>
+        <tr v-for="re in reList">
+          <td>{{re.buyName}}</td>
+          <td>{{re.buyEx}}</td>
+          <td><input  type="checkbox" v-model="requestList" :value="re"></td>
+        </tr>
+        <td>기타</td>
+        <td></td>
+        <td><input type="checkbox" v-model="reqGita" value="기타"></td>
+        </tbody>
+      </table>
+      <textarea v-model="gitaRepair" />
     </div>
   </div>
   <div>
-    <button>다음</button>
+    <button @click="$router.push({name:'myBox'})">취소</button>
+    <button @click="payPage()">다음</button>
+
   </div>
 </template>
 
@@ -59,20 +69,15 @@ export default {
       myItemList: [],
       repairList: [],
       requestList:[],
-      reqGita:'',
+      reqGita:false,
       gitaRepair:'',
+      reList:{},
     }
   },
   mounted() {
     this.getBackData(this.$route.params.useBoxCode)
     this.getBoxData(this.$route.params.useBoxCode)
-  },
-  watch:{
-    reqGita:function (){
-      if (this.reqGita.length>0){
-
-      }
-    }
+    this.getRepairList()
   },
   methods: {
     getBoxData(useCode){
@@ -96,7 +101,26 @@ export default {
             console.log(err)
           })
     },
-
+    getRepairList(){
+      axios.get("/api/repairItemList")
+          .then(res => {
+            console.log(res.data)
+            this.reList = res.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    payPage(){
+      let item = {}
+      item.repairList = this.repairList
+      item.requestList = this.requestList
+      if(this.reqGita){
+        item.gitaRepair = this.gitaRepair
+      }
+      this.$store.commit('careItemInfo',item)
+      this.$router.push({name:'repairBoxPay'})
+    }
   },
 }
 </script>
