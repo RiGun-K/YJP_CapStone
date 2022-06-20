@@ -16,6 +16,8 @@ import com.example.capstone.repository.Storage.*;
 import com.example.capstone.repository.orders.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.example.capstone.domain.order.*;
+import com.example.capstone.repository.orders.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -56,6 +58,9 @@ public class UseStorageController {
 
     @Autowired
     MenuBuyRepository menuBuyRepository;
+
+    @Autowired
+    OrderMenuRepository orderMenuRepository;
 
     //보관함 연장 결제
     @PostMapping("/renewalPay")
@@ -101,7 +106,7 @@ public class UseStorageController {
 
     //보관함 계약 해지
     @PostMapping("/closeBox/{useBoxCode}")
-    public Result closeBox(@PathVariable(value = "useBoxCode")long useBoxCode) {
+    public Result closeBox(@PathVariable(value = "useBoxCode") long useBoxCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
         long boxCode = useStorageBox.get().getStorageBoxCode().getStorageBoxCode();
         Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
@@ -161,6 +166,7 @@ public class UseStorageController {
         return new Result("ok");
 
     }
+
     // 보관함 장소 이동
     @PostMapping("roundMoveBox")
     private Result roundMovePay(@RequestBody RoundMove roundMove) {
@@ -177,7 +183,7 @@ public class UseStorageController {
 
             Orders orderList = new Orders(member.get());
             orderList.setDeliveryZipcode(roundMove.getZipCode());
-            orderList.setDeliveryAddress(roundMove.getAddress()+roundMove.getDetailAddress());
+            orderList.setDeliveryAddress(roundMove.getAddress() + roundMove.getDetailAddress());
             ordersRepository.save(orderList);
 
             return new Result("ok");
@@ -191,21 +197,21 @@ public class UseStorageController {
 
     //    사용중인 보관함 시간 조회
     @GetMapping("findUseBoxTimes/{stCode}/{boxCode}/{mid}")
-    public LocalDateTime[][] findUseBoxTimes(@PathVariable(value = "stCode")long stCode,
-                                             @PathVariable(value = "boxCode")long boxCode,
-                                             @PathVariable(value = "mid")String mid) throws ParseException {
+    public LocalDateTime[][] findUseBoxTimes(@PathVariable(value = "stCode") long stCode,
+                                             @PathVariable(value = "boxCode") long boxCode,
+                                             @PathVariable(value = "mid") String mid) throws ParseException {
         Optional<Member> member = memberRepository.findByMID(mid);
 
-        List<List<String>> useStorageBoxList = useStorageBoxRepository.findByUseTimes(stCode,boxCode, member.get().getMCode());
+        List<List<String>> useStorageBoxList = useStorageBoxRepository.findByUseTimes(stCode, boxCode, member.get().getMCode());
 
         int x = useStorageBoxList.size();
         int y = 0;
         for (int i = 0; i < useStorageBoxList.size(); i++) {
             for (int j = 0; j < useStorageBoxList.get(i).size(); j++) {
-                if (i == 0){
+                if (i == 0) {
                     y = useStorageBoxList.get(i).size();
                 }
-                if (i>0 && useStorageBoxList.get(i).size() > useStorageBoxList.get(i-1).size()){
+                if (i > 0 && useStorageBoxList.get(i).size() > useStorageBoxList.get(i - 1).size()) {
                     y = useStorageBoxList.get(i).size();
                 }
             }
@@ -277,7 +283,7 @@ public class UseStorageController {
 
     //  보관소 보관소 이동 시작 -> 이동중으로 변경
     @GetMapping("moveStateUpdate/{beforeBox}/{afterBox}")
-    private Result moveStateUpdate(@PathVariable(value = "beforeBox")long beforeBox,@PathVariable(value = "afterBox")long afterBox ){
+    private Result moveStateUpdate(@PathVariable(value = "beforeBox") long beforeBox, @PathVariable(value = "afterBox") long afterBox) {
         Optional<UseStorageBox> beforeUSBox = useStorageBoxRepository.findById(beforeBox);
         Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
         List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUSBox.get());
@@ -305,7 +311,7 @@ public class UseStorageController {
 
     // 보관소 이동 도착
     @GetMapping("endmoveUpdate/{afterBox}")
-    private Result endmoveUpdate(@PathVariable(value = "afterBox")long afterBox ){
+    private Result endmoveUpdate(@PathVariable(value = "afterBox") long afterBox) {
         Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
 
         afterUSBox.get().setUseStorageState("2");
@@ -321,7 +327,7 @@ public class UseStorageController {
 
     // 내가 사용중인 보관함 조회
     @GetMapping("getUseBox/{useBoxCode}")
-    private UseStorageBox getUseBox(@PathVariable(value = "useBoxCode")long useBoxCode){
+    private UseStorageBox getUseBox(@PathVariable(value = "useBoxCode") long useBoxCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
 
         return useStorageBox.get();
@@ -340,33 +346,37 @@ public class UseStorageController {
     ////////////////////////// 수리상품 조회 ////////////////////////
 
     @GetMapping("repairItemList")
-    private List<MenuBuy> getRepairList(){
+    private List<MenuBuy> getRepairList() {
         List<MenuBuy> menuBuyList = menuBuyRepository.findByRepairList();
         return menuBuyList;
     }
+
     @GetMapping("PickRepairList/{kindId}")
-    private List<MenuBuy> getPickRepairList(@PathVariable(value = "kindId")int kindId){
+    private List<MenuBuy> getPickRepairList(@PathVariable(value = "kindId") int kindId) {
         List<MenuBuy> menuBuyList = menuBuyRepository.findBykindId(kindId);
         return menuBuyList;
     }
 
     @GetMapping("searchRepairList/{searchText}/{groupKindId}")
-    private List<MenuBuy> getSearchRepairList(@PathVariable(value = "searchText")String search,
-                                              @PathVariable(value = "groupKindId")int kindId){
+    private List<MenuBuy> getSearchRepairList(@PathVariable(value = "searchText") String search,
+                                              @PathVariable(value = "groupKindId") int kindId) {
 
         List<MenuBuy> menuBuyList;
-        if (kindId==0){
+        if (kindId == 0) {
             menuBuyList = menuBuyRepository.findBySearchName(search);
-        }else{
+        } else {
             menuBuyList = menuBuyRepository.findByNameAndKindid(search, kindId);
         }
-        if (menuBuyList.isEmpty()){
+        if (menuBuyList.isEmpty()) {
             return null;
         }
         return menuBuyList;
-//    장비수리 신청 결제
+
+    }
+
+    //    장비수리 신청 결제
     @PostMapping("postCarePay")
-    private Result postCarePay(@RequestBody CareListPayDTO care){
+    private Result postCarePay(@RequestBody CareListPayDTO care) {
         Optional<Member> member = memberRepository.findByMID(care.getMid());
         Member member1 = member.get();
         Orders orders = new Orders();
