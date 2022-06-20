@@ -5,6 +5,7 @@ import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.domain.Plan.TeamMember;
 import com.example.capstone.dto.plan.PlanDto;
+import com.example.capstone.dto.plan.TeamMemberDto;
 import com.example.capstone.repository.Plan.TeamRepository;
 import com.example.capstone.service.PlanService;
 import com.example.capstone.service.TeamMemberService;
@@ -94,6 +95,17 @@ public class TeamManagementApiController {
     @DeleteMapping("api/deletePlan")
     public void deletePlan(@RequestParam Long planCode){
         planService.deletePlan(planCode);
+    }
+
+    @DeleteMapping("api/banishment")
+    public void banishment(@RequestParam Long teamMemberCode){
+        teamMemberService.banishment(teamMemberCode);
+    }
+
+    @PutMapping("api/changeManager")
+    public void changeManager(@RequestBody TeamMemberDto teamMemberDto){
+        teamMemberService.changeManager(teamMemberDto);
+
     }
 
 }

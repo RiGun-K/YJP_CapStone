@@ -1,109 +1,178 @@
 <template>
-	<h2>일정작성</h2>
-	<h2>
-		{{ this.$store.state.planCode.planTotalDate - 1 }}박{{
-			this.$store.state.planCode.planTotalDate
-		}}일
-	</h2>
+	<!-- 커핏됐나요? -->
+	<div class="back">
+		<div class="sidebar" :style="{ width: sidebarWidth }">
+			<h2>
+				<span v-if="collapsed">
+					<div>C</div>
+				</span>
+				<span v-else>체크리스트</span>
+			</h2>
+			<div>
+				<button
+					v-for="(value, index) in allCheckList"
+					:key="index"
+					title="더블클릭하면 삭제됩니다"
+					:class="[
+						{ color_n: value.checkState == 'n' },
+						{ color_y: value.checkState == 'y' },
+					]"
+					@click="updateState(index)"
+					@dblclick="deleteChecklist(value)"
+				>
+					{{ value.checkContent }}
+				</button>
+			</div>
+			<span
+				class="collapse-icon"
+				:class="{ 'rotate-180': collapsed }"
+				@click="toggleSidebar"
+			>
+				<i class="fas fa-angle-double-left"> 〈〈 </i>
+			</span>
+		</div>
+		<h1>
+			{{ this.$store.state.planCode.address }}
+			<h4>{{ this.$store.state.planCode.detailAddress }}</h4>
+		</h1>
 
-	<div v-for="index in this.$store.state.planCode.planTotalDate" :key="index">
-		<button @click="datesButton(index)">{{ index }}</button>일차
-		<br />
-	</div>
-	<div>
-		<button
-			v-for="(value, index) in allCheckList"
-			:key="index"
-			:class="[
-				{ color_n: value.checkState == 'n' },
-				{ color_y: value.checkState == 'y' },
-			]"
-			@click="updateState(value, $event)"
-			@dblclick="deleteChecklist(value)"
-		>
-			{{ value.checkContent }}
-		</button>
-	</div>
-
-	<hr />
-	<h1>{{ dateIndex }}일차 계획</h1>
-	시작
-	<input type="time" v-model="detailStart" /><br />
-	종료
-	<input type="time" v-model="detailEnd" />
-	<br />
-	Name<input
-		type="text"
-		v-model="detailName"
-		placeholder="일정 이름을 입력하세요"
-	/>
-	<br />
-
-	Memo<input
-		type="text"
-		v-model="detailMemo"
-		placeholder="메모를 입력하세요"
-	/>
-	<br />
-
-	<div v-for="(value, index) in showChecklist" :key="index">
-		<h2>{{ value }}</h2>
-	</div>
-	<button @click="insert">삽입</button>
-	<hr />
-
-	<div>
-		<table border="1" bordercolor="blue" align="center">
-			<th bgcolor="skybule">{{ dateIndex }}일차</th>
-			<th>시작</th>
-			<th>종료</th>
-			<th>이름</th>
-			<th>메모</th>
-			<th>체크리스트</th>
-			<tr v-for="(value, index) in detailPlanOfDayList" :key="index">
-				<td></td>
-				<td>{{ value.detailStart }}</td>
-				<td>{{ value.detailEnd }}</td>
-				<td>{{ value.detailName }}</td>
-				<td>{{ value.detailMemo }}</td>
-				<td>
-					<div>
-						<button
-							v-for="(value1, index) in value.checklists"
-							:key="index"
-							title="더블클릭하면 삭제됩니다"
-							:class="[
-								{ color_n: value1.checkState == 'n' },
-								{ color_y: value1.checkState == 'y' },
-							]"
-							@click="updateState(value1, $event)"
-							@dblclick="deleteChecklist(value1)"
-						>
-							{{ value1.checkContent }}
-						</button>
-					</div>
-				</td>
-				<td>
-					<button @click="insertChecklist(value.detailCode)">
-						checkList
+		<h2>
+			{{ this.$store.state.planCode.planTotalDate - 1 }}박{{
+				this.$store.state.planCode.planTotalDate
+			}}일
+		</h2>
+		<div class="frame">
+			<div class="dateWrap">
+				<div
+					class="dates"
+					v-for="index in this.$store.state.planCode.planTotalDate"
+					:key="index"
+				>
+					<button
+						class="w-btn w-btn-blue"
+						@click="datesButton(index)"
+					>
+						{{ index }}일차
 					</button>
-					<button @click="deleteDetailPlan(value)">일정 삭제</button>
-				</td>
-			</tr>
-		</table>
+				</div>
+			</div>
+			<hr />
 
-		<div>
-			<button @click="savePlan">플랜저장</button>
+			<div class="detailPlan">
+				<h1>{{ dateIndex }}일차 계획</h1>
+				<p>시작 <input type="time" v-model="detailStart" /><br /></p>
+				<p>종료<input type="time" v-model="detailEnd" /></p>
+				<p>
+					Name
+					<input
+						type="text"
+						v-model="detailName"
+						placeholder="일정 이름을 입력하세요"
+					/>
+				</p>
+
+				Memo<input
+					type="text"
+					v-model="detailMemo"
+					placeholder="메모를 입력하세요"
+				/>
+				<div v-for="(value, index) in showChecklist" :key="index">
+					<h2>{{ value }}</h2>
+				</div>
+				<button class="noBorder" @click="insert">삽입</button>
+			</div>
+			<br />
+			<hr />
+
+			<div class="planTable">
+				<table align="center">
+					<thead>
+						<th bgcolor="skybule">{{ dateIndex }}일차</th>
+						<th>시작</th>
+						<th>종료</th>
+						<th>이름</th>
+						<th>메모</th>
+						<th colspan="2">체크리스트</th>
+					</thead>
+					<tr
+						v-for="(value, index) in detailPlanOfDayList"
+						:key="index"
+					>
+						<td></td>
+						<td>{{ value.detailStart }}</td>
+						<td>{{ value.detailEnd }}</td>
+						<td>{{ value.detailName }}</td>
+						<td>{{ value.detailMemo }}</td>
+						<td>
+							<span
+								v-for="(value1, index) in allCheckList"
+								:key="index"
+							>
+								<button
+									v-if="value1.detailCode == value.detailCode"
+									title="더블클릭하면 삭제됩니다"
+									:class="[
+										{ color_n: value1.checkState == 'n' },
+										{ color_y: value1.checkState == 'y' },
+									]"
+									@click="updateState(index)"
+									@dblclick="deleteChecklist(value1)"
+								>
+									{{ value1.checkContent }}
+								</button>
+							</span>
+						</td>
+						<td>
+							<div class="twoBtn">
+								<button
+									@click="insertChecklist(value.detailCode)"
+								>
+									checkList
+								</button>
+								<button @click="deleteDetailPlan(value)">
+									일정 삭제
+								</button>
+							</div>
+						</td>
+					</tr>
+					<tr class="a">
+						<td style="border-bottom: none" colspan="7">
+							<button
+								class="w-btn-outline w-btn-red-outline"
+								@click="savePlan"
+							>
+								플랜저장
+							</button>
+							<button
+								class="w-btn-outline w-btn-red-outline"
+								@click="editPlan"
+							>
+								플랜수정
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
+import {
+	collapsed,
+	toggleSidebar,
+	sidebarWidth,
+} from '@/components/cart/Sidebar/state';
+import SidebarLink from '@/components/cart/Sidebar/SidebarLink';
 export default {
+	components: { SidebarLink },
+	setup() {
+		return { collapsed, toggleSidebar, sidebarWidth };
+	},
 	created() {
 		this.loadDetailPlanOfDay(1);
-		// this.loadAllCheckList();
+		this.loadAllCheckList();
 	},
 	data() {
 		return {
@@ -122,6 +191,15 @@ export default {
 			planCode: '',
 			allCheckList: [],
 		};
+	},
+	watch: {
+		allCheckList: {
+			deep: true,
+			handler() {
+				this.colorSetting();
+				console.log(this.allCheckList);
+			},
+		},
 	},
 	mounted() {},
 	methods: {
@@ -142,31 +220,33 @@ export default {
 			}
 		},
 		loadAllCheckList: function () {
+			this.allCheckList.length = 0;
 			const url = 'api/loadAllCheckList';
 			axios
 				.get(url, {
 					params: { planCode: this.$store.state.planCode.planCode },
 				})
 				.then((response) => {
+					console.log(response);
 					response.data.map((item) => {
+						console.log(item);
 						this.allCheckList.push(item);
-						console.log(this.allCheckList);
 					});
 				})
 				.catch((error) => {});
+			this.colorSetting();
 		},
 		colorSetting: function () {
 			let a = document.body.getElementsByClassName('checkList');
 			Array.from(a).forEach(function (ele) {
-				console.log('hi there');
 				if (ele.checkState === 'n') {
 					ele.style =
-						'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
+						'background-color: rgba(80, 80, 80, 80) ; color: skyblue;border:none; border-radius: 20px;';
 				} else {
-					ele.style = 'color: white; background-color: skyblue;';
+					ele.style =
+						'color: white; background-color: skyblue; border:none; border-radius: 20px;';
 				}
 			});
-			console.log(a);
 		},
 		deleteChecklist: function (checkListCode) {
 			const url = '/api/deleteChecklist';
@@ -178,21 +258,16 @@ export default {
 				.catch((error) => {});
 		},
 
-		updateState(checkListCode, event) {
-			console.log(event.target);
-			this.test = checkListCode;
+		updateState(index) {
+			const temp = this.allCheckList[index].detailCode;
+			delete this.allCheckList[index].detailCode;
 			const url = '/api/updateState';
 			axios
-				.put(url, checkListCode)
+				.put(url, this.allCheckList[index])
 				.then((response) => {
+					console.log(response);
+					this.allCheckList[index] = response.data;
 					console.log(response.data);
-					if (response.data.checkState === 'n') {
-						event.target.style =
-							'background-color: rgba(0, 0, 0, 0) ; color: skyblue;';
-					} else {
-						event.target.style =
-							'color: white; background-color: skyblue;';
-					}
 				})
 				.catch((error) => {
 					console.log(error);
@@ -214,9 +289,7 @@ export default {
 				})
 				.then((response) => {
 					response.data.map((item) => {
-						console.log(item.checklists);
 						this.detailPlanOfDayList.push(item);
-						return console.log(item);
 					});
 				});
 			this.colorSetting();
@@ -233,7 +306,7 @@ export default {
 					checkContent: checkContent,
 				})
 				.then((response) => {
-					console.log('성공');
+					this.loadAllCheckList();
 					this.loadDetailPlanOfDay(this.dateIndex);
 				})
 				.catch((error) => {
@@ -263,26 +336,214 @@ export default {
 		savePlan: function () {
 			this.$router.push({ name: 'teamMember' });
 		},
+		editPlan: function () {
+			this.$router.push({ name: 'editBasicPlan' });
+			console.log(this.$store.state.planCode);
+		},
 	},
 };
 </script>
 
 <style>
 .color_n {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: rgba(224, 76, 76, 0);
 	color: skyblue;
+	border-radius: 4px;
+	margin: 5px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	max-width: 100px;
+	min-width: 80px;
+	transition: 0.1s;
+	overflow: hidden;
+
+	height: 40px;
 }
 .color_y {
 	color: white;
 	background-color: skyblue;
+	border-radius: 4px;
+	margin: 5px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
+	max-width: 100px;
+	min-width: 80px;
+	height: 40px;
+}
+.color_n:hover {
+	transform: scale(1.2);
+	overflow: visible;
+	border-radius: 14px;
+}
+.color_y:hover {
+	transform: scale(1.2);
+	overflow: visible;
+	border-radius: 14px;
 }
 .checkList {
 }
-table,
-th {
-	border: 3px solid black;
-}
 td {
-	border: 2px solid black;
+	border-top: 1px solid black;
+	height: 90px;
+}
+:root {
+	--sidebar-bg-color: #e6f4ff;
+	--sidebar-item-hover: #b2e2fd;
+}
+</style>
+
+<style scoped>
+.frame {
+	display: flex;
+	background-color: rgb(247, 246, 230);
+	align-content: stretch;
+	width: 70%;
+	height: 100%;
+	flex-wrap: wrap;
+	padding-bottom: auto;
+	margin: auto;
+	border-radius: 20px;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+.twoBtn {
+	background-size: 80px;
+}
+.sidebar {
+	color: black;
+	background-color: var(--sidebar-bg-color);
+	float: left;
+	z-index: 1;
+	height: auto;
+	left: 0;
+	bottom: 0;
+	padding-bottom: 50%;
+	margin-right: 3%;
+	transition: 0.3s ease;
+	display: flex;
+	flex-direction: column;
+}
+.sidebar h5 {
+	margin-left: 10%;
+	margin-top: 15%;
+	margin-bottom: 3%;
+}
+.sidebar-link {
+	color: black;
+}
+.collapse-icon {
+	position: absolute;
+	top: 80%;
+	padding: 0.75em;
+	color: black;
+	transition: 0.2s linear;
+}
+.rotate-180 {
+	transform: rotate(180deg);
+	transition: 0.2s linear;
+}
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	border-radius: 5px;
+	text-align: center;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+	margin-left: 10px;
+	margin-right: 5px;
+	width: 60px;
+	height: 60px;
+}
+.w-btn-blue {
+	background-color: #6aafe6;
+	color: #d4dfe6;
+}
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn:active {
+	transform: scale(1.5);
+}
+.dates {
+	display: inline-block;
+	float: left;
+	padding-bottom: 30px;
+}
+.dateWrap {
+	display: block;
+	width: 100%;
+}
+.detailPlan {
+	display: block;
+	width: 100%;
+}
+.planTable {
+	padding-top: 30px;
+	margin: auto;
+	display: block;
+	width: 90%;
+}
+.buttonDiv {
+	background: red;
+}
+.buttonDiv button {
+	float: right;
+}
+.detailPlan input {
+	border-radius: 7px;
+}
+
+.w-btn-outline {
+	padding: 10px 20px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+.w-btn-red-outline {
+	border: 3px solid #ff5f2e;
+	color: #6e6e6e;
+}
+.w-btn-red-outline:hover {
+	background-color: #ff5f2e;
+	color: #e1eef6;
+}
+.w-btn-outline:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+.noBorder {
+	background-color: rgba(0, 0, 0, 0);
+	margin-left: 15px;
+	border: none;
+	font-weight: 800;
+}
+button {
+	border: none;
+}
+.back {
+	text-align: center;
+	background-image: url(@/assets/campwall2.webp);
+	background-size: 100%;
+	background-repeat: repeat-y;
+	padding-bottom: 50px;
+	height: 100%;
+}
+.a {
+	border: none;
+}
+.a button {
+	margin-left: 20px;
 }
 </style>

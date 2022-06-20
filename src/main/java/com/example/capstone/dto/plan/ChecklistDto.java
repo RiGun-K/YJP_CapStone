@@ -1,22 +1,19 @@
 package com.example.capstone.dto.plan;
 
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChecklistDto {
-
-
-    private Long teamCode;
-
-    private String teamName;
-
-    private char teamState;
-
-
-    private String teamMaster;
-
-    private List<ChecklistDto> checkList = new ArrayList<>();
-
-
+    private Long checklistCode;
+    private char checkState;
+    private String checkContent;
+    private Long detailCode;
 
 }

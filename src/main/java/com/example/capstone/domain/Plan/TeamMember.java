@@ -28,7 +28,7 @@ public class TeamMember {
     private Team teamCode;
 
     @Column
-    private char teamMemberAuthority;
+    private char teamMemberAuthority='n';
     @Column
     private String acception="n";
 }

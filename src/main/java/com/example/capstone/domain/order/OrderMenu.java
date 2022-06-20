@@ -28,7 +28,7 @@ public class OrderMenu {
     @JoinColumn(name = "menuBuyId")
     private MenuBuy menuBuy;
 
-    @JsonBackReference
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "campingId")
     private Camping camping;

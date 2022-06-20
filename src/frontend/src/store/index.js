@@ -17,12 +17,13 @@ export default createStore({
 		loginedTeamCode: '',
 		storage: {},
 		timeStorage: {},
-		itemStorage:[],
-		infoStorage:{},
+		itemStorage: [],
+		infoStorage: {},
 		CampingIdOfRooms: '',
 		member: '',
-		moveBoxInfo:{},
-		careItemInfo:[],
+		moveBoxInfo: {},
+		myReservation: '',
+		camping: '',
 	},
 	getters: {
 		getLoginState(state) {
@@ -33,6 +34,9 @@ export default createStore({
 		},
 	},
 	mutations: {
+		setMyReservation(state, myReservation) {
+			state.myReservation = myReservation;
+		},
 		setLoginState(state, loginState, stateCode, mcode) {
 			state.loginState = loginState;
 			state.stateCode = stateCode;
@@ -42,6 +46,9 @@ export default createStore({
 			state.loginState = null;
 			state.stateCode = null;
 			state.mcode = null;
+		},
+		setCamping(state, camping) {
+			state.camping = camping;
 		},
 		updateTeamList(state, teamMember) {
 			state.teamList.push(teamMember);
@@ -91,20 +98,8 @@ export default createStore({
 		setCampingIdState(state, CampingIdOfRooms) {
 			state.CampingIdOfRooms = CampingIdOfRooms;
 		},
-		moveBoxInfo(state, box){
-			console.log(box)
+		moveBoxInfo(state, box) {
 			state.moveBoxInfo = box;
-		},
-		clearMoveBoxInfo(state){
-			state.moveBoxInfo = {};
-		},
-		careItemInfo(state, item){
-			console.log('item')
-			console.log(item)
-			state.careItemInfo = item;
-		},
-		clearCareItem(state){
-			state.careItemInfo = {};
 		},
 	},
 	actions: {},
