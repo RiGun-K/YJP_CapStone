@@ -552,7 +552,7 @@ const routes = [
 				name: 'boxDetail',
 				component: () =>
 					import(
-						'@/components/storageService/manager/BoxModalDetail.vue'
+						'@/components/storageService/manager/NotUsingInfo.vue'
 					),
 			},
 		],
