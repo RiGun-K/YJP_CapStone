@@ -2,6 +2,7 @@ package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
 import com.example.capstone.domain.storage.MemberEquipment;
 import com.example.capstone.domain.storage.Storage;
@@ -404,4 +405,6 @@ public class UseStorageController {
         }
         return new Result("ok");
     }
+  
 }
+
