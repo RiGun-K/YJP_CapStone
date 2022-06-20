@@ -6,11 +6,6 @@
 			<div class="contents">
 				<div class="date">
 					<p>* 날짜선택: &nbsp;</p>
-					<!-- <p>
-					{{ this.$store.state.diff - 1 }}박{{
-						this.$store.state.diff
-					}}일
-				</p> -->
 					<Datepicker
 						class="datePicker"
 						v-model="shareDate"
