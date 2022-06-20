@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@toast-ui/editor": "^3.1.7",
+    "@toast-ui/editor-plugin-code-syntax-highlight": "^3.0.0",
+    "@toast-ui/vue-editor": "^3.1.7"
+  }
+}
