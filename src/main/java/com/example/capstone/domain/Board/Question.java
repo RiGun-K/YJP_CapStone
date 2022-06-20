@@ -28,6 +28,8 @@ public class Question {
     @Column()
     private String filePath;
 
+    @Column
+    private Integer boardViews = 0;
     @CreatedDate
     private String q_savedTime;
 
@@ -39,12 +41,13 @@ public class Question {
 
     }
 
-    public Question(String q_title, String q_content, String origFilename, String filePath, String filename,  String q_savedTime, Member MID) {
+    public Question(String q_title, String q_content, String origFilename, String filePath, String filename, Integer boardViews, String q_savedTime, Member MID) {
         this.q_title = q_title;
         this.q_content = q_content;
         this.origFilename = origFilename;
         this.filePath = filePath;
         this.filename = filename;
+        this.boardViews = boardViews;
         this.q_savedTime = q_savedTime;
         this.MID = MID;
     }

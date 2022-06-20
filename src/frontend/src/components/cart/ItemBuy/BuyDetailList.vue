@@ -26,6 +26,9 @@
       </div>
     </div>
   </div>
+      </div>
+    </b-card-text>
+  </div>
 
   <div class="mt-4">
 

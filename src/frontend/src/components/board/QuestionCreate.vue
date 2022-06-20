@@ -83,7 +83,7 @@ export default {
 
       if(!this.title) {
         alert("제목을 입력해 주세요");
-        this.$refs.q_title.focus();
+        this.$refs.title.focus();
         return;
       }
       this.$router.go(-1)

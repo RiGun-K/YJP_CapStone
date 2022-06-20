@@ -484,11 +484,6 @@ export default {
         }
       })
     },
-<<<<<<< yeahjin
-=======
-
-
->>>>>>> master
   }
 }
 </script>

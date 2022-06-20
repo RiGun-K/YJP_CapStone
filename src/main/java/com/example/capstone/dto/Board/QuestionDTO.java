@@ -13,6 +13,7 @@ public class QuestionDTO {
     private String origFilename;
     private String filename;
     private String filePath;
+    private Integer boardViews = 0;
     private String q_savedTime;
 
     private String mid;

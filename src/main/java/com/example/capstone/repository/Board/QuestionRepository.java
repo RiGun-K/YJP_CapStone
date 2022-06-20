@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface QuestionRepository extends JpaRepository<Board, Long> {
+public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query(value = "SELECT * FROM Question q WHERE q.TITLE IS NOT NULL", nativeQuery = true)
-    public List<Question> findByAllList();
+    @Query(value = "SELECT * FROM Question q WHERE q.Q_TITLE IS NOT NULL", nativeQuery = true)
+    List<Question> findByAllList();
 }
