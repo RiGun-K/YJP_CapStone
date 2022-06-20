@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-if="stateCheck">
-      <h5>{{boxName}}</h5>
+      <h5>{{ boxName }}</h5>
       <div>
         이동 금액
         +
@@ -39,6 +39,13 @@ export default {
   //eslint-disable-next-line
   name: "StorageMoveBoxDetail",
   created() {
+    axios.get('/api/boxPrice/' + this.$store.state.moveBoxInfo.boxCode)
+        .then(res => {
+          this.beforeBoxPrice = res.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
   },
   mounted() {
     axios.get('/api/storageView/' + this.$route.params.storageCode)
@@ -55,19 +62,20 @@ export default {
     return {
       boxList: [],
       name: '',
-      boxCode:'',
-      boxName:'',
-      price:'',
-      stateCheck:false,
+      boxCode: '',
+      boxName: '',
+      price: '',
+      stateCheck: false,
       boxArray: {},
+      beforeBoxPrice: '',
     }
   },
-  watch:{
-    boxCode:function (newBoxCode){
+  watch: {
+    boxCode: function (newBoxCode) {
       this.boxPrice(newBoxCode)
     }
   },
-  methods:{
+  methods: {
     boxArrayR() {
       let arrayone = {}
       let k = 0;
@@ -81,35 +89,42 @@ export default {
         }
       }
     },
-    boxPrice(newBoxCode){
-      axios.get('/api/boxPrice/'+newBoxCode)
-          .then(res=>{
+    boxPrice(newBoxCode) {
+      axios.get('/api/boxPrice/' + newBoxCode)
+          .then(res => {
             this.price = res.data
+            if (this.price < this.beforeBoxPrice) {
+              this.stateCheck = false
+            }else if(this.price == this.beforeBoxPrice){
+              this.price = 5000
+            }else{
+              this.price = 5000 + this.price - this.beforeBoxPrice
+            }
           })
     },
-    nextTab(box){
+    nextTab(box) {
       let code = box.storageBoxCode
       let name = box.storageBoxName
       let state = box.storageBoxState
-      if(state == '0'){
+      if (state == '0') {
         this.stateCheck = true
         this.boxCode = code
         this.boxName = name
-      }else {
+      } else {
         this.stateCheck = false
       }
 
     },
-    backPage(){
-      this.$router.push({name:'moveBox'})
+    backPage() {
+      this.$router.push({name: 'moveBox'})
     },
-    pay(){
+    pay() {
       this.$router.push({
-            name:"BoxToBoxMovePay",
-            params:{
-              newStorageBoxCode:this.boxCode
-            }
-          })
+        name: "BoxToBoxMovePay",
+        params: {
+          newStorageBoxCode: this.boxCode
+        }
+      })
 
     }
   }

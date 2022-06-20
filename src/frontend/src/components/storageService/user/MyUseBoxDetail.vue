@@ -3,10 +3,10 @@
     <button @click="close()">X</button>
     <div>
       <div>
-        <button class="mystoragebox-re" v-if="detailUseState==2" @click="moveBox(pickUseBox)">장비 이동</button>
-        <button class="mystoragebox-re" v-if="detailUseState==2 && myItem.length > 0" @click="repairBox(pickUseBox)">장비 수리</button>
+        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="moveBox(pickUseBox)">장비 이동</button>
+        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="repairBox(pickUseBox)">장비 수리</button>
         <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
-        <button class="mystoragebox-re" v-if="detailUseState==2" @click="closeBox(pickUseBox)">해지</button>
+        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>
       </div>
       <div>
         <table>
@@ -93,6 +93,7 @@
             <tr>
               <th colspan="2">장비</th>
               <th>수량</th>
+              <th>상태</th>
               <th>선택
                 <button @click="outItem()">빼내기</button>
               </th>
@@ -103,6 +104,7 @@
               <td>{{ index + 1 }}</td>
               <td>{{ item.memEquipmentName }}</td>
               <td>{{ item.memEquipmentCount }}</td>
+              <td>{{ stateCheck(item.memEquipmentState)}}</td>
               <td><input type="checkbox" :value="item.memEquipmentCode" v-model="outBoxItem"></td>
             </tr>
             </tbody>
@@ -152,12 +154,20 @@ export default {
     this.detailBox(this.useData)
     },
   methods:{
+    stateCheck(sCode) {
+      switch (sCode) {
+        case "1":
+          return "정상"
+        case "2":
+          return "수리중"
+        default:
+          return "비정상"
+      }
+    },
     close() {
       this.$emit('close')
     },
     detailBox(us) {
-      console.log('us')
-      console.log(us)
       this.moveInfo = false
       this.pickUseBox = us.useCode
       this.detailUseState = us.useState
