@@ -546,16 +546,6 @@ const routes = [
 		path: '/storageManager',
 		name: 'storageManager',
 		component: () => import('@/views/manager/ManagerStorage.vue'),
-		children: [
-			{
-				path: ':storage',
-				name: 'boxDetail',
-				component: () =>
-					import(
-						'@/components/storageService/manager/NotUsingInfo.vue'
-					),
-			},
-		],
 	},
 
 	//////////////계획관리//////////////////////
