@@ -33,8 +33,6 @@ public class Storage {  // 보관소
     @Column
     private String storageState = "1";
     @Column
-    private String origFilename;
-    @Column
     private String filename;
     @Column
     private String filePath;
@@ -138,13 +136,6 @@ public class Storage {  // 보관소
         this.storageBoxes = storageBoxes;
     }
 
-    public String getOrigFilename() {
-        return origFilename;
-    }
-
-    public void setOrigFilename(String origFilename) {
-        this.origFilename = origFilename;
-    }
 
     public String getFilename() {
         return filename;
