@@ -2,7 +2,7 @@
   <div class="header-info">
     <header>
       <h1 class="header-name"><a href="/" class="header-name-link"><img :src="require('@/assets/campingLogo.jpg')" alt="...">Camping Planner</a></h1>
-      <a class="header-signup-link" href="/cart"  v-if="uiLogin">장바구니</a>
+      <a class="header-signup-link" href="/cart"  v-if="uiLogin">CART / LIKE</a>
       <a class="header-signup-link" href="/agreement" v-if="!uiLogin">회원가입</a>
       <a class="header-login-link" href="/login" v-if="!uiLogin">로그인</a>
       <a class="header-login-link" @click="logout"  v-if="uiLogin">로그아웃</a>

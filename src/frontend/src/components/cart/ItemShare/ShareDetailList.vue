@@ -6,10 +6,11 @@
     <div class="blocks">
       <h1>{{ this.content.rentalName }}</h1>
       <br>
-      <h1>가격</h1><h2> {{ this.content.rentalPrice }}</h2>
+<!--      <h1>가격</h1><h2> {{ this.content.rentalPrice }}</h2>-->
       <br>
       <h1>설명</h1><h2>{{ this.content.rentalEx }}</h2>
       <br>
+
       <h1>대여기간 설정</h1>
       <div class="reservation">
         <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
@@ -29,7 +30,7 @@
                     :disabledDates="disabledDates"/>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
+        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">대여</b-button>
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">찜</b-button>
       </div>
     </div>
@@ -58,9 +59,59 @@
 
   <div v-if="areaCheckC">
     <br>
-    <img :src=image>
+    <img class="ilist" :src=image>
     <br>
-    <img :src=image2>
+    <img class="ilist" :src=image2>
+  </div>
+
+  <div v-if="areaCheckD">
+    <br>
+    <div class="review-t">
+      <h2>상품평</h2>
+    </div>
+    <div class="content-detail-list-1">
+      <br>
+      <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
+        <div class="Recommend">
+          <button class="button" @click="addPush(reviews)">추천수 : 37</button>
+        </div>
+
+        <div class="review">
+          <div class="review-title">리건2 | 2202-06-20</div>
+          <div class="review-text">별 생각없이 샀는데</div>
+          <div class="review-text">배송도 빠르고 너무 마음에 들어요 ㅎ</div>
+
+          <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
+
+          <div class="my-box-3">
+          </div>
+
+          <div class="btn_area_2">
+            <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
+              <span>삭제</span>
+            </button>
+          </div>
+
+          <div class="btn_area_2">
+            <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
+              <span>수정</span>
+            </button>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+      <br>
+      <div class="btn_area_1">
+        <button type="button" @click="detail_5" class="btn_Bottom_1">
+          <span>작성</span>
+        </button>
+      </div>
+      <br>
+    </div>
   </div>
 
   <div v-if="areaCheckA">
@@ -123,6 +174,9 @@ export default {
   name: "ShareDetailList",
   created() {
     this.DataList();
+    this.member = this.$store.state.loginState
+    this.fetchData();
+
   },
   data() {
     return {
@@ -144,7 +198,9 @@ export default {
       period: '',
       areaCheckA: false,
       areaCheckB: false,
-      areaCheckC: false
+      areaCheckC: false,
+      areaCheckD: false
+
 
     }
   },
@@ -199,22 +255,21 @@ export default {
       }
     },
     putData() {
-      this.axios.post('http://localhost:9002/api/buyCartPut', {
-        buyId: this.content.buyId,
-        count: this.count,
-        MID: this.content.mid.mid,
+      this.axios.post('http://localhost:9002/api/shareCartPut', {
+        rentalId: this.$route.params.rentalId,
+        mid: this.member.mcode
       }).then(res => {
-        this.buyMenuCheckPut = res.data
-        if(this.buyMenuCheckPut === false) {
+        this.shareMenuCheckPut = res.data
+        if(this.shareMenuCheckPut === false) {
           if (confirm('이미 담겨있습니다. \n장바구니에서 확인하시겠습니까?')) {
             this.$router.push({
-              path: `/cart/buy/${this.content.mid.mcode}`
+              path: `/cart/share/${this.member.mcode}`
             })
           }
         }else{
           if (confirm('추가되었습니다. \n장바구니에서 확인하시겠습니까?')) {
             this.$router.push({
-              path: `/cart/buy/${this.content.mid.mcode}`
+              path: `/cart/share/${this.member.mcode}`
             })
           }
         }
@@ -232,7 +287,7 @@ export default {
 
     fetchData() {
       console.log(this.id)
-      axios.get('/api/CampingBoardlist/' + this.id)
+      axios.get('/api/CampingBoardlist/' + 308)
           // 캠핑장 아이디를 넘겨줌 = 이 캠핑장에 해당하는 게시글 가져오기
           .then((res) => {
             console.log("게시글 조회 성공" + res.data);
@@ -292,18 +347,27 @@ export default {
       this.areaCheckB = true;
       this.areaCheckA = false;
       this.areaCheckC = false;
-
+      this.areaCheckD = false;
     },
-    detail_4() {
+    detail_2() {
+      this.areaCheckB = false;
+      this.areaCheckA = false;
+      this.areaCheckC = false;
+      this.areaCheckD = true;
+    },
+    detail_3() {
       this.areaCheckA = true;
       this.areaCheckB = false
       this.areaCheckC = false;
+      this.areaCheckD = false;
 
     },
     detail_4() {
       this.areaCheckA = false;
       this.areaCheckB = false;
       this.areaCheckC = true;
+      this.areaCheckD = false;
+
     }
 
   }
@@ -492,6 +556,12 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   margin-left: 10px;
   position: center;
 }
+.ilist {
+  margin-left: 25%;
+  width: 50%;
+  height: 50%;
+}
+
 .my-box {               /*리뷰 젤 큰 박스*/
   border:3px solid;
   padding:50px 0 5%;

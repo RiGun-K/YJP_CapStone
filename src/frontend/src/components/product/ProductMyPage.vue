@@ -1,10 +1,10 @@
 <template>
   <div class="orders">
-    <h1>Orders</h1>
+    <h1>판매 정보</h1>
     <div class="orders-btn-list">
-      <button @click="buyOrders">구매 주문정보</button>
-      <button @click="shareOrders">대여 주문정보</button>
-      <button @click="reservationOrders">예약 주문정보</button>
+      <button class="shareBtn" @click="buyOrders">구매 상품</button>
+      <button class="shareBtn" @click="shareOrders">대여 상품</button>
+      <button class="shareBtn" @click="reservationOrders">캠핑장 상품</button>
     </div>
   </div>
 </template>
@@ -45,5 +45,15 @@ export default {
 .orders-btn-list{
   margin-top: 3%;
   margin-left: 3%;
+}
+.shareBtn{
+  width: 10%;
+  padding: 1%;
+  background-color: #ffffff;
+  color: #00a3de;
+  font-weight: bolder;
+  border-color: #00a3de;
+  border-radius: 1em;
+  font-size: 1.5em;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="buyNow">
-    <h1 style="font-weight: bold">주문/결제</h1>
-    <h2>구매자 정보</h2>
+    <h2>주문/결제</h2>
+    <h3>구매자 정보</h3>
     <table>
       <tr>
         <td class="buy-now-td">이름</td>
@@ -17,7 +17,7 @@
       </tr>
     </table>
 
-    <h2>받는사람 정보</h2>
+    <h3>받는사람 정보</h3>
     <table>
       <tr>
         <td class="buy-now-td">이름</td>
@@ -37,7 +37,7 @@
       </tr>
       <tr>
         <td class="buy-now-td">연락처</td>
-        <td><input type="text" v-model="getterPhoneNumber" maxlength="11"></td>
+        <td><input type="text" v-model="getterPhoneNumber" maxlength="12"></td>
       </tr>
       <tr>
         <td class="buy-now-td">배송 요청사항</td>
@@ -45,19 +45,20 @@
       </tr>
     </table>
 
-    <h2>상품 정보</h2>
-    <table>
+    <h3>상품 정보</h3>
+
+    <table v-for="(menu, index) in cart" :key="index">
       <tr>
-        <td class="buy-now-td">상품 이름</td>
-        <td>{{ this.content.buyName }}</td>
+        <td class="buy-now-td">상품</td>
+        <td> <img :src="'/api/product_detail_images/' + menu.menuBuy.filename" class="img-fluid rounded-start" alt="..." style="width: 10%; height: 10%"> {{menu.menuBuy.buyName}}</td>
       </tr>
       <tr>
         <td class="buy-now-td">상품 금액</td>
-        <td>{{ this.content.buyPrice }}</td>
+        <td>{{menu.menuBuy.buyPrice}}</td>
       </tr>
       <tr>
         <td class="buy-now-td">수량</td>
-        <td>{{this.BuyCount}}</td>
+        <td>{{menu.cartItemCount}}</td>
       </tr>
       <tr>
         <td class="buy-now-td">배송비</td>
@@ -65,11 +66,11 @@
       </tr>
     </table>
 
-    <h2>결제 정보</h2>
+    <h3>결제 정보</h3>
     <table>
       <tr>
         <td class="buy-now-td">총 상품 금액</td>
-        <td>{{ this.content.buyPrice * BuyCount }}</td>
+        <td>{{this.cartAllPrice}}</td>
       </tr>
       <tr>
         <td class="buy-now-td">배송비</td>
@@ -77,25 +78,28 @@
       </tr>
       <tr>
         <td class="buy-now-td">총 결제 금액</td>
-        <td>{{ this.content.buyPrice * BuyCount + 10000}}</td>
+        <td>{{this.cartAllPrice + 10000}}</td>
       </tr>
     </table>
 
+    <h5>구매조건 확인 및 결제대행 서비스 약관 동의 <button @click="checkBuy()">보기</button></h5>
+    <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
+
     <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
-    <div style="display: flex; justify-content: center; align-items: center">
-      <button class="buyBtn" @click="paymentBtn()">결제하기</button>
-      <button class="buyBtn" @click="cancelBtn()">취소</button>
-    </div>
+    <button class="payNow" @click="paymentBtn()">결제하기</button>
+
+    <button class="cancel-buy-now" @click="cancelBtn()">취소</button>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  name: 'BuyNow',
+  name: 'BuyCartNow',
   created() {
     this.member = this.$store.state.loginState
-    console.log(this.member)
+    this.cartSelected = this.$store.state.selectedList
     this.DataList();
   },
   data () {
@@ -108,15 +112,12 @@ export default {
       getterPhoneNumber: '',
       deliveryMessage: '',
       onlyNumber: true,
-      content: [],
+      paymentDate: new Date(),
+      cart: [],
       member: [],
       buyMember: [],
-      AllPrice: 0
-    }
-  },
-  props: {
-    BuyCount:{
-      type: Number,
+      cartAllPrice: 0,
+      cartSelected: [],
     }
   },
   mounted () {
@@ -125,23 +126,26 @@ export default {
   },
   methods: {
     DataList() {
-      this.id = this.$route.params.buyId;
-      console.log(this.id);
       axios.get('http://localhost:9002/api/buyMember/' + this.member.mcode)
           .then(res => {
             console.log(res.data)
             this.buyMember = res.data
           })
-      axios.get('http://localhost:9002/api/product_detailB/' + this.id)
-          .then(res => {
-            console.log(res.data);
-            this.content = res.data;
-            //
+          .catch(err => {
+            console.log(err);
           })
-          .catch(e => {
-            console.log(e);
-          })
-      this.AllPrice = this.content.buyPrice * this.BuyCount
+      console.log(this.cartSelected.length)
+      for(let i=0; i < this.cartSelected.length; i++){
+        axios.get('http://localhost:9002/api/buyCartOrder/' + this.cartSelected[i])
+            .then(res => {
+              console.log(res.data);
+              this.cart[i] = res.data;
+              this.cartAllPrice += this.cart[i].menuBuy.buyPrice * this.cart[i].cartItemCount
+            })
+            .catch(e => {
+              console.log(e);
+            })
+      }
     },
     showApi () {
       new window.daum.Postcode({
@@ -173,13 +177,14 @@ export default {
           pg: 'html5_inicis',
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
-          name: this.content.buyName,
-          amount: this.content.buyPrice,
+          name: "zz",
+          amount: 1000,
           buyer_tel: this.getterPhoneNumber,
-          buyer_name: this.content.mid.mid,
-          buyer_email: this.content.mid.mmail,
+          buyer_name: this.buyMember.mcode,
+          buyer_email: this.buyMember.mmail,
           confirm_url: ''
         }, (rsp) => {
+          //rsp.success
           if (true) {
             const msg = '결제가 완료되었습니다.'
             // msg += '고유ID : ' + rsp.imp_uid
@@ -187,27 +192,29 @@ export default {
             // msg += '결제 금액 : ' + rsp.paid_amount
             // msg += '카드 승인번호 : ' + rsp.apply_num
             alert(msg)
-            console.log(this.content.buyId);
-            this.axios.post('http://localhost:9002/api/buyData', {
-              MID: this.member.mcode,
-              deliveryZipcode: this.zip,
-              deliveryAddress: this.detailAddress,
-              deliveryGetter: this.getterName,
-              deliveryGetterTel: this.getterPhoneNumber,
-              deliveryRequest: this.deliveryMessage,
-              orderPrice: this.content.buyPrice,
-              orderType: rsp.pay_method,
-              paymentCode: rsp.merchant_uid,
-              orderState: '2',
-              orderMenuCount: 1,
-              menuId: this.content.buyId,
-            })
-                .then((res)=>{
-                  console.log(res.data);
-                })
-                .catch((err)=>{
-                  console.log(err)
-                });
+            for(let i = 0; i < this.cart.length; i++){
+              this.axios.post('http://localhost:9002/api/buyData', {
+                MID: this.buyMember.mcode,
+                deliveryZipcode: this.zip,
+                deliveryAddress: this.detailAddress,
+                deliveryGetter: this.getterName,
+                deliveryGetterTel: this.getterPhoneNumber,
+                deliveryRequest: this.deliveryMessage,
+                orderPrice: this.cart[i].menuBuy.buyPrice * this.cart[i].cartItemCount,
+                orderType: rsp.pay_method,
+                paymentCode: rsp.merchant_uid,
+                orderState: '2',
+                orderMenuCount: this.cart[i].cartItemCount,
+                menuId: this.cart[i].menuBuy.buyId,
+                cartCode: this.cart[i].cartCode
+              })
+                  .then((res)=>{
+                    console.log(res.data);
+                  })
+                  .catch((err)=>{
+                    console.log(err)
+                  });
+            }
             this.$router.push({
               name: "BuyComplete",
               params: {
@@ -245,7 +252,7 @@ export default {
       }
       return this.getterPhoneNumber=this.getterPhoneNumber.replace(/[^-\.0-9]/g,'');
     }
-  }
+  },
 }
 </script>
 
@@ -255,42 +262,59 @@ export default {
   width: 100%;
   height: 100%;
 }
-.buyNow h2{
-  padding: 1% 14%;
+.buyNow h3{
+  padding: 1% 10%;
   width: 100%;
   height: 100%;
-  font-weight: bold;
 }
 .buy-now-td{
   text-align: center;
   width: 20%;
 }
 .buyNow table {
-  margin: 1.5% 24%;
+  margin: 1.5% 15%;
   width: 50%;
   border: 1px solid #444444;
   border-collapse: collapse;
-  font-size: 1.5em;
 }
 .buyNow td {
   border: 1px solid #444444;
   padding: 2%;
 }
 .buyNow h5{
-  margin-left: 28%;
-  padding: 1.5%;
-  margin-top: 5%;
+  margin: 1% 10%;
 }
-.buyBtn{
-  margin-left: 2%;
+.buyNow h5 button{
+  margin: 0% 2%;
+}
+.payNow{
+  margin-left: 27%;
   margin-right: 3%;
-  width: 10%;
+  width: 8%;
   padding: 1%;
   background-color: #ffffff;
   color: #00a3de;
   font-weight: bolder;
   border-color: #00a3de;
   border-radius: 1em;
-  font-size: 1.5em;
+}
+.buy-now-info-check{
+  margin: 3% 30%;
+  padding: 1.5%;
+}
+.cancel-buy-now{
+  margin-left: 5%;
+  margin-right: 3%;
+  width: 8%;
+  padding: 1%;
+  background-color: #ffffff;
+  color: #00a3de;
+  font-weight: bolder;
+  border-color: #00a3de;
+  border-radius: 1em;
+}
+.payNow:hover, .cancel-buy-now:hover{
+  color: white;
+  background-color: #b2e2fd;
 }
 </style>

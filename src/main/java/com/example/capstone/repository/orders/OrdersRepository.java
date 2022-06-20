@@ -14,6 +14,9 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByMCode(Member MCode);
 
+//    @Query(value = "select * from Orders where order_code = :orders", nativeQuery = true)
+//    List<Orders> findByOrders(@Param("orders") Orders orders);
+
     @Query(value = "select ORDERS.*, ORDER_MENU.* \n" +
             "from ORDERS join ORDER_MENU on ORDERS.ORDER_CODE = ORDER_MENU.ORDER_CODE\n" +
             "join CAMPING C2 on C2.CAMPING_ID = ORDER_MENU.CAMPING_ID\n" +
