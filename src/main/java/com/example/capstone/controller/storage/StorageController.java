@@ -97,7 +97,6 @@ public class StorageController {
             }
             String filePath = savePath + "\\" + filename;
             uploadFile.transferTo(new File(filePath));
-            storageData.setOrigFilename(origFilename);
             storageData.setFilename(filename);
             storageData.setFilePath("\\src\\frontend\\src\\assets\\"+ filename);
         } catch (Exception e) {
@@ -105,7 +104,6 @@ public class StorageController {
         }
 
         storage.setFilename(storageData.getFilename());
-        storage.setOrigFilename(storageData.getOrigFilename());
         storage.setFilePath(storageData.getFilePath());
 
         if (!storageChk.isPresent()) {
