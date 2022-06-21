@@ -48,13 +48,13 @@ public class StorageImageController {
     @Autowired
     CampingAreaRepository campingAreaRepository;
 
-    @GetMapping(value = "/storageImage/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody byte[] imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
+    @GetMapping(value = "/storageImage/{code}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] imagesSearch(@PathVariable("code") long code, HttpServletResponse httpServletResponse) throws IOException {
 
-        System.out.println(filename);
+        System.out.println(code);
         System.out.println("-------------------1----------------");
 
-        Optional<Storage> storage = storageRepository.findByFilename(filename);
+        Optional<Storage> storage = storageRepository.findById(code);
 
         String requestPath = System.getProperty("user.dir") + storage.get().getFilePath();
         InputStream imageStream = new FileInputStream(requestPath);

@@ -1,6 +1,8 @@
 <template>
-  <ProductPage></ProductPage>
-  <br>
+  <div class="back">
+    <div class="frame">
+      <ProductPage></ProductPage>
+    <br>
   <h2>상품등록</h2>
   <div class="cart">
     <div class="cart-list">
@@ -25,6 +27,9 @@
       </div>
     </div>
     <button class="w-btn-outline w-btn-red-outline"><router-link class="nav-link" to="/">뒤로가기</router-link></button>
+  </div>
+
+    </div>
   </div>
 
 
@@ -66,6 +71,23 @@ h2,h3{
 .cart-back{
   margin-top: 5% ;
   margin-left: 48%;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 .cart .cart-list{
   display:flex;
