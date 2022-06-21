@@ -7,7 +7,7 @@
       <div class="service-btn">
         <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="moveBox(pickUseBox)">장비 이동</button>
         <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="repairBox(pickUseBox)">장비 수리</button>
-        <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
+        <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3" @click="renewalPay(pickUseBox)">연장</button>
         <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>
       </div>
       <br>
@@ -37,7 +37,7 @@
           <h6>이동정보</h6>
           <hr>
           <div class="box-info-b">
-            <table>
+            <table v-if="!kkk">
               <thead>
               <tr>
                 <th>이동 보관함</th>
@@ -45,17 +45,37 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-if="moveBoxInfo.useState == 3">
+              <tr >
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
                 <td>접수</td>
               </tr>
-              <tr v-if="moveBoxInfo.useState == 4">
+              <tr v-if="moveBoxInfo.moveState == 4">
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
                 <td>이동중</td>
               </tr>
-              <tr v-if="moveBoxInfo.useState == 5">
+              <tr v-if="moveBoxInfo.moveState == 5">
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
                 <td>도착</td>
+              </tr>
+              </tbody>
+            </table>
+            <table v-else>
+              <tbody>
+              <tr>
+                <td>받는 사람</td>
+                <td>{{ order.deliveryGetter }}</td>
+              </tr>
+              <tr>
+                <td>우편번호</td>
+                <td>{{ order.deliveryZipcode }}</td>
+              </tr>
+              <tr>
+                <td>주소</td>
+                <td>{{ order.deliveryAddress }}</td>
+              </tr>
+              <tr>
+                <td>연락처</td>
+                <td>{{ order.deliveryGetterTel }}</td>
               </tr>
               </tbody>
             </table>
@@ -157,17 +177,20 @@ export default {
       useStorageTime: [],
       moveBoxInfo: {},
       moveInfo: false,
+      order:{},
+      kkk:false,
     }
   },
   mounted() {
     this.memberId = store.getters.getLoginState.loginState
     this.detailBox(this.useData)
+
     },
   methods:{
     stateCheck(sCode) {
       switch (sCode) {
         case "1":
-          return "정상"
+          return "보관중"
         case "2":
           return "수리중"
         default:
@@ -177,20 +200,38 @@ export default {
     close() {
       this.$emit('close')
     },
+    delInfo(code){
+      axios.get("/api/delInfo/"+code)
+          .then(res=>{
+            this.order = res.data
+            this.moveInfo = true
+
+            this.kkk = true
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     detailBox(us) {
       this.moveInfo = false
       this.pickUseBox = us.useCode
       this.detailUseState = us.useState
       this.boxinItem(this.pickUseBox)
+      this.delInfo(us.del)
       this.getBoxTimes(us)
       if (us.moveUseCode != undefined) {
         this.moveInfo = true
         if (us.useState == 3 || us.useState == 4 || us.useState == 5) {
-          this.boxDetailMoveInfo(us.moveUseCode, us.moveUseCode)
+          this.boxDetailMoveInfo(us.moveUseCode, us.useState)
         }
       }
     },
     boxDetailMoveInfo(useCode, useState) {
+      console.log(useState)
+      console.log(useState)
+      console.log(useState)
+      console.log(useState)
+
       this.moveBoxInfo.moveState = useState
       axios.get('/api/moveBoxInfo/' + useCode)
           .then(res => {
@@ -477,5 +518,24 @@ td{
 .scrolltbody td {
   padding: 1%;
   width: 3%;
+}
+
+.box-info-b th {
+  border: 1px solid black;
+  padding: 5px;
+  padding-left: 5%;
+  width: 50%;
+}
+
+.box-info-b td {
+  border: 1px solid black;
+  padding: 5px;
+  padding-left: 5%;
+  width: 50%;
+}
+
+.box-info-b td:first-child {
+  width: 20%;
+  background-color: #d8d8d8;
 }
 </style>
