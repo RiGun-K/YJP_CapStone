@@ -1,53 +1,63 @@
 <template>
-  <h5>보관함 사용 해지</h5>
-  <div>
-    <button @click="this.$router.push({name:'myBox'})" class="renewal-box-back-btn">뒤로가기</button>
-  </div>
-  <h5>사용중인보관함</h5>
-  <div>
-    <table>
-      <tbody>
-      <tr>
-        <td>보관소</td>
-        <td>보관함</td>
-      </tr>
-      <tr>
-        <td>{{ storage.storageName }}</td>
-        <td>{{ boxName }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <div class="container">
+    <br><br>
+    <h2>사용 해지</h2>
+    <br><br>
+    <div class="left-box">
+      <div class="storage-info-box">
+        <h4>보관</h4>
+        <div class="info-box">
+          <table>
+            <tr>
+              <td>보관소</td>
+              <td>{{ storage.storageName }}</td>
+            </tr>
+            <tr>
+              <td>보관함</td>
+              <td>{{ boxName }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br>
+      <div class="item-info-box">
+        <h4>보관 장비</h4>
+        <div class="info-box">
+          <table>
+            <tr v-for="(item,index) in myItemList">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.memEquipmentName }}</td>
+              <td>{{ item.memEquipmentCount }}개</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br>
+      <div class="time-range-box">
+        <h4>기간</h4>
+        <div class="info-box">
+          <table>
+            <tr>
+              <td>시작일</td>
+              <td>{{ startTime }}</td>
+            </tr>
+            <tr>
+              <td>종료일</td>
+              <td>{{ endTime }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br><br>
+      <br>
+      <div>
+        <button class="payNow-l" @click="this.$router.push({name:'myBox'})">뒤로가기</button>
+        <button class="payNow-r" @click="closeBox">연장 해지</button>
+      </div>
+      <br>
+      <br><br><br>
 
-  <h5>보관중인장비</h5>
-  <div>
-    <table>
-      <tbody>
-      <tr v-for="(item,index) in myItemList">
-        <td>{{ index + 1 }}</td>
-        <td>{{ item.memEquipmentName }}</td>
-        <td>{{ item.memEquipmentCount }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <h5>사용기간</h5>
-  <div>
-    <table border="1" width="500px">
-      <tbody>
-      <tr>
-        <td>시작일</td>
-        <td>종료일</td>
-      </tr>
-      <tr>
-        <td>{{ startTime }}</td>
-        <td>{{ endTime }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <button @click="closeBox" class="renewal-box-cancel">연장 해지</button>
+    </div>
   </div>
 
 </template>
@@ -131,8 +141,64 @@ export default {
 </script>
 
 <style scoped>
-.renewal-box-cancel:hover {
-  color: white;
-  background-color: #b2e2fd;
+.container {
+  position: center;
+  height: 100%;
+  width: 95%;
+}
+
+.info-box {
+  width: 80%;
+}
+
+td:first-child {
+  width: 30%;
+}
+
+td, tr {
+  border: 1px solid black;
+  padding-top: 17px;
+  padding-bottom: 12px;
+  word-spacing: 9px;
+  text-align: center;
+}
+
+.left-box {
+  float: left;
+  width: 50%;
+}
+
+.right-box {
+  float: right;
+  height: 50%;
+  width: 50%;
+}
+
+.bin-box {
+  float: right;
+  height: 350px;
+  width: 50%;
+}
+.payNow-l{
+  position: center;
+  text-align: center;
+  width: 20%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: left;
+  margin-left: 20%;
+}
+.payNow-r{
+  position: center;
+  text-align: center;
+  width: 20%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: right;
+  margin-right: 20%;
 }
 </style>

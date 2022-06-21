@@ -39,7 +39,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+                <button @click="askBox(storage)" class="storage-submit-btn">자세히</button>
               </td>
             </tr>
             </tbody>
