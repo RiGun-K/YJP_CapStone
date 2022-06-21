@@ -441,6 +441,20 @@ public class MemberController {
         List<Board> boardList = boardRepository.findByAllList();
         return boardList;
     }
+    ///유저게시글 조회///
+    @PostMapping("userAllWriter")
+    public List<Board> userAllWrite(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<Board> boardList = boardRepository.findByAllWrite(member.get());
+        return boardList;
+    }
+    ///유저 댓글 조회///
+    @PostMapping("userAllComment")
+    public List<Board> userAllComment(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        List<Board> boardList = boardRepository.findByAllComment(member.get());
+        return boardList;
+    }
     ///게시글삭제///
     @PostMapping("adminDeleteWriter")
     public Boolean adminDeleteWriter(@RequestBody HashMap<String, String> body){
@@ -483,6 +497,16 @@ public class MemberController {
         return memberPreferences;
     }
 
+    ///판매자 정보 조회///
+    @PostMapping("myCompanySearch")
+    public Company myCompanySearch(@RequestBody HashMap<String, String> body){
+        Optional<Member> member = memberRepository.findByMCode(Long.parseLong(body.get("MID")));
+        Optional<Company> company = companyRepository.findCompanyByMember(member.get());
+        if(company.isEmpty()){
+            return null;
+        }
+        return company.get();
+    }
 
     ///테스트///
     @PostMapping("testCheck")

@@ -46,6 +46,12 @@ public class Plan {
     private Integer planViews = 0;
     @Column
     private Integer planUsedCount = 0;
+    @Column
+    private String address;
+    @Column
+    private String detailAddress;
+    @Column
+    private String campingName;
 
 
     public PlanDto toPlanDto() {

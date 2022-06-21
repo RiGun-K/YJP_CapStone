@@ -49,19 +49,19 @@
     <h2>Item Buy</h2>
     <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-outline-primary" for="btnradio1">전체</label>
+    <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio2">최신순</label>
+    <label class="btn btn-outline-primary" for="btnradio2" @click="ByLatest">최신순</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio3">인기순</label>
+    <label class="btn btn-outline-primary" for="btnradio3" @click="ByViews">인기순</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio4">낮은 가격순</label>
+    <label class="btn btn-outline-primary" for="btnradio4" @click="ByLowPrice">낮은 가격순</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
+    <label class="btn btn-outline-primary" for="btnradio5" @click="ByHighPrice">높은 가격순</label>
   </span>
 
 
@@ -195,6 +195,47 @@ export default {
           })
       }
 
+    },
+
+    ByLatest() {
+      axios.get('http://localhost:9002/api/product_ByBuyLatest')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    ByViews() {
+      axios.get('http://localhost:9002/api/product_ByBuyViews')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    ByLowPrice() {
+      axios.get('http://localhost:9002/api/product_ByBuyLowPrice')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    ByHighPrice() {
+      axios.get('http://localhost:9002/api/product_ByBuyHighPrice')
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
     }
 
   }
@@ -315,10 +356,14 @@ img {
 }
 .listObj {
   width: 80%
+
 }
 
 /* 사진 드래그 시 이벤트 */
 
+.card {
+  width: 50%;
+}
 .card-body img {
   transition: all 0.2s linear;
 }

@@ -38,6 +38,26 @@ public class PlanService {
         return plan;
     }
 
+    public PlanDto editPlan(PlanDto plan) {
+        Optional<Plan> findPlan = planRepository.findById(plan.getPlanCode());
+        findPlan.get().setPlanStart(plan.getPlanStart());
+        findPlan.get().setPlanEnd(plan.getPlanEnd());
+        findPlan.get().setPlanOpen(plan.getPlanOpen());
+        findPlan.get().setPlanNumber(plan.getPlanNumber());
+        findPlan.get().setPlanBudget(plan.getPlanBudget());
+        findPlan.get().setPlanName(plan.getPlanName());
+        findPlan.get().setPlanType(plan.getPlanType());
+        findPlan.get().setPlanTotalDate(plan.getPlanTotalDate());
+        findPlan.get().setAddress(plan.getAddress());
+        findPlan.get().setCampingName(plan.getCampingName());
+        findPlan.get().setDetailAddress(plan.getDetailAddress());
+
+        PlanDto planDto = findPlan.get().toPlanDto();
+
+
+        return planDto;
+    }
+
 
     public String checkPlanName(Plan plan) {
 
@@ -103,7 +123,9 @@ public class PlanService {
             System.out.println(planDetailDto);
             planDetailDtos.add(planDetailDto);
         }
-        System.out.println("sssssssssssssss");System.out.println("sssssssssssssss");System.out.println("sssssssssssssss");
+        System.out.println("sssssssssssssss");
+        System.out.println("sssssssssssssss");
+        System.out.println("sssssssssssssss");
 
         return planDetailDtos;
     }
@@ -120,26 +142,28 @@ public class PlanService {
 
         return planDtos;
     }
-    public void countView(PlanDto planDto){
+
+    public void countView(PlanDto planDto) {
         Optional<Plan> findPlan = planRepository.findById(planDto.getPlanCode());
         Plan plan = findPlan.orElse(null);
-        plan.setPlanViews(plan.getPlanViews()+1);
+        plan.setPlanViews(plan.getPlanViews() + 1);
     }
 
-    public void deleteDetailPlan(Long planDetailCode){
+    public void deleteDetailPlan(Long planDetailCode) {
         Optional<PlanDetail> planDetail = planDetailRepository.findById(planDetailCode);
-        System.out.println(planDetailCode+"삭제준비");
+        System.out.println(planDetailCode + "삭제준비");
         planDetailRepository.delete(planDetail.get());
         System.out.println("삭제완료");
     }
-    public void deletePlan(Long planCode){
+
+    public void deletePlan(Long planCode) {
         Optional<Plan> plan = planRepository.findById(planCode);
         List<PlanDetail> planDetails = planDetailRepository.findByPlanCode(plan.get());
         List<PlanTag> planTags = planTagRepository.findByPlan(plan.get());
-        for(PlanDetail pd : planDetails){
+        for (PlanDetail pd : planDetails) {
             planDetailRepository.delete(pd);
         }
-        for(PlanTag pt : planTags){
+        for (PlanTag pt : planTags) {
             planTagRepository.delete(pt);
         }
         planRepository.delete(plan.get());

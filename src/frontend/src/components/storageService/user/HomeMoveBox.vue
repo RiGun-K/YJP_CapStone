@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div>
-      <table>
+  <div class="container">
+    <div class="before-box">
+      <table >
         <thead>
         <tr>
           <th>사용중인보관함</th>
@@ -20,7 +20,7 @@
       </table>
     </div>
 
-    <div>
+    <div class="myItem-list">
       <table>
         <thead>
         <tr>
@@ -37,7 +37,7 @@
       </table>
     </div>
 
-    <div>
+    <div class="move-info">
       <table>
         <thead>
         <tr>
@@ -64,7 +64,7 @@
         </tbody>
       </table>
     </div>
-    <div>
+    <div class="price-box">
       <h5>가격 {{price}}원</h5>
     </div>
     <div>
@@ -162,14 +162,21 @@ export default {
       data.useBoxCode = this.useBoxCode
       data.member = this.member
       axios.post('/api/homeToMovePay',data)
-      .then(res=>{
-
-      })
+          .then(res => {
+            console.log(res)
+            this.$router.push({name:'storageComplete'})
+          })
+          .catch(err => {
+            console.log(err)
+          })
     }
   }
 }
 </script>
 
 <style scoped>
-
+.container{
+  position: center;
+  width: 95%;
+}
 </style>

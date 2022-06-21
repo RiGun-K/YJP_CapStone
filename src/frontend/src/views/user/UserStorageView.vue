@@ -22,19 +22,28 @@
       <div v-for="(storage,index) in storageList" :key="index"
            @click="GetStorageDetail(storage.storageCode)" class="listObj">
         <div class="card">
-          <div>
-            <img :src="'/api/storageImage/'+storage.filename">
-          </div>
-          <div class="card-body">
-            이름: {{ storage.storageName }}
-          </div>
-          <div class="card-body">
-            주소: {{ storage.storageAddress }}
-          </div>
-          <div class="card-body">
-            전화번호: {{ storage.storageTel }}
-          </div>
-          <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+          <table>
+            <tbody>
+            <tr>
+              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.filename"></td>
+              <td>이름</td>
+              <td>{{ storage.storageName }}</td>
+            </tr>
+            <tr>
+              <td>주소</td>
+              <td>{{ storage.storageAddress }}</td>
+            </tr>
+            <tr>
+              <td>전화번호</td>
+              <td>{{ storage.storageTel }}</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -44,8 +53,6 @@
     </div>
 
   </div>
-
-
 </template>
 <script>
 import axios from "axios";
@@ -355,10 +362,22 @@ export default {
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
+  float: right;
 }
 
 .storage-submit-btn:hover {
   color: white;
   background-color: #b2e2fd;
 }
+
+.storage-image {
+  float: left;
+  width: 30%;
+  height: 30%;
+}
+
+td {
+  width: 20%;
+}
+
 </style>

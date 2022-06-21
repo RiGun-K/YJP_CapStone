@@ -17,6 +17,36 @@
   </ul>
   <br>
   <h1>캠핑장 조회</h1>
+  <br>
+  <h2 div="campingKind">
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active" @click="goMyData">전체</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(1)">캠핑장</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(2)">카라반</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(3)">글램핑</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(4)">팬션</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(5)">차박</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(6)">당일 피크닉</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="Infoter(7)">기타</a>
+      </li>
+    </ul>
+  </h2>
+
   <div>
     <br>
     <table class="table table-striped">
@@ -96,7 +126,22 @@ export default {
       this.$router.push({
         path: `/CampingProductDetail/${CampingList.campingId}`
       })
-    }
+    },
+    Infoter(index) {
+      axios.get('/api/product_detail_camping/' + index)
+          .then((res) => {
+            console.log(res.data);
+            this.list = res.data;
+            if (this.list.length == 0) {
+              alert("등록하신 캠핑장이 없습니다.")
+              window.location.href = 'http://localhost:8081/CampingProductList'
+            }
+
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
 
   }
 }

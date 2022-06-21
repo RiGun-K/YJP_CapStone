@@ -22,7 +22,9 @@
         <td><button @click="updateEquip(index)" class="btnCommon">수정</button></td>
       </tr>
     </table>
-    <button @click="addEquip" class="EquipBtn">장비추가</button>
+    <div class="btnDiv">
+      <button @click="addEquip" class="EquipBtn">장비추가</button>
+    </div>
   </div>
 </template>
 
@@ -43,6 +45,8 @@ export default {
       switch (sCode) {
         case "1":
           return "정상"
+        case "2":
+          return "수리중"
         default:
           return "비정상"
       }
@@ -92,7 +96,6 @@ th, td{
   width: 100px;
   background: white;
   color: black;
-  float: right;
 }
 .EquipBtn:hover{
   margin-top: 1%;
@@ -102,17 +105,18 @@ th, td{
   color: white;
 }
 #content {
-  margin-right: 15%;
-  margin-left: 15%;
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
-  text-align: center;
+  margin-left: 15%;
+  margin-right: 15%;
   width: 70%;
   height: 93%;
-  padding: 30px;
-  z-index: 2;
-  position: relative;
   background: white;
+  z-index: 2;
 }
 
 .btnCommon{
@@ -128,6 +132,10 @@ th, td{
   border: red solid 3px;
   background: black;
   color: white;
+}
+.btnDiv{
+  width: 100%;
+  text-align: right;
 }
 </style>
 

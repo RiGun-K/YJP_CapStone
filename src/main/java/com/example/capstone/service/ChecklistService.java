@@ -4,6 +4,7 @@ package com.example.capstone.service;
 import com.example.capstone.domain.Plan.Checklist;
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
+import com.example.capstone.dto.plan.ChecklistDto;
 import com.example.capstone.repository.Plan.ChecklistRepository;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
@@ -34,7 +35,7 @@ public class ChecklistService {
         return ch;
     }
 
-    public Optional<Checklist> updateState(Checklist checklistCode) {
+    public ChecklistDto updateState(Checklist checklistCode) {
         System.out.println(checklistCode);
         Optional<Checklist> cl = checklistRepository.findById(checklistCode.getChecklistCode());
         if (cl.get().getCheckState() == 'y') {
@@ -44,7 +45,13 @@ public class ChecklistService {
             cl.get().setCheckState('y');
             checklistRepository.save(cl.get());
         }
-        return cl;
+        ChecklistDto a = new ChecklistDto();
+        a.setChecklistCode(cl.get().getChecklistCode());
+        a.setCheckContent(cl.get().getCheckContent());
+        a.setDetailCode(cl.get().getDetailCode().getDetailCode());
+        a.setCheckState(cl.get().getCheckState());
+        System.out.println(a.getDetailCode());
+        return a;
     }
 
     public void deleteChecklist(Checklist checklist) {
@@ -52,14 +59,20 @@ public class ChecklistService {
         checklistRepository.deleteById(checklist.getChecklistCode());
     }
 
-    public List<Checklist> loadAllCheckList(Long planCode) {
+    public List<ChecklistDto> loadAllCheckList(Long planCode) {
         Optional<Plan> plan = planRepository.findById(planCode);
-     List<PlanDetail>  pd = planDetailRepository.findByPlanCode(plan.get());
-     List<Checklist> checklists = new ArrayList<>();
+        List<PlanDetail> pd = planDetailRepository.findByPlanCode(plan.get());
+        List<ChecklistDto> checklists = new ArrayList<>();
+
         for (PlanDetail planDetails : pd) {
             List<Checklist> checklists1 = checklistRepository.findByDetailCode(planDetails);
-            for(Checklist i :checklists1){
-                checklists.add(i);
+            for (Checklist i : checklists1) {
+                ChecklistDto a = new ChecklistDto();
+                a.setChecklistCode(i.getChecklistCode());
+                a.setCheckContent(i.getCheckContent());
+                a.setDetailCode(i.getDetailCode().getDetailCode());
+                a.setCheckState(i.getCheckState());
+                checklists.add(a);
             }
         }
         return checklists;

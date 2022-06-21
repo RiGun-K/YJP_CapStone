@@ -4,6 +4,7 @@ package com.example.capstone.controller.Plan;
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
 import com.example.capstone.dto.plan.PlanDetailDto;
+import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.dto.plan.PlanTagDto;
 import com.example.capstone.service.PlanTagService;
 import com.example.capstone.service.PlanService;
@@ -31,6 +32,10 @@ public class PlannerApiController {
         Optional<Plan> selectedPlan = planService.selectPlan(plan.getPlan().getPlanName());
         planTagService.insertTags(plan.getTagContentList(),newPlan);
         return selectedPlan;
+    }
+    @PutMapping("api/editPlan")
+    public PlanDto editPlan(@RequestBody PlanDto plan){
+        return planService.editPlan(plan);
     }
 
 

@@ -4,6 +4,7 @@ package com.example.capstone.controller.Plan;
 
 import com.example.capstone.domain.Plan.Checklist;
 import com.example.capstone.domain.Plan.Plan;
+import com.example.capstone.dto.plan.ChecklistDto;
 import com.example.capstone.service.ChecklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ChecklistApiController {
     }
 
     @PutMapping("/api/updateState")
-    public Optional<Checklist> updateState(@RequestBody Checklist checklistCode) {
+    public ChecklistDto updateState(@RequestBody Checklist checklistCode) {
         return checklistService.updateState(checklistCode);
     }
 
@@ -38,8 +39,10 @@ public class ChecklistApiController {
     public void deleteChecklist(@RequestBody Checklist checklist) {
         checklistService.deleteChecklist(checklist);
     }
+
+
     @GetMapping("api/loadAllCheckList")
-    public List<Checklist> loadAllCheckList(@RequestParam Long planCode){
+    public List<ChecklistDto> loadAllCheckList(@RequestParam Long planCode){
         return checklistService.loadAllCheckList(planCode);
     }
 }

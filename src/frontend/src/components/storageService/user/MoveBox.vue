@@ -1,25 +1,29 @@
 <template>
-  <div>
-    <button @click="$router.push({name:'myBox'})">취소</button>
+  <div class="container">
+    <div class="container-box">
+      <div class="check-list">
+        <input type="radio" name="move-option" v-model="moveOption" value="home">집 <br>
+        <input type="radio" name="move-option" v-model="moveOption" value="round">장소 <br>
+        <input type="radio" name="move-option" v-model="moveOption" value="storage">보관소
+      </div>
+      <hr>
+      <div>
+        <div v-if="moveOption=='home'">
+          <HomeMoveBox :useBoxCode="useBoxCode" class="option"/>
+        </div>
+        <div v-if="moveOption=='round'">
+          <RoundMoveBox :useBoxCode="useBoxCode" class="option"/>
+        </div>
+        <div v-if="moveOption=='storage'">
+          <StorageMoveBox :useBoxCode="useBoxCode" class="option"/>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div>
+      <button @click="$router.push({name:'myBox'})">취소</button>
+    </div>
   </div>
-  <hr>
-  <div>
-    <input type="radio" name="move-option" v-model="moveOption" value="home">집 <br>
-    <input type="radio" name="move-option" v-model="moveOption" value="round">장소 <br>
-    <input type="radio" name="move-option" v-model="moveOption" value="storage">보관소
-  </div>
-  <hr>
-  <div v-if="moveOption=='home'">
-    <HomeMoveBox :useBoxCode="useBoxCode"/>
-  </div>
-  <div v-if="moveOption=='round'">
-    <RoundMoveBox :useBoxCode="useBoxCode"/>
-  </div>
-  <div v-if="moveOption=='storage'">
-    <StorageMoveBox :useBoxCode="useBoxCode"/>
-  </div>
-<!--  <router-view />-->
-
 </template>
 
 <script>
@@ -57,5 +61,32 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  position: center;
+  width: 95%;
+}
 
+.container-box{
+
+}
+
+.check-list{
+  width: 20%;
+}
+
+.option{
+  height: 100%;
+  width: 100%;
+}
+
+button{
+  margin-bottom: 2%;
+  text-align: center;
+  width: 12%;
+  padding: 1%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+}
 </style>

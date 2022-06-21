@@ -9,4 +9,5 @@ import java.util.List;
 public interface TeamBoardRepository extends JpaRepository<TeamBoard,Long> {
 
     List<TeamBoard> findByTeamCodeOrderByBoardDate(Team team);
+    List<TeamBoard> findByTeamCode(Team team);
 }

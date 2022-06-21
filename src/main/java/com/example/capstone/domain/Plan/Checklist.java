@@ -28,4 +28,6 @@ public class Checklist{
     private char checkState ='n';
     @Column
     private String checkContent;
+//    @Column
+//    private Long detailCode1=detailCode.getDetailCode();
 }
