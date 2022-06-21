@@ -131,20 +131,22 @@ export default {
 			}
 		},
 		DataList() {
+       console.log("asdasdasdas");
 			axios
 				.get(
-					'http://localhost:9002/api/ordersList/reservationOrders/' +
+					'http://localhost:9002/api/ordersList/reservationCamping/' +
 						this.content.mcode,
 				)
 				.then((res) => {
 					axios
 						.get(
-							'http://localhost:9002/api/ordersList/reservationOrderMenu/' +
+							'http://localhost:9002/api/ordersList/reservationDetail/' +
 								this.content.mcode,
 						)
 						.then((res2) => {
 							this.orders = res.data;
 							this.menus = res2.data;
+              console.log("tjdthd");
 						})
 						.catch((e2) => {
 							console.log(e2);

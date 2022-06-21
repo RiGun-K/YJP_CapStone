@@ -38,17 +38,18 @@
         </div>
       </div>
       <div>
-        <h5>수리신청항목</h5>
+        <h4>수리신청항목</h4>
         <div v-for="repair in repairList">
           <div>
-            <h6>{{repair.item.memEquipmentName}}의 수리</h6>
+            <h5>{{repair.item.memEquipmentName}}의 수리</h5>
           </div>
-          <div>
+          <div class="info-box">
             <table>
               <tbody>
               <tr>
                 <td>{{ repair.option.buyName }}</td>
                 <td>{{ repair.option.buyEx }}</td>
+                <td>{{ repair.option.buyPrice }}원</td>
               </tr>
               </tbody>
             </table>

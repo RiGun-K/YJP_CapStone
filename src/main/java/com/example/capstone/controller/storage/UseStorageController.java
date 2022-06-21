@@ -161,7 +161,7 @@ public class UseStorageController {
             System.out.println("없다");
         }
         // 박스 상태 변화
-        storageBox.get().setStorageBoxState("1");
+        storageBox.get().setStorageBoxState("2");
         // 결제된 박스 업데이트
         storageBoxRepository.save(storageBox.get());
 
