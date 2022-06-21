@@ -24,7 +24,7 @@
           </tr>
           <tr>
             <th>내용</th>
-            <td>{{ List.content }}</td>
+            <td><h5 v-html="this.List.content"></h5></td>
           </tr>
           <tr>
             <th>사진</th>
@@ -223,6 +223,7 @@ export default {
   width: 50%;
   margin-left: 15%;
   margin-top: 5%;
+  border-radius: 7px;
 
 }
 .tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
