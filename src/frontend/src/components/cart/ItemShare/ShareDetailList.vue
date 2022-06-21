@@ -2,7 +2,7 @@
   <br>
   <br>
   <div class="img-block">
-    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
+    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" style="margin-left: 70px; margin-right: 70px" alt="...">
     <div class="blocks">
       <h1>{{ this.content.rentalName }}</h1>
       <br>
@@ -54,7 +54,7 @@
 
   <div v-if="areaCheckB">
     <br>
-    <img :src="'/api/product_detail_images/' + images[0].filename" class="card-img-top" alt="...">
+    <img :src="'/api/product_detail_images/' + images[0].filename" class="ilist" alt="...">
   </div>
 
   <div v-if="areaCheckC">
@@ -383,6 +383,13 @@ img {
 .mt-4 {
   text-align: center;
 }
+.ilist img{
+  width: 70%;
+  height: 70%;
+  margin-right: 40%;
+  margin-left: 40%;
+
+}
 .slides {
   padding: 0;
   width: 609px;
@@ -492,7 +499,20 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .d-grid gap-2 d-md-flex justify-content-md-end {
   margin-left: 15%;
 }
-
+.img-block img {
+  width: 20%;
+  height: 20%;
+  margin-left: 5%;
+}
+.img-block {
+  display: flex;
+  justify-content: center;
+  transition: all 0.2s linear;
+  align-items: center;
+}
+.img-block:hover img {
+  /*transform: scale(1.2);*/
+}
 .buy-count-sub{
   color: #00a3de;
   background-color: white;
@@ -543,6 +563,11 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   font-weight: 400;
   margin-left: 10%;
   position: center;
+}
+.img-block img {
+  width: 20%;
+  height: 20%;
+  margin-left: 5%;
 }
 .btn_Bottom_3{
   width: 20%;

@@ -77,7 +77,7 @@ public class ProductController {
     /* 구매상품 리스트 */
     @GetMapping("/product_BuyList")
     public List<MenuBuy> menuBuysList() {
-        List<MenuBuy> menus = menuBuyRepository.findAll();
+        List<MenuBuy> menus = menuBuyRepository.findByAllBuyId();
         System.out.println(menus);
         return menus;
     }
