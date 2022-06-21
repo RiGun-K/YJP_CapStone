@@ -44,11 +44,11 @@ export default {
     stateCheck(sCode) {
       switch (sCode) {
         case "1":
-          return "정상"
+          return "보관함"
         case "2":
           return "수리중"
         default:
-          return "비정상"
+          return "집"
       }
     },
     addEquip(){
