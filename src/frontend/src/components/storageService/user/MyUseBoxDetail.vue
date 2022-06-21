@@ -1,34 +1,42 @@
 <template>
-  <div>
-    <button @click="close()">X</button>
-    <div>
-      <div>
-        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="moveBox(pickUseBox)">장비 이동</button>
+  <div class="container">
+    <div class="btn">
+      <button class="close-box" @click="close()">X</button>
+    </div>
+    <div class="container-box">
+      <div class="service-btn">
+        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="moveBox(pickUseBox)">장비 이동</button>
         <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="repairBox(pickUseBox)">장비 수리</button>
         <button class="mystoragebox-re" @click="renewalPay(pickUseBox)">연장</button>
         <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>
       </div>
-      <div>
-        <table>
-          <thead>
-          <tr>
-            <th>시작일</th>
-            <th>종료예정일</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>{{ useTime[0] }}</td>
-            <td>{{ useTime[1] }}</td>
-          </tr>
-          </tbody>
-        </table>
+      <br>
+      <br>
+      <div class="range-info-box">
+        <h4>사용기간</h4>
+        <div class="box-info-a">
+          <table>
+            <thead>
+            <tr>
+              <th>시작일</th>
+              <th>종료예정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{ useTime[0] }}</td>
+              <td>{{ useTime[1] }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+      <br>
       <div v-if="moveInfo">
-        <div>
+        <div class="move-info-box">
           <h6>이동정보</h6>
           <hr>
-          <div>
+          <div class="box-info-b">
             <table>
               <thead>
               <tr>
@@ -54,69 +62,71 @@
           </div>
         </div>
       </div>
+      <br>
       <div>
-        <h5>보관 캠핑장비</h5>
-        <div @click="addShow()">
-          보관된 장비를 추가하기
-          <h9 v-if="!addItemCheck">▼</h9>
-          <h9 v-else>▲</h9>
-        </div>
-        <div v-if="addItemCheck">
-          <div>
-            <table>
-              <thead>
-              <tr>
-                <th colspan="2">장비</th>
-                <th>수량</th>
-                <th>선택</th>
-              </tr>
-              </thead>
-              <tbody v-for="(item,index) in notInItem" :key="index">
-              <tr>
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.memEquipmentName }}</td>
-                <td>{{ item.memEquipmentCount }}</td>
-                <td><input type="checkbox" :value="item.memEquipmentCode" v-model="addBoxInItem"></td>
-              </tr>
-              </tbody>
-            </table>
-            <button @click="addItem()">추가하기</button>
+        <h2>보관 중 캠핑장비</h2>
+        <div class="item-info-box">
+          <div @click="addShow()">
+            <h9>보관 장비 추가</h9>
+            <h9 v-if="!addItemCheck">▼</h9>
+            <h9 v-else>▲<button class="item-btn" @click="addItem()">추가하기</button></h9>
+          </div>
+          <div v-if="addItemCheck" class="box-info-c">
+            <div>
+              <table>
+                <thead>
+                <tr>
+                  <th colspan="2">장비</th>
+                  <th>수량</th>
+                  <th>선택</th>
+                </tr>
+                </thead>
+                <tbody class="body-sc">
+                <tr v-for="(item,index) in notInItem" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.memEquipmentName }}</td>
+                  <td>{{ item.memEquipmentCount }}개</td>
+                  <td><input type="checkbox" :value="item.memEquipmentCode" v-model="addBoxInItem"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div v-if="myItem.length > 0">
+              <h3>보관장비<button class="out-btn" @click="outItem()">빼내기</button></h3>
+            <div class="box-info">
+              <table>
+                <thead>
+                  <tr>
+                    <th colspan="2">장비</th>
+                    <th>수량</th>
+                    <th></th>
+                    <th>선택</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item,index) in myItem" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.memEquipmentName }}</td>
+                    <td>{{ item.memEquipmentCount }}개</td>
+                    <td>{{ stateCheck(item.memEquipmentState)}}</td>
+                    <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div v-else>
+            <div>
+              <h5>보관장비</h5>
+              <hr>
+              <div>
+                <h5>보관중인 장비가 없습니다.</h5>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div v-if="myItem.length > 0">
-        <h5>보관장비</h5>
-        <hr>
-        <div>
-          <table>
-            <thead>
-            <tr>
-              <th colspan="2">장비</th>
-              <th>수량</th>
-              <th>상태</th>
-              <th>선택
-                <button @click="outItem()">빼내기</button>
-              </th>
-            </tr>
-            </thead>
-            <tbody v-for="(item,index) in myItem" :key="index">
-            <tr>
-              <td>{{ index + 1 }}</td>
-              <td>{{ item.memEquipmentName }}</td>
-              <td>{{ item.memEquipmentCount }}</td>
-              <td>{{ stateCheck(item.memEquipmentState)}}</td>
-              <td><input type="checkbox" :value="item.memEquipmentCode" v-model="outBoxItem"></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div v-else>
-        <h5>보관장비</h5>
-        <hr>
-        <div>
-          <h5>보관중인 장비가 없습니다.</h5>
-        </div>
+
       </div>
     </div>
   </div>
@@ -268,7 +278,7 @@ export default {
       })
     },
     closeBox(useBox) {
-      this.$router.push({name: 'closeBox', params: {useBoxCode: useBox.useBoxCode}})
+      this.$router.push({name: 'closeBox', params: {useBoxCode: this.pickUseBox}})
     },
     getMyItem() {
       axios.get('/api/myItem/' + this.memberId)
@@ -315,9 +325,19 @@ export default {
         alert('제거하실 장비를 선택하세요')
         return
       }
+      let list = []
+      for (let i = 0; i < this.outBoxItem.length; i++) {
+        console.log(this.outBoxItem[i])
+        list.push(this.outBoxItem[i].memEquipmentCode)
+        if(this.outBoxItem[i].memEquipmentState == "2"){
+          alert('수리중에는 빼낼 수 없습니다.')
+          return
+        }
+      }
+
       let data = {
         useBoxCode: this.pickUseBox,
-        itemList: this.outBoxItem
+        itemList: list
       }
       axios.post('/api/outBoxInItem', data)
           .then(res => {
@@ -338,9 +358,43 @@ export default {
 </script>
 
 <style scoped>
-.scrolltbody {
-  display: block;
-  border-collapse: collapse;
+.container{
+  position: center;
+  height: 100%;
+  width: 95%;
+  margin: 5%;
+}
+
+h5{
+  text-effect: emboss;
+}
+
+.container-box{
+  padding-right: 5%;
+}
+.body-sc{
+  overflow: scroll;
+  height: 60px;
+}
+
+.item-info-box{
+  border: 1px solid black;
+}
+
+th{
+  text-align: center;
+}
+thead{
+  background-color: #6e6e6e;
+  color: white;
+}
+
+tr{
+  border-bottom: 1px solid black;
+}
+
+td{
+  text-align: center;
 }
 
 .scrolltbody tbody tr td {
@@ -363,12 +417,56 @@ export default {
   margin-left: 4%;
   margin-bottom: 1%;
   text-align: center;
-  width: 90%;
+  width: 40%;
   padding: 0.5%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
+}
+.item-btn{
+  margin-left: 4%;
+  margin-bottom: 1%;
+  text-align: center;
+  padding: 0.5%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: right;
+  margin-right: 15%;
+}
+
+.out-btn{
+  margin-left: 4%;
+  margin-bottom: 1%;
+  text-align: center;
+  padding: 0.5%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: right;
+  margin-right: 15%;
+  font-size: 50%;
+}
+
+.close-box{
+  margin-left: 4%;
+  margin-bottom: 1%;
+  text-align: center;
+  width: 30px;
+  padding: 0.5%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+
+}
+
+.btn{
+  float: right;
+  width: 10%;
 }
 
 .mystoragebox-re:hover {

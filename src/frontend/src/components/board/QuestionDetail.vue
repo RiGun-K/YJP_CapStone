@@ -129,6 +129,7 @@ export default {
 .tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
 .btnWrap_1{text-align:center;
+
   margin-left: 78%;
   background-color: #58a8e5;
   color: white;

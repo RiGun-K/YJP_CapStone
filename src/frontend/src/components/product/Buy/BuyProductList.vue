@@ -1,4 +1,6 @@
 <template>
+  <div class="back">
+    <div class="frame">
   <ProductPage></ProductPage>
   <br>
   <ul class="nav justify-content-center">
@@ -58,6 +60,8 @@
       </li>
     </ul>
   </nav>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -109,5 +113,22 @@ export default {
   padding-left: 0;
   list-style: none;
   justify-content: center
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: 200%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
 }
 </style>

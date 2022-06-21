@@ -35,11 +35,8 @@
               <option value="18">음료</option>
             </optgroup>
             <optgroup label="수리">
-              <option value="21">일광건조</option>
-              <option value="22">세탁</option>
-              <option value="23">폴대교체</option>
-              <option value="24">텐트 천 수선</option>
-              <option value="25">맞춤 수리</option>
+              <option value="21">세탁</option>
+              <option value="22">수리</option>
             </optgroup>
           </select>
           <br>

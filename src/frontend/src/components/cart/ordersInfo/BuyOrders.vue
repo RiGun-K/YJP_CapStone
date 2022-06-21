@@ -23,18 +23,18 @@
             <img :src="'/api/product_detail_images/' + menu.menuBuy.filename" class="img-fluid rounded-start" alt="...">
           </div>
           <div style="justify-content: left; width:80%; height: 100%">
-            <div style="width: 20%; padding: 2%; margin-left: 2%">
-              <p style="font-weight: bold; font-size: 1.5em">{{ menu.menuBuy.buyName}}</p>
+            <div style="width: 60%; padding: 2%; margin-left: 2%">
+              <p style="font-weight: bold; font-size: 1.2em">{{ menu.menuBuy.buyName}}</p>
             </div>
             <div style="display: flex">
               <div style="width: 24%; padding: 2%; margin-left: 2%; margin-top: 2%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1.2em">{{ menu.menuBuy.buyPrice }}</p>
+                <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1.0em">{{ menu.menuBuy.buyPrice }}</p>
               </div>
               <div style="width: 20%; padding: 2%; margin-left: 2%; margin-top: 2%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">주문수량: </p><p style="font-size: 1.2em">{{ menu.orderMenuCount }}</p>
+                <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문수량: </p><p style="font-size: 1em">{{ menu.orderMenuCount }}</p>
               </div>
-              <div style="width: 23%; padding: 2%; margin-left: 24%; margin-top: 5%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1.2em">{{menu.orders.orderPrice }}</p>
+              <div style="width: 23%; padding: 2%; margin-left: 15%; margin-top: 5%; display: flex">
+                <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1em">{{menu.orders.orderPrice }}</p>
               </div>
             </div>
           </div>
@@ -72,6 +72,7 @@
 <script>
 import axios from "axios";
 import dayjs from "dayjs";
+
 export default {
   name: "BuyOrders",
   data(){
@@ -104,14 +105,20 @@ export default {
         theDay = theDay.year(this.menus[i].orders.paymentDate[0]);
         theDay = theDay.month(this.menus[i].orders.paymentDate[1]);
         theDay = theDay.date(this.menus[i].orders.paymentDate[2]);
+
         this.menus[i].orders.paymentDate = theDay
+
+
       }
     },
     todayBuyOrders(){
       this.todayMenu = [];
       let today = dayjs();
       today.format();
+
       console.log(today.date())
+
+
       for(let i=0; i < this.menus.length; i++){
         if(today.year() == this.menus[i].orders.paymentDate.year()){
           if(today.month()+1 == this.menus[i].orders.paymentDate.month()){
@@ -121,12 +128,17 @@ export default {
           }
         }
       }
+
+
     },
     weekBuyOrders(){
       this.todayMenu = [];
       let now = dayjs();
       now.format();
+
       let count = 0;
+
+
       for(let i=0; i < this.menus.length; i++){
         if (now.subtract(1, "week").year() == this.menus[i].orders.paymentDate.year()) {
           if (now.subtract(1, "week").month() + 1 == this.menus[i].orders.paymentDate.month()) {
@@ -143,6 +155,7 @@ export default {
           count++;
         }
       }
+
       this.todayMenu.sort(function (a, b){
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
       })
@@ -152,7 +165,10 @@ export default {
       this.todayMenu = [];
       let now = dayjs();
       now.format();
+
       let count = 0;
+
+
       for(let i=0; i < this.menus.length; i++){
         if (now.subtract(1, "month").year() == this.menus[i].orders.paymentDate.year()) {
           if (now.subtract(1, "month").month() + 1 == this.menus[i].orders.paymentDate.month()) {
@@ -169,6 +185,7 @@ export default {
           count++;
         }
       }
+
       this.todayMenu.sort(function (a, b){
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
       })
@@ -178,7 +195,10 @@ export default {
       this.todayMenu = [];
       let now = dayjs();
       now.format();
+
       let count = 0;
+
+
       for(let i=0; i < this.menus.length; i++){
         if (now.subtract(1, "year").year() == this.menus[i].orders.paymentDate.year()) {
           if (now.subtract(1, "year").month() + 1 == this.menus[i].orders.paymentDate.month()) {
@@ -195,6 +215,7 @@ export default {
           count++;
         }
       }
+
       this.todayMenu.sort(function (a, b){
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
       })
@@ -243,23 +264,24 @@ export default {
   margin-bottom: 5%;
 }
 .card-header{
-  font-size: 1.5em;
-  padding: 2%;
+  font-size: 1.2em;
+  padding: 1%;
 }
+
 .order-card-list .btn-group{
   margin-top: 2%;
   width: 50%;
 }
 .order-info-btn{
   margin-top: 28%;
-  width: 70%;
+  width: 80%;
   padding: 1.5%;
   background-color: #ffffff;
   color: #00a3de;
   font-weight: bolder;
   border-color: #00a3de;
   border-radius: 1em;
-  font-size: 1em;
+  font-size: 0.7em;
 }
 .order-info-btn:hover{
   color: white;
