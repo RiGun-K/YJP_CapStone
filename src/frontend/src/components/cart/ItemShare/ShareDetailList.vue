@@ -13,7 +13,7 @@
 
       <h1>대여기간 설정</h1>
       <div class="reservation">
-        <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+        <Datepicker style="margin-left: 3%; margin-bottom: 2%; width: 15%"
                     locale="ko-KR"
                     :min-date="today"
                     :max-date="end"
@@ -29,7 +29,7 @@
                     v-model="reservationDate"
                     :disabledDates="disabledDates"/>
       </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-right: 5%;">
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">대여</b-button>
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">찜</b-button>
       </div>

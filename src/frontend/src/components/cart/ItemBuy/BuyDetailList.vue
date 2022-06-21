@@ -11,14 +11,11 @@
       <br>
       <h1>수량</h1>
       <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-right: 5%;">
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">장바구니</b-button>
       </div>
     </div>
-  </div>
-      </div>
-    </b-card-text>
   </div>
 
   <div class="mt-4">

@@ -1,6 +1,6 @@
 <template>
   <div class="buy-orders">
-    <h1>Reservation Orders</h1>
+    <h1>등록한 캠핑장 예약현황</h1>
     <div class="order-card-list">
       <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" @click="todayResOrders()" checked>
