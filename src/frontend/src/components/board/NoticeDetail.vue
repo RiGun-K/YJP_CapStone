@@ -20,7 +20,7 @@
           </tr>
           <tr>
             <th>내용</th>
-            <td>{{ notice.s_content }}</td>
+            <td><h5 v-html="this.notice.s_content"></h5></td>
           </tr>
 
         </table>
@@ -96,7 +96,7 @@ export default {
 .tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
 .btnWrap_1{text-align:center;
-  margin-left: 60%;
+  margin-left: 90%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;

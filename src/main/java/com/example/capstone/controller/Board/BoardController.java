@@ -70,7 +70,7 @@ public class BoardController {
         Optional<Member> member = memberRepository.findByMID(boardDTO.getMid());
         System.out.println(member.get());
 
-        Board board = new Board(boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
+        Board board = new Board(boardDTO.getTitle(), boardDTO.getContent().replace("\r\n", "<br>"), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
         boardRepository.save(board);
         return board;
 
@@ -184,7 +184,7 @@ public class BoardController {
         System.out.println(board.get());
 
 
-        Board board1 = new Board(boardDTO.getBoardId(), boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
+        Board board1 = new Board(boardDTO.getBoardId(), boardDTO.getTitle(), boardDTO.getContent().replace("\r\n", "<br>"), boardDTO.getOrigFilename(), boardDTO.getFilePath(), boardDTO.getFilename(), boardDTO.getSavedTime(), member.get());
         boardRepository.save(board1);
         return board1;
 
