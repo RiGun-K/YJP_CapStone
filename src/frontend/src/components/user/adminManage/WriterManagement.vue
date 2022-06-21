@@ -11,17 +11,15 @@
         <th>게시글번호</th>
         <th>게시글제목</th>
         <th>작성자</th>
-        <th>게시판</th>
         <th>작성일</th>
         <th>삭제</th>
       </tr>
       <tr v-for="(obj, index) in viewList" :key="obj.writer_code">
-        <td>{{obj.boardId}}</td>
+        <td style="width: 10%">{{obj.boardId}}</td>
         <td  @click="toWriter(obj.boardId)">{{obj.title}}</td>
-        <td>{{obj.mid.mnick}}</td>
-        <td>{{}}</td>
-        <td>{{obj.savedTime}}</td>
-        <td><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
+        <td style="width: 10%">{{obj.mid.mnick}}</td>
+        <td style="width: 10%">{{obj.savedTime}}</td>
+        <td style="width: 10%"><button @click="deleteWriter(index)" class="btnCommon">삭제</button></td>
       </tr>
     </table>
     <div class="searchDiv">
@@ -98,16 +96,18 @@ export default {
   z-index: 1;
 }
 .bodyDiv{
+  border-radius: 100px;
   padding: 30px;
-  margin-left: 5%;
-  margin-right: 5%;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
-  background: white;
-  width: 90%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
   height: 93%;
+  background: white;
   z-index: 2;
-  position: relative;
 }
 th, td{
   border: 1px solid #111111;

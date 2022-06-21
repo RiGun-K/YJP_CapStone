@@ -51,7 +51,7 @@ public class Board {
     private Board parentBoard;
 
     // 자식
-    @OneToMany(mappedBy = "parentBoard")
+    @OneToMany(mappedBy = "parentBoard", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JsonBackReference
     private List<Board> childrenBoard = new ArrayList<>();
 

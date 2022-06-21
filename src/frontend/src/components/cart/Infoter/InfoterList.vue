@@ -37,16 +37,10 @@
       <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio2" @click="orderBy('latest')">최신순</label>
+      <label class="btn btn-outline-primary" for="btnradio2" @click="orderByLatest">최신순</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio3" @click="orderBy('latestd')">인기순</label>
-
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio4">낮은 가격순</label>
-
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio5">높은 가격순</label>
+      <label class="btn btn-outline-primary" for="btnradio3" @click="orderByView">인기순</label>
     </div>
 
     <h3>지역분류</h3>
@@ -69,6 +63,7 @@
         <button @click="campingFilter(this.searchCamping)">검색</button>
       </div>
     </section>
+
 
     <div class="listBody">
       <div v-for="(product,index) in list" :key="product.id"
@@ -97,7 +92,9 @@
       </div>
     </div>
 
+
   </div>
+
 </template>
 
 <script>
@@ -263,17 +260,23 @@ export default {
       }
     },
 
-    orderBy: function (orderBy) {
-      if(orderBy == 'latest') {
-        this.list.sort(function (a, b) {
-          return b.latest - a.latest;
-        });
-
-      } else if (orderBy == 'latestd') {
-        this.list.sort(function (a, b) {
-          return b.latestd - a.latestd;
-        })
-      }
+    orderByView() {
+      axios.get('/api/product_detail_campingManyViews')
+          .then((res) => {
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    orderByLatest() {
+      axios.get('/api/product_detail_campingDesc')
+          .then((res) => {
+            this.list = res.data;
+          })
+          .catch(e => {
+            console.log(e)
+          })
     }
 
   }
@@ -394,7 +397,7 @@ img {
    height: 100%;
    left: 0;
    bottom: 0;
-   padding-bottom: 250%;
+   padding-bottom: 3%;
    margin-right: 3%;
    transition: 0.3s ease;
    display: flex;
@@ -420,4 +423,12 @@ img {
   transition: 0.2s linear;
 }
 
+.listObj {
+  width: 50%;
+  float: left;
+  position: relative;
+  flex-direction: row;
+  margin: 0 auto;
+  text-align: center;
+}
 </style>

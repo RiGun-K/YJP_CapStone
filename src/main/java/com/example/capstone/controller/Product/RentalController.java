@@ -269,5 +269,20 @@ public class RentalController {
         return menuRentals;
 
     }
-    
+
+    /* 렌탈상품 최신순 */
+    @GetMapping("/product_ByRentalLatest")
+    public List<MenuRental> menuBuysByLatest() {
+        List<MenuRental> menus = menuRentalRepository.findByLatest();
+        System.out.println(menus);
+        return menus;
+    }
+
+    /* 렌탈상품 조회순 */
+    @GetMapping("/product_ByRentalViews")
+    public List<MenuRental> menuBuysByViews() {
+        List<MenuRental> menus = menuRentalRepository.findByViews();
+        System.out.println(menus);
+        return menus;
+    }
 }

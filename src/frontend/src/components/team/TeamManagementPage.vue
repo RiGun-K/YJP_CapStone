@@ -1,66 +1,100 @@
-/* eslint-disable */
-<!------------------------------------------------------------------------- -->
-
 <template>
-	<h3>MY TEAM</h3>
-	<button @Click="showingAddTeamForm">팀 만들기</button>
-	<div v-if="addTeamForm">
-		<input
-			v-model="$store.state.insertName"
-			placeholder="insert team name"
-		/>
-		<select v-model="$store.state.open">
-			<option>전체공개</option>
-			<option>비공개</option>
-		</select>
-		<button @click="teamSave">제출</button>
-	</div>
-	<hr />
-
-	<!------------------------------------------------------------------------- -->
-
-	<h3>{{ $store.state.member.mname }} 님의 소속팀</h3>
-
-	<p v-html="noTeam"></p>
-	<div v-if="showingTeamList">
-		<div v-for="(value, index) in teamList" :key="index">
-			<button @click="loadTeamMemberList(value.teamCode)">
-				{{ value.teamCode.teamName }}
+	<div class="content">
+		<div class="myTeam">
+			<p>MY TEAM</p>
+			<button
+				@Click="showingAddTeamForm"
+				class="w-btn-outline w-btn-blue-outline"
+				type="button"
+			>
+				+
 			</button>
 		</div>
-	</div>
+		<div v-if="addTeamForm">
+			<input
+				v-model="$store.state.insertName"
+				placeholder="insert team name"
+			/>
+			<select v-model="open">
+				<option>전체공개</option>
+				<option>비공개</option>
+			</select>
+			<button @click="teamSave" class="w-btn w-btn-indigo" type="button">
+				생성
+			</button>
+		</div>
+		<div v-if="showingTeamList">
+			<p v-html="noTeam"></p>
+			<div
+				v-for="(value, index) in teamList"
+				:key="index"
+				class="teamList"
+			>
+				<button
+					class="w-btn-gray"
+					type="button"
+					@click="loadTeamMemberList(value.teamCode)"
+					:title="value.teamCode.teamName"
+				>
+					{{ value.teamCode.teamName }}
+				</button>
+			</div>
 
-	<div>
-		<p>팀원 요청 목록</p>
-		<div v-for="(value, index) in unacceptedTeamCode" :key="index">
-			팀<button>{{ value.teamCode.teamName }}</button>에서 요청이 왔습니다
-			<button @click="accept(value.teamCode.teamCode)">수락하기</button>
-			<button @click="refuse(value.teamCode.teamCode)">거절하기</button>
+			<div
+				v-for="(value, index) in unacceptedTeamCode"
+				:key="index"
+				style="display: inline-block"
+			>
+				<button
+					class="w-btn-gra2 w-btn-gra-anim"
+					type="button"
+					@click="selectUnacceptedTeam(value.teamCode)"
+					:title="value.teamCode.teamName"
+				>
+					{{ value.teamCode.teamName }}
+				</button>
+			</div>
+		</div>
+		<div>
+			<hr />
+			<br />
+		</div>
+		<div class="requestOuter">
+			<div v-if="showingRequest" class="request">
+				<div class="requestP">
+					<p>
+						팀{{ this.requestTeamCode.teamName }} 에서 요청이
+						왔습니다
+					</p>
+					<div class="requestButton">
+						<button @click="accept(requestTeamCode.teamCode)">
+							수락하기
+						</button>
+						<button @click="refuse(requestTeamCode.teamCode)">
+							거절하기
+						</button>
+					</div>
+				</div>
+			</div>
+			<div v-if="showingTeamMember" class="teamMemberList">
+				<p>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</p>
+
+				<button
+					id="teamMembers"
+					v-for="(value, index) in $store.state.teamMemberList"
+					:key="index"
+				>
+					이름:{{ value.mcode.mname }}
+					<br />
+					이메일:{{ value.mcode.mmail }} <br />
+					나이:{{ value.mcode.mph }}
+				</button>
+				<a :href="$store.state.teamURL"
+					>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
+				>
+			</div>
 		</div>
 	</div>
-
-	<!------------------------------------------------------------------------- -->
-
-	<div v-if="showingTeamMember">
-		<hr />
-		<h3>
-			TEAM NAME - {{ $store.state.teamCode.teamCode.teamName }}의 MEMBERS
-		</h3>
-
-		<button
-			id="teamMembers"
-			v-for="(value, index) in $store.state.teamMemberList"
-			:key="index"
-		>
-			이름:{{ value.mcode.mname }}
-			<hr />
-			이메일:{{ value.mcode.mmail }}
-		</button>
-		<a :href="$store.state.teamURL"
-			>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
-		>
-	</div>
-	<!------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -80,14 +114,20 @@ export default {
 			teamCodeList: [],
 			teamList: [],
 			mcode: '',
+			open: '전체공개',
+			requestTeamCode: '',
+			showingRequest: false,
 		};
 	},
 	created() {
 		this.TeamManage(this.$store.getters.getLoginState.mcode);
 	},
 	methods: {
-		// -----------------------------------------------------
-
+		selectUnacceptedTeam: function (teamCode) {
+			this.showingTeamMember = false;
+			this.requestTeamCode = teamCode;
+			this.showingRequest = true;
+		},
 		teamSave: function () {
 			if (
 				this.$store.state.open === '' ||
@@ -117,20 +157,18 @@ export default {
 							);
 
 							this.$store.state.insertName = '';
+							this.addTeamForm = false;
 						} else {
 							alert('이미 존재하는 팀 이름입니다');
 						}
 					})
 					.catch((error) => {
-						console.log('에러!');
-						console.log(this.$store.state.member);
 						console.log(error);
 					});
 			}
 		},
 		// -----------------------------------------------------
 		TeamManage: function (mcode) {
-			console.log(mcode);
 			this.mcode = mcode;
 			this.showingTeamList = true;
 			this.teamList.length = 0;
@@ -139,9 +177,7 @@ export default {
 			axios
 				.post(`${url}/api/TeamManagementPage/` + this.mcode)
 				.then((response) => {
-					console.log(response);
 					this.noTeam = '';
-					console.log(response.data);
 					response.data.map((item) => {
 						this.$store.commit('updateMyTeam', item.mcode);
 						this.teamCodeList = item;
@@ -149,13 +185,12 @@ export default {
 							this.teamList.push(item);
 						} else {
 							this.unacceptedTeamCode.push(item);
+							console.log(item);
 						}
-						return console.log('teamName' + item.teamCode.teamName);
 					});
 				})
 				.catch((error) => {
 					this.noTeam = '<h1>소속 팀이 없습니다</h1>';
-					console.log('실패');
 					console.log(error);
 				});
 		},
@@ -178,7 +213,6 @@ export default {
 		},
 		// -----------------------------------------------------
 		refuse: function (teamCode) {
-			console.log(teamCode);
 			const delConfirm = confirm('정말로 거절 하시겠습니까?');
 			if (delConfirm) {
 				const url = 'http://localhost:9002/api/refuseTeam';
@@ -198,6 +232,7 @@ export default {
 		// -----------------------------------------------------
 
 		loadTeamMemberList: function (teamCode) {
+			this.showingRequest = false;
 			this.$store.commit('updateTeamName', teamCode.teamCode.teamName);
 			this.$store.state.teamMemberList.length = 0;
 			this.showingTeamMember = true;
@@ -208,19 +243,14 @@ export default {
 			axios
 				.get(url)
 				.then((response) => {
-					console.log('성공');
-
 					response.data.map((item) => {
-						console.log(item);
 						this.$store.commit('updateTeamCode', item);
 						if (item.acception === 'y') {
 							this.$store.commit('updateTeamMemberList', item);
 						}
-						return console.log('teamMembers' + item.mcode.mname);
 					});
 				})
 				.catch((error) => {
-					console.log('실패');
 					console.log(error);
 				});
 		},
@@ -236,10 +266,153 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
 #teamMembers {
 	width: 200px;
-	height: 120px;
+	height: 100px;
 	background-color: #f5d682;
-	border: 1px solid red;
+	border: none;
+}
+
+.teamList {
+	float: left;
+	/* width: 200px; */
+	/* height: 120px; */
+	/* border: 1px solid red; */
+}
+.w-btn-gray {
+	background-color: #a3a1a1;
+	color: #e3dede;
+}
+.teamList button {
+	position: relative;
+	overflow: hidden;
+	width: 50px;
+	height: 50px;
+	border-radius: 10px;
+	border: none;
+	margin: 12px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+.teamList button:hover {
+	position: relative;
+	overflow: visible;
+	width: 100%;
+	min-width: 40px;
+}
+
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.5);
+	cursor: pointer;
+	position: relative;
+	overflow: visible;
+	min-width: 40px;
+}
+
+.w-btn-outline:active {
+	transform: scale(1.5);
+}
+
+.w-btn-gra2 {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	color: white;
+	position: relative;
+	overflow: hidden;
+	width: 50px;
+	height: 50px;
+	border-radius: 10px;
+	border: none;
+	margin: 12px;
+}
+
+.w-btn-gra-anim {
+	background-size: 400% 400%;
+	animation: gradient1 0.5s ease infinite;
+	border-radius: 10px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+.w-btn-gra2:hover {
+	width: 100%;
+	transform: scale(1.1);
+}
+.w-btn-blue-outline {
+	border: 3px solid #6aafe6;
+	color: #6e6e6e;
+	border-radius: 10px;
+	width: 35px;
+	height: 35px;
+	border: none;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+.w-btn-blue-outline:hover {
+	background-color: #6aafe6;
+	color: #d4dfe6;
+}
+.w-btn-blue-outline {
+	border: 3px solid #6aafe6;
+	color: #6e6e6e;
+}
+
+.myTeam {
+	width: 100%;
+	margin: 20px;
+	/* float: left; asdasdasdasd*/
+}
+.myTeam p {
+	display: inline;
+	font-size: 30px;
+	margin: 10px;
+}
+.content {
+	float: left;
+}
+.teamMemberList p {
+	font-size: 20px;
+}
+
+hr {
+	width: 2001px;
+}
+.teamMemberList button {
+	border-radius: 20px;
+	margin: 20px;
+	border: none;
+}
+.request button {
+	margin: 40px;
+	width: 100px;
+	height: 60px;
+	background-color: #23a6d5;
+	border: none;
+	border-radius: 10px;
+	color: white;
+}
+
+.request {
+	margin-left: 450px;
+}
+.request p {
+	font-size: 50px;
+	display: flex;
+}
+.requestOuter {
+	display: flex;
+}
+
+.requestButton {
+	margin-left: 100px;
+}
+@keyframes gradient1 {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 </style>

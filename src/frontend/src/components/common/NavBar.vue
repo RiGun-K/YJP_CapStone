@@ -50,7 +50,6 @@
             <li class="menu"><a href="/storageAdmin">보관소관리</a></li>
             <li class="menu"><a href="/orderAdmin">주문관리</a></li>
             <li class="menu"><a href="/writerAdmin">게시글관리</a></li>
-            <li class="menu"><a href="/board">문의관리</a></li>
           </ul>
         </li>
         <li class="topMenu" v-if="uiLogin">
@@ -101,6 +100,8 @@ a{
   text-decoration: none;
   color: black;
   display: block;
+  text-align: center;
+  width: 100%;
 }
 a:hover{
   color: white;
@@ -110,28 +111,37 @@ router-link{
   color: black;
 }
 .navBody{
-  background: #E6E6FA;
+  background: ivory;
   border: 1px solid black;
+  padding-right: 0.5%;
+  padding-left: 0.5%;
   width: 100%;
+  height: 6%;
+  z-index: 3;
   text-align: left;
 }
 .divBody{
+  width: 100%;
+  z-index: 3;
 }
 .topMenu{
   margin-top: 1%;
-  margin-left: 1%;
-  padding: 0.5%;
+  margin-right: 0.5%;
+  margin-left: 0.5%;
   width: 10%;
-  display: inline-block;
   text-align: center;
+  display: inline-block;
   list-style: none;
   position: relative;
+  border-radius: 10px;
+  font-size: 18px;
+  z-index: 3;
 }
 .topMenu:hover > .subMenu{
   display: block;
 }
 .topMenu:hover{
-  background: #00a3de;
+  background: lightgreen;
 }
 .subMenu{
   padding: 0.5%;
@@ -144,14 +154,19 @@ router-link{
   top: 100%;
   text-align: center;
   border: 1px solid black;
+  border-radius: 10px;
   z-index: 3;
+  font-size: 16px;
+  background: white;
 }
 .menu{
   margin-top: 1%;
-  background: #41b883;
+  background: white;
+  border-radius: 10px;
   border: 1px solid black;
+  z-index: 3;
 }
 .menu:hover{
-  background: #7ea6f6;
+  background: crimson;
 }
 </style>

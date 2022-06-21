@@ -1,10 +1,7 @@
 package com.example.capstone.domain.order;
 
 
-import com.example.capstone.domain.Product.Camping;
-import com.example.capstone.domain.Product.CampingDetail;
-import com.example.capstone.domain.Product.Menu;
-import com.example.capstone.domain.Product.MenuBuy;
+import com.example.capstone.domain.Product.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +24,10 @@ public class OrderMenu {
     @ManyToOne
     @JoinColumn(name = "menuBuyId")
     private MenuBuy menuBuy;
+
+    @ManyToOne
+    @JoinColumn(name = "rentalId")
+    private MenuRental rental;
 
     @JsonBackReference
     @ManyToOne
@@ -55,6 +56,14 @@ public class OrderMenu {
 
     public void setMenuBuy(MenuBuy menuBuy) {
         this.menuBuy = menuBuy;
+    }
+
+    public MenuRental getRental() {
+        return rental;
+    }
+
+    public void setRental(MenuRental rental) {
+        this.rental = rental;
     }
 
     public int getOrderMenuCount() {
