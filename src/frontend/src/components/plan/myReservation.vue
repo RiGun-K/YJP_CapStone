@@ -80,10 +80,12 @@ export default {
 			menus: [],
 			startDate: '',
 			endDate: '',
+			content: this.$store.state.loginState,
 		};
 	},
 	created() {
-		this.content = this.$store.state.loginState;
+		// this.content = this.$store.state.loginState;
+		// const content = this.$store.getters.getLoginState.mcode;
 		this.DataList();
 	},
 	methods: {
@@ -91,6 +93,7 @@ export default {
 			const confirmData = confirm(
 				'예약된 캠핑장을 선택하지 않고 계획을 작성합니다',
 			);
+
 			if (confirmData) {
 				this.$store.state.myReservation = new Object();
 				this.$store.state.camping.camping.address = '';
@@ -131,15 +134,16 @@ export default {
 			}
 		},
 		DataList() {
+			console.log(this.content.mcode);
 			axios
 				.get(
-					'http://localhost:9002/api/ordersList/reservationOrders/' +
+					'http://localhost:9002/api/ordersList/reservationCamping/' +
 						this.content.mcode,
 				)
 				.then((res) => {
 					axios
 						.get(
-							'http://localhost:9002/api/ordersList/reservationOrderMenu/' +
+							'http://localhost:9002/api/ordersList/reservationDetail/' +
 								this.content.mcode,
 						)
 						.then((res2) => {
