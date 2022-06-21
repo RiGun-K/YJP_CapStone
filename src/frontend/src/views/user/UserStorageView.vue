@@ -25,7 +25,7 @@
           <table>
             <tbody>
             <tr>
-              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.filename"></td>
+              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.storageCode"></td>
               <td>이름</td>
               <td>{{ storage.storageName }}</td>
             </tr>
@@ -39,7 +39,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <button @click="askBox(storage)" class="storage-submit-btn">신청</button>
+                <button @click="askBox(storage)" class="storage-submit-btn">자세히</button>
               </td>
             </tr>
             </tbody>

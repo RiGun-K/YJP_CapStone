@@ -56,7 +56,10 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-        })
+        });
+    setTimeout(() => {
+      this.backFlag = true
+    }, 100)
   },
   data() {
     return {
@@ -68,12 +71,28 @@ export default {
       stateCheck: false,
       boxArray: {},
       beforeBoxPrice: '',
+      backFlag: false,
     }
   },
   watch: {
     boxCode: function (newBoxCode) {
       this.boxPrice(newBoxCode)
+    },
+    backFlag() {
+      var divItem = document.getElementsByClassName("storage-box")
+      var index = 0
+      for (var x = 0; x < this.boxArray.length; x++) {
+        for (var y = 0; y < this.boxArray[x].length; y++) {
+          if (this.boxArray[x][y].storageBoxState != 0) {
+            divItem[index].classList.add("disabledDiv")
+          } else if (this.boxArray[x][y].storageBoxState == 6) {
+            divItem[index].classList.add("playOutDiv")
+          }
+          index++
+        }
+      }
     }
+
   },
   methods: {
     boxArrayR() {
@@ -202,5 +221,15 @@ export default {
 .pay-btn:hover {
   color: white;
   background-color: #b2e2fd;
+}
+.disabledDiv {
+  background: rgba(161, 156, 156, 0.97);
+  border: solid 3px rgba(16, 33, 145, 0.99);
+  color: white;
+}
+
+.playOutDiv {
+  background: #c3c3c3;
+  color: #000000;
 }
 </style>

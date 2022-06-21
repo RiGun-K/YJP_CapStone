@@ -23,21 +23,21 @@
             <img :src="'/api/product_detail_images/' + menu.rental.filename" class="img-fluid rounded-start" alt="...">
           </div>
           <div style="justify-content: left; width:80%; height: 100%">
-            <div style="width: 20%; padding-top: 2%; margin-left: 4%">
-              <p style="font-weight: bold; font-size: 1.5em">{{ menu.rental.rentalName}}</p>
+            <div style="width: 60%; padding-top: 2%; margin-left: 4%">
+              <p style="font-weight: bold; font-size: 1.2em">{{ menu.rental.rentalName}}</p>
             </div>
-            <div style="width: 50%; margin-left: 4%; margin-top: 2%; display: flex">
-              <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">대여기간: </p><p style="font-size: 1.2em">{{ this.startDate[index] }} ~ {{ this.endDate[index] }}</p>
+            <div style="width: 80%; margin-left: 4%; margin-top: 1%; display: flex">
+              <p style="font-weight: bold; font-size: 0.8em; margin-right: 2%; margin-top: 1%">대여기간: </p><p style="font-size: 1em">{{ this.startDate[index] }} ~ {{ this.endDate[index] }}</p>
             </div>
             <div style="display: flex">
-              <div style="width: 24%; padding: 2%; margin-left: 2%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1.2em">{{ menu.rental.rentalPrice }}</p>
+              <div style="width: 40%; padding-left: 3%; margin-left: 1%; display: flex">
+                <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1.0em">{{ menu.rental.rentalPrice }}</p>
               </div>
-              <div style="width: 20%; padding: 2%; margin-left: 2%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">대여일 수: </p><p style="font-size: 1.2em">{{ this.period[index]}}</p>
+              <div style="width: 30%; padding-left: 2%; margin-left: 2%; display: flex">
+                <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">대여일 수: </p><p style="font-size: 1em">{{ this.period[index]}}</p>
               </div>
-              <div style="width: 23%; padding: 2%; margin-left: 24%; margin-top: 3%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1.2em">{{menu.orders.orderPrice }}</p>
+              <div style="width: 35%; padding: 1%; margin-left: 10%; margin-top: 1%; display: flex">
+                <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1em">{{menu.orders.orderPrice }}</p>
               </div>
             </div>
           </div>
@@ -291,8 +291,8 @@ export default {
   margin-bottom: 5%;
 }
 .card-header{
-  font-size: 1.5em;
-  padding: 2%;
+  font-size: 1.2em;
+  padding: 1%;
 }
 
 .order-card-list .btn-group{
@@ -301,14 +301,14 @@ export default {
 }
 .order-info-btn{
   margin-top: 28%;
-  width: 70%;
+  width: 80%;
   padding: 1.5%;
   background-color: #ffffff;
   color: #00a3de;
   font-weight: bolder;
   border-color: #00a3de;
   border-radius: 1em;
-  font-size: 1em;
+  font-size: 0.7em;
 }
 .order-info-btn:hover{
   color: white;

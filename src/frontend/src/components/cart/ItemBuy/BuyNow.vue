@@ -1,4 +1,6 @@
 <template>
+  <div class="back">
+    <div class="frame">
   <div class="buyNow">
     <h1 style="font-weight: bold">주문/결제</h1>
     <h2>구매자 정보</h2>
@@ -85,6 +87,8 @@
     <div style="display: flex; justify-content: center; align-items: center">
       <button class="buyBtn" @click="paymentBtn()">결제하기</button>
       <button class="buyBtn" @click="cancelBtn()">취소</button>
+    </div>
+  </div>
     </div>
   </div>
 </template>
@@ -294,5 +298,22 @@ export default {
   border-color: #00a3de;
   border-radius: 1em;
   font-size: 1.5em;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 </style>

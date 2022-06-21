@@ -119,6 +119,7 @@ export default {
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
 .btnWrap_1{text-align:center;
   margin-left: 80%;
+
   background-color: #58a8e5;
   color: white;
   text-decoration: none;

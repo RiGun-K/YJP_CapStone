@@ -148,6 +148,7 @@ public class UseStorageController {
         useStorageBox.setStorageBoxCode(storageBox.get());
         useStorageBox.setOrderCode(orders);
         useStorageBox.setMCode(user.get());
+        useStorageBox.setUseStorageState("2");
         useStorageBoxRepository.save(useStorageBox);
 
         if (payStorageBox.getItem().size() > 0) {
@@ -160,7 +161,9 @@ public class UseStorageController {
             System.out.println("없다");
         }
         // 박스 상태 변화
-        storageBox.get().setStorageBoxState("1");
+        storageBox.get().setStorageBoxState("2");
+
+        System.out.println("123");
         // 결제된 박스 업데이트
         storageBoxRepository.save(storageBox.get());
 
@@ -245,6 +248,7 @@ public class UseStorageController {
         Orders orders = new Orders(member.get());
         orders.setPaymentDate(orderTime);
         orders.setMCode(member.get());
+        orders.setOrderPrice(move.getPrice());
         ordersRepository.save(orders);
 
         // 보관함 상태 코드 변경경
