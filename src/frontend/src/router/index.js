@@ -534,6 +534,11 @@ const routes = [
 			import('@/components/storageService/user/RepairBox.vue'),
 	},
 	{
+		path: "/storageComplete",
+		name: "storageComplete",
+		component:()=>import('@/views/user/StorageComplete.vue'),
+	},
+	{
 		path: '/storageManager',
 		name: 'storageManager',
 		component: () => import('@/views/manager/ManagerStorage.vue'),
