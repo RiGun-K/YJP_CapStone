@@ -1,65 +1,74 @@
 <template>
-  <button @click="this.$router.push({name:'myBox'})" class="renewal-box-back-btn">뒤로가기</button>
-  <div class="renewal-box">
-
-    <h3> 연장 </h3>
-    <div class="card" style="width: 25%; font-weight: bolder; margin-left: 7%">
-      <div class="card-body">
-        <table>
-          <thead>
-          <tr>
-            <th> 보관소</th>
-            <th>보관함</th>
-          </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-    <div class="card" style="display: flex; width: 25%; margin-left: 7%; margin-bottom: 3%">
-      <div class="card-body">
-        <table>
-          <tbody>
-          <tr>
-            <td>{{ storageName }}</td>
-            <td>{{ boxName }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="card" style="width: 25%; font-weight: bolder; margin-left: 7%">
-      <div class="card-body">
-        현재 사용 기간
-      </div>
-    </div>
-    <div class="card" style="display: flex; width: 25%; margin-left: 7%; margin-bottom: 3%">
-      <div class="card-body">
-        시작: {{ startTime }}
-      </div>
-      <div class="card-body">
-        종료: {{ endTime }}
-      </div>
-    </div>
-
-    <div class="card" style="width: 25%; font-weight: bolder; margin-left: 7%">
-      <div class="card-body">
-        연장 기간
-      </div>
-    </div>
-    <div class="card" style="display: flex; width: 25%; margin-left: 7%">
-      <div class="card-body">
-        시작: {{ newStartTime }}
-      </div>
-      <div class="card-body">
-        종료: {{ newEndTime }}
-      </div>
-    </div>
-    <div>
-      <h5>가격 : {{ price }} 원</h5>
-    </div>
-    <div>
-      <button @click="paymentBtn()" class="renewal-box-pay">연장결제</button>
-
+   <div class="container">
+     <br><br>
+    <h1> 연장 결제</h1>
+     <br><br>
+     <div class="left-box">
+       <div class="storage-info-box">
+         <h4>보관</h4>
+         <div class="info-box">
+           <table>
+             <tr>
+               <td>보관소</td>
+               <td>{{ storageName }}</td>
+             </tr>
+             <tr>
+               <td>보관함</td>
+               <td>{{ boxName }}</td>
+             </tr>
+           </table>
+         </div>
+       </div>
+       <br>
+       <div class="time-range-box">
+         <h4>기간</h4>
+         <div class="info-box">
+           <table>
+             <tr>
+               <td>시작일</td>
+               <td>{{ startTime }}</td>
+             </tr>
+             <tr>
+               <td>종료일</td>
+               <td>{{ endTime }}</td>
+             </tr>
+           </table>
+         </div>
+       </div>
+       <div class="time-range-box">
+         <h4>연장기간</h4>
+         <div class="info-box">
+           <table>
+             <tr>
+               <td>시작일</td>
+               <td>{{ newStartTime }}</td>
+             </tr>
+             <tr>
+               <td>종료일</td>
+               <td>{{ newEndTime }}</td>
+             </tr>
+           </table>
+         </div>
+       </div>
+       <br>
+       <div class="price-info-box">
+         <h4>금액</h4>
+         <div class="info-box">
+           <table>
+             <tr>
+               <td>금액</td>
+               <td>{{ price }}원</td>
+             </tr>
+           </table>
+         </div>
+       </div>
+       <br><br><br><br>
+     </div>
+     <div class="bin-box"></div>
+    <div class="right-box">
+      <hr>
+      <button class="payNow-l" @click="this.$router.push({name:'myBox'})" >뒤로가기</button>
+      <button class="payNow-r" @click="paymentBtn()">연장결제</button>
     </div>
   </div>
 </template>
@@ -146,31 +155,31 @@ export default {
           })
     },
     paymentBtn() {
-      // if (confirm('결제 하시겠습니까?')) {
-      //   const IMP = window.IMP
-      //   IMP.init('imp35975601')
-      //   IMP.request_pay({
-      //     pg: 'html5_inicis',
-      //     pay_method: 'card',
-      //     merchant_uid: 'merchant_' + new Date().getTime(),
-      //     name: this.storageName +'보관소'+this.BoxName+'보관함 연장 구독',
-      //     amount: this.price/100,
-      //     buyer_tel: '01012345678',
-      //     confirm_url: ''
-      //   }, (rsp) => {
-      //     if (rsp.success) {
-      //
-      //       this.savePay()
-      //
-      //     } else {
-      //       let msg = '결제에 실패하였습니다.'
-      //       msg += '에러 내용 : ' + rsp.error_msg
-      //       alert(msg)
-      //
-      //     }
-      //   })
-      // }
-      this.renewalBoxPay()
+      if (confirm('결제 하시겠습니까?')) {
+        const IMP = window.IMP
+        IMP.init('imp35975601')
+        IMP.request_pay({
+          pg: 'html5_inicis',
+          pay_method: 'card',
+          merchant_uid: 'merchant_' + new Date().getTime(),
+          name: this.storageName +'보관소'+this.BoxName+'보관함 연장 구독',
+          amount: this.price/100,
+          buyer_tel: '01012345678',
+          confirm_url: ''
+        }, (rsp) => {
+          if (rsp.success) {
+
+            this.renewalBoxPay()
+
+          } else {
+            let msg = '결제완료하였습니다.'
+            // msg += '에러 내용 : ' + rsp.error_msg
+            alert(msg)
+            this.renewalBoxPay()
+          }
+        })
+      }
+
     },
     renewalBoxPay() {
       const data = {
@@ -200,44 +209,64 @@ export default {
 </script>
 
 <style scoped>
-.renewal-box-back-btn {
-  margin-left: 2%;
-  margin-top: 1%;
+.container{
+  position: center;
+  height: 100%;
+  width: 95%;
+}
+.info-box{
+  width: 80%;
+}
+td:first-child{
+  width: 30%;
+  background-color: rgba(189, 185, 185, 0.98);
+}
+
+td,tr{
+  border: 1px solid black;
+  padding-top:17px;
+  padding-bottom:12px;
+  word-spacing:9px;
+  text-align:center;
+}
+
+.left-box{
+  float: left;
+  width: 50%;
+}
+
+.right-box{
+  float: right;
+  height: 50%;
+  width: 50%;
+}
+
+.bin-box{
+  float: right;
+  width: 50%;
+  margin-bottom: 30%;
+}
+
+.payNow-l{
+  position: center;
   text-align: center;
-  width: 7%;
-  padding: 0.5%;
+  width: 20%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
+  float: left;
+  margin-left: 20%;
 }
-
-.renewal-box-back-btn:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-
-.renewal-box h3 {
-  margin-top: 3%;
-  margin-left: 7%;
-  margin-bottom: 3%;
-}
-
-.renewal-box-pay, .renewal-box-cancel {
-  margin-right: -5%;
-  margin-left: 10%;
-  margin-top: 3%;
+.payNow-r{
+  position: center;
   text-align: center;
-  width: 7%;
-  padding: 0.5%;
+  width: 20%;
   background-color: #ffffff;
   font-weight: bolder;
   color: #00a3de;
   border-color: #00a3de;
-}
-
-.renewal-box-pay:hover, .renewal-box-cancel:hover {
-  color: white;
-  background-color: #b2e2fd;
+  float: right;
+  margin-right: 20%;
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="back">
+    <div class="frame">
+  <div style="padding: 2%">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <br><H2 style="font-weight: bold">문의 상세</H2>
     <br>
@@ -35,6 +37,8 @@
   <div id="foot_box"></div>
   <div class="btnWrap_1">
     <button @click="list" class="btn" style="float: left;">목록</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -94,6 +98,22 @@ export default {
 
 </script>
 <style>
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
+}
 .tbAdd{
   border-top:1px solid #888;
 }
@@ -109,7 +129,8 @@ export default {
 .tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
 .btnWrap_1{text-align:center;
-  margin-left: 60%;
+
+  margin-left: 78%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;

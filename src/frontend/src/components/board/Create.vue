@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="back">
+    <div class="frame">
+  <div style="padding: 2%">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <br>
@@ -44,6 +46,8 @@
     <div class="button_6">
     <button type="submit" @click="write" class="btn">작성</button>
   </div>
+  </div>
+    </div>
   </div>
 
 </template>
@@ -190,7 +194,7 @@ export default {
   transform: translateY(4px);
 }
 .btnWrap_4{text-align:center;
-  margin-left: 90%;
+  margin-left: 70%;
   margin-top: 3%;
   background-color: #58a8e5;
   color: white;
@@ -219,17 +223,21 @@ export default {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-/*.btnAdd {text-align:center;*/
-/*  width: 17%;*/
-/*  padding: 10px 0 10px;*/
-/*  border: 0;*/
-/*  cursor: pointer;*/
-/*  color: white;*/
-/*  background-color: #5f8c98;*/
-/*  font-size: 20px;*/
-/*  font-weight: 400;*/
-/*  margin-left: 10%;*/
-/*  margin-top: 20px;}*/
-
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
+}
 
 </style>

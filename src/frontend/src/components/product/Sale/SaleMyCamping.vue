@@ -1,4 +1,6 @@
 <template>
+  <div class="back">
+    <div class="frame">
   <div class="buy-orders">
     <h1>등록한 캠핑장 예약현황</h1>
     <div class="order-card-list">
@@ -45,6 +47,8 @@
           </table>
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 </template>
@@ -287,6 +291,23 @@ export default {
   height: 100%;
   margin-top: 2%;
   margin-left: 3%;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: 200%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
 }
 .card-header{
   font-size: 1.5em;

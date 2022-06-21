@@ -1,56 +1,60 @@
 <template>
-  <div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <br>
-    <h2 style="font-weight: bold">게시판 리스트</h2>
-    <br>
-        <div class="listWrap">
-          <table class="tbList">
-      <tr>
-        <td style="font-size:20px; padding: 10px 20px 10px 180px">제목</td>
-        <td style="font-size:20px; padding: 10px 10px 10px 10px">글쓴이</td>
-        <td style="font-size:20px;">등록일</td>
-        <td style="font-size:20px;">조회수</td>
+  <div class="back">
+    <div class="frame">
+    <div style="padding: 2%">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <br>
+      <h2 style="font-weight: bold">게시판 리스트</h2>
+      <br>
+          <div class="listWrap">
+            <table class="tbList">
+        <tr>
+          <td style="font-size:20px; padding: 10px 20px 10px 180px">제목</td>
+          <td style="font-size:20px; padding: 10px 10px 10px 10px">글쓴이</td>
+          <td style="font-size:20px;">등록일</td>
+          <td style="font-size:20px;">조회수</td>
 
-      </tr>
+        </tr>
 
-      <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
-        <td style="padding: 10px 20px 10px 180px" >{{item.title}}</td>
-        <td style="padding: 10px 10px 10px 10px">{{item.mid.mname}}</td>
-        <td>{{item.savedTime}}</td>
-        <td>{{item.boardViews}}</td>
-      </tr>
-      <router-link to="{name: 'View', params: { writer_code:item.writer_code }}"></router-link>
-          </table>
-          <br>
-          <div class="btnWrap">
-    <button @click="write" class="btn" style="float: right" >글쓰기</button>
-          </div>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
+        <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
+          <td style="padding: 10px 20px 10px 180px" >{{item.title}}</td>
+          <td style="padding: 10px 10px 10px 10px">{{item.mid.mname}}</td>
+          <td>{{item.savedTime}}</td>
+          <td>{{item.boardViews}}</td>
+        </tr>
+        <router-link to="{name: 'View', params: { writer_code:item.writer_code }}"></router-link>
+            </table>
+            <br>
+            <div class="btnWrap">
+      <button @click="write" class="btn" style="float: right" >글쓰기</button>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
 
-          <div class="searchWrap">
-          <input type="text" v-model="keyword" @keyup.enter="fnSearch" /><a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
-          </div>
+            <div class="searchWrap">
+            <input type="text" v-model="keyword" @keyup.enter="fnSearch" /><a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
+            </div>
 
-<!--    <li>-->
-<!--      <div id="divPaging">-->
-<!--        <div>◀</div>-->
-<!--        <div><b>1</b></div>-->
-<!--        <div>2</div>-->
-<!--        <div>3</div>-->
-<!--        <div>4</div>-->
-<!--        <div>5</div>-->
-<!--        <div>▶</div>-->
-<!--      </div>-->
-<!--    </li>-->
+  <!--    <li>-->
+  <!--      <div id="divPaging">-->
+  <!--        <div>◀</div>-->
+  <!--        <div><b>1</b></div>-->
+  <!--        <div>2</div>-->
+  <!--        <div>3</div>-->
+  <!--        <div>4</div>-->
+  <!--        <div>5</div>-->
+  <!--        <div>▶</div>-->
+  <!--      </div>-->
+  <!--    </li>-->
 
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
 </template>
 
@@ -109,6 +113,22 @@ export default {
   margin:0 auto;
   text-align:center;
 }
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
+}
 
 .tbList th{border-top:1px solid #888;}
 .tbList th, .tbList td{border-bottom:1px solid #eee; padding:5px 0;}
@@ -121,7 +141,7 @@ export default {
   margin-top: 2px;
 }
 .btnWrap{text-align:center;
-  margin-left: 90%;
+  margin-left: 75%;
   margin-top: 2%;
   background-color: #58a8e5;
   color: white;

@@ -1,4 +1,6 @@
 <template>
+  <div class="back">
+    <div class="frame">
   <div class="share-now">
     <h1 style="font-weight: bold">대여/결제</h1>
     <h2>구매자 정보</h2>
@@ -56,10 +58,6 @@
         <td>{{ content.rentalPrice }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">배송비</td>
-        <td>10000</td>
-      </tr>
-      <tr>
         <td class="share-now-td">대여일</td>
         <td>{{ this.$route.query.startDate }} ~ {{ this.$route.query.endDate }} ♡ 총 기간 {{ this.$route.query.period }} 일</td>
       </tr>
@@ -68,23 +66,18 @@
     <h2>결제 정보</h2>
     <table>
       <tr>
-        <td class="share-now-td">총 대여상품 금액</td>
+        <td class="share-now-td">총 결제 금액</td>
         <td>{{ content.rentalPrice * this.$route.query.period }}</td>
       </tr>
-      <tr>
-        <td class="share-now-td">배송비</td>
-        <td>10000</td>
-      </tr>
-      <tr>
-        <td class="share-now-td">총 결제 금액</td>
-        <td>{{price}}</td>
-      </tr>
+
     </table>
 
     <h5 class="share-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
     <div style="display: flex; justify-content: center; align-items: center">
       <button class="shareBtn" @click="paymentBtn()">결제하기</button>
       <button class="shareBtn" @click="cancelBtn()">취소</button>
+    </div>
+  </div>
     </div>
   </div>
 </template>
@@ -295,5 +288,22 @@ export default {
   border-color: #00a3de;
   border-radius: 1em;
   font-size: 1.5em;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 </style>

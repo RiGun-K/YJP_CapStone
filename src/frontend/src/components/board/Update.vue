@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="back">
+    <div class="frame">
+  <div style="padding: 2%">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <br><H2 style="font-weight: bold">게시글 수정</H2>
     <br>
@@ -48,6 +50,9 @@
     </div>
 
   </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -74,7 +79,11 @@ export default {
     this.file = this.$route.query.filename;
     console.log(this.id)
   },
-
+  // computed: {
+  //   toString(){
+  //     this.content = this.content.replace("<br>", "\r\n");
+  //   }
+  // },
 
   methods: {
     update() {
@@ -137,6 +146,22 @@ export default {
 </script>
 
 <style scoped>
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
+}
 .tbAdd{border-top:1px solid #888;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0;}
 .tbAdd td{padding:10px 10px; box-sizing:border-box;}
@@ -145,7 +170,7 @@ export default {
 .btnWrap a{margin:0 10px;}
 .button_1{
   text-align:center;
-  margin-left: 88%;
+  margin-left: 76%;
   margin-top: 3%;
   background-color: #58a8e5;
   color: white;
@@ -163,7 +188,7 @@ export default {
   transform: translateY(4px);
 }
 .button_2{text-align:center;
-  margin-left: 93%;
+  margin-left: 81%;
   margin-top: 3%;
   background-color: #58a8e5;
   color: white;
