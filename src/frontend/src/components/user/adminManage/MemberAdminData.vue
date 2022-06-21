@@ -119,16 +119,18 @@ export default {
   z-index: 1;
 }
 .divBody{
+  border-radius: 100px;
   padding: 30px;
-  margin-left: 5%;
-  margin-right: 5%;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
-  background: white;
-  width: 90%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
   height: 93%;
+  background: white;
   z-index: 2;
-  position: relative;
 }
 label{
   margin-top: 5px;
