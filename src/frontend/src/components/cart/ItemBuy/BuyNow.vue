@@ -1,137 +1,149 @@
 <template>
-  <div class="share-now">
-    <h2>대여/결제</h2>
-
-    <h3>구매자 정보</h3>
+  <div class="buyNow">
+    <h1 style="font-weight: bold">주문/결제</h1>
+    <h2>구매자 정보</h2>
     <table>
       <tr>
-        <td class="share-now-td">이름</td>
-        <td>{{ this.content.mid.mnick }}</td>
+        <td class="buy-now-td">이름</td>
+        <td>{{ this.buyMember.mname }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">이메일</td>
-        <td>{{ this.content.mid.mmail }}</td>
+        <td class="buy-now-td">이메일</td>
+        <td>{{ this.buyMember.mmail }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">휴대폰 번호</td>
-        <td>{{ this.content.mid.mph }}</td>
+        <td class="buy-now-td">휴대폰 번호</td>
+        <td>{{ this.buyMember.mph }}</td>
       </tr>
     </table>
 
-    <h3>받는사람 정보</h3>
+    <h2>받는사람 정보</h2>
     <table>
       <tr>
-        <td class="share-now-td">이름</td>
-        <td><input type="text"></td>
+        <td class="buy-now-td">이름</td>
+        <td><input type="text" v-model="getterName"></td>
       </tr>
       <tr>
-        <td class="share-now-td">우편번호</td>
+        <td class="buy-now-td">우편번호</td>
         <td><input v-bind:value="zip" v-bind:disabled="zip" placeholder="우편번호"><button @click="showApi()">우편번호 찾기</button></td>
       </tr>
       <tr>
-        <td rowspan='2' class="share-now-td">배송 주소</td>
-        <td><input size="40" v-bind:value="addr1" v-bind:disabled="addr1" placeholder="기본 주소"></td>
+        <td rowspan='2' class="buy-now-td">배송 주소</td>
+        <td><input size="40" v-bind:value="basicAddress" v-bind:disabled="basicAddress" placeholder="기본 주소"></td>
       </tr>
       <tr>
         <!--        <td></td>-->
-        <td><input size="40" v-bind:name="addr2" placeholder="상세 주소 입력"> </td>
+        <td><input size="40" v-model="detailAddress" placeholder="상세 주소 입력"> </td>
       </tr>
       <tr>
-        <td class="share-now-td">연락처</td>
-        <td><input type="text"></td>
+        <td class="buy-now-td">연락처</td>
+        <td><input type="text" v-model="getterPhoneNumber" maxlength="11"></td>
+      </tr>
+      <tr>
+        <td class="buy-now-td">배송 요청사항</td>
+        <td><input v-model="deliveryMessage" size="40" type="text"></td>
       </tr>
     </table>
 
-    <h3>구매상품 정보</h3>
+    <h2>상품 정보</h2>
     <table>
       <tr>
-        <td class="share-now-td">상품 이름</td>
+        <td class="buy-now-td">상품 이름</td>
         <td>{{ this.content.buyName }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">상품 수량</td>
-        <td>{{ this.$route.query.count }}</td>
-      </tr>
-      <tr>
-        <td class="share-now-td">상품 금액</td>
+        <td class="buy-now-td">상품 금액</td>
         <td>{{ this.content.buyPrice }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">배송비</td>
-        <td>10000</td>
+        <td class="buy-now-td">수량</td>
+        <td>{{ this.count }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">배송 요청사항</td>
-        <td><input size="40" type="text"></td>
+        <td class="buy-now-td">배송비</td>
+        <td>10000</td>
       </tr>
     </table>
 
-    <h3>결제 정보</h3>
+    <h2>결제 정보</h2>
     <table>
       <tr>
-        <td class="share-now-td">총 구매상품 금액</td>
-        <td>{{ this.content.buyPrice * this.$route.query.count }}</td>
+        <td class="buy-now-td">총 상품 금액</td>
+        <td>{{ this.content.buyPrice * this.count }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">배송비</td>
+        <td class="buy-now-td">배송비</td>
         <td>10000</td>
       </tr>
       <tr>
-        <td class="share-now-td">총 결제 금액</td>
-        <td>{{ this.content.buyPrice * this.$route.query.count }} + 10000</td>
+        <td class="buy-now-td">총 결제 금액</td>
+        <td>{{ this.content.buyPrice * this.count + 10000}}</td>
       </tr>
     </table>
 
-    <h5>대여조건 확인 및 결제대행 서비스 약관 동의<button>보기</button></h5>
-    <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
-
-    <h5 class="share-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
-    <button class="payNow" @click="paymentBtn()">결제하기</button>
-    <button class="cancel-share-now" @click="cancelBtn()">취소</button>
-
+    <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <button class="buyBtn" @click="paymentBtn()">결제하기</button>
+      <button class="buyBtn" @click="cancelBtn()">취소</button>
+    </div>
   </div>
 </template>
 
 <script>
-import Datepicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
 import axios from "axios";
 export default {
-  name: 'ShareNow',
-  components: { Datepicker },
+  name: 'BuyNow',
+  created() {
+    this.member = this.$store.state.loginState
+    console.log(this.member)
+    this.DataList();
+  },
   data () {
     return {
       zip: '',
-      addr1: '',
-      addr2: '',
-      price: 1000,
-      value: '',
-      shareDate: null,
-      today: new Date(),
-
-      content: []
+      basicAddress: '',
+      detailAddress: '',
+      buyCheck: false,
+      getterName: '',
+      getterPhoneNumber: '',
+      deliveryMessage: '',
+      onlyNumber: true,
+      content: [],
+      member: [],
+      buyMember: [],
+      AllPrice: 0
     }
   },
-  created() {
-    this.DataBuy()
+  props: {
+    BuyCount:{
+      type: Number,
+    }
   },
   mounted () {
     const IMP = window.IMP
     IMP.init('imp35975601')
-    console.log(this.$route.query.count)
   },
   methods: {
-    DataBuy() {
+    DataList() {
       this.id = this.$route.params.buyId;
-      console.log(this.id)
-      axios.get('http://localhost:9002/api/product_detailB/' + this.id)
+      this.count = this.$route.query.count;
+      console.log(this.id);
+      console.log(this.count)
+      axios.get('http://localhost:9002/api/buyMember/' + this.member.mcode)
           .then(res => {
             console.log(res.data)
+            this.buyMember = res.data
+          })
+      axios.get('http://localhost:9002/api/product_detailB/' + this.id)
+          .then(res => {
+            console.log(res.data);
             this.content = res.data;
+            //
           })
           .catch(e => {
-            console.log(e)
+            console.log(e);
           })
+      this.AllPrice = this.content.buyPrice * this.BuyCount
     },
     showApi () {
       new window.daum.Postcode({
@@ -151,7 +163,7 @@ export default {
             fullRoadAddr += extraRoadAddr
           }
           this.zip = data.zonecode
-          this.addr1 = fullRoadAddr
+          this.basicAddress = fullRoadAddr
         }
       }).open()
     },
@@ -163,74 +175,124 @@ export default {
           pg: 'html5_inicis',
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
-          name: '상품명',
-          amount: this.price,
-          buyer_tel: '01012345678',
+          name: this.content.buyName,
+          amount: this.content.buyPrice,
+          buyer_tel: this.getterPhoneNumber,
+          buyer_name: this.content.mid.mid,
+          buyer_email: this.content.mid.mmail,
           confirm_url: ''
         }, (rsp) => {
-          if (rsp.success) {
-            let msg = '결제가 완료되었습니다.'
-            msg += '고유ID : ' + rsp.imp_uid
-            msg += '상점 거래 ID : ' + rsp.merchant_uid
-            msg += '결제 금액 : ' + rsp.paid_amount
-            msg += '카드 승인번호 : ' + rsp.apply_num
+          if (true) {
+            const msg = '결제가 완료되었습니다.'
+            // msg += '고유ID : ' + rsp.imp_uid
+            // msg += '상점 거래 ID : ' + rsp.merchant_uid
+            // msg += '결제 금액 : ' + rsp.paid_amount
+            // msg += '카드 승인번호 : ' + rsp.apply_num
             alert(msg)
-            window.location.href = 'http://localhost:8081/cart/itemBuy/buyComplete'
+            console.log(this.content.buyId);
+            this.axios.post('http://localhost:9002/api/buyData', {
+              MID: this.member.mcode,
+              deliveryZipcode: this.zip,
+              deliveryAddress: this.detailAddress,
+              deliveryGetter: this.getterName,
+              deliveryGetterTel: this.getterPhoneNumber,
+              deliveryRequest: this.deliveryMessage,
+              orderPrice: this.content.buyPrice,
+              orderType: rsp.pay_method,
+              paymentCode: rsp.merchant_uid,
+              orderState: '2',
+              orderMenuCount: 1,
+              menuId: this.content.buyId,
+            })
+                .then((res)=>{
+                  console.log(res.data);
+                })
+                .catch((err)=>{
+                  console.log(err)
+                });
+            this.$router.push({
+              name: "BuyComplete",
+              params: {
+                orderMenuCount: 1,
+                menuName: this.content.buyName,
+                orderPrice: this.content.buyPrice,
+                orderType: rsp.pay_method
+              }
+            })
           } else {
             let msg = '결제에 실패하였습니다.'
             msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-            window.location.href = 'http://localhost:8081/cart/itemBuy/buyComplete'
           }
         })
       }
     },
     cancelBtn () {
-      window.location.href = 'http://localhost:8081'
+      window.location.href = 'http://localhost:8081/itemBuy'
+    },
+    checkBuy () {
+      if (this.buyCheck === true) {
+        this.buyCheck = false
+      } else {
+        this.buyCheck = true
+      }
+    }
+  },
+  watch: {
+    getterPhoneNumber(val) {
+      const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+      if(reg.exec(val)!==null) {
+        this.getterPhoneNumber = this.getterPhoneNumber.slice(0,-1);
+        alert("숫자만 입력해주세요")
+      }
+      return this.getterPhoneNumber=this.getterPhoneNumber.replace(/[^-\.0-9]/g,'');
     }
   }
 }
 </script>
 
 <style scoped>
-.share-now{
-  margin: 1% 2%;
+.buyNow{
+  padding: 1% 2%;
   width: 100%;
   height: 100%;
 }
-.share-now h3{
-  margin: 1% 10%;
+.buyNow h2{
+  padding: 1% 14%;
   width: 100%;
   height: 100%;
+  font-weight: bold;
 }
-.share-now-td{
+.buy-now-td{
   text-align: center;
   width: 20%;
 }
-.share-now table {
-  margin: 1.5% 15%;
-  width: 35%;
+.buyNow table {
+  margin: 1.5% 24%;
+  width: 50%;
   border: 1px solid #444444;
   border-collapse: collapse;
+  font-size: 1.5em;
 }
-.share-now td {
+.buyNow td {
   border: 1px solid #444444;
   padding: 2%;
 }
-.share-now h5{
-  margin: 1% 10%;
-}
-.share-now h5 button{
-  margin: 0% 2%;
-}
-.payNow{
-  margin-left: 27%;
-}
-.share-now-info-check{
-  margin: 3% 30%;
+.buyNow h5{
+  margin-left: 28%;
   padding: 1.5%;
+  margin-top: 5%;
 }
-.cancel-share-now{
-  margin-left: 5%;
+.buyBtn{
+  margin-left: 2%;
+  margin-right: 3%;
+  width: 10%;
+  padding: 1%;
+  background-color: #ffffff;
+  color: #00a3de;
+  font-weight: bolder;
+  border-color: #00a3de;
+  border-radius: 1em;
+  font-size: 1.5em;
 }
 </style>

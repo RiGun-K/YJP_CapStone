@@ -8,16 +8,16 @@
     </h1>
 
     <h5><span v-if="collapsed">
-      </span>
-      <span v-else>캠핑 분류</span></h5>
-    <SidebarLink class="sidebar-link" icon="@/assets/전체.png" to="/infoter" @click="goData">캠핑장 전체</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(1)">캠핑</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(2)">카라반</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(3)">글램핑</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(4)">팬션</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(5)">차박</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(6)">당일 피크닉</SidebarLink>
-    <SidebarLink class="sidebar-link" icon="" to="/infoter" @click="cam(7)">기타</SidebarLink>
+      </span></h5>
+    <button class="w-btn-outline w-btn-red-outline" @click="goData">캠핑장 전체</button>
+    <br>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(1)">캠핑</button>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(2)">카라반</button>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(3)">글램핑</button>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(4)">팬션</button>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(5)">차박</button>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(6)">당일 피크닉</button>
+    <button class="w-btn-outline w-btn-red-outline" @click="cam(7)">기타</button>
 
     <span
         class="collapse-icon"
@@ -43,7 +43,7 @@
       <label class="btn btn-outline-primary" for="btnradio3" @click="orderByView">인기순</label>
     </div>
 
-    <h3>지역분류</h3>
+    <h1>지역분류</h1>
     <div class="searchDiv">
       <select v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
@@ -53,7 +53,7 @@
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <button @click="search()">검색</button>
+      <button class="w-btn-neon2"  @click="search()">검색</button>
     </div>
 
 
@@ -85,7 +85,7 @@
             조회수 - {{ product.campingViews }}
           </div>
           <div class="card-body">
-            객실수 - {{ product.campingDetails.length }}
+            잔여 객실수 - {{ product.campingDetails.length }}
           </div>
         </div>
         <br>
@@ -284,6 +284,8 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
 .infoter{
   width: 60%;
   height: 100%;
@@ -361,6 +363,7 @@ img {
   margin-left: 85%;
   margin-top: -30%;
 }
+select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
 
 .campingkindimage {
   width:380px;
@@ -430,5 +433,86 @@ img {
   flex-direction: row;
   margin: 0 auto;
   text-align: center;
+}
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+.w-btn-neon2 {
+  position: relative;
+  margin-left: 45%;
+  border: none;
+  min-width: 200px;
+  min-height: 50px;
+  background: linear-gradient(
+      90deg,
+      rgba(129, 230, 217, 1) 0%,
+      rgba(79, 209, 197, 1) 100%
+  );
+  border-radius: 1000px;
+  color: darkslategray;
+  cursor: pointer;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.w-btn-neon2:hover {
+  transform: scale(1.2);
+}
+
+.w-btn-neon2:hover::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+.w-btn:hover {
+  letter-spacing: 2px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.w-btn-outline {
+  position: relative;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-family: 'paybooc-Light', sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+.w-btn-red-outline {
+  border: 3px solid #2093e5;
+  color: #6e6e6e;
+}
+.w-btn-red-outline:hover {
+  background-color: #2093e5;
+  color: #e1eef6;
+}
+.w-btn-outline:hover {
+  letter-spacing: 2px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.w-btn-outline:active {
+  transform: scale(1.5);
 }
 </style>

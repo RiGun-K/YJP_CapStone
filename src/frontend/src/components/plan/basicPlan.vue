@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 <template>
 	<div class="back">
 		<div class="frame">
@@ -328,8 +326,7 @@ export default {
 	background-image: url(@/assets/campwall2.webp);
 	background-size: 100%;
 }
-.contents {
-}
+
 .frame {
 	background-color: rgb(247, 246, 230);
 	width: 1000px;
@@ -360,8 +357,7 @@ export default {
 
 	width: 50%;
 }
-.planName button {
-}
+
 .planName input {
 	width: 455px;
 }
@@ -389,8 +385,6 @@ export default {
 }
 .planBudget input {
 	width: 535px;
-}
-.tags {
 }
 
 .w-btn-outline {
@@ -452,15 +446,12 @@ export default {
 	background-color: rgb(198, 217, 233);
 	border: none;
 	border-radius: 5px;
-	margin: 10px;
+	margin-right: 10px;
 }
 .tagButton:hover {
 	letter-spacing: 2px;
 	transform: scale(1.5);
 	cursor: pointer;
 	border-radius: 5px;
-}
-.tagButton:active {
-	transform: scale(1.9);
 }
 </style>

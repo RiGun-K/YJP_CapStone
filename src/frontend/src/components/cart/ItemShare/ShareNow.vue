@@ -1,8 +1,7 @@
 <template>
   <div class="share-now">
-    <h2>대여/결제</h2>
-
-    <h3>구매자 정보</h3>
+    <h1 style="font-weight: bold">대여/결제</h1>
+    <h2>구매자 정보</h2>
     <table>
       <tr>
         <td class="share-now-td">이름</td>
@@ -18,11 +17,11 @@
       </tr>
     </table>
 
-    <h3>받는사람 정보</h3>
+    <h2>받는사람 정보</h2>
     <table>
       <tr>
         <td class="share-now-td">이름</td>
-        <td><input type="text"></td>
+        <td><input type="text" v-model="getterName"></td>
       </tr>
       <tr>
         <td class="share-now-td">우편번호</td>
@@ -30,19 +29,23 @@
       </tr>
       <tr>
         <td rowspan='2' class="share-now-td">배송 주소</td>
-        <td><input size="40" v-bind:value="addr1" v-bind:disabled="addr1" placeholder="기본 주소"></td>
+        <td><input size="40" v-bind:value="basicAddress" v-bind:disabled="addr1" placeholder="기본 주소"></td>
       </tr>
       <tr>
         <!--        <td></td>-->
-        <td><input size="40" v-bind:name="addr2" placeholder="상세 주소 입력"> </td>
+        <td><input size="40" v-model="detailAddress" placeholder="상세 주소 입력"> </td>
       </tr>
       <tr>
         <td class="share-now-td">연락처</td>
-        <td><input type="text"></td>
+        <td><input type="text" v-model="getterPhoneNumber" maxlength="11"></td>
+      </tr>
+      <tr>
+        <td class="share-now-td">배송 요청사항</td>
+        <td><input size="40" type="text" v-model="deliveryMessage"></td>
       </tr>
     </table>
 
-    <h3>대여상품 정보</h3>
+    <h2>대여상품 정보</h2>
     <table>
       <tr>
         <td class="share-now-td">상품 이름</td>
@@ -53,42 +56,25 @@
         <td>{{ content.rentalPrice }}</td>
       </tr>
       <tr>
-        <td class="share-now-td">배송비</td>
-        <td>10000</td>
-      </tr>
-      <tr>
-        <td class="share-now-td">배송 요청사항</td>
-        <td><input size="40" type="text"></td>
-      </tr>
-      <tr>
         <td class="share-now-td">대여일</td>
         <td>{{ this.$route.query.startDate }} ~ {{ this.$route.query.endDate }} ♡ 총 기간 {{ this.$route.query.period }} 일</td>
       </tr>
     </table>
 
-    <h3>결제 정보</h3>
+    <h2>결제 정보</h2>
     <table>
       <tr>
-        <td class="share-now-td">총 대여상품 금액</td>
+        <td class="share-now-td">총 결제 금액</td>
         <td>{{ content.rentalPrice * this.$route.query.period }}</td>
       </tr>
-      <tr>
-        <td class="share-now-td">배송비</td>
-        <td>10000</td>
-      </tr>
-      <tr>
-        <td class="share-now-td">총 결제 금액</td>
-        <td>{{price}}</td>
-      </tr>
+
     </table>
 
-    <h5>대여조건 확인 및 결제대행 서비스 약관 동의<button>보기</button></h5>
-    <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
-
     <h5 class="share-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
-    <button class="payNow" @click="paymentBtn()">결제하기</button>
-    <button class="cancel-share-now" @click="cancelBtn()">취소</button>
-
+    <div style="display: flex; justify-content: center; align-items: center">
+      <button class="shareBtn" @click="paymentBtn()">결제하기</button>
+      <button class="shareBtn" @click="cancelBtn()">취소</button>
+    </div>
   </div>
 </template>
 
@@ -97,18 +83,19 @@ import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import store from "@/store";
 import axios from "axios";
-
 export default {
   name: 'ShareNow',
   components: { Datepicker },
   data () {
     return {
       zip: '',
-      addr1: '',
-      addr2: '',
-      price: 1000,
-      value: '',
-
+      basicAddress: '',
+      detailAddress: '',
+      buyCheck: false,
+      getterName: '',
+      getterPhoneNumber: '',
+      deliveryMessage: '',
+      onlyNumber: true,
       content: [],
       user: [],
     }
@@ -157,25 +144,20 @@ export default {
         oncomplete: (data) => {
           let fullRoadAddr = data.roadAddress
           let extraRoadAddr = ''
-
           if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
             extraRoadAddr += data.bname
           }
-
           if (data.buildingName !== '' && data.apartment === 'Y') {
             extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName)
           }
-
           if (extraRoadAddr !== '') {
             extraRoadAddr = ' (' + extraRoadAddr + ')'
           }
-
           if (fullRoadAddr !== '') {
             fullRoadAddr += extraRoadAddr
           }
-
           this.zip = data.zonecode
-          this.addr1 = fullRoadAddr
+          this.basicAddress = fullRoadAddr
         }
       }).open()
     },
@@ -183,35 +165,77 @@ export default {
       if (confirm('결제 하시겠습니까?')) {
         const IMP = window.IMP
         IMP.init('imp35975601')
-
         IMP.request_pay({
           pg: 'html5_inicis',
           pay_method: 'card',
           merchant_uid: 'merchant_' + new Date().getTime(),
-          name: '상품명',
-          amount: this.price,
-          buyer_tel: '01012345678',
+          name: this.content.rentalName,
+          amount: this.content.rentalPrice * this.$route.query.period,
+          buyer_tel: this.getterPhoneNumber,
+          buyer_name: this.content.mid.mid,
+          buyer_email: this.content.mid.mmail,
           confirm_url: ''
         }, (rsp) => {
-          if (rsp.success) {
+          if (true) {
             let msg = '결제가 완료되었습니다.'
-            msg += '고유ID : ' + rsp.imp_uid
-            msg += '상점 거래 ID : ' + rsp.merchant_uid
-            msg += '결제 금액 : ' + rsp.paid_amount
-            msg += '카드 승인번호 : ' + rsp.apply_num
+            // msg += '고유ID : ' + rsp.imp_uid
+            // msg += '상점 거래 ID : ' + rsp.merchant_uid
+            // msg += '결제 금액 : ' + rsp.paid_amount
+            // msg += '카드 승인번호 : ' + rsp.apply_num
             alert(msg)
-            window.location.href = 'http://localhost:8081/cart/itemBuy/buyComplete'
+            console.log(this.content);
+            this.axios.post('http://localhost:9002/api/rentalData', {
+              MID: this.user.mcode,
+              deliveryZipcode: this.zip,
+              deliveryAddress: this.detailAddress,
+              deliveryGetter: this.getterName,
+              deliveryGetterTel: this.getterPhoneNumber,
+              deliveryRequest: this.deliveryMessage,
+              orderPrice: this.content.rentalPrice * this.$route.query.period,
+              orderType: rsp.pay_method,
+              paymentCode: rsp.merchant_uid,
+              orderState: '2',
+              orderMenuCount: 1,
+              startDate: this.$route.query.startDate,
+              endDate: this.$route.query.endDate,
+              rentalId: this.content.rentalId
+            })
+                .then((res)=>{
+                  console.log(res.data);
+                })
+                .catch((err)=>{
+                  console.log(err)
+                });
+            this.$router.push({
+              name: "InfoterComplete",
+              params: {
+                orderMenuCount: 1,
+                menuName: this.content.detailName,
+                orderPrice: this.content.detailPrice * this.$route.query.period,
+                reservationDate: this.reservationDate,
+                orderType: rsp.pay_method
+              }
+            })
           } else {
             let msg = '결제에 실패하였습니다.'
             msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-            window.location.href = 'http://localhost:8081/cart/itemBuy/buyComplete'
           }
         })
       }
     },
     cancelBtn () {
-      window.location.href = 'http://localhost:8081'
+      window.location.href = 'http://localhost:8081/itemShare'
+    }
+  },
+  watch: {
+    getterPhoneNumber(val) {
+      const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+      if(reg.exec(val)!==null) {
+        this.getterPhoneNumber = this.getterPhoneNumber.slice(0,-1);
+        alert("숫자만 입력해주세요")
+      }
+      return this.getterPhoneNumber=this.getterPhoneNumber.replace(/[^-\.0-9]/g,'');
     }
   }
 }
@@ -223,39 +247,42 @@ export default {
   width: 100%;
   height: 100%;
 }
-.share-now h3{
-  margin: 1% 10%;
+.share-now h2{
+  padding: 1% 14%;
   width: 100%;
   height: 100%;
+  font-weight: bold;
 }
 .share-now-td{
   text-align: center;
   width: 20%;
 }
 .share-now table {
-  margin: 1.5% 15%;
-  width: 35%;
+  margin: 1.5% 24%;
+  width: 50%;
   border: 1px solid #444444;
   border-collapse: collapse;
+  font-size: 1.5em;
 }
 .share-now td {
   border: 1px solid #444444;
   padding: 2%;
 }
-.share-now h5{
-  margin: 1% 10%;
-}
-.share-now h5 button{
-  margin: 0% 2%;
-}
-.payNow{
-  margin-left: 27%;
-}
 .share-now-info-check{
-  margin: 3% 30%;
+  margin-left: 28%;
   padding: 1.5%;
+  margin-top: 5%;
 }
-.cancel-share-now{
-  margin-left: 5%;
+.shareBtn{
+  margin-left: 2%;
+  margin-right: 3%;
+  width: 10%;
+  padding: 1%;
+  background-color: #ffffff;
+  color: #00a3de;
+  font-weight: bolder;
+  border-color: #00a3de;
+  border-radius: 1em;
+  font-size: 1.5em;
 }
 </style>
