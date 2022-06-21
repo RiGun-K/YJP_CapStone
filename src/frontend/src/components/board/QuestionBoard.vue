@@ -117,7 +117,7 @@ export default {
   margin-top: 2px;
 }
 .btnWrap{text-align:center;
-  margin-left: 90%;
+  margin-left: 70%;
   margin-top: 2%;
   background-color: #58a8e5;
   color: white;
