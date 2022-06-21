@@ -57,7 +57,7 @@
       </tr>
       <tr>
         <td class="buy-now-td">수량</td>
-        <td>{{this.BuyCount}}</td>
+        <td>{{ this.count }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">배송비</td>
@@ -69,7 +69,7 @@
     <table>
       <tr>
         <td class="buy-now-td">총 상품 금액</td>
-        <td>{{ this.content.buyPrice * BuyCount }}</td>
+        <td>{{ this.content.buyPrice * this.count }}</td>
       </tr>
       <tr>
         <td class="buy-now-td">배송비</td>
@@ -77,7 +77,7 @@
       </tr>
       <tr>
         <td class="buy-now-td">총 결제 금액</td>
-        <td>{{ this.content.buyPrice * BuyCount + 10000}}</td>
+        <td>{{ this.content.buyPrice * this.count + 10000}}</td>
       </tr>
     </table>
 
@@ -126,7 +126,9 @@ export default {
   methods: {
     DataList() {
       this.id = this.$route.params.buyId;
+      this.count = this.$route.query.count;
       console.log(this.id);
+      console.log(this.count)
       axios.get('http://localhost:9002/api/buyMember/' + this.member.mcode)
           .then(res => {
             console.log(res.data)

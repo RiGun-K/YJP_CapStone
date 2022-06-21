@@ -372,41 +372,6 @@ public class UseStorageController {
             return null;
         }
         return menuBuyList;
-<<<<<<<<< Temporary merge branch 1
-    }
-//    장비수리 신청 결제
-
-//    @PostMapping("postCarePay")
-//    private Result postCarePay(@RequestBody CareListPayDTO care){
-//        Optional<Member> member = memberRepository.findByMID(care.getMid());
-//        Member member1 = member.get();
-//        Orders orders = new Orders();
-//        orders.setOrderPrice(care.getPrice());
-//        orders.setPaymentDate(LocalDateTime.now());
-//        orders.setMCode(member1);
-//        orders.setDeliveryRequest(care.getText());
-//        ordersRepository.save(orders);
-//        for (int i = 0; i < care.getList().size(); i++) {
-//            Optional<MenuBuy> menuBuy = menuBuyRepository.findById(care.getList().get(i).getBuyId());
-//            OrderMenu orderMenu = new OrderMenu();
-//            orderMenu.setOrderMenuCount(1);
-//            orderMenu.setMenuBuy(menuBuy.get());
-//            orderMenu.setOrders(orders);
-//            orderMenuRepository.save(orderMenu);
-//
-//            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(care.getList().get(i).getMemEquipmentCode());
-//            MemberEquipment memberEquipment1 = memberEquipment.get();
-//            memberEquipment1.setMemEquipmentState("2");
-//            memberEquipmentRepository.save(memberEquipment1);
-//
-//            UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
-//            useStorageBox.setUseStorageState("6");
-//            useStorageBoxRepository.save(useStorageBox);
-//        }
-//        return new Result("ok");
-//    }
-=========
-
     }
 
     //    장비수리 신청 결제
@@ -438,6 +403,7 @@ public class UseStorageController {
             useStorageBoxRepository.save(useStorageBox);
         }
         return new Result("ok");
->>>>>>>>> Temporary merge branch 2
     }
+
+}
 

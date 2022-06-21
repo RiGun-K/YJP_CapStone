@@ -78,19 +78,20 @@
   </ul>
 
   <br>
-  <button class="shareBtn" @click="putResCart()">찜</button>
-
+  <br>
+  <button class="w-btn-neon2" @click="putResCart()">찜</button>
+  <br>
+  <br>
   <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
   <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
   <!--  </div>-->
   <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
   <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
-  <!--  -->
-
+  
 
   <div class="mt-4">
 
-    <h4>{{ this.content.campingName }}</h4>
+    <h1>{{ this.content.campingName }}</h1>
     <p class="card-text">010-9699-4238</p>
     <p class="card-text">{{ this.content.campingInfo }}</p>
     <p class="card-text">{{ this.content.address }}</p>
@@ -102,7 +103,7 @@
 
 
     <div class="listBody">
-      <h2> 캠핑장 내 객실 선택 및 예약 </h2>
+      <h1> 객실 선택 및 예약 </h1>
       <div v-for="(room,index) in roomContent" :key="index"
            @click="" class="listObj">
         <div class="card">
@@ -141,7 +142,7 @@
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
           </div>
-          <button @click="buyData(room.detailId)" class="btn btn-primary">예약 및 결제</button>
+          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline">예약 및 결제</button>
         </div>
       </div>
     </div>
@@ -574,6 +575,57 @@ img {
   width: 40%;
   height: 40%;
 }
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+.w-btn-neon2 {
+  position: relative;
+  margin-left: 45%;
+  border: none;
+  min-width: 200px;
+  min-height: 50px;
+  background: linear-gradient(
+      90deg,
+      rgba(129, 230, 217, 1) 0%,
+      rgba(79, 209, 197, 1) 100%
+  );
+  border-radius: 1000px;
+  color: darkslategray;
+  cursor: pointer;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.w-btn-neon2:hover {
+  transform: scale(1.2);
+}
+
+.w-btn-neon2:hover::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
 .mt-4 {
   text-align: center;
 }
@@ -802,7 +854,8 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 }
 
 .btn.btn-primary {
-  margin-left: 50%;
+  width: 50%;
+  margin-left: 25%;
 }
 .review-text{
   position: relative;
@@ -871,5 +924,43 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   border-color: #00a3de;
   border-radius: 1em;
   font-size: 1.5em;
+}
+..w-btn-red {
+  background-color: #ff5f2e;
+  color: #e1eef6;
+}
+.w-btn:hover {
+  letter-spacing: 2px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.w-btn-outline {
+  position: relative;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-family: 'paybooc-Light', sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+
+  margin-top: 5% ;
+  margin-left: 48%;
+}
+.w-btn-red-outline {
+  border: 3px solid #2093e5;
+  color: #6e6e6e;
+}
+.w-btn-red-outline:hover {
+  background-color: #2093e5;
+  color: #e1eef6;
+}
+.w-btn-outline:hover {
+  letter-spacing: 2px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.w-btn-outline:active {
+  transform: scale(1.5);
 }
 </style>
