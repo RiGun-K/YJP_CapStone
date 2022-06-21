@@ -77,7 +77,7 @@ public class BoardController {
 
     }
 
-    /* 게시글 조회 ( 댓글 없는 것만 ) */
+    /* 게시글 리스트( 댓글 없는 것만 ) */
     @GetMapping("/boardList")
     public List<Board> writerMyList() {
         List<Board> writerList = boardRepository.findByAllList();

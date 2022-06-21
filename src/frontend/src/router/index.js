@@ -140,36 +140,63 @@ const routes = [
 
 	//////////////////////////////게시판////////////////////////////////////
 
-	{
-		path: '/board',
-		name: 'Board',
-		component: () => import('@/components/board/Board.vue'),
-	},
-	{
-		path: '/read',
-		name: 'Read',
-		component: () => import('@/components/board/Read.vue'),
-	},
-	{
-		path: '/create/:contentId?',
-		name: 'Create',
-		component: () => import('@/components/board/Create.vue'),
-	},
-	{
-		path: '/create',
-		name: 'Create',
-		component: () => import('@/components/board/Create.vue'),
-	},
-	{
-		path: '/view/:boardId',
-		name: 'View',
-		component: () => import('@/components/board/View.vue'),
-	},
-	{
-		path: '/update/:writer_code',
-		name: 'Update',
-		component: () => import('@/components/board/Update.vue'),
-	},
+  {
+    path: '/board',
+    name: 'Board',
+    component: () => import('@/components/board/Board.vue')
+  },
+  {
+    path: '/read',
+    name: 'Read',
+    component: () => import('@/components/board/Read.vue')
+  },
+  {
+    path: '/create/:contentId?',
+    name: 'Create',
+    component: () => import('@/components/board/Create.vue')
+  },
+  {
+    path: '/create',
+    name: 'Create',
+    component: () => import('@/components/board/Create.vue')
+  },
+  {
+    path: '/view/:boardId',
+    name: 'View',
+    component: () => import('@/components/board/View.vue')
+  },
+  {
+    path: '/update/:writer_code',
+    name: 'Update',
+    component: () => import('@/components/board/Update.vue')
+  },
+  {
+    path: '/noticeboard',
+    name: 'Noticeboard',
+    component: () => import('@/components/board/NoticeBoard.vue')
+  },
+  {
+    path: '/noticeDetail',
+    name: 'NoticeDetail',
+    component: () => import('@/components/board/NoticeDetail.vue'),
+    props: true
+  },
+
+  {
+    path: '/questionBoard',
+    name: 'QuestionBoard',
+    component: () => import('@/components/board/QuestionBoard.vue')
+  },
+  {
+    path: '/questionCreate',
+    name: 'QuestionCreate',
+    component: () => import('@/components/board/QuestionCreate.vue')
+  },
+  {
+    path: '/questionDetail/:questionId',
+    name: 'QuestionDetail',
+    component: () => import('@/components/board/QuestionDetail.vue')
+  },
 
 
 	///////////////////////////////상품관리///////////////////////////////////
