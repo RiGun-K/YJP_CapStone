@@ -363,6 +363,7 @@ img {
   margin-left: 85%;
   margin-top: -30%;
 }
+select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
 
 .campingkindimage {
   width:380px;

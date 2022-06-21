@@ -87,7 +87,7 @@
   <!--  </div>-->
   <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
   <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
-  
+
 
   <div class="mt-4">
 
@@ -142,7 +142,7 @@
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
           </div>
-          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline">예약 및 결제</button>
+          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%">예약 및 결제</button>
         </div>
       </div>
     </div>
@@ -945,7 +945,7 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   transition: 0.25s;
 
   margin-top: 5% ;
-  margin-left: 48%;
+  margin-left: 55%;
 }
 .w-btn-red-outline {
   border: 3px solid #2093e5;
