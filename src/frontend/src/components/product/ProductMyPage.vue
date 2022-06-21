@@ -2,9 +2,9 @@
   <div class="orders">
     <h1>판매 정보</h1>
     <div class="orders-btn-list">
-      <button class="shareBtn" @click="buyOrders">구매 상품</button>
-      <button class="shareBtn" @click="shareOrders">대여 상품</button>
-      <button class="shareBtn" @click="reservationOrders">캠핑장 상품</button>
+      <button class="shareBtn" @click="buyOrders" style="margin-right: 15px">구매 상품</button>
+      <button class="shareBtn" @click="shareOrders" style="margin-right: 15px">대여 상품</button>
+      <button class="shareBtn" @click="reservationOrders" style="margin-right: 15px">캠핑장 상품</button>
     </div>
   </div>
 </template>
