@@ -516,10 +516,16 @@ const routes = [
 		props: true,
 	},
 	{
-		path: '/myBox/repairBox',
+		path: '/myBox/:useBoxCode/repairBox',
 		name: 'repairBox',
 		component: () =>
 			import('@/components/storageService/user/RepairBox.vue'),
+	},
+	{
+		path: '/myBox/:useBoxCode/repairBoxPay',
+		name: 'repairBoxPay',
+		component: () =>
+			import('@/views/user/RepairBoxPay.vue'),
 	},
 	{
 		path: "/storageComplete",

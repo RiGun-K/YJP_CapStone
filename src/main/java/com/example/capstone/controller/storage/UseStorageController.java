@@ -148,6 +148,7 @@ public class UseStorageController {
         useStorageBox.setStorageBoxCode(storageBox.get());
         useStorageBox.setOrderCode(orders);
         useStorageBox.setMCode(user.get());
+        useStorageBox.setUseStorageState("2");
         useStorageBoxRepository.save(useStorageBox);
 
         if (payStorageBox.getItem().size() > 0) {
@@ -245,6 +246,7 @@ public class UseStorageController {
         Orders orders = new Orders(member.get());
         orders.setPaymentDate(orderTime);
         orders.setMCode(member.get());
+        orders.setOrderPrice(move.getPrice());
         ordersRepository.save(orders);
 
         // 보관함 상태 코드 변경경

@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <div class="top-container">
       <h2>결제</h2>
@@ -26,6 +25,7 @@
             </table>
           </div>
         </div>
+        <br>
         <div class="storage-info-box">
           <h4>보관</h4>
           <div class="info-box">
@@ -41,6 +41,7 @@
             </table>
           </div>
         </div>
+        <br>
         <div class="item-info-box">
           <h4>보관할 나의 장비</h4>
           <div class="info-box">
@@ -53,6 +54,7 @@
             </table>
           </div>
         </div>
+        <br>
         <div class="time-range-box">
           <h4>기간</h4>
           <div class="info-box">
@@ -68,6 +70,7 @@
             </table>
           </div>
         </div>
+        <br>
       </div>
       <div class="bin-box"></div>
       <div class="right-box">

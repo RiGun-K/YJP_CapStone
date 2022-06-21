@@ -1,75 +1,77 @@
 <template>
   <div class="container">
-    <div class="before-box">
-      <table >
-        <thead>
-        <tr>
-          <th>사용중인보관함</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>보관소</td>
-          <td>{{moveBoxInfo.storageName}}</td>
-        </tr>
-        <tr>
-          <td>보관함</td>
-          <td>{{ moveBoxInfo.boxName }}</td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="left-box">
+      <div class="storage-info-box">
+        <h4>보관</h4>
+        <div class="info-box">
+          <table>
+            <tbody>
+            <tr>
+              <td>보관소</td>
+              <td>{{ moveBoxInfo.storageName }}</td>
+            </tr>
+            <tr>
+              <td>보관함</td>
+              <td>{{ moveBoxInfo.boxName }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <div class="item-info-box">
+        <h4>보관할 장비</h4>
+        <div class="info-box">
+          <table>
+            <tr v-for="(item,index) in myItem">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.memEquipmentName }}</td>
+              <td>{{ item.memEquipmentCount }}개</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br>
+      <div class="move-info-box">
+        <h4>배송지</h4>
+        <div class="info-box">
+          <table>
+            <tbody>
+            <tr>
+              <td>받는사람</td>
+              <td>{{ member.mname }}</td>
+            </tr>
+            <tr>
+              <td>우편번호</td>
+              <td>{{ member.mzadd }}</td>
+            </tr>
+            <tr>
+              <td>주소</td>
+              <td>{{ member.madd }}</td>
+            </tr>
+            <tr>
+              <td>상세주소</td>
+              <td>{{ member.mradd }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
     </div>
-
-    <div class="myItem-list">
-      <table>
-        <thead>
-        <tr>
-          <th colspan="3">보관중인장비</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item,index) in myItem">
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.memEquipmentName }}</td>
-          <td>{{ item.memEquipmentCount }}</td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="bin-box">
+      <h5>구매조건 확인 및 결제대행 서비스 약관 동의</h5>
+      <h5>개인정보 제3자 제공 동의</h5>
+      <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
     </div>
-
-    <div class="move-info">
-      <table>
-        <thead>
-        <tr>
-          <th colspan="2">배송지</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>받는사람</td>
-          <td>{{member.mname}}</td>
-        </tr>
-          <tr>
-            <td>우편번호</td>
-            <td>{{ member.mzadd }}</td>
-          </tr>
-          <tr>
-            <td>주소</td>
-            <td>{{ member.madd }}</td>
-          </tr>
-          <tr>
-            <td>상세주소</td>
-            <td>{{ member.mradd }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="price-box">
-      <h5>가격 {{price}}원</h5>
-    </div>
-    <div>
+    <div class="right-box">
+      <div class="price-box">
+        <h5>가격 {{ price }}원</h5>
+      </div>
       <hr>
-      <button @click="paymentBtn()">결제</button>
+      <div>
+        <button class="payNow-r" @click="paymentBtn()">결제</button>
+      </div>
     </div>
   </div>
 </template>
@@ -79,19 +81,19 @@ import store from "@/store";
 
 export default {
   name: "HomeMoveBox",
-  props:{
-    useBoxCode:''
+  props: {
+    useBoxCode: ''
   },
-  data(){
-    return{
+  data() {
+    return {
       myItem: {},
       boxName: '',
-      storageName:'',
-      zipCode:'',
-      address:'',
-      member:{},
-      moveBoxInfo:{},
-      price : 4500,
+      storageName: '',
+      zipCode: '',
+      address: '',
+      member: {},
+      moveBoxInfo: {},
+      price: 4500,
     }
   },
   mounted() {
@@ -99,8 +101,8 @@ export default {
     this.getAddress()
     this.getUseBoxInfo()
   },
-  methods:{
-    getUseBoxInfo(){
+  methods: {
+    getUseBoxInfo() {
       axios.get('/api/moveBoxInfo/' + this.useBoxCode)
           .then(res => {
             this.moveBoxInfo.storageCode = res.data[0][0]
@@ -112,7 +114,7 @@ export default {
             console.log(err)
           })
     },
-    getItem(){
+    getItem() {
       axios.get('/api/getBoxInItem/' + this.useBoxCode)
           .then(res => {
             this.myItem = res.data
@@ -121,7 +123,7 @@ export default {
             console.log(err)
           })
     },
-    getAddress(){
+    getAddress() {
       axios.get('/api/myAddress/' + store.getters.getLoginState.loginState)
           .then(res => {
             this.member = res.data
@@ -157,14 +159,14 @@ export default {
       // }
       this.pay()
     },
-    pay(){
+    pay() {
       let data = {}
       data.useBoxCode = this.useBoxCode
       data.member = this.member
-      axios.post('/api/homeToMovePay',data)
+      axios.post('/api/homeToMovePay', data)
           .then(res => {
             console.log(res)
-            this.$router.push({name:'storageComplete'})
+            this.$router.push({name: 'storageComplete'})
           })
           .catch(err => {
             console.log(err)
@@ -175,8 +177,57 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   position: center;
   width: 95%;
 }
+
+.left-box {
+  float: left;
+  width: 50%;
+}
+
+.right-box {
+  float: right;
+  height: 50%;
+  width: 50%;
+}
+
+.bin-box {
+  float: right;
+  height: 350px;
+  width: 50%;
+}
+
+.info-box {
+  width: 80%;
+}
+
+td:first-child {
+  width: 30%;
+}
+
+td:nth-child(3) {
+  width: 20%;
+}
+
+td, tr {
+  border: 1px solid black;
+  padding-top: 17px;
+  padding-bottom: 12px;
+  word-spacing: 9px;
+  text-align: center;
+}
+
+.payNow-r {
+  position: center;
+  text-align: center;
+  width: 20%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: right;
+}
+
 </style>

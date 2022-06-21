@@ -1,78 +1,86 @@
 <template>
-  <div>
-    <h5>pay</h5>
-    <div>
-      <h5>user</h5>
-      <div>
-        <table>
-          <tr>
-            <td>이름</td>
-            <td>{{ member.mnick }}</td>
-          </tr>
-          <tr>
-            <td>이메일</td>
-            <td>{{ member.mmail }}</td>
-          </tr>
-          <tr>
-            <td>휴대폰 번호</td>
-            <td>{{ member.mph }}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div>
-      <h5>storage</h5>
-      <div>
-        <table>
-          <thead>
-          <tr>
-            <th>사용중인보관함</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>보관소</td>
-            <td>{{storageInfo.storageName}}</td>
-          </tr>
-          <tr>
-            <td>보관함</td>
-            <td>{{ storageInfo.boxName }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div>
-      <h5>수리신청항목</h5>
-      <div v-for="repair in repairList">
-        <div>
-          <h6>{{repair.item.memEquipmentName}}의 수리</h6>
-        </div>
-        <div>
+  <div class="container">
+    <h2>수리 결제</h2>
+    <div class="left-box">
+      <div class="user-info">
+        <h4>구매자</h4>
+        <div class="info-box">
           <table>
-            <tbody>
             <tr>
-              <td>{{ repair.option.buyName }}</td>
-              <td>{{ repair.option.buyEx }}</td>
+              <td>이름</td>
+              <td>{{ member.mname }}</td>
             </tr>
-            </tbody>
+            <tr>
+              <td>이메일</td>
+              <td>{{ member.mmail }}</td>
+            </tr>
+            <tr>
+              <td>전화번호</td>
+              <td>{{ member.mph }}</td>
+            </tr>
           </table>
         </div>
       </div>
-    </div>
-    <div>
-      <h5>추가 요청사항</h5>
+      <br>
+      <div class="storage-info-box">
+        <h4>보관</h4>
+        <div class="info-box">
+          <table>
+            <tr>
+              <td>보관소</td>
+              <td>{{ storageInfo.storageName }}</td>
+            </tr>
+            <tr>
+              <td>보관함</td>
+              <td>{{ storageInfo.boxName }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <div>
-        <textarea v-model="requestText"></textarea>
+        <h5>수리신청항목</h5>
+        <div v-for="repair in repairList">
+          <div>
+            <h6>{{repair.item.memEquipmentName}}의 수리</h6>
+          </div>
+          <div>
+            <table>
+              <tbody>
+              <tr>
+                <td>{{ repair.option.buyName }}</td>
+                <td>{{ repair.option.buyEx }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </div>
+    <div class="bin-box">
+      <div>
+        <h5>추가 요청사항</h5>
+        <div>
+          <textarea v-model="requestText"></textarea>
+        </div>
+        <table class="aaa">
+          <tr>
+            <td>금액</td>
+            <td>{{ price }}원</td>
+          </tr>
+        </table>
       </div>
     </div>
-    <div>
-      <h5>price</h5>
+    <div class="right-box">
       <div>
-        <h6>{{price}}</h6>
-      </div>
-      <div>
-        <button @click="paymentBtn">결제하기</button>
+        <div>
+          <button class="payNow-r" @click="paymentBtn()">결제</button>
+          <button class="payNow-l" @click="$router.push({name:'myBox'})">취소</button>
+        </div>
       </div>
     </div>
   </div>
@@ -130,31 +138,30 @@ export default {
           })
     },
     paymentBtn() {
-      // if (confirm('결제 하시겠습니까?')) {
-      //   const IMP = window.IMP
-      //   IMP.init('imp35975601')
-      //   IMP.request_pay({
-      //     pg: 'html5_inicis',
-      //     pay_method: 'card',
-      //     merchant_uid: 'merchant_' + new Date().getTime(),
-      //     name: this.form.storageName +'보관소'+this.form.storageBoxName+'보관함',
-      //     amount: this.form.price/100,
-      //     buyer_tel: '01012345678',
-      //     confirm_url: ''
-      //   }, (rsp) => {
-      //     if (rsp.success) {
-      //
-      //       this.savePay()
-      //
-      //     } else {
-      //       let msg = '결제에 실패하였습니다.'
-      //       msg += '에러 내용 : ' + rsp.error_msg
-      //       alert(msg)
-      //
-      //     }
-      //   })
-      // }
-      this.savePay()
+      if (confirm('결제 하시겠습니까?')) {
+        const IMP = window.IMP
+        IMP.init('imp35975601')
+        IMP.request_pay({
+          pg: 'html5_inicis',
+          pay_method: 'card',
+          merchant_uid: 'merchant_' + new Date().getTime(),
+          name: '장비 수리 결제',
+          amount: this.price/100,
+          buyer_tel: '01012345678',
+          confirm_url: ''
+        }, (rsp) => {
+          if (rsp.success) {
+
+            this.savePay()
+
+          } else {
+            let msg = '결제에 실패하였습니다.'
+            msg += '에러 내용 : ' + rsp.error_msg
+            alert(msg)
+
+          }
+        })
+      }
     },
     savePay(){
       const formData = {}
@@ -169,8 +176,6 @@ export default {
       formData.mid = this.member.mid
       formData.text = this.requestText
       formData.price = this.price
-      // data =
-      console.log(formData)
       axios.post('/api/postCarePay',formData)
           .then(res => {
             console.log(res.data.result)
@@ -187,4 +192,79 @@ export default {
 
 <style scoped>
 
+.container {
+  position: center;
+  height: 100%;
+  width: 95%;
+}
+
+.info-box {
+  width: 80%;
+}
+
+td:first-child {
+  width: 30%;
+  background-color: #d8d8d8;
+}
+
+td:nth-child(3) {
+  width: 20%;
+}
+
+td, tr {
+  border: 1px solid black;
+  padding-top: 17px;
+  padding-bottom: 12px;
+  word-spacing: 9px;
+  text-align: center;
+}
+
+.left-box {
+  float: left;
+  width: 50%;
+}
+.aaa{
+  width: 80%;
+}
+
+.right-box {
+  float: right;
+  height: 50%;
+  width: 50%;
+}
+
+textarea{
+  width: 80%;
+  height: 30%;
+}
+
+.bin-box {
+  float: right;
+  padding-bottom: 10%;
+  width: 50%;
+}
+
+.payNow-r {
+  position: center;
+  text-align: center;
+  width: 20%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: right;
+  margin-right: 25%;
+}
+
+.payNow-l {
+  position: center;
+  text-align: center;
+  width: 20%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+  float: left;
+  margin-left: 25%;
+}
 </style>
