@@ -480,18 +480,7 @@ export default {
         }
       })
     },
-    detail_1() {
-      this.areaCheck4 = false;
-      this.areaCheck1 = true;
-      this.areaCheck2 = false;
-      this.areaCheck3 = false;
-    },
-    detail_2() {
-      this.areaCheck4 = false;
-      this.areaCheck1 = false;
-      this.areaCheck2 = true;
-      this.areaCheck3 = false;
-    },
+
   }
 }
 </script>

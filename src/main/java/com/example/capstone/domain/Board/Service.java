@@ -18,8 +18,8 @@ public class Service {
     private Long serviceId;
 
     @Column()
-    private String title;
-    private String content;
+    private String s_title;
+    private String s_content;
 
     @Column()
     private String origFilename;
@@ -31,7 +31,7 @@ public class Service {
     @Column()
     private Integer boardViews = 0;
     @CreatedDate
-    private String savedTime;
+    private String s_savedTime;
 
     @ManyToOne()
     @JoinColumn(name = "MCODE")

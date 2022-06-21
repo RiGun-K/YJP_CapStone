@@ -8,16 +8,15 @@
         <div class="listWrap">
           <table class="tbList">
       <tr>
-<!--        <td style="font-size:20px; padding: 10px 20px 10px 180px">제목</td>-->
-<!--        <td style="font-size:20px; color: green;">내용</td>-->
+        <td style="font-size:20px; padding: 10px 20px 10px 180px">제목</td>
         <td style="font-size:20px; padding: 10px 10px 10px 10px">글쓴이</td>
         <td style="font-size:20px;">등록일</td>
         <td style="font-size:20px;">조회수</td>
+
       </tr>
 
       <tr v-for="item in list" :key="item.id" :item="item" @click="detail(item)">
         <td style="padding: 10px 20px 10px 180px" >{{item.title}}</td>
-<!--        <td>{{item.content}}</td>-->
         <td style="padding: 10px 10px 10px 10px">{{item.mid.mname}}</td>
         <td>{{item.savedTime}}</td>
         <td>{{item.boardViews}}</td>
@@ -31,22 +30,24 @@
           <br>
           <br>
           <br>
+          <br>
+          <br>
 
           <div class="searchWrap">
           <input type="text" v-model="keyword" @keyup.enter="fnSearch" /><a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
           </div>
 
-    <li>
-      <div id="divPaging">
-        <div>◀</div>
-        <div><b>1</b></div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <div>5</div>
-        <div>▶</div>
-      </div>
-    </li>
+<!--    <li>-->
+<!--      <div id="divPaging">-->
+<!--        <div>◀</div>-->
+<!--        <div><b>1</b></div>-->
+<!--        <div>2</div>-->
+<!--        <div>3</div>-->
+<!--        <div>4</div>-->
+<!--        <div>5</div>-->
+<!--        <div>▶</div>-->
+<!--      </div>-->
+<!--    </li>-->
 
   </div>
 </div>
@@ -102,13 +103,6 @@ export default {
 </script>
 
 <style>
-#divPaging {
-  clear:both;
-  margin:0 auto;
-  width:220px;
-  height:50px;
-}
-
 #divPaging > div {
   float:left;
   width: 30px;
@@ -127,8 +121,8 @@ export default {
   margin-top: 2px;
 }
 .btnWrap{text-align:center;
-  margin-left: 2%;
-  margin-top: 0%;
+  margin-left: 90%;
+  margin-top: 2%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;
