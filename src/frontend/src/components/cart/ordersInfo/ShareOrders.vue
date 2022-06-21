@@ -1,5 +1,5 @@
 <template>
-  <div class="reservation-orders">
+  <div class="share-orders">
     <h1>Share Orders</h1>
     <div class="order-card-list">
       <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -34,7 +34,7 @@
                 <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1.2em">{{ menu.rental.rentalPrice }}</p>
               </div>
               <div style="width: 20%; padding: 2%; margin-left: 2%; display: flex">
-                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">대여일 수: </p><p style="font-size: 1.2em">{{ }}</p>
+                <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">대여일 수: </p><p style="font-size: 1.2em">{{ this.period[index]}}</p>
               </div>
               <div style="width: 23%; padding: 2%; margin-left: 24%; margin-top: 3%; display: flex">
                 <p style="font-weight: bold; font-size: 1em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1.2em">{{menu.orders.orderPrice }}</p>
@@ -72,6 +72,7 @@
 <script>
 import axios from "axios";
 import dayjs from "dayjs";
+
 export default {
   name: "ShareOrders",
   data(){
@@ -82,6 +83,8 @@ export default {
       todayMenu: [],
       startDate: [],
       endDate: [],
+      period: []
+
     }
   },
   created(){
@@ -95,7 +98,6 @@ export default {
             this.menus = res.data;
             console.log(this.menus);
             this.toDate();
-            this.toString();
             this.todayRentalOrders();
           }).catch(e =>{
         console.log(e)
@@ -103,6 +105,7 @@ export default {
           .catch(e => {
             console.log(e);
           })
+
     },
     toDate(){
       for(let i=0; i < this.menus.length; i++){
@@ -110,14 +113,20 @@ export default {
         theDay = theDay.year(this.menus[i].orders.paymentDate[0]);
         theDay = theDay.month(this.menus[i].orders.paymentDate[1]);
         theDay = theDay.date(this.menus[i].orders.paymentDate[2]);
+
         this.menus[i].orders.paymentDate = theDay
+
+
       }
     },
     todayRentalOrders(){
       this.todayMenu = [];
       let today = dayjs();
       today.format();
+
       console.log(today.date())
+
+
       for(let i=0; i < this.menus.length; i++){
         if(today.year() == this.menus[i].orders.paymentDate.year()){
           if(today.month()+1 == this.menus[i].orders.paymentDate.month()){
@@ -127,12 +136,18 @@ export default {
           }
         }
       }
+
+      this.toString();
+      this.getPeriod();
     },
     weekRentalOrders(){
       this.todayMenu = [];
       let now = dayjs();
       now.format();
+
       let count = 0;
+
+
       for(let i=0; i < this.menus.length; i++){
         if (now.subtract(1, "week").year() == this.menus[i].orders.paymentDate.year()) {
           if (now.subtract(1, "week").month() + 1 == this.menus[i].orders.paymentDate.month()) {
@@ -149,16 +164,22 @@ export default {
           count++;
         }
       }
+
       this.todayMenu.sort(function (a, b){
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
       })
       console.log(this.todayMenu);
+      this.toString();
+      this.getPeriod();
     },
     monthRentalOrders(){
       this.todayMenu = [];
       let now = dayjs();
       now.format();
+
       let count = 0;
+
+
       for(let i=0; i < this.menus.length; i++){
         if (now.subtract(1, "month").year() == this.menus[i].orders.paymentDate.year()) {
           if (now.subtract(1, "month").month() + 1 == this.menus[i].orders.paymentDate.month()) {
@@ -175,16 +196,22 @@ export default {
           count++;
         }
       }
+
       this.todayMenu.sort(function (a, b){
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
       })
       console.log(this.todayMenu);
+      this.toString();
+      this.getPeriod();
     },
     yearRentalOrders(){
       this.todayMenu = [];
       let now = dayjs();
       now.format();
+
       let count = 0;
+
+
       for(let i=0; i < this.menus.length; i++){
         if (now.subtract(1, "year").year() == this.menus[i].orders.paymentDate.year()) {
           if (now.subtract(1, "year").month() + 1 == this.menus[i].orders.paymentDate.month()) {
@@ -201,25 +228,33 @@ export default {
           count++;
         }
       }
+
       this.todayMenu.sort(function (a, b){
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
       })
       console.log(this.todayMenu);
+      this.toString();
+      this.getPeriod();
     },
     toString() {
-      for(let i=0; i<this.menus.length; i++){
-        const start = dayjs(this.menus[i].orders.startDate);
+      for(let i=0; i<this.todayMenu.length; i++){
+        const start = dayjs(this.todayMenu[i].orders.startDate);
         this.startDate[i] = start.format('YYYY/MM/DD');
-        const end = dayjs(this.menus[i].orders.endDate);
+        const end = dayjs(this.todayMenu[i].orders.endDate);
         this.endDate[i] = end.format('YYYY/MM/DD');
       }
     },
+    getPeriod(){
+      for(let i=0; i<this.todayMenu.length; i++){
+        this.period[i] = parseInt(this.todayMenu[i].orders.orderPrice)/parseInt(this.todayMenu[i].rental.rentalPrice)
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-.reservation-orders{
+.share-orders{
   width: 100%;
   height: 100%;
   margin-top: 2%;
@@ -227,8 +262,8 @@ export default {
   font-size: 1.5em;
 }
 .share-orders-item-image{
-  width: 20%;
-  height: 20%;
+  width: 30%;
+  height: 30%;
   padding: 2%;
 }
 .card-body{
@@ -259,6 +294,7 @@ export default {
   font-size: 1.5em;
   padding: 2%;
 }
+
 .order-card-list .btn-group{
   margin-top: 2%;
   width: 50%;

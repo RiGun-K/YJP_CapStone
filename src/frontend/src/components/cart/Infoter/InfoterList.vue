@@ -85,7 +85,7 @@
             조회수 - {{ product.campingViews }}
           </div>
           <div class="card-body">
-            객실수 - {{ product.campingDetails.length }}
+            잔여 객실수 - {{ product.campingDetails.length }}
           </div>
         </div>
         <br>
