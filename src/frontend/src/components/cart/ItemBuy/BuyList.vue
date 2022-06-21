@@ -46,7 +46,7 @@
   </div>
   <div class="ItemBuy">
 
-    <h2>Item Buy</h2>
+    <h1>Item Buy</h1>
     <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
     <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
@@ -75,7 +75,7 @@
 
     <div class="listBody">
       <br>
-      <h2> 용품 구매 </h2>
+      <h1> 용품 구매 </h1>
       <div v-for="(product,index) in list" :key="product.id"
            :item="product" @click="toDetail(product)" class="listObj">
         <div class="card">

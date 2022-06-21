@@ -4,18 +4,18 @@
     <div class="cart-list">
       <div class="buy-cart-btn" @click="buyCartLink">
         <img :src="require('@/assets/buyBtn.png')">
-        <h5>구매</h5>
-        <h5>장바구니</h5>
+        <h5>BUY</h5>
+        <h5>CART</h5>
       </div>
       <div class="share-cart-btn" @click="shareCartLink">
         <img :src="require('@/assets/rentBtn.png')">
-        <h5>대여</h5>
-        <h5>장바구니</h5>
+        <h5>SHARE</h5>
+        <h5>LIKE</h5>
       </div>
       <div class="reservation-cart-btn" @click="reservationCartLink">
         <img :src="require('@/assets/calendarBtn.png')">
-        <h5>예약</h5>
-        <h5>장바구니</h5>
+        <h5>RESERVATION</h5>
+        <h5>LIKE</h5>
       </div>
     </div>
     <button class="cart-back"><router-link class="nav-link" to="/">Back</router-link></button>
@@ -26,17 +26,25 @@
 <script>
 export default {
   name: 'CartList',
+  data(){
+    return{
+      content: []
+    }
+  },
   methods: {
     buyCartLink () {
-      window.location.href = 'http://localhost:8081/cart/buy'
+      window.location.href = `http://localhost:8081/cart/buy/${this.content.mcode}`
     },
     shareCartLink () {
-      window.location.href = 'http://localhost:8081/cart/share'
+      window.location.href = `http://localhost:8081/cart/share/${this.content.mcode}`
     },
     reservationCartLink () {
-      window.location.href = 'http://localhost:8081/cart/reservation'
+      window.location.href = `http://localhost:8081/cart/reservation/${this.content.mcode}`
     }
-  }
+  },
+  created(){
+    this.content= this.$store.state.loginState
+  },
 }
 </script>
 

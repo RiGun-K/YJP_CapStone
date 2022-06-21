@@ -372,7 +372,6 @@ public class UseStorageController {
             return null;
         }
         return menuBuyList;
-
     }
 
     //    장비수리 신청 결제
@@ -405,6 +404,6 @@ public class UseStorageController {
         }
         return new Result("ok");
     }
-  
+
 }
 

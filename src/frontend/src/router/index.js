@@ -376,6 +376,12 @@ const routes = [
 		component: () => import('@/components/cart/ItemShare/ShareList.vue'),
 	},
 	{
+		path: '/itemShare/rentalList/:rentalId',
+		name: 'ShareDetailList',
+		component: () => import('@/components/cart/ItemShare/ShareDetailList.vue'),
+		props: true,
+	},
+	{
 		path: '/itemShare/shareNow/:rentalId',
 		name: 'ShareNow',
 		component: () => import('@/components/cart/ItemShare/ShareNow.vue'),
@@ -428,17 +434,17 @@ const routes = [
 	{
 		path: '/cart/buy/:mcode',
 		name: 'BuyCart',
-		component: () => import('@/components/cart/Cart/BuyCart.vue'),
+		component: () => import('@/components/cart/Cart/BuyCart.vue')
 	},
 	{
-		path: '/cart/share',
+		path: '/cart/share/:mcode',
 		name: 'ShareCart',
-		component: () => import('@/components/cart/Cart/ShareCart.vue'),
+		component: () => import('@/components/cart/Cart/ShareCart.vue')
 	},
 	{
-		path: '/cart/reservation',
+		path: '/cart/reservation/:mcode',
 		name: 'ReservationCart',
-		component: () => import('@/components/cart/Cart/ReservationCart.vue'),
+		component: () => import('@/components/cart/Cart/ReservationCart.vue')
 	},
 	{
 		path: '/ordersList',
@@ -462,6 +468,12 @@ const routes = [
 		name: 'ReservationOrders',
 		component: () =>
 			import('@/components/cart/ordersInfo/ReservationOrders.vue'),
+	},
+	{
+		path: '/itemBuy/buyCartNow/:mid',
+		name: 'BuyCartNow',
+		component: () => import('@/components/cart/ItemBuy/BuyCartNow.vue'),
+		props: true
 	},
 	//////////////////////////////보관함관리/////////////////////////////////
 

@@ -23,6 +23,7 @@ export default createStore({
 		member: '',
 		moveBoxInfo:{},
 		careItemInfo:{},
+		selectedList: [],
 	},
 	getters: {
 		getLoginState(state) {
@@ -31,6 +32,9 @@ export default createStore({
 		getCampingIdState(state) {
 			return state.CampingIdOfRooms;
 		},
+		getSelectedList(state){
+			return state.selectedList;
+		}
 	},
 	mutations: {
 		setLoginState(state, loginState, stateCode, mcode) {
@@ -103,6 +107,10 @@ export default createStore({
 		},
 		clearCareItem(state){
 			state.careItemInfo = {};
+		},
+		setSelectedList(state, selectedList){
+			console.log("selected")
+			state.selectedList = selectedList
 		},
 	},
 	actions: {},
