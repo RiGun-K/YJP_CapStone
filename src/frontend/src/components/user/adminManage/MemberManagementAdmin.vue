@@ -125,16 +125,18 @@ tr, td{
   text-align: center;
 }
 .viewBody{
-  background: white;
+  border-radius: 100px;
   padding: 30px;
-  margin-left: 5%;
-  margin-right: 5%;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
-  z-index: 2;
-  width: 90%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
   height: 93%;
-  position: relative;
+  background: white;
+  z-index: 2;
 }
 .tableBody{
   width: 100%;
