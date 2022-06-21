@@ -1,7 +1,7 @@
 <template>
   <div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <br><H2 style="font-weight: bold">상세보기</H2>
+    <br><H2 style="font-weight: bold">문의 상세</H2>
     <br>
     <div class="AddWrap">
       <form>
@@ -12,22 +12,25 @@
           </colgroup>
           <tr>
             <th>글쓴이</th>
-            <td>{{notice.mcode.mname}}</td>
+            <td>{{List.mid.mname}}</td>
           </tr>
           <tr>
-            <th>제목</th>
-            <td>{{ notice.s_title }}</td>
+            <th>문의 제목</th>
+            <td>{{ List.q_title }}</td>
           </tr>
           <tr>
-            <th>내용</th>
-            <td>{{ notice.s_content }}</td>
+            <th>문의 내용</th>
+            <td>{{ List.q_content }}</td>
           </tr>
-
+                    <tr>
+                      <th>사진</th>
+                      <td><img :src="'/api/product_detail_images/' + List.filename " class="img-thumbnail" alt="..."/></td>
+                    </tr>
         </table>
       </form>
     </div>
   </div>
-<br>
+  <br>
   <br>
   <div id="foot_box"></div>
   <div class="btnWrap_1">
@@ -37,49 +40,59 @@
 
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
-  name: 'NoticeDetail',
+  name: 'QuestionDetail',
   data() {
-    return{
-      serviceId: '',
-      s_title: '',
-      s_content: '',
-      notice: [],
+    return {
+      questionId: '',
+      q_title: '',
+      q_content: '',
+      question: [],
       ch: true,
 
-      id: ''
+      id: '',
+      List: [],
     }
   },
   created() {
+    console.log("start")
     this.DataList();
   },
-
   methods: {
+    check() {
+      if (store.getters.getLoginState.loginState == this.List.mid.mid) {
+        return true
+      } else {
+        return false
+      }
+    },
     DataList() {
-      this.id = this.$route.query.serviceId;
+      this.id = this.$route.params.questionId;
       console.log(this.id);
       console.log(this.id);
-      axios.get('/api/noticemyList/' + this.id)
+      axios.get('/api/questionList/' + this.id)
           .then((res) => {
             console.log("내가 받은 데이터는", res.data)
-            this.notice = res.data;
+            this.List = res.data;
             this.ch = this.check()
-            console.log(this.notice.serviceId)
+            // console.log(this.question.questionId)
           })
           .catch(error => {
             console.log("에러" + error)
           })
-    },
-    list(){
-      this.$router.push({
-        path: '/noticeboard'
-      })
-    },
-    }
-}
-</script>
 
+    },
+    list() {
+      this.$router.push({
+        path: '/questionboard'
+      })
+    }
+  }
+}
+
+</script>
 <style>
 .tbAdd{
   border-top:1px solid #888;
@@ -111,4 +124,5 @@ export default {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+
 </style>

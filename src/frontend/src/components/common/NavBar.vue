@@ -40,7 +40,7 @@
           </ul>
         </li>
         <li class="topMenu" v-if="uiLogin==5" @click="storageManager">
-          <a href="/storageManager">보관함관리자</a>
+          <a href="/storageManager">보관소관리자</a>
         </li>
         <li class="topMenu" v-if="uiLogin==5">
           <a href="/memberAdmin">관리자업무</a>
@@ -50,6 +50,13 @@
             <li class="menu"><a href="/storageAdmin">보관소관리</a></li>
             <li class="menu"><a href="/orderAdmin">주문관리</a></li>
             <li class="menu"><a href="/writerAdmin">게시글관리</a></li>
+          </ul>
+        </li>
+        <li class="topMenu" v-if="uiLogin">
+          <a href="/noticeboard">고객센터</a>
+          <ul class="subMenu">
+            <li class="menu"><a href="/noticeboard">공지사항</a></li>
+            <li class="menu"><a href="/questionboard">문의사항</a></li>
           </ul>
         </li>
       </ul>

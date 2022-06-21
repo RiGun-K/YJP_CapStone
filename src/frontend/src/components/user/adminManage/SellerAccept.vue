@@ -140,15 +140,17 @@ export default {
   z-index: 1;
 }
 .contentBody{
-  background: white;
-  padding: 15px;
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-bottom: 5%;
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
-  width: 90%;
+  margin-bottom: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
   height: 93%;
-  position: relative;
+  background: white;
   z-index: 2;
 }
 th, td{
