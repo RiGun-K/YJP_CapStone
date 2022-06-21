@@ -30,6 +30,8 @@
           <br>
           <br>
           <br>
+          <br>
+          <br>
 
           <div class="searchWrap">
           <input type="text" v-model="keyword" @keyup.enter="fnSearch" /><a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
@@ -101,13 +103,6 @@ export default {
 </script>
 
 <style>
-#divPaging {
-  clear:both;
-  margin:0 auto;
-  width:220px;
-  height:50px;
-}
-
 #divPaging > div {
   float:left;
   width: 30px;
@@ -126,8 +121,8 @@ export default {
   margin-top: 2px;
 }
 .btnWrap{text-align:center;
-  margin-left: 2%;
-  margin-top: 0%;
+  margin-left: 90%;
+  margin-top: 2%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;

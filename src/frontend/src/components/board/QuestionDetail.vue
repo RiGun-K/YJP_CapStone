@@ -12,19 +12,19 @@
           </colgroup>
           <tr>
             <th>글쓴이</th>
-            <td>{{question.mid.mname}}</td>
+            <td>{{List.mid.mname}}</td>
           </tr>
           <tr>
-            <th>제목</th>
-            <td>{{ question.q_title }}</td>
+            <th>문의 제목</th>
+            <td>{{ List.q_title }}</td>
           </tr>
           <tr>
-            <th>내용</th>
-            <td>{{ question.q_content }}</td>
+            <th>문의 내용</th>
+            <td>{{ List.q_content }}</td>
           </tr>
                     <tr>
                       <th>사진</th>
-                      <td><img :src="'/api/product_detail_images/' + question.filename " /></td>
+                      <td><img :src="'/api/product_detail_images/' + List.filename " class="img-thumbnail" alt="..."/></td>
                     </tr>
         </table>
       </form>
@@ -52,10 +52,12 @@ export default {
       question: [],
       ch: true,
 
-      id: ''
+      id: '',
+      List: [],
     }
   },
   created() {
+    console.log("start")
     this.DataList();
   },
   methods: {
@@ -75,7 +77,7 @@ export default {
             console.log("내가 받은 데이터는", res.data)
             this.List = res.data;
             this.ch = this.check()
-            console.log(this.question.questionId)
+            // console.log(this.question.questionId)
           })
           .catch(error => {
             console.log("에러" + error)
@@ -91,3 +93,36 @@ export default {
 }
 
 </script>
+<style>
+.tbAdd{
+  border-top:1px solid #888;
+}
+.tbAdd_a{
+  border:1px solid;
+  padding:1% 0 3%;
+  box-sizing: border-box;
+  width: 50%;
+  margin-left: 15%;
+  margin-top: 5%;
+
+}
+.tbAdd_1{margin-left: 5%; margin-top: 5%; font-size: 20px; font-weight: bolder;}
+.tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0; }
+.btnWrap_1{text-align:center;
+  margin-left: 60%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.btnWrap_1 a{margin:0 10px;}
+.btnWrap_1:hover {background-color: #f7bafa}
+.btnWrap_1:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+</style>

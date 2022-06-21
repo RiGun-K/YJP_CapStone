@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <br>
-    <h2 style="font-weight: bold">문의</h2>
+    <h2 style="font-weight: bold">문의사항</h2>
     <br>
     <div class="listWrap">
       <table class="tbList">
@@ -78,5 +78,38 @@ export default {
 </script>
 
 <style>
+#divPaging > div {
+  float:left;
+  width: 30px;
+  margin:0 auto;
+  text-align:center;
+}
 
+.tbList th{border-top:1px solid #888;}
+.tbList th, .tbList td{border-bottom:1px solid #eee; padding:5px 0;}
+.tbList td.txt_left{text-align:left;}
+.btn{
+  font-size: 50px;
+  font-weight: bolder;
+  text-align: center;
+  margin-left: 1px;
+  margin-top: 2px;
+}
+.btnWrap{text-align:center;
+  margin-left: 90%;
+  margin-top: 2%;
+  background-color: #58a8e5;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 7px;
+  position: absolute}
+.btnWrap a{margin:0 10px;}
+.btnWrap:hover {background-color: #f7bafa}
+.btnWrap:active {
+  background-color: #b464f6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
 </style>

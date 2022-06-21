@@ -3,8 +3,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <br>
-    <h1 style="font-weight: bold">문의 작성</h1>
-    <button type="button" class="btn btn-outline-primary" @click="list" style="float: left;" >목록</button>
+    <h1 style="font-weight: bold">문의글 작성</h1>
+    <button type="button" class="btn btn-outline-primary" @click="list" style="float: left; margin-left: 85%; margin-bottom: 1%" >목록</button>
 
     <form>
       <table class="tbAdd">
@@ -38,13 +38,13 @@
 
   </div>
   <div class="btnWrap_4">
+  </div>
     <div class="button_5">
       <button @click="main" class="btn">취소</button>
     </div>
     <div class="button_6">
       <button type="submit" @click="write" class="btn">작성</button>
     </div>
-  </div>
 
 </template>
 
@@ -146,14 +146,16 @@ export default {
   margin-top: 2px;
 }
 .button_6{text-align:center;
-  margin-left: 30%;
+  margin-left: 2%;
   background-color: #58a8e5;
   color: white;
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
   border-radius: 7px;
-  position: absolute}
+  position: absolute;
+  }
+
 .button_6 a{margin:0 10px;}
 .button_6:hover {background-color: #f7bafa}
 .button_6:active {
@@ -182,6 +184,7 @@ export default {
   display: inline-block;
   cursor: pointer;
   border-radius: 7px;
+  margin-left: 85%;
 }
 .button_5 a{margin:0 10px;
 }

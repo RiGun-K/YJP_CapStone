@@ -4,7 +4,7 @@
 
     <br>
     <h1 style="font-weight: bold">게시글 작성</h1>
-    <button type="button" class="btn btn-outline-primary" @click="list" style="float: left;" >목록</button>
+    <button type="button" class="w-btn w-btn-blue" @click="list" style="float: left; margin-left: 95%; padding: 10px" >목록</button>
 
     <form>
       <table class="tbAdd">
@@ -133,6 +133,34 @@ export default {
 
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+.w-btn {
+  position: relative;
+  border: none;
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-family: "paybooc-Light", sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.w-btn-blue {
+  background-color: #6aafe6;
+  color: #d4dfe6;
+}
+.w-btn-blue-outline {
+  border: 3px solid #6aafe6;
+  color: #6e6e6e;
+}
+.w-btn:hover {
+  letter-spacing: 2px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
 .tbAdd{border-top:1px solid #888;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0;}
 .tbAdd td{padding:10px 10px; box-sizing:border-box;}

@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <th>사진</th>
-            <td><img :src="'/api/product_detail_images/' + List.filename " /></td>
+            <td><img :src="'/api/product_detail_images/' + List.filename " class="img-thumbnail" alt="..." /></td>
           </tr>
 
         </table>

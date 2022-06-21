@@ -22,10 +22,7 @@
             <th>내용</th>
             <td>{{ notice.s_content }}</td>
           </tr>
-<!--          <tr>-->
-<!--            <th>사진</th>-->
-<!--            <td><img :src="'/api/product_detail_images/' + List.filename " /></td>-->
-<!--          </tr>-->
+
         </table>
       </form>
     </div>

@@ -178,7 +178,7 @@ const routes = [
     component: () => import('@/components/board/QuestionCreate.vue')
   },
   {
-    path: '/questionDetail/{questionId}',
+    path: '/questionDetail/:questionId',
     name: 'QuestionDetail',
     component: () => import('@/components/board/QuestionDetail.vue')
   },
