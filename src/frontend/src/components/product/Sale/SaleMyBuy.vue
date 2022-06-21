@@ -1,4 +1,6 @@
 <template>
+  <div class="back">
+    <div class="frame">
   <div class="buy-orders">
     <h1>등록한 구매상품 결제현황</h1>
     <div class="order-card-list">
@@ -75,6 +77,8 @@
           <!--          </table>-->
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 </template>
@@ -274,5 +278,22 @@ export default {
 .order-info-btn:hover{
   color: white;
   background-color: #b2e2fd;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 </style>
