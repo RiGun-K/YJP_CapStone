@@ -353,9 +353,7 @@ export default {
 	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 	max-width: 100px;
 	min-width: 80px;
-	transition: 0.1s;
 	overflow: hidden;
-
 	height: 40px;
 }
 .color_y {
@@ -369,18 +367,7 @@ export default {
 	min-width: 80px;
 	height: 40px;
 }
-.color_n:hover {
-	transform: scale(1.2);
-	overflow: visible;
-	border-radius: 14px;
-}
-.color_y:hover {
-	transform: scale(1.2);
-	overflow: visible;
-	border-radius: 14px;
-}
-.checkList {
-}
+
 td {
 	border-top: 1px solid black;
 	height: 90px;
