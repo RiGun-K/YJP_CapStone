@@ -122,16 +122,18 @@ export default {
   z-index: 1;
 }
 #content {
-  margin-right: 25%;
-  margin-left: 25%;
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
-  width: 50%;
-  height: 143%;
-  padding: 30px;
-  z-index: 2;
-  position: relative;
+  margin-left: 15%;
+  margin-right: 15%;
+  width: 70%;
+  height: 93%;
   background: white;
+  z-index: 2;
 }
 /* 입력폼 */
 h3 {

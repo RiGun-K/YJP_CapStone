@@ -1,123 +1,137 @@
 <template>
+  <h2 style="margin-left: 4%; margin-top: 4%">장바구니(예약)</h2>
   <div class="share-cart">
-    <h2>장바구니(대여)</h2>
 
     <table class="share-cart-item-info">
       <tr>
-        <td class="share-cart-checkbox"><input type="checkbox" @click="checkAll" v-model="allChecked">전체선택</td>
+        <td class="share-cart-checkbox"><input type="checkbox"
+                                               v-model="allChecked"
+                                               @click="checkedAll($event.target.checked)"
+        >전체선택</td>
         <td>상품/옵션 정보</td>
-        <td>수량</td>
-        <td>대여상품 금액</td>
-        <td>배송비</td>
       </tr>
-      <tr  v-for="(mx, index) in list" :key="index">
-        <td class="share-cart-checkbox"><input type="checkbox" :checked="mx.checked" ></td>
+      <tr  v-for="(shareCart, index) in shareCart" :key="index">
+        <td class="share-cart-checkbox"><input type="checkbox"
+                                               :id="'check_' + shareCart.cartCode"
+                                               :value="shareCart.cartCode"
+                                               v-model="this.selected[index]"
+                                               @change="selectedMethod($event)" ></td>
         <td>
-          <div class="card mb-3" style="max-width: 540px;">
+          <div class="card mb-3" style="width: 100%;" @click="rentalDetailPage(shareCart.rental.rentalId)">
             <div class="row g-0">
               <div class="col-md-4">
-                <img src="" class="img-fluid rounded-start" alt="...">
+                <img :src="'/api/product_detail_images/' + shareCart.rental.filename" class="img-fluid rounded-start" alt="...">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">상품이름: {{ mx.name }}</h5>
-                  <h5 class="card-text">옵션</h5>
-                  <h5 class="card-text">대여기간</h5>
+                  <h5 class="card-title" style="padding: 4%">{{shareCart.rental.rentalName}}</h5>
                 </div>
               </div>
             </div>
           </div>
         </td>
-        <td class="count-td"><button class="share-count-sub" @click="subCount(index)"> - </button>{{mx.count}}<button class="share-count-add" @click="addCount(index)"> + </button></td>
-        <td>{{mx.price}}</td>
-        <td>{{mx.delivery}}</td>
       </tr>
     </table>
   </div>
-  <div class="share-cart-all">
-    <p>상품금액 {{priceAll}} + 배송비 {{deliveryAll}} = 주문금액 {{ priceAll+deliveryAll}} </p>
+  <div class="share-cart-delete-div">
+    <button class="share-cart-delete" @click="rentalCartDelete()">장바구니에서 삭제</button>
   </div>
 
   <div class="share-cart-btn-list">
     <button class="share-cart-btn">계속 쇼핑하기</button>
-    <button class="share-cart-btn">대여하기</button>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: 'ShareCart',
   data () {
     return {
+      content: [],
+      shareCart: [],
+      selected: [],
       allChecked: false,
-      list: [
-        { name: '동그라미', count: 1, price: 50000, delivery: 0, checked: false },
-        { name: '세모', count: 5, price: 12000, delivery: 5000, checked: false },
-        { name: '네모', count: 3, price: 32000, delivery: 20000, checked: false }
-      ]
+      selectedList: []
     }
   },
-  setup () {
-    return {
-      check: {
-        check1: false,
-        check2: false
-      }
-    }
-  },
-  computed: {
-    priceAll () {
-      let priceAllAdd = 0
-      for (let i = 0; i < this.list.length; i++) {
-        priceAllAdd += this.list[i].count * this.list[i].price
-      }
-      return priceAllAdd
-    },
-    deliveryAll () {
-      let deliveryAllAdd = 0
-      for (let i = 0; i < this.list.length; i++) {
-        deliveryAllAdd += this.list[i].delivery
-      }
-      return deliveryAllAdd
-    }
+  created() {
+    this.content = this.$store.state.loginState
+    this.shareCartList();
   },
   methods: {
-    checkAll () {
-      if (this.allChecked === false) {
-        this.allChecked = true
-        this.list[0].checked = true
-        this.list[1].checked = true
-        this.list[2].checked = true
-      } else {
-        this.allChecked = false
-        this.list[0].checked = false
-        this.list[1].checked = false
-        this.list[2].checked = false
+    shareCartList(){
+      axios.get('http://localhost:9002/api/cartList/shareCart/' + this.content.mcode)
+          .then(res => {
+            this.shareCart = res.data
+            console.log(res.data)
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    },
+    checkedAll(checked){
+      this.allChecked = checked
+      for(let i in this.shareCart){
+        this.selected[i] = this.allChecked;
       }
     },
-    subCount (index) {
-      if (this.list[index].count === 1) {
-        alert('더 이상 뺄 수 없습니다.')
-      } else {
-        this.list[index].count--
+    selectedMethod(e){
+      for(let i in this.shareCart){
+        if(! this.selected[i]){
+          this.allChecked = false
+          return;
+        }else{
+          this.allChecked = true;
+        }
       }
     },
-    addCount (index) {
-      this.list[index].count++
-    }
+    getSelected(){
+      for(let i in this.shareCart){
+        if(this.selected[i]){
+          this.selectedList.push(this.shareCart[i].cartCode)
+        }
+      }
+      console.log(this.selectedList)
+      return this.selectedList
+    },
+    rentalDetailPage(rentalId){
+      window.location.href = 'http://localhost:8081/itemShare/rentalList/'+ rentalId
+    },
+    rentalCartDelete(){
+      this.getSelected();
+      for(let i=0; i < this.selectedList.length; i++){
+        this.axios.post('http://localhost:9002/api/rentalCartDelete', {
+          cartCode: this.selectedList[i]
+        })
+            .then((res)=>{
+              console.log(res.data);
+              this.refreshAll();
+            })
+            .catch((err)=>{
+              console.log(err)
+            });
+      }
+    },
+    refreshAll() {
+      this.$router.go();
+    },
   }
 }
 </script>
 
 <style scoped>
 .share-cart{
-  margin: 4%;
+  margin-top: 4%;
   width: 100%;
   height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
 }
 .share-cart .share-cart-item-info {
-  margin-left: 10%;
-  margin-top: 6%;
+  margin-top: 2%;
   width: 70%;
   border: 1px solid #444444;
   border-collapse: collapse;
@@ -128,27 +142,6 @@ export default {
 }
 .share-cart-checkbox{
   width: 12%;
-}
-.count-td{
-  width: 10%;
-}
-.share-count-sub{
-  margin-right: 10%;
-}
-.share-count-add{
-  margin-left: 10%;
-}
-.share-cart-all{
-  padding-top: 2%;
-  text-align: center;
-  padding-bottom: 1.5%;
-  border: 1px solid black;
-  width: 70%;
-  margin-left: 14%;
-  margin-top: 6%;
-}
-.share-cart-all p{
-  font-size: 1.5em;
 }
 .share-cart-btn-list{
   text-align: center;
@@ -169,5 +162,22 @@ export default {
 .share-cart-btn:hover{
   color: white;
   background-color: #b2e2fd;
+}
+.share-cart-delete{
+  padding: 2%;
+  background-color: #ffffff;
+  color: #00a3de;
+  font-weight: bolder;
+  border-color: #00a3de;
+  border-radius: 1em;
+  font-size: 1.5em;
+}
+.share-cart-delete:hover{
+  color: white;
+  background-color: #b2e2fd;
+}
+.share-cart-delete-div{
+  margin-top: 3%;
+  margin-left: 75%;
 }
 </style>

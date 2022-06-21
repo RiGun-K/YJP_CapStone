@@ -1,97 +1,116 @@
 <template>
-	<div class="content">
-		<div class="myTeam">
-			<p>MY TEAM</p>
-			<button
-				@Click="showingAddTeamForm"
-				class="w-btn-outline w-btn-blue-outline"
-				type="button"
-			>
-				+
-			</button>
-		</div>
-		<div v-if="addTeamForm">
-			<input
-				v-model="$store.state.insertName"
-				placeholder="insert team name"
-			/>
-			<select v-model="open">
-				<option>전체공개</option>
-				<option>비공개</option>
-			</select>
-			<button @click="teamSave" class="w-btn w-btn-indigo" type="button">
-				생성
-			</button>
-		</div>
-		<div v-if="showingTeamList">
-			<p v-html="noTeam"></p>
-			<div
-				v-for="(value, index) in teamList"
-				:key="index"
-				class="teamList"
-			>
-				<button
-					class="w-btn-gray"
-					type="button"
-					@click="loadTeamMemberList(value.teamCode)"
-					:title="value.teamCode.teamName"
-				>
-					{{ value.teamCode.teamName }}
-				</button>
-			</div>
+	<div class="back">
+		<div class="frame">
+			<div class="content">
+				<div class="myTeam">
+					<p>MY TEAM</p>
+					<button
+						@Click="showingAddTeamForm"
+						class="w-btn-outline w-btn-blue-outline"
+						type="button"
+					>
+						+
+					</button>
+				</div>
+				<div v-if="addTeamForm" class="newTeam">
+					<select v-model="open">
+						<option>전체공개</option>
+						<option>비공개</option>
+					</select>
+					<input
+						v-model="$store.state.insertName"
+						placeholder="insert team name"
+					/>
 
-			<div
-				v-for="(value, index) in unacceptedTeamCode"
-				:key="index"
-				style="display: inline-block"
-			>
-				<button
-					class="w-btn-gra2 w-btn-gra-anim"
-					type="button"
-					@click="selectUnacceptedTeam(value.teamCode)"
-					:title="value.teamCode.teamName"
-				>
-					{{ value.teamCode.teamName }}
-				</button>
-			</div>
-		</div>
-		<div>
-			<hr />
-			<br />
-		</div>
-		<div class="requestOuter">
-			<div v-if="showingRequest" class="request">
-				<div class="requestP">
-					<p>
-						팀{{ this.requestTeamCode.teamName }} 에서 요청이
-						왔습니다
-					</p>
-					<div class="requestButton">
-						<button @click="accept(requestTeamCode.teamCode)">
-							수락하기
+					<button
+						@click="teamSave"
+						class="w-btn w-btn-indigo"
+						type="button"
+					>
+						생성
+					</button>
+				</div>
+				<div v-if="showingTeamList">
+					<p v-html="noTeam"></p>
+					<div
+						v-for="(value, index) in teamList"
+						:key="index"
+						class="teamList"
+					>
+						<button
+							class="w-btn-gray"
+							type="button"
+							@click="loadTeamMemberList(value.teamCode)"
+							:title="value.teamCode.teamName"
+						>
+							{{ value.teamCode.teamName }}
 						</button>
-						<button @click="refuse(requestTeamCode.teamCode)">
-							거절하기
+					</div>
+
+					<div
+						v-for="(value, index) in unacceptedTeamCode"
+						:key="index"
+						style="display: inline-block"
+					>
+						<button
+							class="w-btn-gra2 w-btn-gra-anim"
+							type="button"
+							@click="selectUnacceptedTeam(value.teamCode)"
+							:title="value.teamCode.teamName"
+						>
+							{{ value.teamCode.teamName }}
 						</button>
 					</div>
 				</div>
-			</div>
-			<div v-if="showingTeamMember" class="teamMemberList">
-				<p>{{ $store.state.teamCode.teamCode.teamName }} MEMBERS</p>
-
-				<button
-					id="teamMembers"
-					v-for="(value, index) in $store.state.teamMemberList"
-					:key="index"
-				>
-					이름:{{ value.mcode.mname }}
+				<div>
+					<hr />
 					<br />
-					이메일:{{ value.mcode.mmail }} <br />
-					나이:{{ value.mcode.mph }}
-				</button>
-				<a :href="$store.state.teamURL"
-					>팀{{ $store.state.teamCode.teamCode.teamName }}상세보기</a
-				>
+				</div>
+				<div class="requestOuter">
+					<div v-if="showingRequest" class="request">
+						<div class="requestP">
+							<p>
+								팀{{ this.requestTeamCode.teamName }} 에서
+								요청이 왔습니다
+							</p>
+							<div class="requestButton">
+								<button
+									@click="accept(requestTeamCode.teamCode)"
+								>
+									수락하기
+								</button>
+								<button
+									@click="refuse(requestTeamCode.teamCode)"
+								>
+									거절하기
+								</button>
+							</div>
+						</div>
+					</div>
+					<div v-if="showingTeamMember" class="teamMemberList">
+						<p>
+							{{ $store.state.teamCode.teamCode.teamName }}
+							MEMBERS
+						</p>
+
+						<button
+							id="teamMembers"
+							v-for="(value, index) in $store.state
+								.teamMemberList"
+							:key="index"
+						>
+							이름:{{ value.mcode.mname }}
+							<br />
+							이메일:{{ value.mcode.mmail }} <br />
+							나이:{{ value.mcode.mph }}
+						</button>
+						<a :href="$store.state.teamURL"
+							>팀{{
+								$store.state.teamCode.teamCode.teamName
+							}}상세보기</a
+						>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -350,6 +369,18 @@ export default {
 	background-color: #6aafe6;
 	color: #d4dfe6;
 }
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
 .w-btn-blue-outline {
 	border: 3px solid #6aafe6;
 	color: #6e6e6e;
@@ -358,12 +389,15 @@ export default {
 .myTeam {
 	width: 100%;
 	margin: 20px;
-	/* float: left; asdasdasdasd*/
+	float: left;
 }
 .myTeam p {
-	display: inline;
 	font-size: 30px;
 	margin: 10px;
+	float: left;
+}
+.myTeam button {
+	margin-top: 15px;
 }
 .content {
 	float: left;
@@ -414,5 +448,41 @@ hr {
 	100% {
 		background-position: 0% 50%;
 	}
+}
+.back {
+	position: absolute;
+	background-image: url(@/assets/campwall2.webp);
+	background-size: 100%;
+	width: 100%;
+	background-repeat: repeat-y;
+	padding: auto;
+}
+.frame {
+	border: none;
+	border-radius: 50px;
+	background-color: rgb(247, 246, 230);
+	width: 86%;
+	height: 800px;
+	margin: auto;
+}
+.newTeam {
+	padding: 40px;
+}
+
+.newTeam select {
+	height: 40px;
+	margin-right: 10px;
+	border-radius: 10px;
+}
+
+.newTeam input {
+	height: 40px;
+	width: 300px;
+	margin-right: 10px;
+	border-radius: 10px;
+}
+.w-btn-indigo {
+	background-color: aliceblue;
+	color: #1e6b7b;
 }
 </style>

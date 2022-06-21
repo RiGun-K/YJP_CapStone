@@ -148,17 +148,18 @@ export default {
   z-index: 1;
 }
 .divBody{
-  margin-right: 15%;
-  margin-left: 15%;
+  border-radius: 100px;
+  padding: 30px;
+  padding-top: 5%;
+  position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
-  text-align: center;
+  margin-left: 15%;
+  margin-right: 15%;
   width: 70%;
   height: 93%;
-  padding: 30px;
-  z-index: 2;
-  position: relative;
   background: white;
+  z-index: 2;
 }
 .btnDiv{
   display: inline;

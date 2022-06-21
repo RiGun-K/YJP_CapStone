@@ -21,4 +21,13 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Integer> {
             "join MEMBER M on C2.MID = M.MCODE\n" +
             "where M.MCODE = :mcode", nativeQuery = true)
     List<OrderMenu> findBySaleMyId(@Param("mcode") Long mcode);
+
+    @Query(value = "select * from Order_Menu where Menu_Buy_Id is not null", nativeQuery = true)
+    public List<OrderMenu> findByMenuBuy();
+
+    @Query(value = "select * from Order_Menu where Rental_Id is not null", nativeQuery = true)
+    public List<OrderMenu> findByRental();
+
+    @Query(value = "select * from Order_Menu where Camping_Id is not null", nativeQuery = true)
+    public List<OrderMenu> findByCamping();
 }

@@ -140,36 +140,63 @@ const routes = [
 
 	//////////////////////////////게시판////////////////////////////////////
 
-	{
-		path: '/board',
-		name: 'Board',
-		component: () => import('@/components/board/Board.vue'),
-	},
-	{
-		path: '/read',
-		name: 'Read',
-		component: () => import('@/components/board/Read.vue'),
-	},
-	{
-		path: '/create/:contentId?',
-		name: 'Create',
-		component: () => import('@/components/board/Create.vue'),
-	},
-	{
-		path: '/create',
-		name: 'Create',
-		component: () => import('@/components/board/Create.vue'),
-	},
-	{
-		path: '/view/:boardId',
-		name: 'View',
-		component: () => import('@/components/board/View.vue'),
-	},
-	{
-		path: '/update/:writer_code',
-		name: 'Update',
-		component: () => import('@/components/board/Update.vue'),
-	},
+  {
+    path: '/board',
+    name: 'Board',
+    component: () => import('@/components/board/Board.vue')
+  },
+  {
+    path: '/read',
+    name: 'Read',
+    component: () => import('@/components/board/Read.vue')
+  },
+  {
+    path: '/create/:contentId?',
+    name: 'Create',
+    component: () => import('@/components/board/Create.vue')
+  },
+  {
+    path: '/create',
+    name: 'Create',
+    component: () => import('@/components/board/Create.vue')
+  },
+  {
+    path: '/view/:boardId',
+    name: 'View',
+    component: () => import('@/components/board/View.vue')
+  },
+  {
+    path: '/update/:writer_code',
+    name: 'Update',
+    component: () => import('@/components/board/Update.vue')
+  },
+  {
+    path: '/noticeboard',
+    name: 'Noticeboard',
+    component: () => import('@/components/board/NoticeBoard.vue')
+  },
+  {
+    path: '/noticeDetail',
+    name: 'NoticeDetail',
+    component: () => import('@/components/board/NoticeDetail.vue'),
+    props: true
+  },
+
+  {
+    path: '/questionBoard',
+    name: 'QuestionBoard',
+    component: () => import('@/components/board/QuestionBoard.vue')
+  },
+  {
+    path: '/questionCreate',
+    name: 'QuestionCreate',
+    component: () => import('@/components/board/QuestionCreate.vue')
+  },
+  {
+    path: '/questionDetail/:questionId',
+    name: 'QuestionDetail',
+    component: () => import('@/components/board/QuestionDetail.vue')
+  },
 
 
 	///////////////////////////////상품관리///////////////////////////////////
@@ -349,6 +376,12 @@ const routes = [
 		component: () => import('@/components/cart/ItemShare/ShareList.vue'),
 	},
 	{
+		path: '/itemShare/rentalList/:rentalId',
+		name: 'ShareDetailList',
+		component: () => import('@/components/cart/ItemShare/ShareDetailList.vue'),
+		props: true,
+	},
+	{
 		path: '/itemShare/shareNow/:rentalId',
 		name: 'ShareNow',
 		component: () => import('@/components/cart/ItemShare/ShareNow.vue'),
@@ -401,17 +434,17 @@ const routes = [
 	{
 		path: '/cart/buy/:mcode',
 		name: 'BuyCart',
-		component: () => import('@/components/cart/Cart/BuyCart.vue'),
+		component: () => import('@/components/cart/Cart/BuyCart.vue')
 	},
 	{
-		path: '/cart/share',
+		path: '/cart/share/:mcode',
 		name: 'ShareCart',
-		component: () => import('@/components/cart/Cart/ShareCart.vue'),
+		component: () => import('@/components/cart/Cart/ShareCart.vue')
 	},
 	{
-		path: '/cart/reservation',
+		path: '/cart/reservation/:mcode',
 		name: 'ReservationCart',
-		component: () => import('@/components/cart/Cart/ReservationCart.vue'),
+		component: () => import('@/components/cart/Cart/ReservationCart.vue')
 	},
 	{
 		path: '/ordersList',
@@ -435,6 +468,12 @@ const routes = [
 		name: 'ReservationOrders',
 		component: () =>
 			import('@/components/cart/ordersInfo/ReservationOrders.vue'),
+	},
+	{
+		path: '/itemBuy/buyCartNow/:mid',
+		name: 'BuyCartNow',
+		component: () => import('@/components/cart/ItemBuy/BuyCartNow.vue'),
+		props: true
 	},
 	//////////////////////////////보관함관리/////////////////////////////////
 
