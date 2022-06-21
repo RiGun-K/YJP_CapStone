@@ -25,7 +25,7 @@
           <table>
             <tbody>
             <tr>
-              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.filename"></td>
+              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.storageCode"></td>
               <td>이름</td>
               <td>{{ storage.storageName }}</td>
             </tr>
