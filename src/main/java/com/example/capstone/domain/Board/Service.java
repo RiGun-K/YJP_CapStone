@@ -19,6 +19,7 @@ public class Service {
 
     @Column()
     private String s_title;
+    @Column(length = 1024)
     private String s_content;
 
     @Column()

@@ -20,7 +20,7 @@
           </tr>
           <tr>
             <th>내용</th>
-            <td>{{ notice.s_content }}</td>
+            <td><h5 v-html="this.notice.s_content"></h5></td>
           </tr>
 
         </table>

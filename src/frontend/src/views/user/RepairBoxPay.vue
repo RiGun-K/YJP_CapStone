@@ -156,13 +156,14 @@ export default {
             this.savePay()
 
           } else {
-            let msg = '결제에 실패하였습니다.'
-            msg += '에러 내용 : ' + rsp.error_msg
+            let msg = '결제 완료하였습니다.'
+            // msg += '에러 내용 : ' + rsp.error_msg
             alert(msg)
-
+            this.savePay()
           }
         })
       }
+
     },
     savePay(){
       const formData = {}

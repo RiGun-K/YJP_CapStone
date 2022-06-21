@@ -24,7 +24,7 @@
           </tr>
           <tr>
             <th>내용</th>
-            <td>{{ List.content }}</td>
+            <td><h5 v-html="this.List.content"></h5></td>
           </tr>
           <tr>
             <th>사진</th>
