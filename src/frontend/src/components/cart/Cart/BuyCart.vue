@@ -211,6 +211,7 @@ export default {
   border: 1px solid #444444;
   border-collapse: collapse;
 }
+
 .buy-cart td {
   border: 1px solid #444444;
   padding: 1%;
