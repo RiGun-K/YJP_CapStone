@@ -74,7 +74,11 @@ export default {
     this.file = this.$route.query.filename;
     console.log(this.id)
   },
-
+  // computed: {
+  //   toString(){
+  //     this.content = this.content.replace("<br>", "\r\n");
+  //   }
+  // },
 
   methods: {
     update() {

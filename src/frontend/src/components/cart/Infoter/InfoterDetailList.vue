@@ -15,7 +15,7 @@
     <input type="radio" name="radio-btn" id="img-2" />
     <li class="slide-container">
       <div class="slide">
-        <img src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg" />
+        <img :src="'/api/product_detail_images/' + content.images[0].filename" />
       </div>
       <div class="nav">
         <label for="img-1" class="prev">&#x2039;</label>
@@ -26,7 +26,7 @@
     <input type="radio" name="radio-btn" id="img-3" />
     <li class="slide-container">
       <div class="slide">
-        <img src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg" />
+        <img :src="'/api/product_detail_images/' + content.images[1].filename" />
       </div>
       <div class="nav">
         <label for="img-2" class="prev">&#x2039;</label>
@@ -37,7 +37,7 @@
     <input type="radio" name="radio-btn" id="img-4" />
     <li class="slide-container">
       <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.campingDetails[0].filename" />
+        <img :src="'/api/product_detail_images/' + content.images[2].filename" />
       </div>
       <div class="nav">
         <label for="img-3" class="prev">&#x2039;</label>
@@ -48,7 +48,7 @@
     <input type="radio" name="radio-btn" id="img-5" />
     <li class="slide-container">
       <div class="slide">
-        <img src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+        <img :src="'/api/product_detail_images/' + content.images[3].filename" />
       </div>
       <div class="nav">
         <label for="img-4" class="prev">&#x2039;</label>
@@ -59,7 +59,7 @@
     <input type="radio" name="radio-btn" id="img-6" />
     <li class="slide-container">
       <div class="slide">
-        <img src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
+        <img :src="'/api/product_detail_images/' + content.images[4].filename" />
       </div>
       <div class="nav">
         <label for="img-5" class="prev">&#x2039;</label>

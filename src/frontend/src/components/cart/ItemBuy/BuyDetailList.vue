@@ -1,7 +1,7 @@
 <template>
   <br>
   <div class="img-block">
-    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
+    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" style="margin-left: 70px; margin-right: 70px" alt="...">
     <div class="blocks">
       <h1>{{ this.content.buyName }}</h1>
       <br>
@@ -446,7 +446,11 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .d-grid gap-2 d-md-flex justify-content-md-end {
   margin-left: 15%;
 }
-
+.img-block img {
+  width: 20%;
+  height: 20%;
+  margin-left: 5%;
+}
 .buy-count-sub{
   color: #00a3de;
   background-color: white;
