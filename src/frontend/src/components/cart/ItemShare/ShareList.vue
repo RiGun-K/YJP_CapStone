@@ -36,7 +36,7 @@
 
   <div class="ItemBuy">
 
-    <h1>Item Buy</h1>
+    <h1>Item Rental</h1>
     <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
     <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
