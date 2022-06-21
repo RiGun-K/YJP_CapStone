@@ -125,7 +125,14 @@ export default {
       let code = box.storageBoxCode
       let name = box.storageBoxName
       let state = box.storageBoxState
-      if (state == '0') {
+      console.log(state)
+      console.log(state)
+      console.log(state)
+      console.log(state)
+      console.log(state)
+      console.log(state)
+
+      if (state == 0) {
         this.stateCheck = true
         this.boxCode = code
         this.boxName = name

@@ -1,19 +1,20 @@
 <template>
   <!--  사용중인 보관함 정보-->
-  <div class="storageBodyDiv">
+  <div class="container">
     <h5>보관함</h5>
-    <div>
+    <div class="box-info">
       <table>
-        <thead>
-        <tr>
-          <th>보관함</th>
-          <th colspan="2">상태</th>
-        </tr>
-        </thead>
         <tbody>
         <tr>
+          <td>보관함</td>
           <td>{{ box.boxName }}</td>
+        </tr>
+        <tr>
+          <td>상태</td>
           <td>{{ changeState(box.boxState) }}</td>
+        </tr>
+        <tr v-if="box.boxState==1 || (box.boxState==6 && remainder) ">
+          <td></td>
           <td v-if="box.boxState==1">
             <button @click="updateState">보관완료</button>
           </td>
@@ -24,17 +25,26 @@
         </tbody>
       </table>
     </div>
+    <br><br>
   </div>
-  <div>
+  <div class="user-info">
     <h5>사용중인 사용자 정보</h5>
-    <div>
-      아이디 : {{ box.nickName }}
-    </div>
-    <div v-if="timeck">
-      상태 : {{ useStateString }}
-    </div>
-    <div v-else>
-      상태 : {{ useState(box.useStorageState) }}
+    <div class="info-box">
+      <table>
+        <thead>
+        <tr>
+          <th>아이디</th>
+          <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="border-bottom: 1px solid black">
+          <td>{{ box.nickName }}</td>
+          <td v-if="timeck">{{ useStateString }}</td>
+          <td v-else>{{ useState(box.useStorageState) }}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <hr>
@@ -43,120 +53,135 @@
     <div>
       <h5>이동 정보</h5>
       <div v-if="box.useStorageState == 3">
-        <div>
+        <div class="info-box">
           <table>
             <thead>
             <tr>
               <th>배송 도착지</th>
+              <th></th>
+            </tr>
+            <tr>
+              <th>보관소</th>
+              <th>보관함</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <td>보관소</td>
               <td>{{ moveInfo.storageName }}</td>
+              <td>{{ moveInfo.storageBoxName }}</td>
             </tr>
             <tr>
-              <td>보관함</td>
-              <td>{{ moveInfo.storageBoxName }}</td>
+              <td colspan="2"><button class="payNow" style="float: right" @click="moveStateUpDate()">배송 시작</button></td>
             </tr>
             </tbody>
           </table>
         </div>
-        <div>
-          <button @click="moveStateUpDate()">배송 시작</button>
-        </div>
       </div>
       <div v-if="box.useStorageState == 4 || box.useStorageState == 5">
         <div>
-          <table>
+          <table class="info-box">
             <thead>
             <tr>
               <th>배송 출발지</th>
+              <th></th>
+            </tr>
+            <tr>
+              <th>보관소</th>
+              <th>보관함</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <td>보관소</td>
               <td>{{ moveInfo.storageName }}</td>
-            </tr>
-            <tr>
-              <td>보관함</td>
               <td>{{ moveInfo.storageBoxName }}</td>
             </tr>
             </tbody>
           </table>
         </div>
         <div v-if="box.useStorageState == 5">
-          <button @click="endMoveupdate()">도착</button>
+          <button class="payNow" style="float: right" @click="endMoveupdate()">도착</button>
         </div>
       </div>
     </div>
   </div>
-  <div v-if="careChk">
-    <h5>수리 신청 내역</h5>
-    <div>
-      <div v-if="box.useStorageState == 6">
-        <h5>수리 신청</h5>
-        <div>
-          수리할 장비 목록
-
-        </div>
-        <div>
-          요청사항
-        </div>
-      </div>
-    </div>
-  </div>
+  <!--  <div v-if="careChk">-->
+  <!--    <h5>수리 신청 내역</h5>-->
+  <!--    <div>-->
+  <!--      <div v-if="box.useStorageState == 6">-->
+  <!--        <h5>수리 신청</h5>-->
+  <!--        <div>-->
+  <!--          수리할 장비 목록-->
+  <!--        </div>-->
+  <!--        <div>-->
+  <!--          요청사항-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
   <div v-if="box.useStorageState == 9">
     <h5>배송</h5>
     <div>
       <div>
         <h5>주소지</h5>
-      </div>
-      <div>
-        <button>배송시작</button>
-      </div>
-    </div>
-  </div>
-  <div v-if="box.useStorageState == 1">
-    <div>
-
-    </div>
-    <div v-if="remainder">
-      <h5>종료까지 {{ remainderTime }}일 남았습니다.</h5>
-      <div>
-        <h5>주소지</h5>
-        <div>
+        <div class="box-info">
           <table>
             <tbody>
             <tr>
-              <t>사용자</t>
-              <t>{{ user.mnick }}</t>
+              <td>받는 사람</td>
+              <td>{{ order.deliveryGetter }}</td>
             </tr>
             <tr>
-              <t>우편번호</t>
-              <t>{{ user.mzadd }}</t>
+              <td>우편번호</td>
+              <td>{{ order.deliveryZipcode }}</td>
             </tr>
             <tr>
-              <t>주소</t>
-              <t>{{ user.madd }}</t>
+              <td>주소</td>
+              <td>{{ order.deliveryAddress }}</td>
             </tr>
             <tr>
-              <t>상세주소</t>
-              <t>{{ user.mradd }}</t>
-            </tr>
-            <tr>
-              <t>전화번호</t>
-              <t>{{ user.mhp }}</t>
+              <td>연락처</td>
+              <td>{{ order.deliveryGetterTel }}</td>
             </tr>
             </tbody>
           </table>
         </div>
       </div>
-
+      <div>
+        <button @click="moveDel()">배송시작</button>
+      </div>
+    </div>
+  </div>
+  <div v-if="box.useStorageState == 1">
+    <div v-if="remainder">
+      <h5>종료까지 {{ remainderTime }}일 남았습니다.</h5>
+      <div>
+        <h5>주소지</h5>
+        <div class="box-info">
+          <table>
+            <tbody>
+            <tr>
+              <td>사용자</td>
+              <td>{{ user.mnick }}</td>
+            </tr>
+            <tr>
+              <td>우편번호</td>
+              <td>{{ user.mzadd }}</td>
+            </tr>
+            <tr>
+              <td>주소</td>
+              <td>{{ user.madd }} {{user.mradd}}</td>
+            </tr>
+            <tr>
+              <td>전화번호</td>
+              <td>{{ user.mhp }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div>
-      <button>배송시작</button>
+      <button @click="moveDel()">배송시작</button>
     </div>
   </div>
 </template>
@@ -189,15 +214,21 @@ export default {
       user: {},
       timeck: false,
       useStateString: '',
+      del:'',
+      order:{},
     }
   },
   methods: {
+    moveDel(){
+      this.box.useStorageState =2
+    },
     changeState(state) {
       switch (state) {
         case '1':
           return "결제완료"
           break
         case '2':
+        case '5':
           return "사용중"
           break
         case '3':
@@ -205,9 +236,6 @@ export default {
           break
         case '4':
           return "장비이동 신청"
-          break
-        case '5':
-          return "수리 신청"
           break
         case '6':
           return "해지"
@@ -282,7 +310,12 @@ export default {
             data.useStorageCode = res.data[0][5]
             data.useStorageState = res.data[0][6].toString().charAt(0)
             this.box = data
-            this.box.updateusbCode = res.data[0][6].substring(1, res.data[0][6].length)
+            if (data.useStorageState == "9"){
+              this.del = res.data[0][6].substring(1, res.data[0][6].length)
+              this.delInfo()
+            }else{
+              this.box.updateusbCode = res.data[0][6].substring(1, res.data[0][6].length)
+            }
 
             this.pickChange()
             if (this.box.updateusbCode != '') {
@@ -290,6 +323,15 @@ export default {
             }
             this.ifCheck()
           })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    delInfo(){
+      axios.get("/api/delInfo/"+this.del)
+      .then(res=>{
+        this.order = res.data
+      })
           .catch(err => {
             console.log(err)
           })
@@ -427,16 +469,45 @@ export default {
 </script>
 
 <style scoped>
-.storageBodyDiv {
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-top: 1%;
-  margin-bottom: 10%;
-}
 
-th, td {
+.box-info th {
+  border: 1px solid black;
   padding: 5px;
   padding-left: 5%;
   width: 50%;
+}
+
+.box-info td {
+  border: 1px solid black;
+  padding: 5px;
+  padding-left: 5%;
+  width: 50%;
+}
+
+.box-info td:first-child {
+  width: 20%;
+  background-color: #d8d8d8;
+}
+
+th {
+  text-align: center;
+}
+
+thead {
+  background-color: #6e6e6e;
+  color: white;
+}
+
+td {
+  text-align: center;
+}
+
+.payNow {
+  position: center;
+  text-align: center;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
 }
 </style>
