@@ -109,6 +109,9 @@ export default {
   name: "BuyDetailList",
   created() {
     this.DataList();
+    this.member = this.$store.state.loginState
+    this.fetchData();
+    
   },
   data() {
     return {
