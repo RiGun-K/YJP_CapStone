@@ -126,6 +126,8 @@ export default {
       areaCheckB: false,
       areaCheckC: false,
 
+      member: [],
+
 
     }
   },
