@@ -159,6 +159,7 @@ export default {
     this.DataList();
     this.member = this.$store.state.loginState
     this.fetchData();
+    //
   },
   data() {
     return {
