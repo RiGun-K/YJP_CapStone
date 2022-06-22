@@ -1,7 +1,7 @@
 <template>
   <br>
   <div class="img-block">
-    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" style="margin-left: 70px; margin-right: 70px" alt="...">
+    <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
     <div class="blocks">
       <h1>{{ this.content.buyName }}</h1>
       <br>
@@ -11,9 +11,9 @@
       <br>
       <h1>수량</h1>
       <p class="count-td"><button class="buy-count-sub" @click="subCount()"> ― </button> {{this.count}} <button class="buy-count-add" @click="addCount()"> ╊ </button></p>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-right: 5%;">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="buyData">구매</b-button>
-        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">장바구니</b-button>
+        <b-button type="button" class="btn btn-outline-primary btn-lg"  @click="putData">찜</b-button>
       </div>
     </div>
   </div>
@@ -42,61 +42,10 @@
 
     <div v-if="areaCheckC">
       <br>
-      <img class="ilist" :src=image>
+      <img :src=image>
       <br>
-      <img class="ilist" :src=image2>
+      <img :src=image2>
     </div>
-
-    <div v-if="areaCheckD">
-      <br>
-      <div class="review-t">
-        <h2>상품평</h2>
-      </div>
-      <div class="content-detail-list-1">
-        <br>
-        <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
-          <div class="Recommend">
-            <button class="button" @click="addPush(reviews)">추천수 : 37</button>
-          </div>
-
-          <div class="review">
-            <div class="review-title">리건2 | 2202-06-20</div>
-            <div class="review-text">별 생각없이 샀는데</div>
-            <div class="review-text">배송도 빠르고 너무 마음에 들어요 ㅎ</div>
-
-            <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
-
-            <div class="my-box-3">
-            </div>
-
-            <div class="btn_area_2">
-              <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
-                <span>삭제</span>
-              </button>
-            </div>
-
-            <div class="btn_area_2">
-              <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
-                <span>수정</span>
-              </button>
-            </div>
-
-          </div>
-
-
-
-        </div>
-
-        <br>
-        <div class="btn_area_1">
-          <button type="button" @click="detail_5" class="btn_Bottom_1">
-            <span>작성</span>
-          </button>
-        </div>
-        <br>
-      </div>
-    </div>
-
 
     <div v-if="areaCheckA">
       <br>
@@ -119,7 +68,10 @@
 
             <div class="my-box-3">
             </div>
-
+            <div class="image_1">
+              <p class="review-image">이미지</p>
+              <img :src="'/api/product_detail_images/' + reviews.filename" />
+            </div>
             <div class="btn_area_2">
               <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
                 <span>삭제</span>
@@ -159,7 +111,7 @@ export default {
     this.DataList();
     this.member = this.$store.state.loginState
     this.fetchData();
-    //
+    
   },
   data() {
     return {
@@ -176,7 +128,8 @@ export default {
       areaCheckA: false,
       areaCheckB: false,
       areaCheckC: false,
-      areaCheckD: false,
+
+      member: [],
 
 
     }
@@ -215,19 +168,19 @@ export default {
       this.axios.post('http://localhost:9002/api/buyCartPut', {
         buyId: this.content.buyId,
         count: this.count,
-        mid: this.member.mcode,
+        MID: this.content.mid.mid,
       }).then(res => {
         this.buyMenuCheckPut = res.data
         if(this.buyMenuCheckPut === false) {
           if (confirm('이미 담겨있습니다. \n장바구니에서 확인하시겠습니까?')) {
             this.$router.push({
-              path: `/cart/buy/${this.member.mcode}`
+              path: `/cart/buy/${this.content.mid.mcode}`
             })
           }
         }else{
           if (confirm('추가되었습니다. \n장바구니에서 확인하시겠습니까?')) {
             this.$router.push({
-              path: `/cart/buy/${this.member.mcode}`
+              path: `/cart/buy/${this.content.mid.mcode}`
             })
           }
         }
@@ -235,7 +188,6 @@ export default {
         console.log(err)
       })
     },
-
     putCart() {
     },
     subCount() {
@@ -255,7 +207,7 @@ export default {
 
     fetchData() {
       console.log(this.id)
-      axios.get('/api/CampingBoardlist/' + 308)
+      axios.get('/api/CampingBoardlist/' + this.id)
           // 캠핑장 아이디를 넘겨줌 = 이 캠핑장에 해당하는 게시글 가져오기
           .then((res) => {
             console.log("게시글 조회 성공" + res.data);
@@ -315,27 +267,18 @@ export default {
       this.areaCheckB = true;
       this.areaCheckA = false;
       this.areaCheckC = false;
-      this.areaCheckD = false;
-    },
-    detail_2() {
-      this.areaCheckB = false;
-      this.areaCheckA = false;
-      this.areaCheckC = false;
-      this.areaCheckD = true;
+
     },
     detail_3() {
       this.areaCheckA = true;
       this.areaCheckB = false
       this.areaCheckC = false;
-      this.areaCheckD = false;
 
     },
     detail_4() {
       this.areaCheckA = false;
       this.areaCheckB = false;
       this.areaCheckC = true;
-      this.areaCheckD = false;
-
     }
 
   }
@@ -447,11 +390,7 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .d-grid gap-2 d-md-flex justify-content-md-end {
   margin-left: 15%;
 }
-.img-block img {
-  width: 20%;
-  height: 20%;
-  margin-left: 5%;
-}
+
 .buy-count-sub{
   color: #00a3de;
   background-color: white;
@@ -538,7 +477,7 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 }
 .review-image{
   margin-top: 10%;
-  margin-left: -30px;
+  margin-right: 5%;
 
 }
 .button{
@@ -616,10 +555,6 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
   /*width: 300px;*/
   /*height: 180px;*/
 
-}
-.ilist {
-  width: 70%;
-  height: 70%;
 }
 .review-t{
   text-align: center;

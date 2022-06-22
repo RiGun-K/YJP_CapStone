@@ -1,5 +1,5 @@
 <template>
-  <div class="storageBodyDiv">
+  <div class="container">
     <table>
       <tbody>
       <tr>
@@ -9,12 +9,11 @@
       <tr>
         <td>상태</td>
         <td v-if="box.storageBoxState == 'x'">
-          <h5>비활성화</h5>
-          <button @click="onBox()">활성화</button>
+          <h5>비활성화 <button class="payNow" style="float: right" @click="onBox()">활성화</button></h5>
         </td>
         <td v-else>
-          <h5>사용안함</h5>
-          <button @click="offBox()">비활성화</button>
+          <h5>사용안함 <button class="payNow" style="float: right" @click="offBox()">비활성화</button></h5>
+
         </td>
       </tr>
       </tbody>
@@ -87,16 +86,28 @@ export default {
 </script>
 
 <style scoped>
-.storageBodyDiv {
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-top: 1%;
-  margin-bottom: 10%;
+.container {
+  position: center;
+  height: 100%;
+  width: 80%;
 }
-
+td:first-child {
+  width: 20%;
+  background-color: #d8d8d8;
+}
 th, td {
+  border: 1px solid black;
   padding: 5px;
   padding-left: 5%;
   width: 50%;
+}
+
+.payNow {
+  position: center;
+  text-align: center;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
 }
 </style>

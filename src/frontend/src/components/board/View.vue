@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="back">
+    <div class="frame">
+  <div style="padding: 2%">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <br><H2 style="font-weight: bold">게시글 상세보기</H2>
     <br>
@@ -74,6 +76,8 @@
     </div>
 
 
+  </div>
+    </div>
   </div>
 
 </template>
@@ -213,6 +217,23 @@ export default {
 </script>
 
 <style scoped>
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
+}
 .tbAdd{
   border-top:1px solid #888;
 }
