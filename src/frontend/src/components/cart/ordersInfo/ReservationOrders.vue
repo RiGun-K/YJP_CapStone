@@ -196,7 +196,7 @@ export default {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
               this.todayDetail[count] = this.detailInfo[i];
-              count++;
+              count++
             }
           }else if(now.subtract(1, "week").month() + 1 < this.menus[i].orders.paymentDate.month()){
             this.todayMenu[count] = this.menus[i];

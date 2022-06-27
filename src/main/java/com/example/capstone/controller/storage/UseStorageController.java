@@ -4,10 +4,7 @@ import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
-import com.example.capstone.domain.storage.MemberEquipment;
-import com.example.capstone.domain.storage.Storage;
-import com.example.capstone.domain.storage.StorageBox;
-import com.example.capstone.domain.storage.UseStorageBox;
+import com.example.capstone.domain.storage.*;
 import com.example.capstone.dto.storage.*;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.CampingAreaRepository;
@@ -63,6 +60,9 @@ public class UseStorageController {
     @Autowired
     OrderMenuRepository orderMenuRepository;
 
+    @Autowired
+    BoxItemRepository boxItemRepository;
+
     //보관함 연장 결제
     @PostMapping("/renewalPay")
     public Result renewalPay(@RequestBody RenewalBox renewalBox) {
@@ -70,9 +70,9 @@ public class UseStorageController {
         Optional<Member> user = memberRepository.findByMCode(beforeUseStorageBox.get().getMCode().getMCode());
         Optional<StorageBox> storageBox = storageBoxRepository.findById(beforeUseStorageBox.get().getStorageBoxCode().getStorageBoxCode());
 
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
-        for (int i = 0; i < memberEquipmentList.size(); i++) {
-            memberEquipmentList.get(i).setUseStorageBoxCode(null);
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(beforeUseStorageBox.get());
+        for (int i = 0; i < boxItemList.size(); i++) {
+            boxItemList.get(i).setUseStorageBoxCode(null);
         }
         LocalDate start = renewalBox.getStartTime();
         LocalDate end = renewalBox.getEndTime();
@@ -92,11 +92,11 @@ public class UseStorageController {
         useStorageBox.setUseStorageEndTime(end);
         useStorageBox.setMCode(user.get());
         useStorageBox.setUseStorageState("2");
-        for (int i = 0; i < memberEquipmentList.size(); i++) {
-            memberEquipmentList.get(i).setUseStorageBoxCode(useStorageBox);
+        for (int i = 0; i < boxItemList.size(); i++) {
+            boxItemList.get(i).setUseStorageBoxCode(useStorageBox);
+            boxItemRepository.save(boxItemList.get(i));
         }
         useStorageBoxRepository.save(useStorageBox);
-
 //         박스 상태 변화
         storageBox.get().setStorageBoxState("2");
 //         결제된 박스 업데이트
@@ -154,9 +154,10 @@ public class UseStorageController {
         if (payStorageBox.getItem().size() > 0) {
             for (int i = 0; i < payStorageBox.getItem().size(); i++) {
                 Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItem().get(i));
-                memberEquipment.get().setUseStorageBoxCode(useStorageBox);
-                memberEquipment.get().setMemEquipmentState("1");
-                memberEquipmentRepository.save(memberEquipment.get());
+                BoxItem boxItem = new BoxItem();
+                boxItem.setUseStorageBoxCode(useStorageBox);
+                boxItem.setMemEquipmentCode(memberEquipment.get());
+                boxItemRepository.save(boxItem);
             }
         } else {
             System.out.println("없다");
@@ -320,11 +321,11 @@ public class UseStorageController {
     private Result moveStateUpdate(@PathVariable(value = "beforeBox") long beforeBox, @PathVariable(value = "afterBox") long afterBox) {
         Optional<UseStorageBox> beforeUSBox = useStorageBoxRepository.findById(beforeBox);
         Optional<UseStorageBox> afterUSBox = useStorageBoxRepository.findById(afterBox);
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(beforeUSBox.get());
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(beforeUSBox.get());
 
-        for (int i = 0; i < memberEquipmentList.size(); i++) {
-            memberEquipmentList.get(i).setUseStorageBoxCode(afterUSBox.get());
-            memberEquipmentRepository.save(memberEquipmentList.get(i));
+        for (int i = 0; i < boxItemList.size(); i++) {
+            boxItemList.get(i).setUseStorageBoxCode(afterUSBox.get());
+            boxItemRepository.save(boxItemList.get(i));
         }
 
         LocalDate nowTime = LocalDate.now();
@@ -437,10 +438,10 @@ public class UseStorageController {
             MemberEquipment memberEquipment1 = memberEquipment.get();
             memberEquipment1.setMemEquipmentState("2");
             memberEquipmentRepository.save(memberEquipment1);
-
-            UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
-            useStorageBox.setUseStorageState("6");
-            useStorageBoxRepository.save(useStorageBox);
+//
+//            UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
+//            useStorageBox.setUseStorageState("6");
+//            useStorageBoxRepository.save(useStorageBox);
         }
         return new Result("ok");
     }

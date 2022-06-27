@@ -100,6 +100,7 @@ export default {
             this.menus = res.data;
             console.log(this.menus);
             this.toDate();
+0
             this.todayBuyOrders();
           }).catch(e =>{
         console.log(e)
@@ -113,8 +114,6 @@ export default {
         theDay = theDay.date(this.menus[i].orders.paymentDate[2]);
 
         this.menus[i].orders.paymentDate = theDay
-
-
       }
     },
     todayBuyOrders(){
@@ -124,12 +123,15 @@ export default {
 
       console.log(today.date())
 
+      let count = 0;
 
       for(let i=0; i < this.menus.length; i++){
         if(today.year() == this.menus[i].orders.paymentDate.year()){
           if(today.month()+1 == this.menus[i].orders.paymentDate.month()){
             if(today.date() == this.menus[i].orders.paymentDate.date()){
-              this.todayMenu[i] = this.menus[i];
+              this.todayMenu[count] = this.menus[i];
+
+              count++
             }
           }
         }

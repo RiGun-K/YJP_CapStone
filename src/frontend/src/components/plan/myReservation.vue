@@ -78,6 +78,7 @@
             :key="index"
           >
             <div class="card-header" style="background-color: #b2e2fd">
+
               {{ menu.orders.paymentDate.year() }}년
               {{ menu.orders.paymentDate.month() }}월
               {{ menu.orders.paymentDate.date() }}일
@@ -114,6 +115,7 @@
                       margin-right: 2%;
                       margin-top: 0.5%;
                     "
+
                   >
                     객실이름:
                   </p>
@@ -136,6 +138,7 @@
                       margin-right: 2%;
                       margin-top: 1%;
                     "
+
                   >
                     대여기간:
                   </p>
@@ -160,6 +163,7 @@
                         margin-right: 8%;
                         margin-top: 1.5%;
                       "
+
                     >
                       상품가격:
                     </p>
@@ -182,6 +186,7 @@
                         margin-right: 8%;
                         margin-top: 1.5%;
                       "
+
                     >
                       대여일 수:
                     </p>
@@ -205,6 +210,7 @@
                         margin-right: 8%;
                         margin-top: 1.5%;
                       "
+
                     >
                       주문금액:
                     </p>
@@ -216,6 +222,7 @@
               </div>
               <div style="width: 15%">
                 <button @click="selectMyOrder(this.todayCamping[index], index)">
+
                   선택
                 </button>
               </div>
@@ -232,22 +239,24 @@
 </template>
 
 <script>
-import axios from "axios";
-import dayjs from "dayjs";
+import axios from 'axios';
+import dayjs from 'dayjs';
 export default {
   name: "ReservationOrders",
+
   data() {
     return {
       content: [],
       menus: [],
       campingInfo: [],
       detailInfo: [],
-      today: dayjs().format("YYYY-MM-DD"),
+      today: dayjs().format('YYYY-MM-DD'),
       todayMenu: [],
       todayCamping: [],
       todayDetail: [],
       startDate: "",
       endDate: "",
+
       period: [],
     };
   },
@@ -268,12 +277,14 @@ export default {
         this.$store.commit("setMyReservation", this.$store.state.myReservation);
         this.$store.commit("setCamping", this.$store.state.camping);
         this.$router.push({ name: "basicPlan" });
+
       }
     },
     selectMyOrder(menu, index) {
       console.log(menu);
       console.log("ehllo");
       this.$store.commit("setCamping", menu);
+
       this.endDate =
         this.todayMenu[index].orders.endDate[0].toString() +
         "/" +
@@ -292,11 +303,13 @@ export default {
       this.todayMenu[index].orders.startDate = this.startDate;
 
       this.$store.commit("setMyReservation", this.todayMenu[index].orders);
+
       const confirmData = confirm(
         "해당 캠핑장으로 일정작성을 진행하시겠습니까?"
       );
       if (confirmData) {
         this.$router.push({ name: "basicPlan" });
+
       }
     },
     DataList() {
@@ -328,6 +341,7 @@ export default {
                     if (i == this.menus.length - 1) {
                       this.todayResOrders();
                     }
+
                   })
                   .catch((e) => {
                     console.log(e);
@@ -341,6 +355,7 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+
     },
     toDate() {
       for (let i = 0; i < this.menus.length; i++) {
@@ -366,6 +381,7 @@ export default {
         if (today.year() == this.menus[i].orders.paymentDate.year()) {
           if (today.month() + 1 == this.menus[i].orders.paymentDate.month()) {
             if (today.date() == this.menus[i].orders.paymentDate.date()) {
+
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
               this.todayDetail[count] = this.detailInfo[i];
@@ -400,6 +416,7 @@ export default {
             if (
               now.subtract(1, "week").date() <=
               this.menus[i].orders.paymentDate.date()
+
             ) {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
@@ -409,6 +426,7 @@ export default {
           } else if (
             now.subtract(1, "week").month() + 1 <
             this.menus[i].orders.paymentDate.month()
+
           ) {
             this.todayMenu[count] = this.menus[i];
             this.todayCamping[count] = this.campingInfo[i];
@@ -418,6 +436,7 @@ export default {
         } else if (
           now.subtract(1, "week").year() <
           this.menus[i].orders.paymentDate.year()
+
         ) {
           this.todayMenu[count] = this.menus[i];
           this.todayCamping[count] = this.campingInfo[i];
@@ -428,6 +447,7 @@ export default {
 
       this.todayMenu.sort(function (a, b) {
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
+
       });
       console.log(this.todayMenu);
       //this.toString();
@@ -454,6 +474,7 @@ export default {
             if (
               now.subtract(1, "month").date() <=
               this.menus[i].orders.paymentDate.date()
+
             ) {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
@@ -463,6 +484,7 @@ export default {
           } else if (
             now.subtract(1, "month").month() + 1 <
             this.menus[i].orders.paymentDate.month()
+
           ) {
             this.todayMenu[count] = this.menus[i];
             this.todayCamping[count] = this.campingInfo[i];
@@ -472,6 +494,7 @@ export default {
         } else if (
           now.subtract(1, "month").year() <
           this.menus[i].orders.paymentDate.year()
+
         ) {
           this.todayMenu[count] = this.menus[i];
           this.todayCamping[count] = this.campingInfo[i];
@@ -482,6 +505,7 @@ export default {
 
       this.todayMenu.sort(function (a, b) {
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
+
       });
       console.log(this.todayMenu);
       //this.toString();
@@ -508,6 +532,7 @@ export default {
             if (
               now.subtract(1, "year").date() <=
               this.menus[i].orders.paymentDate.date()
+
             ) {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
@@ -517,6 +542,7 @@ export default {
           } else if (
             now.subtract(1, "month").month() + 1 <
             this.menus[i].orders.paymentDate.month()
+
           ) {
             this.todayMenu[count] = this.menus[i];
             this.todayCamping[count] = this.campingInfo[i];
@@ -526,6 +552,7 @@ export default {
         } else if (
           now.subtract(1, "year").year() <
           this.menus[i].orders.paymentDate.year()
+
         ) {
           this.todayMenu[count] = this.menus[i];
           this.todayCamping[count] = this.campingInfo[i];
@@ -536,6 +563,7 @@ export default {
 
       this.todayMenu.sort(function (a, b) {
         return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
+
       });
       console.log(this.todayMenu);
       //   this.toString();
@@ -554,6 +582,7 @@ export default {
         this.period[i] =
           parseInt(this.todayMenu[i].orders.orderPrice) /
           parseInt(this.todayDetail[i].detailPrice);
+
       }
     },
   },
@@ -627,3 +656,4 @@ export default {
   margin: auto;
 }
 </style>
+
