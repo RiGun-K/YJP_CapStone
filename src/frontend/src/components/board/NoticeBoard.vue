@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="back">
+    <div class="frame">
+  <div style="padding: 2%">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <br>
@@ -24,7 +26,10 @@
             <router-link to="{name: 'Noticedetail', params: { writer_code:item.writer_code }}"></router-link>
           </table>
         </div>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -73,11 +78,21 @@ export  default {
 }
 </script>
 <style>
-#divPaging {
-  clear:both;
-  margin:0 auto;
-  width:220px;
-  height:50px;
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
 }
 
 #divPaging > div {

@@ -1,95 +1,101 @@
 <template>
-  <div class="buyNow">
-    <h2>주문/결제</h2>
-    <h3>구매자 정보</h3>
-    <table>
-      <tr>
-        <td class="buy-now-td">이름</td>
-        <td>{{ this.buyMember.mname }}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">이메일</td>
-        <td>{{ this.buyMember.mmail }}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">휴대폰 번호</td>
-        <td>{{ this.buyMember.mph }}</td>
-      </tr>
-    </table>
+  <div class="back">
+    <br>
+    <div class="frame">
+      <div class="buyNow">
+        <h2>주문/결제</h2>
+        <h3>구매자 정보</h3>
+        <table>
+          <tr>
+            <td class="buy-now-td">이름</td>
+            <td>{{ this.buyMember.mname }}</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">이메일</td>
+            <td>{{ this.buyMember.mmail }}</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">휴대폰 번호</td>
+            <td>{{ this.buyMember.mph }}</td>
+          </tr>
+        </table>
 
-    <h3>받는사람 정보</h3>
-    <table>
-      <tr>
-        <td class="buy-now-td">이름</td>
-        <td><input type="text" v-model="getterName"></td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">우편번호</td>
-        <td><input v-bind:value="zip" v-bind:disabled="zip" placeholder="우편번호"><button @click="showApi()">우편번호 찾기</button></td>
-      </tr>
-      <tr>
-        <td rowspan='2' class="buy-now-td">배송 주소</td>
-        <td><input size="40" v-bind:value="basicAddress" v-bind:disabled="basicAddress" placeholder="기본 주소"></td>
-      </tr>
-      <tr>
-        <!--        <td></td>-->
-        <td><input size="40" v-model="detailAddress" placeholder="상세 주소 입력"> </td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">연락처</td>
-        <td><input type="text" v-model="getterPhoneNumber" maxlength="12"></td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">배송 요청사항</td>
-        <td><input v-model="deliveryMessage" size="40" type="text"></td>
-      </tr>
-    </table>
+        <h3>받는사람 정보</h3>
+        <table>
+          <tr>
+            <td class="buy-now-td">이름</td>
+            <td><input type="text" v-model="getterName"></td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">우편번호</td>
+            <td><input v-bind:value="zip" v-bind:disabled="zip" placeholder="우편번호"><button @click="showApi()">우편번호 찾기</button></td>
+          </tr>
+          <tr>
+            <td rowspan='2' class="buy-now-td">배송 주소</td>
+            <td><input size="40" v-bind:value="basicAddress" v-bind:disabled="basicAddress" placeholder="기본 주소"></td>
+          </tr>
+          <tr>
+            <!--        <td></td>-->
+            <td><input size="40" v-model="detailAddress" placeholder="상세 주소 입력"> </td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">연락처</td>
+            <td><input type="text" v-model="getterPhoneNumber" maxlength="12"></td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">배송 요청사항</td>
+            <td><input v-model="deliveryMessage" size="40" type="text"></td>
+          </tr>
+        </table>
 
-    <h3>상품 정보</h3>
+        <h3>상품 정보</h3>
 
-    <table v-for="(menu, index) in cart" :key="index">
-      <tr>
-        <td class="buy-now-td">상품</td>
-        <td> <img :src="'/api/product_detail_images/' + menu.menuBuy.filename" class="img-fluid rounded-start" alt="..." style="width: 10%; height: 10%"> {{menu.menuBuy.buyName}}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">상품 금액</td>
-        <td>{{menu.menuBuy.buyPrice}}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">수량</td>
-        <td>{{menu.cartItemCount}}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">배송비</td>
-        <td>10000</td>
-      </tr>
-    </table>
+        <table v-for="(menu, index) in cart" :key="index">
+          <tr>
+            <td class="buy-now-td">상품</td>
+            <td> <img :src="'/api/product_detail_images/' + menu.menuBuy.filename" class="img-fluid rounded-start" alt="..." style="width: 10%; height: 10%"> {{menu.menuBuy.buyName}}</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">상품 금액</td>
+            <td>{{menu.menuBuy.buyPrice}}</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">수량</td>
+            <td>{{menu.cartItemCount}}</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">배송비</td>
+            <td>10000</td>
+          </tr>
+        </table>
 
-    <h3>결제 정보</h3>
-    <table>
-      <tr>
-        <td class="buy-now-td">총 상품 금액</td>
-        <td>{{this.cartAllPrice}}</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">배송비</td>
-        <td>10000</td>
-      </tr>
-      <tr>
-        <td class="buy-now-td">총 결제 금액</td>
-        <td>{{this.cartAllPrice + 10000}}</td>
-      </tr>
-    </table>
+        <h3>결제 정보</h3>
+        <table>
+          <tr>
+            <td class="buy-now-td">총 상품 금액</td>
+            <td>{{this.cartAllPrice}}</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">배송비</td>
+            <td>10000</td>
+          </tr>
+          <tr>
+            <td class="buy-now-td">총 결제 금액</td>
+            <td>{{this.cartAllPrice + 10000}}</td>
+          </tr>
+        </table>
 
-    <h5>구매조건 확인 및 결제대행 서비스 약관 동의 <button @click="checkBuy()">보기</button></h5>
-    <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
+        <h5>구매조건 확인 및 결제대행 서비스 약관 동의 <button @click="checkBuy()">보기</button></h5>
+        <h5>개인정보 제3자 제공 동의<button>보기</button></h5>
 
-    <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
-    <button class="payNow" @click="paymentBtn()">결제하기</button>
+        <h5 class="buy-now-info-check">위 주문 내용을 확인하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h5>
+        <button class="payNow" @click="paymentBtn()">결제하기</button>
 
-    <button class="cancel-buy-now" @click="cancelBtn()">취소</button>
+        <button class="cancel-buy-now" @click="cancelBtn()">취소</button>
 
+      </div>
+    </div>
+    <br>
   </div>
 </template>
 
@@ -261,6 +267,7 @@ export default {
   padding: 1% 2%;
   width: 100%;
   height: 100%;
+  padding-bottom: 3%;
 }
 .buyNow h3{
   padding: 1% 10%;
@@ -316,5 +323,22 @@ export default {
 .payNow:hover, .cancel-buy-now:hover{
   color: white;
   background-color: #b2e2fd;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 </style>

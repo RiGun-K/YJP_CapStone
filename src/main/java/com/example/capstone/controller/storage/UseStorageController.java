@@ -155,6 +155,7 @@ public class UseStorageController {
             for (int i = 0; i < payStorageBox.getItem().size(); i++) {
                 Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItem().get(i));
                 memberEquipment.get().setUseStorageBoxCode(useStorageBox);
+                memberEquipment.get().setMemEquipmentState("1");
                 memberEquipmentRepository.save(memberEquipment.get());
             }
         } else {
@@ -176,8 +177,7 @@ public class UseStorageController {
     private Result roundMovePay(@RequestBody RoundMove roundMove) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(roundMove.getUseBoxCode());
         if (useStorageBox.get().getUseStorageState().equals("2")) {
-            useStorageBox.get().setUseStorageState("9");
-            useStorageBoxRepository.save(useStorageBox.get());
+
 
             StorageBox storageBox = useStorageBox.get().getStorageBoxCode();
             storageBox.setStorageBoxState("7");
@@ -190,6 +190,35 @@ public class UseStorageController {
             orderList.setDeliveryAddress(roundMove.getAddress() + roundMove.getDetailAddress());
             ordersRepository.save(orderList);
 
+            useStorageBox.get().setUseStorageState("9"+ orderList.getOrderCode());
+            useStorageBoxRepository.save(useStorageBox.get());
+            return new Result("ok");
+        } else if (useStorageBox.get().getUseStorageState() == "1") {
+            return new Result("umm");
+        } else {
+            return new Result("no");
+        }
+
+    }
+
+    // 보관함 장소 이동
+    @PostMapping("homeToMovePay")
+    private Result homeMovePay(@RequestBody HomeModeDTO homeModeDTO) {
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(homeModeDTO.getUseBoxCode());
+        if (useStorageBox.get().getUseStorageState().equals("2")) {
+
+
+            StorageBox storageBox = useStorageBox.get().getStorageBoxCode();
+            storageBox.setStorageBoxState("7");
+            storageBoxRepository.save(storageBox);
+
+            Orders orderList = new Orders(homeModeDTO.getMember());
+            orderList.setDeliveryZipcode(homeModeDTO.getMember().getMZadd());
+            orderList.setDeliveryAddress(homeModeDTO.getMember().getMAdd() + homeModeDTO.getMember().getMRadd());
+            ordersRepository.save(orderList);
+
+            useStorageBox.get().setUseStorageState("9"+ orderList.getOrderCode());
+            useStorageBoxRepository.save(useStorageBox.get());
             return new Result("ok");
         } else if (useStorageBox.get().getUseStorageState() == "1") {
             return new Result("umm");
@@ -245,7 +274,7 @@ public class UseStorageController {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(move.getUse());
 
         // 결제,
-        Orders orders = new Orders(member.get());
+        Orders orders = new Orders();
         orders.setPaymentDate(orderTime);
         orders.setMCode(member.get());
         orders.setOrderPrice(move.getPrice());
@@ -328,6 +357,13 @@ public class UseStorageController {
         useStorageBoxRepository.save(afterUSBox.get());
 
         return new Result("ok");
+    }
+
+//    이동지 정보조회
+    @GetMapping("delInfo/{orcode}")
+    private Orders getDelInfo(@PathVariable(value = "orcode")int code){
+        Optional<Orders> orders = ordersRepository.findById(code);
+        return orders.get();
     }
 
     // 내가 사용중인 보관함 조회

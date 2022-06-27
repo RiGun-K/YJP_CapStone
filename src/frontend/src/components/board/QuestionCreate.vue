@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <div class="back">
+    <br>
+    <div class="frame">
+      <div style="padding: 2%">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <br>
+        <br>
     <h1 style="font-weight: bold">문의글 작성</h1>
     <button type="button" class="btn btn-outline-primary" @click="list" style="float: left; margin-left: 85%; margin-bottom: 1%" >목록</button>
 
@@ -45,6 +49,8 @@
     <div class="button_6">
       <button type="submit" @click="write" class="btn">작성</button>
     </div>
+    </div>
+  </div>
 
 </template>
 
@@ -133,6 +139,22 @@ export default {
 </script>
 
 <style>
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: 800px;
+  margin: auto;
+}
 .tbAdd{border-top:1px solid #888;}
 .tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0;}
 .tbAdd td{padding:10px 10px; box-sizing:border-box;}

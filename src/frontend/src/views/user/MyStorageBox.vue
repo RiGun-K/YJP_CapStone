@@ -102,9 +102,12 @@ export default {
                 box.boxState = boxes[i][4]
                 box.useCode = boxes[i][5]
                 box.useState = boxes[i][6].toString().charAt(0)
-                if (boxes[i][6].length > 1) {
-                  box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
-
+                if (box.useState == "9"){
+                  box.del = boxes[i][6].substring(1, boxes[i][6].length)
+                }else {
+                  if (boxes[i][6].length > 1) {
+                    box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
+                  }
                 }
                 this.useBoxes.push(box)
               }
