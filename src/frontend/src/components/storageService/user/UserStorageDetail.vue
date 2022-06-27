@@ -38,9 +38,23 @@
             <h5>내 캠핑장비 선택</h5>
             <hr>
             <div>
-              <ul v-for="(item, index) in myItem" :key="index">
-                <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
+              <ul v-for="(item, index) in myItem" :key="index" class="item">
+                <li @click="checkItemList(item,index)">{{ item.memEquipmentName }}</li>
               </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5>보관 장비</h5>
+          <hr>
+          <div>
+            <div v-for="(item,index) in checkItem">
+              <table>
+                <tr>
+                  <td>{{ item }}</td>
+                  <td><input type="number">/{{ item.itemCount }}</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -206,6 +220,24 @@ export default {
       }
       this.form.price = boxCode.storageBoxPrice
       this.form.storageBoxCode = boxCode.storageBoxCode
+    },
+    checkItemList(item, index) {
+      let data = {}
+      data.itemCode = item.memEquipmentCode
+      data.itemName = item.memEquipmentName
+      data.itemCount = item.memEquipmentCount
+      console.log(arry[""+index])
+      for (let i = 0; i < this.checkItem.length; i++) {
+        if (this.checkItem[i].itemCode == data.itemCode) {
+          let a = document.getElementsByClassName("item")
+          a[index].style.backgroundColor = "white"
+          delete this.checkItem[''+index]
+          return
+        }
+      }
+      this.checkItem.push(data)
+      let a = document.getElementsByClassName("item")
+      a[index].style.backgroundColor = "#cde1e8"
     },
     pay() {
       if (this.date == null) {

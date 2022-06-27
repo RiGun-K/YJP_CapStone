@@ -1,4 +1,4 @@
-<template>
+ <template>
   <br>
   <div class="img-block">
     <img :src="'/api/product_detail_images/' + content.filename" class="card-img-top" alt="...">
@@ -108,10 +108,8 @@ import axios from "axios";
 export default {
   name: "BuyDetailList",
   created() {
-    this.DataList();
     this.member = this.$store.state.loginState
-    this.fetchData();
-    
+    this.DataList();
   },
   data() {
     return {
@@ -130,7 +128,6 @@ export default {
       areaCheckC: false,
 
       member: [],
-
 
     }
   },
@@ -168,7 +165,7 @@ export default {
       this.axios.post('http://localhost:9002/api/buyCartPut', {
         buyId: this.content.buyId,
         count: this.count,
-        MID: this.content.mid.mid,
+        mid: this.member.mcode,
       }).then(res => {
         this.buyMenuCheckPut = res.data
         if(this.buyMenuCheckPut === false) {
