@@ -24,10 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -59,6 +56,9 @@ public class StorageController {
 
     @Autowired
     CampingAreaRepository campingAreaRepository;
+
+    @Autowired
+    BoxItemRepository boxItemRepository;
 
     @PostMapping("/postStorage")
     public Result postStorage(@RequestParam(value = "file", required = false) MultipartFile uploadFile, StorageData storageData)throws IllegalStateException, IOException {
@@ -483,8 +483,11 @@ public class StorageController {
 
         for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
             Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i));
-            memberEquipment.get().setUseStorageBoxCode(useCode);
-            memberEquipmentRepository.save(memberEquipment.get());
+            MemberEquipment equipment = memberEquipment.get();
+            BoxItem boxItem = new BoxItem();
+            boxItem.setUseStorageBoxCode(useCode);
+            boxItem.setMemEquipmentCode(equipment);
+            boxItemRepository.save(boxItem);
         }
         return new Result("ok");
     }
@@ -492,10 +495,10 @@ public class StorageController {
     //보관함에 장비제거
     @PostMapping("outBoxInItem")
     private Result outBoxInItem(@RequestBody AddBoxItem addBoxItem){
+
         for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i));
-            memberEquipment.get().setUseStorageBoxCode(null);
-            memberEquipmentRepository.save(memberEquipment.get());
+            Optional<BoxItem> boxItem = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(),addBoxItem.getItemList().get(i));
+            boxItemRepository.delete(boxItem.get());
         }
         return new Result("ok");
     }
@@ -504,8 +507,11 @@ public class StorageController {
     @GetMapping("getBoxInItem/{useBoxCode}")
     private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode") Long useBoxCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(useStorageBox.get());
-
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox.get());
+            List<MemberEquipment> memberEquipmentList = new ArrayList<>();
+        for (int i = 0; i < boxItemList.size(); i++) {
+            memberEquipmentList.add(boxItemList.get(i).getMemEquipmentCode());
+        }
         return memberEquipmentList;
     }
 

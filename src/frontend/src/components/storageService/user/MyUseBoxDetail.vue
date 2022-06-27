@@ -227,22 +227,23 @@ export default {
       }
     },
     boxDetailMoveInfo(useCode, useState) {
-      console.log(useState)
-      console.log(useState)
-      console.log(useState)
-      console.log(useState)
-
       this.moveBoxInfo.moveState = useState
       axios.get('/api/moveBoxInfo/' + useCode)
           .then(res => {
-            this.moveBoxInfo.storageCode = res.data[0][0]
-            this.moveBoxInfo.storageName = res.data[0][1]
-            this.moveBoxInfo.boxCode = res.data[0][2]
-            this.moveBoxInfo.boxName = res.data[0][3]
+            let arry = []
+            arry = res.data
+
+            this.inputInfo(arry)
           })
           .catch(err => {
             console.log(err)
           })
+    },
+    inputInfo(arry){
+      this.moveBoxInfo.storageCode = arry[0][0]
+      this.moveBoxInfo.storageName = arry[0][1]
+      this.moveBoxInfo.boxCode = arry[0][2]
+      this.moveBoxInfo.boxName = arry[0][3]
     },
     getBoxTimes(us) {
       axios.get('/api/findUseBoxTimes/' + us.storageCode + '/' + us.boxCode + '/' + this.memberId)

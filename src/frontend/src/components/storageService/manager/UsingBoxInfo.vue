@@ -299,33 +299,38 @@ export default {
     },
     getBoxInfo() {
       this.box = {}
+      let arry = []
       axios.get('/api/getBox/' + this.boxCode)
           .then(res => {
-            const data = {}
-            data.nickName = res.data[0][0]
-            data.boxCode = res.data[0][1]
-            data.boxName = res.data[0][2]
-            data.boxState = res.data[0][3]
-            data.storageCode = res.data[0][4]
-            data.useStorageCode = res.data[0][5]
-            data.useStorageState = res.data[0][6].toString().charAt(0)
-            this.box = data
-            if (data.useStorageState == "9"){
-              this.del = res.data[0][6].substring(1, res.data[0][6].length)
-              this.delInfo()
-            }else{
-              this.box.updateusbCode = res.data[0][6].substring(1, res.data[0][6].length)
-            }
-
-            this.pickChange()
-            if (this.box.updateusbCode != '') {
-              this.getMoveBox()
-            }
-            this.ifCheck()
+            arry = res.data
+            this.inputDate(arry)
           })
           .catch(err => {
             console.log(err)
           })
+
+    },
+    inputDate(arry){
+      let data = {}
+      data.nickName = arry[0][0]
+      data.boxCode = arry[0][1]
+      data.boxName = arry[0][2]
+      data.boxState = arry[0][3]
+      data.storageCode = arry[0][4]
+      data.useStorageCode = arry[0][5]
+      data.useStorageState = arry[0][6]?.toString().charAt(0)||''
+      this.box = data
+      if (data.useStorageState == "9"){
+        this.del = arry[0][6]?.substring(1, arry[6].length)||''
+        this.delInfo()
+      }else{
+        this.box.updateusbCode = arry[0][6]?.substring(1, arry[0][6].length)||''
+      }
+      this.pickChange()
+      if (this.box.updateusbCode != '') {
+        this.getMoveBox()
+      }
+      this.ifCheck()
     },
     delInfo(){
       axios.get("/api/delInfo/"+this.del)

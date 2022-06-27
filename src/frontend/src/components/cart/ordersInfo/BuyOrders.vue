@@ -100,6 +100,7 @@ export default {
             this.menus = res.data;
             console.log(this.menus);
             this.toDate();
+0
             this.todayBuyOrders();
           }).catch(e =>{
         console.log(e)
@@ -113,8 +114,6 @@ export default {
         theDay = theDay.date(this.menus[i].orders.paymentDate[2]);
 
         this.menus[i].orders.paymentDate = theDay
-
-
       }
     },
     todayBuyOrders(){
