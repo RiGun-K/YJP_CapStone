@@ -3,6 +3,8 @@ package com.example.capstone.domain.storage;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.order.Orders;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "USESTORAGEBOX")
+@Getter
+@Setter
 public class UseStorageBox {
 
     @Id
@@ -40,7 +44,7 @@ public class UseStorageBox {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "useStorageBoxCode",cascade = CascadeType.ALL)
-    private List<MemberEquipment> memberEquipmentList = new ArrayList<>();
+    private List<BoxItem> boxItemList = new ArrayList<>();
 
     public UseStorageBox() {
     }
@@ -53,14 +57,6 @@ public class UseStorageBox {
         this.MCode = MCode;
     }
 
-    public UseStorageBox(LocalDate useStorageStartTime, LocalDate useStorageEndTime, StorageBox storageBoxCode, Orders orderCode, Member MCode, List<MemberEquipment> memberEquipmentList) {
-        this.useStorageStartTime = useStorageStartTime;
-        this.useStorageEndTime = useStorageEndTime;
-        this.storageBoxCode = storageBoxCode;
-        this.orderCode = orderCode;
-        this.MCode = MCode;
-        this.memberEquipmentList = memberEquipmentList;
-    }
 
     public UseStorageBox(LocalDate useStorageStartTime, LocalDate useStorageEndTime, StorageBox storageBoxCode, Orders orderCode) {
         this.useStorageStartTime = useStorageStartTime;
@@ -88,67 +84,4 @@ public class UseStorageBox {
         this.orderCode = orderCode;
     }
 
-    public long getUseStorageBoxCode() {
-        return useStorageBoxCode;
-    }
-
-    public void setUseStorageBoxCode(long useStorageBoxCode) {
-        this.useStorageBoxCode = useStorageBoxCode;
-    }
-
-    public LocalDate getUseStorageStartTime() {
-        return useStorageStartTime;
-    }
-
-    public void setUseStorageStartTime(LocalDate useStorageStartTime) {
-        this.useStorageStartTime = useStorageStartTime;
-    }
-
-    public LocalDate getUseStorageEndTime() {
-        return useStorageEndTime;
-    }
-
-    public void setUseStorageEndTime(LocalDate useStorageEndTime) {
-        this.useStorageEndTime = useStorageEndTime;
-    }
-
-    public String getUseStorageState() {
-        return useStorageState;
-    }
-
-    public void setUseStorageState(String useStorageState) {
-        this.useStorageState = useStorageState;
-    }
-
-    public StorageBox getStorageBoxCode() {
-        return storageBoxCode;
-    }
-
-    public void setStorageBoxCode(StorageBox storageBoxCode) {
-        this.storageBoxCode = storageBoxCode;
-    }
-
-    public Orders getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(Orders orderCode) {
-        this.orderCode = orderCode;
-    }
-
-    public Member getMCode() {
-        return MCode;
-    }
-
-    public void setMCode(Member MCode) {
-        this.MCode = MCode;
-    }
-
-    public List<MemberEquipment> getMemberEquipmentList() {
-        return memberEquipmentList;
-    }
-
-    public void setMemberEquipmentList(List<MemberEquipment> memberEquipmentList) {
-        this.memberEquipmentList = memberEquipmentList;
-    }
 }

@@ -24,6 +24,10 @@ export default createStore({
 		moveBoxInfo:{},
 		careItemInfo:{},
 		selectedList: [],
+		camping:'',
+		myReservation:'',
+
+
 	},
 	getters: {
 		getLoginState(state) {
@@ -37,6 +41,12 @@ export default createStore({
 		}
 	},
 	mutations: {
+		setCamping(state, camping) {
+			state.camping = camping;
+		},
+		setMyReservation(state, myReservation) {
+			state.myReservation = myReservation;
+		},
 		setLoginState(state, loginState, stateCode, mcode) {
 			state.loginState = loginState;
 			state.stateCode = stateCode;
