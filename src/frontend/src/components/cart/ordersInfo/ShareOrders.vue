@@ -132,12 +132,14 @@ export default {
 
       console.log(today.date())
 
+      let count = 0;
 
       for(let i=0; i < this.menus.length; i++){
         if(today.year() == this.menus[i].orders.paymentDate.year()){
           if(today.month()+1 == this.menus[i].orders.paymentDate.month()){
             if(today.date() == this.menus[i].orders.paymentDate.date()){
-              this.todayMenu[i] = this.menus[i];
+              this.todayMenu[count] = this.menus[i];
+              count++
             }
           }
         }
