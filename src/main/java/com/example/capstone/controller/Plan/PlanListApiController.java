@@ -18,7 +18,7 @@ public class PlanListApiController {
     private final PlanService planService;
     private final PlanTagService planTagService;
 
-
+//asd
     @GetMapping("api/loadAllPlans")
     public List<PlanDto> loadAllPlans() {
         return planService.loadAllPlans();
