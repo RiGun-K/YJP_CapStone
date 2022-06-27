@@ -4,15 +4,15 @@ package com.example.capstone.service;
 import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.domain.Plan.PlanDetail;
 import com.example.capstone.domain.Plan.PlanTag;
-import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.dto.plan.PlanDetailDto;
 import com.example.capstone.dto.plan.PlanDto;
-import com.example.capstone.dto.plan.TeamDto;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.PlanTagRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -123,23 +123,13 @@ public class PlanService {
             System.out.println(planDetailDto);
             planDetailDtos.add(planDetailDto);
         }
-        System.out.println("sssssssssssssss");
-        System.out.println("sssssssssssssss");
-        System.out.println("sssssssssssssss");
-
         return planDetailDtos;
     }
 
-    public List<PlanDto> loadAllPlans() {
+    public Page<PlanDto> loadAllPlans(Pageable pageable) {
 
-        List<Plan> plans = planRepository.findAll();
-        List<PlanDto> planDtos = new ArrayList<>();
-
-        for (Plan plan : plans) {
-            planDtos.add(plan.toPlanDto());
-        }
-
-
+        Page<Plan> plans = planRepository.findAll(pageable);
+        Page<PlanDto> planDtos =plans.map(a -> a.toPlanDto());
         return planDtos;
     }
 

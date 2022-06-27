@@ -1,11 +1,12 @@
 package com.example.capstone.controller.Plan;
 
 
-import com.example.capstone.domain.Plan.Plan;
 import com.example.capstone.dto.plan.PlanDto;
 import com.example.capstone.service.PlanService;
 import com.example.capstone.service.PlanTagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +19,10 @@ public class PlanListApiController {
     private final PlanService planService;
     private final PlanTagService planTagService;
 
-//asd
+
     @GetMapping("api/loadAllPlans")
-    public List<PlanDto> loadAllPlans() {
-        return planService.loadAllPlans();
+    public Page<PlanDto> loadAllPlans(Pageable pageable) {
+        return planService.loadAllPlans(pageable);
     }
 
     @GetMapping("api/tagFilter")
