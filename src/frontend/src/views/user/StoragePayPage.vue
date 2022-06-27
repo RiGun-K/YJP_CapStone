@@ -48,8 +48,8 @@
             <table>
               <tr v-for="(item,index) in form.item" :key="index">
                 <td>{{ index + 1 }}</td>
-                <td>{{ item.memEquipmentName }}</td>
-                <td>{{ item.memEquipmentCount }}개</td>
+                <td>{{ item.itemName }}</td>
+                <td>{{ item.count }}개</td>
               </tr>
             </table>
           </div>
@@ -197,10 +197,13 @@ export default {
         useStorageStartTime: new Date(this.form.useStorageStartTime),
         useStorageEndTime: new Date(this.form.useStorageEndTime),
         price: this.form.price,
-        item: []
+        itemDTOList: [],
       }
       for (let i = 0; i < this.form.item.length; i++) {
-        jsonData.item.push(this.form.item[i].memEquipmentCode)
+        let data = {}
+        data.itemCode = this.form.item[i].itemCode
+        data.count = this.form.item[i].count
+        jsonData.itemDTOList.push(data)
       }
       axios.post('/api/payBox', jsonData)
           .then(res => {

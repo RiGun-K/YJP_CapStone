@@ -127,9 +127,9 @@
                 <tbody>
                   <tr v-for="(item,index) in myItem" :key="index">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ item.memEquipmentName }}</td>
-                    <td>{{ item.memEquipmentCount }}개</td>
-                    <td>{{ stateCheck(item.memEquipmentState)}}</td>
+                    <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
+                    <td>{{ item.boxItemCount }}개</td>
+                    <td>{{ stateCheck(item.memEquipmentCode.memEquipmentState)}}</td>
                     <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>
                   </tr>
                 </tbody>
@@ -289,6 +289,8 @@ export default {
       axios.get('/api/getBoxInItem/' + index)
           .then(res => {
             this.myItem = res.data
+            console.log('this.myItem')
+            console.log(this.myItem)
             this.getMyItem()
           })
           .catch(err => {

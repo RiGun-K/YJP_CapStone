@@ -48,12 +48,25 @@
           <h5>보관 장비</h5>
           <hr>
           <div>
-            <div v-for="(item,index) in checkItem">
+            <div  class="chkItemList">
               <table>
-                <tr>
-                  <td>{{ item }}</td>
-                  <td><input type="number">/{{ item.itemCount }}</td>
-                </tr>
+                <thead>
+                  <tr>
+                    <th>장비</th>
+                    <th>수량</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item,index) in checkItem">
+                    <td>{{ item.itemName }}</td>
+                    <td>
+                      <select v-model="item.count">
+                        <option v-for="inx in item.itemCount" :value="inx">{{inx}}</option>
+                      </select>
+                      개
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -123,7 +136,8 @@ export default {
       disabledDates: [],
       stateCheck: false,
       boxArray: [],
-      backFlag: false
+      backFlag: false,
+      putItem:{},
     }
   },
   methods: {
@@ -222,20 +236,23 @@ export default {
       this.form.storageBoxCode = boxCode.storageBoxCode
     },
     checkItemList(item, index) {
-      let data = {}
-      data.itemCode = item.memEquipmentCode
-      data.itemName = item.memEquipmentName
-      data.itemCount = item.memEquipmentCount
-      console.log(arry[""+index])
+      this.putItem.itemCode = item.memEquipmentCode
+      this.putItem.itemName = item.memEquipmentName
+      this.putItem.itemCount = item.memEquipmentCount
+      this.putItem.count = 1
       for (let i = 0; i < this.checkItem.length; i++) {
-        if (this.checkItem[i].itemCode == data.itemCode) {
+        if (this.checkItem[i].itemCode == this.putItem.itemCode) {
           let a = document.getElementsByClassName("item")
           a[index].style.backgroundColor = "white"
-          delete this.checkItem[''+index]
+          this.checkItem.splice(i,1)
           return
         }
       }
-      this.checkItem.push(data)
+      this.additem(this.putItem, index)
+    },
+    additem(putItem, index){
+      this.checkItem.push(putItem)
+      this.putItem = {}
       let a = document.getElementsByClassName("item")
       a[index].style.backgroundColor = "#cde1e8"
     },
@@ -415,5 +432,14 @@ ul {
 .pay-btn:hover {
   color: white;
   background-color: #b2e2fd;
+}
+
+.chkItemList thead{
+  background-color: #6e6e6e;
+  color: white;
+}
+
+.chkItemList tr{
+  border-bottom: 1px solid black;
 }
 </style>

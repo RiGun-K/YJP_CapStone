@@ -505,14 +505,14 @@ public class StorageController {
 
     //사용자 사용하는 보관함의 장비 조회
     @GetMapping("getBoxInItem/{useBoxCode}")
-    private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode") Long useBoxCode) {
+    private List<BoxItem> getMyItem(@PathVariable(value = "useBoxCode") Long useBoxCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
         List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox.get());
-            List<MemberEquipment> memberEquipmentList = new ArrayList<>();
-        for (int i = 0; i < boxItemList.size(); i++) {
-            memberEquipmentList.add(boxItemList.get(i).getMemEquipmentCode());
-        }
-        return memberEquipmentList;
+//            List<MemberEquipment> memberEquipmentList = new ArrayList<>();
+//        for (int i = 0; i < boxItemList.size(); i++) {
+//            memberEquipmentList.add(boxItemList.get(i).getMemEquipmentCode());
+//        }
+        return boxItemList;
     }
 
     //사용자주소 조회

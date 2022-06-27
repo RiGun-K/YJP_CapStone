@@ -151,12 +151,13 @@ public class UseStorageController {
         useStorageBox.setUseStorageState("2");
         useStorageBoxRepository.save(useStorageBox);
 
-        if (payStorageBox.getItem().size() > 0) {
-            for (int i = 0; i < payStorageBox.getItem().size(); i++) {
-                Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItem().get(i));
+        if (payStorageBox.getItemDTOList().size() > 0) {
+            for (int i = 0; i < payStorageBox.getItemDTOList().size(); i++) {
+                Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(payStorageBox.getItemDTOList().get(i).getItemCode());
                 BoxItem boxItem = new BoxItem();
                 boxItem.setUseStorageBoxCode(useStorageBox);
                 boxItem.setMemEquipmentCode(memberEquipment.get());
+                boxItem.setBoxItemCount(payStorageBox.getItemDTOList().get(i).getCount());
                 boxItemRepository.save(boxItem);
             }
         } else {
