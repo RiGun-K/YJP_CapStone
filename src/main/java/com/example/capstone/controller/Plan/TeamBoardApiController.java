@@ -6,9 +6,10 @@ import com.example.capstone.dto.plan.TeamBoardDto;
 import com.example.capstone.dto.plan.TeamDto;
 import com.example.capstone.service.TeamBoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping
@@ -25,8 +26,8 @@ public class TeamBoardApiController {
 
     }
     @GetMapping("api/loadTeamBoards")
-    public List<TeamBoardDto> loadTeamBoards(@RequestParam Long teamCode){
-        return teamBoardService.loadTeamBoards(teamCode);
+    public Page<TeamBoardDto> loadTeamBoards(@RequestParam Long teamCode, Pageable pageable){
+        return teamBoardService.loadTeamBoards(teamCode,pageable);
     }
 
     @PutMapping("api/editContent")
