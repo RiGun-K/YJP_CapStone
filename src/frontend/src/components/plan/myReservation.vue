@@ -3,86 +3,82 @@
     <br />
     <div class="frame">
       <div class="reservation-orders">
-        <h1 style="font-weight: bold; padding: 2%">
-          Reservation Orders
-        </h1>
+        <h1 style="font-weight: bold; padding: 2%">Reservation Orders</h1>
         <div class="order-card-list">
-               <span
-                   class="btn-group"
-                   role="group"
-                   aria-label="Basic radio toggle button group"
-               >
-                  <input
-                      type="radio"
-                      class="btn-check"
-                      name="btnradio"
-                      id="btnradio1"
-                      autocomplete="off"
-                      @click="todayResOrders()"
-                      checked
-                  />
-                  <label
-                      class="btn btn-outline-primary"
-                      for="btnradio1"
-                      style="font-size: 1em; padding: 1%"
-                  >오늘</label
-                  >
-
-                  <input
-                      type="radio"
-                      class="btn-check"
-                      name="btnradio"
-                      id="btnradio2"
-                      autocomplete="off"
-                      @click="weekResOrders()"
-                  />
-                  <label
-                      class="btn btn-outline-primary"
-                      for="btnradio2"
-                      style="font-size: 1em; padding: 1%"
-                  >일주일</label
-                  >
-
-                  <input
-                      type="radio"
-                      class="btn-check"
-                      name="btnradio"
-                      id="btnradio3"
-                      autocomplete="off"
-                      @click="monthResOrders()"
-                  />
-                  <label
-                      class="btn btn-outline-primary"
-                      for="btnradio3"
-                      style="font-size: 1em; padding: 1%"
-                  >한 달</label
-                  >
-
-                  <input
-                      type="radio"
-                      class="btn-check"
-                      name="btnradio"
-                      id="btnradio4"
-                      autocomplete="off"
-                      @click="yearResOrders()"
-                  />
-                  <label
-                      class="btn btn-outline-primary"
-                      for="btnradio4"
-                      style="font-size: 1em; padding: 1%"
-                  >일년</label
-                  >
-               </span>
-          <div
-              class="card border-info mb-3"
-              style="margin-top: 5%"
-              v-for="(menu, index) in todayMenu"
-              :key="index"
+          <span
+            class="btn-group"
+            role="group"
+            aria-label="Basic radio toggle button group"
           >
-            <div
-                class="card-header"
-                style="background-color: #b2e2fd"
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio1"
+              autocomplete="off"
+              @click="todayResOrders()"
+              checked
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="btnradio1"
+              style="font-size: 1em; padding: 1%"
+              >오늘</label
             >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio2"
+              autocomplete="off"
+              @click="weekResOrders()"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="btnradio2"
+              style="font-size: 1em; padding: 1%"
+              >일주일</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio3"
+              autocomplete="off"
+              @click="monthResOrders()"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="btnradio3"
+              style="font-size: 1em; padding: 1%"
+              >한 달</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio4"
+              autocomplete="off"
+              @click="yearResOrders()"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="btnradio4"
+              style="font-size: 1em; padding: 1%"
+              >일년</label
+            >
+          </span>
+          <div
+            class="card border-info mb-3"
+            style="margin-top: 5%"
+            v-for="(menu, index) in todayMenu"
+            :key="index"
+          >
+            <div class="card-header" style="background-color: #b2e2fd">
+
               {{ menu.orders.paymentDate.year() }}년
               {{ menu.orders.paymentDate.month() }}월
               {{ menu.orders.paymentDate.date() }}일
@@ -90,54 +86,36 @@
             <div class="card-body">
               <div class="res-orders-item-image">
                 <img
-                    :src="
-                              '/api/product_detail_images/' +
-                              this.todayCamping[index].filename
-                           "
-                    class="img-fluid rounded-start"
-                    alt="..."
+                  :src="
+                    '/api/product_detail_images/' +
+                    this.todayCamping[index].filename
+                  "
+                  class="img-fluid rounded-start"
+                  alt="..."
                 />
               </div>
-              <div
-                  style="
-                           justify-content: left;
-                           width: 80%;
-                           height: 100%;
-                        "
-              >
-                <div
-                    style="
-                              width: 80%;
-                              padding-top: 2%;
-                              margin-left: 4%;
-                           "
-                >
-                  <p
-                      style="
-                                 font-weight: bold;
-                                 font-size: 1.2em;
-                              "
-                  >
-                    {{
-                      this.todayCamping[index].campingName
-                    }}
+              <div style="justify-content: left; width: 80%; height: 100%">
+                <div style="width: 80%; padding-top: 2%; margin-left: 4%">
+                  <p style="font-weight: bold; font-size: 1.2em">
+                    {{ this.todayCamping[index].campingName }}
                   </p>
                 </div>
                 <div
-                    style="
-                              width: 68%;
-                              padding-top: 0%;
-                              margin-left: 4%;
-                              display: flex;
-                           "
+                  style="
+                    width: 68%;
+                    padding-top: 0%;
+                    margin-left: 4%;
+                    display: flex;
+                  "
                 >
                   <p
-                      style="
-                                 font-weight: bold;
-                                 font-size: 0.8em;
-                                 margin-right: 2%;
-                                 margin-top: 0.5%;
-                              "
+                    style="
+                      font-weight: bold;
+                      font-size: 0.8em;
+                      margin-right: 2%;
+                      margin-top: 0.5%;
+                    "
+
                   >
                     객실이름:
                   </p>
@@ -146,20 +124,21 @@
                   </p>
                 </div>
                 <div
-                    style="
-                              width: 80%;
-                              margin-left: 4%;
-                              margin-top: 1%;
-                              display: flex;
-                           "
+                  style="
+                    width: 80%;
+                    margin-left: 4%;
+                    margin-top: 1%;
+                    display: flex;
+                  "
                 >
                   <p
-                      style="
-                                 font-weight: bold;
-                                 font-size: 0.8em;
-                                 margin-right: 2%;
-                                 margin-top: 1%;
-                              "
+                    style="
+                      font-weight: bold;
+                      font-size: 0.8em;
+                      margin-right: 2%;
+                      margin-top: 1%;
+                    "
+
                   >
                     대여기간:
                   </p>
@@ -170,45 +149,44 @@
                 </div>
                 <div style="display: flex">
                   <div
-                      style="
-                                 width: 40%;
-                                 padding-left: 3%;
-                                 margin-left: 1%;
-                                 display: flex;
-                              "
+                    style="
+                      width: 40%;
+                      padding-left: 3%;
+                      margin-left: 1%;
+                      display: flex;
+                    "
                   >
                     <p
-                        style="
-                                    font-weight: bold;
-                                    font-size: 0.8em;
-                                    margin-right: 8%;
-                                    margin-top: 1.5%;
-                                 "
+                      style="
+                        font-weight: bold;
+                        font-size: 0.8em;
+                        margin-right: 8%;
+                        margin-top: 1.5%;
+                      "
+
                     >
                       상품가격:
                     </p>
                     <p style="font-size: 1em">
-                      {{
-                        this.todayDetail[index]
-                            .detailPrice
-                      }}
+                      {{ this.todayDetail[index].detailPrice }}
                     </p>
                   </div>
                   <div
-                      style="
-                                 width: 30%;
-                                 padding-left: 2%;
-                                 margin-left: 1%;
-                                 display: flex;
-                              "
+                    style="
+                      width: 30%;
+                      padding-left: 2%;
+                      margin-left: 1%;
+                      display: flex;
+                    "
                   >
                     <p
-                        style="
-                                    font-weight: bold;
-                                    font-size: 0.8em;
-                                    margin-right: 8%;
-                                    margin-top: 1.5%;
-                                 "
+                      style="
+                        font-weight: bold;
+                        font-size: 0.8em;
+                        margin-right: 8%;
+                        margin-top: 1.5%;
+                      "
+
                     >
                       대여일 수:
                     </p>
@@ -217,21 +195,22 @@
                     </p>
                   </div>
                   <div
-                      style="
-                                 width: 35%;
-                                 padding: 1%;
-                                 margin-left: 10%;
-                                 margin-top: 1%;
-                                 display: flex;
-                              "
+                    style="
+                      width: 35%;
+                      padding: 1%;
+                      margin-left: 10%;
+                      margin-top: 1%;
+                      display: flex;
+                    "
                   >
                     <p
-                        style="
-                                    font-weight: bold;
-                                    font-size: 0.8em;
-                                    margin-right: 8%;
-                                    margin-top: 1.5%;
-                                 "
+                      style="
+                        font-weight: bold;
+                        font-size: 0.8em;
+                        margin-right: 8%;
+                        margin-top: 1.5%;
+                      "
+
                     >
                       주문금액:
                     </p>
@@ -242,14 +221,8 @@
                 </div>
               </div>
               <div style="width: 15%">
-                <button
-                    @click="
-                              selectMyOrder(
-                                 this.todayCamping[index],
-                                 index,
-                              )
-                           "
-                >
+                <button @click="selectMyOrder(this.todayCamping[index], index)">
+
                   선택
                 </button>
               </div>
@@ -269,7 +242,8 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 export default {
-  name: 'ReservationOrders',
+  name: "ReservationOrders",
+
   data() {
     return {
       content: [],
@@ -280,8 +254,9 @@ export default {
       todayMenu: [],
       todayCamping: [],
       todayDetail: [],
-      startDate: '',
-      endDate: '',
+      startDate: "",
+      endDate: "",
+
       period: [],
     };
   },
@@ -292,95 +267,95 @@ export default {
   methods: {
     skip: function () {
       const confirmData = confirm(
-          '예약된 캠핑장을 선택하지 않고 계획을 작성합니다',
+        "예약된 캠핑장을 선택하지 않고 계획을 작성합니다"
       );
       if (confirmData) {
         this.$store.state.myReservation = new Object();
-        this.$store.state.camping.camping.address = '';
-        this.$store.state.camping.camping.areaId = '';
-        this.$store.state.camping.camping.campingName = '';
-        this.$store.commit(
-            'setMyReservation',
-            this.$store.state.myReservation,
-        );
-        this.$store.commit('setCamping', this.$store.state.camping);
-        this.$router.push({ name: 'basicPlan' });
+        this.$store.state.camping.camping.address = "";
+        this.$store.state.camping.camping.areaId = "";
+        this.$store.state.camping.camping.campingName = "";
+        this.$store.commit("setMyReservation", this.$store.state.myReservation);
+        this.$store.commit("setCamping", this.$store.state.camping);
+        this.$router.push({ name: "basicPlan" });
+
       }
     },
     selectMyOrder(menu, index) {
       console.log(menu);
-      console.log('ehllo');
-      this.$store.commit('setCamping', menu);
+      console.log("ehllo");
+      this.$store.commit("setCamping", menu);
+
       this.endDate =
-          this.todayMenu[index].orders.endDate[0].toString() +
-          '/' +
-          this.todayMenu[index].orders.endDate[1].toString() +
-          '/' +
-          this.todayMenu[index].orders.endDate[2].toString() +
-          '/';
+        this.todayMenu[index].orders.endDate[0].toString() +
+        "/" +
+        this.todayMenu[index].orders.endDate[1].toString() +
+        "/" +
+        this.todayMenu[index].orders.endDate[2].toString() +
+        "/";
       this.startDate =
-          this.todayMenu[index].orders.startDate[0].toString() +
-          '/' +
-          this.todayMenu[index].orders.startDate[1].toString() +
-          '/' +
-          this.todayMenu[index].orders.startDate[2].toString() +
-          '/';
+        this.todayMenu[index].orders.startDate[0].toString() +
+        "/" +
+        this.todayMenu[index].orders.startDate[1].toString() +
+        "/" +
+        this.todayMenu[index].orders.startDate[2].toString() +
+        "/";
       this.todayMenu[index].orders.endDate = this.endDate;
       this.todayMenu[index].orders.startDate = this.startDate;
 
-      this.$store.commit(
-          'setMyReservation',
-          this.todayMenu[index].orders,
-      );
+      this.$store.commit("setMyReservation", this.todayMenu[index].orders);
+
       const confirmData = confirm(
-          '해당 캠핑장으로 일정작성을 진행하시겠습니까?',
+        "해당 캠핑장으로 일정작성을 진행하시겠습니까?"
       );
       if (confirmData) {
-        this.$router.push({ name: 'basicPlan' });
+        this.$router.push({ name: "basicPlan" });
+
       }
     },
     DataList() {
       axios
-          .get(
-              'http://localhost:9002/api/ordersList/reservationOrderMenu/' +
-              this.content.mcode,
-          )
-          .then((res) => {
-            this.menus = res.data;
-            console.log(res.data);
-            this.toDate();
+        .get(
+          "http://localhost:9002/api/ordersList/reservationOrderMenu/" +
+            this.content.mcode
+        )
+        .then((res) => {
+          this.menus = res.data;
+          console.log(res.data);
+          this.toDate();
 
-            for (let i = 0; i < this.menus.length; i++) {
-              axios
+          for (let i = 0; i < this.menus.length; i++) {
+            axios
+              .get(
+                "http://localhost:9002/api/ordersList/reservationCamping/" +
+                  this.menus[i].orderMenuId
+              )
+              .then((res) => {
+                this.campingInfo[i] = res.data;
+                axios
                   .get(
-                      'http://localhost:9002/api/ordersList/reservationCamping/' +
-                      this.menus[i].orderMenuId,
+                    "http://localhost:9002/api/ordersList/reservationDetail/" +
+                      this.menus[i].orderMenuId
                   )
                   .then((res) => {
-                    this.campingInfo[i] = res.data;
-                    axios
-                        .get(
-                            'http://localhost:9002/api/ordersList/reservationDetail/' +
-                            this.menus[i].orderMenuId,
-                        )
-                        .then((res) => {
-                          this.detailInfo[i] = res.data;
-                          if (i == this.menus.length - 1) {
-                            this.todayResOrders();
-                          }
-                        })
-                        .catch((e) => {
-                          console.log(e);
-                        });
+                    this.detailInfo[i] = res.data;
+                    if (i == this.menus.length - 1) {
+                      this.todayResOrders();
+                    }
+
                   })
                   .catch((e) => {
                     console.log(e);
                   });
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
     },
     toDate() {
       for (let i = 0; i < this.menus.length; i++) {
@@ -404,14 +379,9 @@ export default {
 
       for (let i = 0; i < this.menus.length; i++) {
         if (today.year() == this.menus[i].orders.paymentDate.year()) {
-          if (
-              today.month() + 1 ==
-              this.menus[i].orders.paymentDate.month()
-          ) {
-            if (
-                today.date() ==
-                this.menus[i].orders.paymentDate.date()
-            ) {
+          if (today.month() + 1 == this.menus[i].orders.paymentDate.month()) {
+            if (today.date() == this.menus[i].orders.paymentDate.date()) {
+
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
               this.todayDetail[count] = this.detailInfo[i];
@@ -436,16 +406,17 @@ export default {
 
       for (let i = 0; i < this.menus.length; i++) {
         if (
-            now.subtract(1, 'week').year() ==
-            this.menus[i].orders.paymentDate.year()
+          now.subtract(1, "week").year() ==
+          this.menus[i].orders.paymentDate.year()
         ) {
           if (
-              now.subtract(1, 'week').month() + 1 ==
-              this.menus[i].orders.paymentDate.month()
+            now.subtract(1, "week").month() + 1 ==
+            this.menus[i].orders.paymentDate.month()
           ) {
             if (
-                now.subtract(1, 'week').date() <=
-                this.menus[i].orders.paymentDate.date()
+              now.subtract(1, "week").date() <=
+              this.menus[i].orders.paymentDate.date()
+
             ) {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
@@ -453,8 +424,9 @@ export default {
               count++;
             }
           } else if (
-              now.subtract(1, 'week').month() + 1 <
-              this.menus[i].orders.paymentDate.month()
+            now.subtract(1, "week").month() + 1 <
+            this.menus[i].orders.paymentDate.month()
+
           ) {
             this.todayMenu[count] = this.menus[i];
             this.todayCamping[count] = this.campingInfo[i];
@@ -462,8 +434,9 @@ export default {
             count++;
           }
         } else if (
-            now.subtract(1, 'week').year() <
-            this.menus[i].orders.paymentDate.year()
+          now.subtract(1, "week").year() <
+          this.menus[i].orders.paymentDate.year()
+
         ) {
           this.todayMenu[count] = this.menus[i];
           this.todayCamping[count] = this.campingInfo[i];
@@ -473,10 +446,8 @@ export default {
       }
 
       this.todayMenu.sort(function (a, b) {
-        return (
-            new Date(b.orders.paymentDate) -
-            new Date(a.orders.paymentDate)
-        );
+        return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
+
       });
       console.log(this.todayMenu);
       //this.toString();
@@ -493,16 +464,17 @@ export default {
 
       for (let i = 0; i < this.menus.length; i++) {
         if (
-            now.subtract(1, 'month').year() ==
-            this.menus[i].orders.paymentDate.year()
+          now.subtract(1, "month").year() ==
+          this.menus[i].orders.paymentDate.year()
         ) {
           if (
-              now.subtract(1, 'month').month() + 1 ==
-              this.menus[i].orders.paymentDate.month()
+            now.subtract(1, "month").month() + 1 ==
+            this.menus[i].orders.paymentDate.month()
           ) {
             if (
-                now.subtract(1, 'month').date() <=
-                this.menus[i].orders.paymentDate.date()
+              now.subtract(1, "month").date() <=
+              this.menus[i].orders.paymentDate.date()
+
             ) {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
@@ -510,8 +482,9 @@ export default {
               count++;
             }
           } else if (
-              now.subtract(1, 'month').month() + 1 <
-              this.menus[i].orders.paymentDate.month()
+            now.subtract(1, "month").month() + 1 <
+            this.menus[i].orders.paymentDate.month()
+
           ) {
             this.todayMenu[count] = this.menus[i];
             this.todayCamping[count] = this.campingInfo[i];
@@ -519,8 +492,9 @@ export default {
             count++;
           }
         } else if (
-            now.subtract(1, 'month').year() <
-            this.menus[i].orders.paymentDate.year()
+          now.subtract(1, "month").year() <
+          this.menus[i].orders.paymentDate.year()
+
         ) {
           this.todayMenu[count] = this.menus[i];
           this.todayCamping[count] = this.campingInfo[i];
@@ -530,10 +504,8 @@ export default {
       }
 
       this.todayMenu.sort(function (a, b) {
-        return (
-            new Date(b.orders.paymentDate) -
-            new Date(a.orders.paymentDate)
-        );
+        return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
+
       });
       console.log(this.todayMenu);
       //this.toString();
@@ -550,16 +522,17 @@ export default {
 
       for (let i = 0; i < this.menus.length; i++) {
         if (
-            now.subtract(1, 'year').year() ==
-            this.menus[i].orders.paymentDate.year()
+          now.subtract(1, "year").year() ==
+          this.menus[i].orders.paymentDate.year()
         ) {
           if (
-              now.subtract(1, 'year').month() + 1 ==
-              this.menus[i].orders.paymentDate.month()
+            now.subtract(1, "year").month() + 1 ==
+            this.menus[i].orders.paymentDate.month()
           ) {
             if (
-                now.subtract(1, 'year').date() <=
-                this.menus[i].orders.paymentDate.date()
+              now.subtract(1, "year").date() <=
+              this.menus[i].orders.paymentDate.date()
+
             ) {
               this.todayMenu[count] = this.menus[i];
               this.todayCamping[count] = this.campingInfo[i];
@@ -567,8 +540,9 @@ export default {
               count++;
             }
           } else if (
-              now.subtract(1, 'month').month() + 1 <
-              this.menus[i].orders.paymentDate.month()
+            now.subtract(1, "month").month() + 1 <
+            this.menus[i].orders.paymentDate.month()
+
           ) {
             this.todayMenu[count] = this.menus[i];
             this.todayCamping[count] = this.campingInfo[i];
@@ -576,8 +550,9 @@ export default {
             count++;
           }
         } else if (
-            now.subtract(1, 'year').year() <
-            this.menus[i].orders.paymentDate.year()
+          now.subtract(1, "year").year() <
+          this.menus[i].orders.paymentDate.year()
+
         ) {
           this.todayMenu[count] = this.menus[i];
           this.todayCamping[count] = this.campingInfo[i];
@@ -587,10 +562,8 @@ export default {
       }
 
       this.todayMenu.sort(function (a, b) {
-        return (
-            new Date(b.orders.paymentDate) -
-            new Date(a.orders.paymentDate)
-        );
+        return new Date(b.orders.paymentDate) - new Date(a.orders.paymentDate);
+
       });
       console.log(this.todayMenu);
       //   this.toString();
@@ -607,8 +580,9 @@ export default {
     getPeriod() {
       for (let i = 0; i < this.todayMenu.length; i++) {
         this.period[i] =
-            parseInt(this.todayMenu[i].orders.orderPrice) /
-            parseInt(this.todayDetail[i].detailPrice);
+          parseInt(this.todayMenu[i].orders.orderPrice) /
+          parseInt(this.todayDetail[i].detailPrice);
+
       }
     },
   },
@@ -682,3 +656,4 @@ export default {
   margin: auto;
 }
 </style>
+
