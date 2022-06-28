@@ -10,6 +10,7 @@ import com.example.capstone.service.PlanTagService;
 import com.example.capstone.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -27,8 +28,15 @@ public class PlannerApiController {
 
 
     @PostMapping("/api/createPlan")
-    public Optional<Plan> createPlan(@RequestBody PlanTagDto plan) {
+    public Optional<Plan> createPlan(@RequestParam(value = "file", required = false) MultipartFile uploadFile, PlanTagDto plan) {
+        System.out.println("------------------------");
+        System.out.println(plan.getPlan().getPlanName());
+
+        System.out.println("ㅁ잉"+ uploadFile.getSize());
+        System.out.println(plan.getPlan().getPlanName());
+        System.out.println("여기까지는 되나??");
     Plan newPlan= planService.createPlan(plan.getPlan());
+
         Optional<Plan> selectedPlan = planService.selectPlan(plan.getPlan().getPlanName());
         planTagService.insertTags(plan.getTagContentList(),newPlan);
         return selectedPlan;

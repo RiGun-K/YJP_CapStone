@@ -1,6 +1,7 @@
 package com.example.capstone.dto.plan;
 
 import com.example.capstone.domain.Plan.Plan;
+import com.example.capstone.domain.Plan.Team;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ public class PlanTagDto {
 
     private Plan plan;
     private List<String> tagContentList;
+
 
 
 }

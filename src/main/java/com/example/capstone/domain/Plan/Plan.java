@@ -52,6 +52,8 @@ public class Plan {
     private String detailAddress;
     @Column
     private String campingName;
+    @Column
+    private String planImg;
 
 
     public PlanDto toPlanDto() {
@@ -77,6 +79,7 @@ public class Plan {
                 .planUsedCount(this.getPlanUsedCount())
                 .planTotalDate(this.getPlanTotalDate())
                 .planType(this.getPlanType())
+                .planImg(this.getPlanImg())
                 .build();
 
         return planDto;

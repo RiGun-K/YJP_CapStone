@@ -27,9 +27,10 @@ public class PlanDto {
     private String address;
     private String detailAddress;
     private String campingName;
+    private String planImg;
 
     @Builder
-    public PlanDto( String address, String detailAddress, String campingName, Long planCode, TeamDto teamCode, String planDestination, String planName, int planBudget, String planType, String planStart, String planEnd, String planOpen, int planNumber, int planTotalDate, Integer planViews, Integer planUsedCount) {
+    public PlanDto( String planImg, String address, String detailAddress, String campingName, Long planCode, TeamDto teamCode, String planDestination, String planName, int planBudget, String planType, String planStart, String planEnd, String planOpen, int planNumber, int planTotalDate, Integer planViews, Integer planUsedCount) {
         this.planCode = planCode;
         this.teamCode = teamCode;
         this.planDestination = planDestination;
@@ -46,6 +47,7 @@ public class PlanDto {
         this.detailAddress = detailAddress;
         this.campingName = campingName;
         this.address = address;
+        this.planImg = planImg;
     }
 
     public PlanDto(Plan plan) {
@@ -71,6 +73,7 @@ public class PlanDto {
         this.detailAddress = plan.getDetailAddress();
         this.campingName = plan.getCampingName();
         this.address = plan.getAddress();
+        this.planImg = plan.getPlanImg();
     }
 
 
