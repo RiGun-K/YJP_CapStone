@@ -131,7 +131,7 @@ export default {
   margin-left: 15%;
   margin-right: 15%;
   width: 70%;
-  height: 93%;
+  height: 143%;
   background: white;
   z-index: 2;
 }
