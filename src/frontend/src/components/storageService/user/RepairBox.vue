@@ -15,10 +15,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="item" v-for="(item,index) in myItemList" :key="index" @dblclick="clear()"
-                @click="addRepairListInItem(item,index)">
-              <td>{{ item.memEquipmentName }}</td>
-              <td>{{ item.memEquipmentCount }}개</td>
+            <tr class="item" v-for="(item,index) in myItemList" :key="index" >
+              <td @dblclick="clear()"
+                  @click="addRepairListInItem(item,index)"
+              >{{ item.memEquipmentCode.memEquipmentName }}</td>
+              <td>
+                <select v-model="item.count">
+                  <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>
+                </select>개
+              </td>
             </tr>
             </tbody>
           </table>
@@ -74,15 +79,17 @@
           <tr>
             <th>장비이름</th>
             <th>수리 상품</th>
+            <th>수량</th>
             <th>가격</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(repair,index) in repairList">
-            <td>{{ repair.item.memEquipmentName }}</td>
+            <td>{{ repair.item.memEquipmentCode.memEquipmentName }}</td>
             <td>{{ repair.option.buyName }}</td>
-            <td>{{ repair.option.buyPrice }}원</td>
+            <td>{{repair.item.count}} 개</td>
+            <td>{{ repair.price }}원</td>
             <td>
               <button class="payNow" @click="deleteRepairList(index)">제거</button>
             </td>
@@ -116,6 +123,8 @@ export default {
       groupPick: 0,
       itemName: '_____',
       style: {},
+      item:{},
+      re:{},
     }
   },
   mounted() {
@@ -125,8 +134,9 @@ export default {
   },
   methods: {
     addRepairListInItem(item, index) {
-      this.repair.item = item
-      this.itemName = item.memEquipmentName
+      console.log('123123')
+      this.item = item
+      this.itemName = item.memEquipmentCode.memEquipmentName
       let a = document.getElementsByClassName("item")
       for (let i = 0; i < a.length; i++) {
         a[i].style.backgroundColor = "white"
@@ -134,7 +144,7 @@ export default {
       a[index].style.backgroundColor = "#cde1e8"
     },
     addRepairListInOption(re, index) {
-      this.repair.option = re
+      this.re = re
       let a = document.getElementsByClassName("repair")
       for (let i = 0; i < a.length; i++) {
         a[i].style.backgroundColor = "white"
@@ -142,9 +152,17 @@ export default {
       a[index].style.backgroundColor = "#cde1e8"
     },
     addRepairList() {
+      this.repair.option =this.re
+      this.repair.item = this.item
+      setTimeout(() => {
+        this.backFlag = true
+      }, 100)
+      this.item = undefined
+      this.repair.price = this.repair.item.count * this.repair.option.buyPrice
+
+      console.log(this.repair)
+
       this.repairList.push(this.repair)
-      this.repair = {}
-      this.itemName = '_____'
       this.clear()
     },
     deleteRepairList(index) {
@@ -153,6 +171,9 @@ export default {
     clear() {
       this.repair = {}
       this.itemName = '_____'
+      this.item={}
+      this.re = {}
+      console.log(this.repair)
       let a = document.getElementsByClassName("item")
       for (let i = 0; i < a.length; i++) {
         a[i].style.backgroundColor = "white"
@@ -201,6 +222,9 @@ export default {
       axios.get("/api/getBoxInItem/" + useCode)
           .then(res => {
             this.myItemList = res.data
+            for (let i = 0; i < this.myItemList.length; i++) {
+              this.myItemList[i].count = 1
+            }
           })
           .catch(err => {
             console.log(err)
@@ -288,11 +312,11 @@ td {
   padding-left: 20%;
 }
 
-.info-box-list{
+.info-box-list {
   width: 90%;
 }
 
-.my-repair-box{
+.my-repair-box {
   margin-bottom: 3%;
 }
 

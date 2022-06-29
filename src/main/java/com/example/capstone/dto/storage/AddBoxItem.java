@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class AddBoxItem {
     private long useBoxCode;
-    private List<Long> itemList;
+    private List<ItemDTO> itemList;
     public AddBoxItem() {
     }
 
