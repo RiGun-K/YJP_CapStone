@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RepairDTO {
-    private long memEquipmentCode;
+    private long boxItemCode;
     private int buyId;
+    private int count;
 }

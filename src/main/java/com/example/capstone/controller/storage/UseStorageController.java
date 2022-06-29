@@ -1,6 +1,7 @@
 package com.example.capstone.controller.storage;
 
 import com.example.capstone.domain.Member.Member;
+import com.example.capstone.domain.Product.Kind;
 import com.example.capstone.domain.Product.MenuBuy;
 import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
@@ -63,6 +64,9 @@ public class UseStorageController {
 
     @Autowired
     BoxItemRepository boxItemRepository;
+
+    @Autowired
+    RepairItemRepository repairItemRepository;
 
     //보관함 연장 결제
     @PostMapping("/renewalPay")
@@ -432,6 +436,9 @@ public class UseStorageController {
             Optional<BoxItem> boxItem = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(),addBoxItem.getItemList().get(i).getItemCode());
             BoxItem bi = boxItem.get();
             if (bi.getBoxItemCount() == addBoxItem.getItemList().get(i).getCount()){
+                MemberEquipment memberEquipment = bi.getMemEquipmentCode();
+                memberEquipment.setMemEquipmentState("0");
+                memberEquipmentRepository.save(memberEquipment);
                 boxItemRepository.delete(bi);
             }else{
                 bi.setBoxItemCount(bi.getBoxItemCount()-addBoxItem.getItemList().get(i).getCount());
@@ -493,6 +500,12 @@ public class UseStorageController {
 
     ////////////////////////// 수리상품 조회 ////////////////////////
 
+    @GetMapping("RepairGroupList")
+    private List<Kind> getRepairGroupList(){
+        List<Kind> kindList = kindRepository.findByRepairGroupList();
+        return kindList;
+    }
+
     @GetMapping("repairItemList")
     private List<MenuBuy> getRepairList() {
         List<MenuBuy> menuBuyList = menuBuyRepository.findByRepairList();
@@ -524,6 +537,7 @@ public class UseStorageController {
     //    장비수리 신청 결제
     @PostMapping("postCarePay")
     private Result postCarePay(@RequestBody CareListPayDTO care) {
+        System.out.println(care.toString());
         Optional<Member> member = memberRepository.findByMID(care.getMid());
         Member member1 = member.get();
         Orders orders = new Orders();
@@ -540,17 +554,34 @@ public class UseStorageController {
             orderMenu.setOrders(orders);
             orderMenuRepository.save(orderMenu);
 
-            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(care.getList().get(i).getMemEquipmentCode());
+            Optional<BoxItem> boxItem = boxItemRepository.findById(care.getList().get(i).getBoxItemCode());
+            long code = boxItem.get().getMemEquipmentCode().getMemEquipmentCode();
+            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(code);
             MemberEquipment memberEquipment1 = memberEquipment.get();
             memberEquipment1.setMemEquipmentState("2");
             memberEquipmentRepository.save(memberEquipment1);
-//
-//            UseStorageBox useStorageBox = memberEquipment.get().getUseStorageBoxCode();
-//            useStorageBox.setUseStorageState("6");
-//            useStorageBoxRepository.save(useStorageBox);
+
+            RepairItem repairItem = new RepairItem();
+            repairItem.setRepairItemCount(care.getList().get(i).getCount());
+            repairItem.setBuyId(menuBuy.get());
+            repairItem.setBoxItemCode(boxItem.get());
+            repairItem.setOrderCode(orders);
+            repairItem.setRepairItemState("0");
+            repairItemRepository.save(repairItem);
+
+            UseStorageBox useStorageBox = boxItem.get().getUseStorageBoxCode();
+            useStorageBox.setUseStorageState("6");
+            useStorageBoxRepository.save(useStorageBox);
         }
         return new Result("ok");
     }
 
+
+//    장비수리하는거 보여 주기
+    @GetMapping("getCareList/{useCode}")
+    private List<RepairItem> getCareList(@PathVariable(value = "useCode")long useCode){
+        List<RepairItem> repairItemList = repairItemRepository.findByBoxItemCode(useCode);
+        return repairItemList;
+    }
 }
 

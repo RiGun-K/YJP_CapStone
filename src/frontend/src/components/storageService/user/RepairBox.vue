@@ -134,14 +134,16 @@ export default {
   },
   methods: {
     addRepairListInItem(item, index) {
-      console.log('123123')
+      console.log(item)
       this.item = item
       this.itemName = item.memEquipmentCode.memEquipmentName
+
       let a = document.getElementsByClassName("item")
       for (let i = 0; i < a.length; i++) {
         a[i].style.backgroundColor = "white"
       }
       a[index].style.backgroundColor = "#cde1e8"
+
     },
     addRepairListInOption(re, index) {
       this.re = re
@@ -160,9 +162,8 @@ export default {
       this.item = undefined
       this.repair.price = this.repair.item.count * this.repair.option.buyPrice
 
-      console.log(this.repair)
-
       this.repairList.push(this.repair)
+      this.getBackData(this.$route.params.useBoxCode)
       this.clear()
     },
     deleteRepairList(index) {
@@ -223,7 +224,7 @@ export default {
           .then(res => {
             this.myItemList = res.data
             for (let i = 0; i < this.myItemList.length; i++) {
-              this.myItemList[i].count = 1
+              this.myItemList[i].count = this.myItemList[i].boxItemCount
             }
           })
           .catch(err => {
