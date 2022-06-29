@@ -5,10 +5,15 @@
     </div>
     <div class="container-box">
       <div class="service-btn">
-        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="moveBox(pickUseBox)">장비 이동</button>
-        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="repairBox(pickUseBox)">장비 수리</button>
+        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"
+                @click="moveBox(pickUseBox)">장비 이동
+        </button>
+        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"
+                @click="repairBox(pickUseBox)">장비 수리
+        </button>
         <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3" @click="renewalPay(pickUseBox)">연장</button>
-        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>
+        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지
+        </button>
       </div>
       <br>
       <br>
@@ -45,7 +50,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr >
+              <tr>
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
                 <td>접수</td>
               </tr>
@@ -89,7 +94,9 @@
           <div @click="addShow()">
             <h9>보관 장비 추가</h9>
             <h9 v-if="!addItemCheck">▼</h9>
-            <h9 v-else>▲<button class="item-btn" @click="addItem()">추가하기</button></h9>
+            <h9 v-else>▲
+              <button class="item-btn" @click="addItem()">추가하기</button>
+            </h9>
           </div>
           <div v-if="addItemCheck" class="box-info-c">
             <div>
@@ -102,18 +109,25 @@
                 </tr>
                 </thead>
                 <tbody class="body-sc">
-                <tr v-for="(item,index) in notInItem" :key="index">
+                <tr v-for="(item,index) in notInItem" :key="index" class="item">
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.memEquipmentName }}</td>
-                  <td>{{ item.memEquipmentCount }}개</td>
-                  <td><input type="checkbox" :value="item.memEquipmentCode" v-model="addBoxInItem"></td>
+                  <td>
+                    <select v-model="item.count">
+                      <option v-for="inx in item.memEquipmentCount" :value="inx">{{ inx }}</option>
+                    </select>
+                    개
+                  </td>
+                  <td><input type="checkbox" :value="item" v-model="addBoxInItem"></td>
                 </tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div v-if="myItem.length > 0">
-              <h3>보관장비<button class="out-btn" @click="outItem()">빼내기</button></h3>
+            <h3>보관장비
+              <button class="out-btn" @click="outItem()">빼내기</button>
+            </h3>
             <div class="box-info">
               <table>
                 <thead>
@@ -127,9 +141,14 @@
                 <tbody>
                   <tr v-for="(item,index) in myItem" :key="index">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ item.memEquipmentName }}</td>
-                    <td>{{ item.memEquipmentCount }}개</td>
-                    <td>{{ stateCheck(item.memEquipmentState)}}</td>
+                    <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
+                    <td>
+                      <select v-model="item.count">
+                        <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>
+                      </select>
+                      개
+                    </td>
+                    <td>{{ stateCheck(item.boxItemState) }}</td>
                     <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>
                   </tr>
                 </tbody>
@@ -146,7 +165,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -158,13 +176,13 @@ import store from "@/store";
 
 export default {
   name: "MyUseBoxDetail",
-  props:{
-    modal:'',
-    useData:{},
+  props: {
+    modal: '',
+    useData: {},
   },
-  data(){
-    return{
-      memberId:'',
+  data() {
+    return {
+      memberId: '',
       myItem: {},
       notInItem: [],
       addBoxInItem: [],
@@ -177,16 +195,16 @@ export default {
       useStorageTime: [],
       moveBoxInfo: {},
       moveInfo: false,
-      order:{},
-      kkk:false,
+      order: {},
+      kkk: false,
     }
   },
   mounted() {
     this.memberId = store.getters.getLoginState.loginState
     this.detailBox(this.useData)
 
-    },
-  methods:{
+  },
+  methods: {
     stateCheck(sCode) {
       switch (sCode) {
         case "1":
@@ -200,12 +218,11 @@ export default {
     close() {
       this.$emit('close')
     },
-    delInfo(code){
-      axios.get("/api/delInfo/"+code)
-          .then(res=>{
+    delInfo(code) {
+      axios.get("/api/delInfo/" + code)
+          .then(res => {
             this.order = res.data
             this.moveInfo = true
-
             this.kkk = true
           })
           .catch(err => {
@@ -239,7 +256,7 @@ export default {
             console.log(err)
           })
     },
-    inputInfo(arry){
+    inputInfo(arry) {
       this.moveBoxInfo.storageCode = arry[0][0]
       this.moveBoxInfo.storageName = arry[0][1]
       this.moveBoxInfo.boxCode = arry[0][2]
@@ -289,6 +306,10 @@ export default {
       axios.get('/api/getBoxInItem/' + index)
           .then(res => {
             this.myItem = res.data
+            console.log(this.myItem)
+            for (let i = 0; i < this.myItem.length; i++) {
+              this.myItem[i].count = 1
+            }
             this.getMyItem()
           })
           .catch(err => {
@@ -326,6 +347,9 @@ export default {
       axios.get('/api/myItem/' + this.memberId)
           .then(res => {
             this.notInItem = res.data
+            for (let i = 0; i < this.notInItem.length; i++) {
+              this.notInItem[i].count =1
+            }
           })
           .catch(err => {
             console.log(err)
@@ -343,10 +367,19 @@ export default {
         alert('추가하실 장비를 선택하세요')
         return
       }
+      let arry = []
+      for (let i = 0; i < this.addBoxInItem.length; i++) {
+        let form = {}
+        form.itemCode = this.addBoxInItem[i].memEquipmentCode
+        form.count = this.addBoxInItem[i].count
+        arry.push(form)
+      }
       let data = {
         useBoxCode: this.pickUseBox,
-        itemList: this.addBoxInItem
+        itemList: arry
       }
+      console.log('data')
+      console.log(data)
       axios.post('/api/addBoxInItem', data)
           .then(res => {
             if (res.data.result == 'ok') {
@@ -360,7 +393,6 @@ export default {
           .catch(err => {
             console.log(err)
           })
-
     },
     outItem() {
       if (this.outBoxItem.length < 1) {
@@ -369,9 +401,11 @@ export default {
       }
       let list = []
       for (let i = 0; i < this.outBoxItem.length; i++) {
-        console.log(this.outBoxItem[i])
-        list.push(this.outBoxItem[i].memEquipmentCode)
-        if(this.outBoxItem[i].memEquipmentState == "2"){
+        let form = {}
+        form.itemCode = this.outBoxItem[i].memEquipmentCode.memEquipmentCode
+        form.count = this.outBoxItem[i].count
+        list.push(form)
+        if (this.outBoxItem[i].memEquipmentState == "2") {
           alert('수리중에는 빼낼 수 없습니다.')
           return
         }
@@ -381,6 +415,8 @@ export default {
         useBoxCode: this.pickUseBox,
         itemList: list
       }
+      console.log('data')
+      console.log(data)
       axios.post('/api/outBoxInItem', data)
           .then(res => {
             if (res.data.result == 'ok') {
@@ -400,42 +436,44 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   position: center;
   height: 100%;
   width: 95%;
   margin: 5%;
 }
 
-h5{
+h5 {
   text-effect: emboss;
 }
 
-.container-box{
+.container-box {
   padding-right: 5%;
 }
-.body-sc{
+
+.body-sc {
   overflow: scroll;
   height: 60px;
 }
 
-.item-info-box{
+.item-info-box {
   border: 1px solid black;
 }
 
-th{
+th {
   text-align: center;
 }
-thead{
+
+thead {
   background-color: #6e6e6e;
   color: white;
 }
 
-tr{
+tr {
   border-bottom: 1px solid black;
 }
 
-td{
+td {
   text-align: center;
 }
 
@@ -466,7 +504,8 @@ td{
   color: #00a3de;
   border-color: #00a3de;
 }
-.item-btn{
+
+.item-btn {
   margin-left: 4%;
   margin-bottom: 1%;
   text-align: center;
@@ -479,7 +518,7 @@ td{
   margin-right: 15%;
 }
 
-.out-btn{
+.out-btn {
   margin-left: 4%;
   margin-bottom: 1%;
   text-align: center;
@@ -493,7 +532,7 @@ td{
   font-size: 50%;
 }
 
-.close-box{
+.close-box {
   margin-left: 4%;
   margin-bottom: 1%;
   text-align: center;
@@ -506,7 +545,7 @@ td{
 
 }
 
-.btn{
+.btn {
   float: right;
   width: 10%;
 }
