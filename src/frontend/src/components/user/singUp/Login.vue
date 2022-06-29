@@ -6,14 +6,14 @@
       <div>
         <br>
         <h3 class="join_title">
-          <label for="id">아이디</label>
+          <label>아이디</label>
         </h3>
-        <span class="box int_id">
-                        <input type="text" name="MID" v-model="userID" id="id" placeholder="아이디 입력" class="int" maxlength="20">
+        <span class="input-group mb-3">
+                        <input type="text" name="MID" v-model="userID"  placeholder="아이디 입력" class="form-control" maxlength="20">
                     </span>
         <span class="error_next_box"></span>
         <h3 class="join_title">
-          <label for="id">비밀번호</label>
+          <label>비밀번호</label>
         </h3>
 
         <span class="input-group mb-3">
