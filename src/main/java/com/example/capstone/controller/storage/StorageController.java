@@ -164,28 +164,23 @@ public class StorageController {
 
     //   보관소 매니저 체크
     @GetMapping("/checkManager/{memberId}")
-    public Result checkManager(@PathVariable String memberId) throws NoSuchElementException {
-        try {
-
+    public Result checkManager(@PathVariable String memberId) {
             Optional<Member> member = memberRepository.findByMID(memberId);
             System.out.println(member.get().getMID());
             Optional<StorageManager> storageManager = storageManagerRepository.findByMCode(member.get());
 
-            if (storageManager.isPresent()) {
+            if (!storageManager.isEmpty()) {
                 // 중복
                 return new Result("overlap");
-
             } else {
                 // 가능
-                if(member.get().getMSC() != "5"){
+
+                if(member.get().getMSC().equals("5")){
+                    return new Result("ok");
+                }else{
                     return new Result("no");
                 }
-                return new Result("ok");
             }
-        } catch (NoSuchElementException n) {
-            System.out.println(n);
-            return new Result("no");
-        }
     }
 
     //관리자 보관소 리스트
@@ -472,86 +467,6 @@ public class StorageController {
     }
 
 
-    // 보관함에 장비 추가
-    @PostMapping("addBoxInItem")
-    private Result addBoxInItem(@RequestBody AddBoxItem addBoxItem){
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(addBoxItem.getUseBoxCode());
-        if (useStorageBox.isEmpty()){
-            return new Result("no");
-        }
-        UseStorageBox useCode = useStorageBox.get();
-
-        for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i));
-            MemberEquipment equipment = memberEquipment.get();
-            BoxItem boxItem = new BoxItem();
-            boxItem.setUseStorageBoxCode(useCode);
-            boxItem.setMemEquipmentCode(equipment);
-            boxItemRepository.save(boxItem);
-        }
-        return new Result("ok");
-    }
-
-    //보관함에 장비제거
-    @PostMapping("outBoxInItem")
-    private Result outBoxInItem(@RequestBody AddBoxItem addBoxItem){
-
-        for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<BoxItem> boxItem = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(),addBoxItem.getItemList().get(i));
-            boxItemRepository.delete(boxItem.get());
-        }
-        return new Result("ok");
-    }
-
-    //사용자 사용하는 보관함의 장비 조회
-    @GetMapping("getBoxInItem/{useBoxCode}")
-    private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode") Long useBoxCode) {
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
-        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox.get());
-            List<MemberEquipment> memberEquipmentList = new ArrayList<>();
-        for (int i = 0; i < boxItemList.size(); i++) {
-            memberEquipmentList.add(boxItemList.get(i).getMemEquipmentCode());
-        }
-        return memberEquipmentList;
-    }
-
-    //사용자주소 조회
-    @GetMapping("myAddress/{mid}")
-    private Member getMemberAddress(@PathVariable(value = "mid") String mid) {
-        Optional<Member> member = memberRepository.findByMID(mid);
-
-        return member.get();
-    }
-
-    // 사용중인 보관함코드로 사용자의 주소 조회
-    @GetMapping("UseBoxMemAddress/{useCode}")
-    private Member getMemberAddressUseCode(@PathVariable(value = "useCode") long useCode) {
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
-
-        return useStorageBox.get().getMCode();
-    }
-
-//    구족종료시에 현재시간과 남은시간이 가까울 때 정보보내기
-    @GetMapping("remainderTime/{useCode}")
-    public int remainderTime(@PathVariable(value = "useCode")long useCode){
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
-
-        Period period = useStorageBox.get().getUseStorageEndTime().until(LocalDate.now());
-
-        return period.getDays();
-    }
-
-//    구독 종료 후 추가 구독했는지 조회
-    @GetMapping("findUseState/{boxCode}")
-    public Boolean findUseState(@PathVariable(value = "boxCode")long boxCode){
-        List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByBoxCode(boxCode);
-        for (int i = 0; i < useStorageBoxList.size(); i++) {
-            if (useStorageBoxList.get(i).getUseStorageState().equals("2")){
-                return true;
-            }
-        }
-        return false;
-    }
     ////////////////////////// 지역 조회  //////////////////////////
 
     @GetMapping("aRound")
