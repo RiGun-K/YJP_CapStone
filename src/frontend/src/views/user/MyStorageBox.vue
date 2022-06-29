@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox)">
+              <tr v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox,index)" class="item">
                 <td>{{ useBox.storageName }}</td>
                 <td>{{ useBox.boxName }}</td>
                 <td>{{updateState(useBox.useState)}}</td>
@@ -119,8 +119,17 @@ export default {
     },
     close() {
       this.modal = false
+      let a = document.getElementsByClassName("item")
+      for (let i = 0; i < a.length; i++) {
+        a[i].style.backgroundColor = "white"
+      }
     },
-    detailBox(us) {
+    detailBox(us,index) {
+      let a = document.getElementsByClassName("item")
+      for (let i = 0; i < a.length; i++) {
+        a[i].style.backgroundColor = "white"
+      }
+      a[index].style.backgroundColor = "#cde1e8"
       this.useData = {}
       if (!this.modal) {
         this.modal = !this.modal

@@ -179,7 +179,7 @@ public class UseStorageController {
 
     }
 
-    // 보관함 장소 이동
+    // 장비 장소(장소) 이동
     @PostMapping("roundMoveBox")
     private Result roundMovePay(@RequestBody RoundMove roundMove) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(roundMove.getUseBoxCode());
@@ -208,24 +208,36 @@ public class UseStorageController {
 
     }
 
-    // 보관함 장소 이동
+    // 장비 장소(집) 이동
     @PostMapping("homeToMovePay")
     private Result homeMovePay(@RequestBody HomeModeDTO homeModeDTO) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(homeModeDTO.getUseBoxCode());
         if (useStorageBox.get().getUseStorageState().equals("2")) {
-
 
             StorageBox storageBox = useStorageBox.get().getStorageBoxCode();
             storageBox.setStorageBoxState("7");
             storageBoxRepository.save(storageBox);
 
             Orders orderList = new Orders(homeModeDTO.getMember());
+            orderList.setDeliveryGetter(homeModeDTO.getMember().getMname());
+            orderList.setDeliveryGetterTel(homeModeDTO.getMember().getMPH());
             orderList.setDeliveryZipcode(homeModeDTO.getMember().getMZadd());
             orderList.setDeliveryAddress(homeModeDTO.getMember().getMAdd() + homeModeDTO.getMember().getMRadd());
             ordersRepository.save(orderList);
 
             useStorageBox.get().setUseStorageState("9" + orderList.getOrderCode());
             useStorageBoxRepository.save(useStorageBox.get());
+
+            for (int i = 0; i < homeModeDTO.getList().size(); i++) {
+                Optional<BoxItem> boxItem = boxItemRepository.findById(homeModeDTO.getList().get(i).getItemCode());
+                if (boxItem.get().getBoxItemCount() == homeModeDTO.getList().get(i).getCount()){
+                    boxItemRepository.delete(boxItem.get());
+                }else{
+                    boxItem.get().setBoxItemCount(boxItem.get().getBoxItemCount()-homeModeDTO.getList().get(i).getCount());
+                    boxItemRepository.save(boxItem.get());
+                }
+            }
+
             return new Result("ok");
         } else if (useStorageBox.get().getUseStorageState() == "1") {
             return new Result("umm");
@@ -415,6 +427,9 @@ public class UseStorageController {
                 BoxItem boxItem = new BoxItem();
                 Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i).getItemCode());
                 MemberEquipment equipment = memberEquipment.get();
+                equipment.setMemEquipmentState("1");
+                memberEquipmentRepository.save(equipment);
+
                 boxItem.setUseStorageBoxCode(useCode);
                 boxItem.setBoxItemState("1");
                 boxItem.setMemEquipmentCode(equipment);

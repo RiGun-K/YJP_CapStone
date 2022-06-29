@@ -164,7 +164,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div v-if="repairList.length>0">
             <h3>수리장비</h3>
             <div class="box-info">
               <table>
@@ -226,6 +226,11 @@ export default {
     this.memberId = store.getters.getLoginState.loginState
     this.detailBox(this.useData)
 
+  },
+  watch:{
+    useData:function (){
+      this.detailBox(this.useData)
+    }
   },
   methods: {
     stateCheck(sCode) {
@@ -335,7 +340,6 @@ export default {
               this.myItem[i].count = this.myItem[i].boxItemCount
             }
             this.getMyItem()
-
           })
           .catch(err => {
             console.log(err)
@@ -344,9 +348,7 @@ export default {
     getRepairList(){
       axios.get('/api/getCareList/'+this.pickUseBox)
           .then(res => {
-            console.log(res.data)
             this.repairList = res.data
-
           })
           .catch(err => {
             console.log(err)
@@ -414,8 +416,6 @@ export default {
         useBoxCode: this.pickUseBox,
         itemList: arry
       }
-      console.log('data')
-      console.log(data)
       axios.post('/api/addBoxInItem', data)
           .then(res => {
             if (res.data.result == 'ok') {
@@ -451,8 +451,6 @@ export default {
         useBoxCode: this.pickUseBox,
         itemList: list
       }
-      console.log('data')
-      console.log(data)
       axios.post('/api/outBoxInItem', data)
           .then(res => {
             if (res.data.result == 'ok') {
