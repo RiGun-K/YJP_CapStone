@@ -41,7 +41,7 @@
         <h4>수리신청항목</h4>
         <div v-for="repair in repairList">
           <div>
-            <h5>{{repair.item.memEquipmentName}}의 수리</h5>
+            <h5>{{repair.item.memEquipmentCode.memEquipmentName}},{{repair.item.count}}개 수리</h5>
           </div>
           <div class="info-box">
             <table>
@@ -49,7 +49,7 @@
               <tr>
                 <td>{{ repair.option.buyName }}</td>
                 <td>{{ repair.option.buyEx }}</td>
-                <td>{{ repair.option.buyPrice }}원</td>
+                <td>{{ repair.price }}원</td>
               </tr>
               </tbody>
             </table>
@@ -115,7 +115,7 @@ export default {
   methods:{
     allPrice(){
       for (let i = 0; i < this.repairList.length; i++) {
-        this.price = this.price + this.repairList[i].option.buyPrice
+        this.price = this.price + this.repairList[i].price
       }
     },
     getMemberData(){
@@ -163,21 +163,22 @@ export default {
           }
         })
       }
-
     },
     savePay(){
       const formData = {}
       const data = []
       for (let i = 0; i < this.repairList.length; i++) {
         const form ={}
-        form.memEquipmentCode = this.repairList[i].item.memEquipmentCode
+        form.boxItemCode = this.repairList[i].item.boxItemCode
         form.buyId = this.repairList[i].option.buyId
+        form.count = this.repairList[i].item.count
         data.push(form)
       }
       formData.list = data
       formData.mid = this.member.mid
       formData.text = this.requestText
       formData.price = this.price
+      console.log(formData)
       axios.post('/api/postCarePay',formData)
           .then(res => {
             console.log(res.data.result)

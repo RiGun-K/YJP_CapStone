@@ -148,7 +148,7 @@
                       </select>
                       개
                     </td>
-                    <td>{{ stateCheck(item.boxItemState) }}</td>
+                    <td>{{ stateCheck(item.memEquipmentCode.memEquipmentState) }}</td>
                     <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>
                   </tr>
                 </tbody>
@@ -162,6 +162,28 @@
               <div>
                 <h5>보관중인 장비가 없습니다.</h5>
               </div>
+            </div>
+          </div>
+          <div>
+            <h3>수리장비</h3>
+            <div class="box-info">
+              <table>
+                <thead>
+                <tr>
+                  <th colspan="2">장비</th>
+                  <th>수리 수량</th>
+                  <th>수리 항목</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item,index) in repairList" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.boxItemCode.memEquipmentCode.memEquipmentName }}</td>
+                  <td>{{item.repairItemCount}} 개</td>
+                  <td>{{ item.buyId.buyName }}</td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -197,6 +219,7 @@ export default {
       moveInfo: false,
       order: {},
       kkk: false,
+      repairList:[],
     }
   },
   mounted() {
@@ -236,6 +259,7 @@ export default {
       this.boxinItem(this.pickUseBox)
       this.delInfo(us.del)
       this.getBoxTimes(us)
+      this.getRepairList()
       if (us.moveUseCode != undefined) {
         this.moveInfo = true
         if (us.useState == 3 || us.useState == 4 || us.useState == 5) {
@@ -308,9 +332,21 @@ export default {
             this.myItem = res.data
             console.log(this.myItem)
             for (let i = 0; i < this.myItem.length; i++) {
-              this.myItem[i].count = 1
+              this.myItem[i].count = this.myItem[i].boxItemCount
             }
             this.getMyItem()
+
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getRepairList(){
+      axios.get('/api/getCareList/'+this.pickUseBox)
+          .then(res => {
+            console.log(res.data)
+            this.repairList = res.data
+
           })
           .catch(err => {
             console.log(err)
@@ -348,7 +384,7 @@ export default {
           .then(res => {
             this.notInItem = res.data
             for (let i = 0; i < this.notInItem.length; i++) {
-              this.notInItem[i].count =1
+              this.notInItem[i].count = this.notInItem[i].memEquipmentCount
             }
           })
           .catch(err => {
