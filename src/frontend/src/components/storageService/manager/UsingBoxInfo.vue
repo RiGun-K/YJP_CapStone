@@ -118,7 +118,7 @@
   <!--      </div>-->
   <!--    </div>-->
   <!--  </div>-->
-  <div v-if="box.useStorageState == 9">
+  <div v-if="box.useStorageState == 9 || box.useStorageState == 'a'">
     <h5>배송</h5>
     <div>
       <div>
@@ -147,7 +147,7 @@
         </div>
       </div>
       <div>
-        <button @click="moveDel()">배송시작</button>
+        <button @click="moveToHome()">배송시작</button>
       </div>
     </div>
   </div>
@@ -232,8 +232,6 @@ export default {
           return "사용중"
           break
         case '3':
-          return "장비이동 신청 "
-          break
         case '4':
           return "장비이동 신청"
           break
@@ -273,6 +271,9 @@ export default {
           return "수리완료"
           break
         case '9':
+          return "배송 신청"
+          break
+        case 'a':
           return "배송 신청"
           break
       }
@@ -320,8 +321,8 @@ export default {
       data.useStorageCode = arry[0][5]
       data.useStorageState = arry[0][6]?.toString().charAt(0)||''
       this.box = data
-      if (data.useStorageState == "9"){
-        this.del = arry[0][6]?.substring(1, arry[6].length)||''
+      if (data.useStorageState == "9" || data.useStorageState == "a"){
+        this.del = arry[0][6]?.substring(1, arry[0][6].length)||''
         this.delInfo()
       }else{
         this.box.updateusbCode = arry[0][6]?.substring(1, arry[0][6].length)||''
@@ -353,21 +354,23 @@ export default {
       axios.get('/api/moreUseBox/' + this.box.boxCode)
           .then(res => {
             this.box = {}
-            const data = {}
-            data.nickName = res.data[0][0]
-            data.boxCode = res.data[0][1]
-            data.boxName = res.data[0][2]
-            data.boxState = res.data[0][3]
-            data.storageCode = res.data[0][4]
-            data.useStorageCode = res.data[0][5]
-            data.useStorageState = res.data[0][6].toString().charAt(0)
-            this.box = data
+            this.addUseBoxInfoSetting(res.data)
             this.checkMoreReNewal()
-
           })
           .catch(err => {
             console.log(err)
           })
+    },
+    addUseBoxInfoSetting(arry){
+      const data = {}
+      data.nickName = arry[0][0]
+      data.boxCode = arry[0][1]
+      data.boxName = arry[0][2]
+      data.boxState = arry[0][3]
+      data.storageCode = arry[0][4]
+      data.useStorageCode = arry[0][5]
+      data.useStorageState = arry[0][6].toString().charAt(0)
+      this.box = data
     },
     checkMoreReNewal() {
       axios.get('/api/findUseState/' + this.box.boxCode)
@@ -469,6 +472,22 @@ export default {
             console.log(err)
           })
     },
+    moveToHome(){
+      axios.get('/api/endMoveToHome/'+this.box.useStorageCode)
+      .then(res=>{
+        console.log(res.data.result)
+        if (res.data.result = 'ok'){
+          alert('배송합니다')
+          this.getBoxInfo()
+          this.$emit('updata')
+        }else {
+          alert('error')
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
   },
 }
 </script>
