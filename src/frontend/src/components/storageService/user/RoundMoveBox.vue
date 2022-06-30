@@ -25,8 +25,13 @@
           <table>
             <tr v-for="(item,index) in myItem">
               <td>{{ index + 1 }}</td>
-              <td>{{ item.memEquipmentName }}</td>
-              <td>{{ item.memEquipmentCount }}개</td>
+              <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
+              <td>
+                <select v-model="item.count">
+                  <option value="0">0</option>
+                  <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>
+                </select>개
+              </td>
             </tr>
           </table>
         </div>
@@ -43,10 +48,17 @@
               </td>
             </tr>
             <tr>
+              <td>전호번호</td>
+              <td>
+                <input type="text" v-model="tel">
+              </td>
+            </tr>
+            <tr>
               <td>우편주소</td>
               <td>
                 <input type="text" v-model="zipCode">
-                <button class="payNow-c" @click="showApi()">우편번호 찾기</button></td>
+                <button class="payNow-c" @click="showApi()">우편번호 찾기</button>
+              </td>
             </tr>
             <tr>
               <td>주소</td>
@@ -70,6 +82,7 @@
 
 <script>
 import axios from "axios";
+import store from "@/store";
 
 export default {
   name: "RoundMoveBox",
@@ -78,12 +91,13 @@ export default {
   },
   data() {
     return {
-      moveBoxInfo:{},
+      moveBoxInfo: {},
       zipCode: '',
       address: '',
       detailAddress: '',
-      myItem:{},
-      name:'',
+      myItem: {},
+      name: '',
+      tel: '',
     }
   },
   mounted() {
@@ -91,7 +105,7 @@ export default {
     this.getItem()
   },
   methods: {
-    boxInfo(){
+    boxInfo() {
       axios.get('/api/moveBoxInfo/' + this.useBoxCode)
           .then(res => {
             this.moveBoxInfo.storageName = res.data[0][1]
@@ -101,10 +115,13 @@ export default {
             console.log(err)
           })
     },
-    getItem(){
+    getItem() {
       axios.get('/api/getBoxInItem/' + this.useBoxCode)
           .then(res => {
             this.myItem = res.data
+            for (let i = 0; i < this.myItem.length; i++) {
+              this.myItem[i].count = this.myItem[i].boxItemCount
+            }
           })
           .catch(err => {
             console.log(err)
@@ -115,14 +132,24 @@ export default {
         alert('이동할 주소를 입력하세요')
         return
       }
+      let list = []
+      for (let i = 0; i <this.myItem.length; i++) {
+        let form = {}
+        form.itemCode = this.myItem[i].boxItemCode
+        form.count = this.myItem[i].count
+        list.push(form)
+      }
       let data = {
-        name:this.name,
-        useBoxCode:this.useBoxCode,
+        name: this.name,
+        useBoxCode: this.useBoxCode,
         zipCode: this.zipCode,
         address: this.address,
-        detailAddress: this.detailAddress
+        detailAddress: this.detailAddress,
+        tel : this.tel,
+        list: list,
+        myItem : this.myItem
       }
-      this.$store.commit('moveBoxInfo',data)
+      this.$store.commit('moveBoxInfo', data)
       this.$router.push({name: 'roundToBoxMovePay'})
 
     },
@@ -145,13 +172,16 @@ export default {
   position: center;
   width: 95%;
 }
+
 .info-box {
   width: 50%;
 }
+
 td:first-child {
   width: 30%;
 }
-td:nth-child(2){
+
+td:nth-child(2) {
   text-align: left;
 }
 
@@ -166,6 +196,7 @@ td, tr {
   word-spacing: 9px;
   text-align: center;
 }
+
 .payNow-b {
   position: center;
   text-align: center;
@@ -176,7 +207,8 @@ td, tr {
   border-color: #00a3de;
   float: right;
 }
-.payNow-c{
+
+.payNow-c {
   position: center;
   text-align: center;
   background-color: #ffffff;
@@ -184,6 +216,7 @@ td, tr {
   color: #00a3de;
   border-color: #00a3de;
 }
+
 .bin-box {
   width: 50%;
 }

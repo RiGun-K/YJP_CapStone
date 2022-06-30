@@ -66,9 +66,6 @@ export default {
           case "4":
           return "보관함이동"
           break
-        case "5":
-          return "배송"
-          break
         case "6":
           return "수리신청"
           break
@@ -78,7 +75,9 @@ export default {
         case "8":
           return "수리완료"
           break
+        case "5":
         case "9":
+        case "a":
           return "배송"
           break
       }
@@ -102,7 +101,7 @@ export default {
                 box.boxState = boxes[i][4]
                 box.useCode = boxes[i][5]
                 box.useState = boxes[i][6].toString().charAt(0)
-                if (box.useState == "9"){
+                if (box.useState == "9" || box.useState == "a"){
                   box.del = boxes[i][6].substring(1, boxes[i][6].length)
                 }else {
                   if (boxes[i][6].length > 1) {

@@ -50,17 +50,17 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
+              <tr v-if="moveBoxInfo.moveState == 3">
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
                 <td>접수</td>
               </tr>
               <tr v-if="moveBoxInfo.moveState == 4">
-                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                <td>이동중</td>
+                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
+                <td>접수</td>
               </tr>
               <tr v-if="moveBoxInfo.moveState == 5">
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                <td>도착</td>
+                <td>이동중</td>
               </tr>
               </tbody>
             </table>
@@ -267,7 +267,7 @@ export default {
       this.getRepairList()
       if (us.moveUseCode != undefined) {
         this.moveInfo = true
-        if (us.useState == 3 || us.useState == 4 || us.useState == 5) {
+        if (us.useState == 3 || us.useState == 4 || us.useState == 5 || us.useState == 'a') {
           this.boxDetailMoveInfo(us.moveUseCode, us.useState)
         }
       }

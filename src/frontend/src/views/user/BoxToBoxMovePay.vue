@@ -43,8 +43,11 @@
           <table class="aaa-table">
             <tr v-for="(item,index) in myItem" :key="index">
               <td>{{ index + 1 }}</td>
-              <td>{{ item.memEquipmentName }}</td>
-              <td>{{ item.memEquipmentCount }}개</td>
+              <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
+              <td><select v-model="item.count">
+                <option value="0">0</option>
+                <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>
+              </select>개</td>
             </tr>
           </table>
         </div>
@@ -124,6 +127,9 @@ export default {
       axios.get('/api/getBoxInItem/' + this.beforeBoxInfo.useBoxCode)
           .then(res => {
             this.myItem = res.data
+            for (let i = 0; i < this.myItem.length; i++) {
+              this.myItem[i].count = this.myItem[i].boxItemCount
+            }
           })
           .catch(err => {
             console.log(err)
@@ -165,11 +171,20 @@ export default {
 
     },
     pay() {
+      let list = []
+      for (let i = 0; i <this.myItem.length; i++) {
+        let form = {}
+        form.itemCode = this.myItem[i].boxItemCode
+        form.count = this.myItem[i].count
+        list.push(form)
+      }
       const data = {
         userId: store.getters.getLoginState.loginState,
         use: this.beforeBoxInfo.useBoxCode,
         before: this.beforeBoxInfo.boxCode,
-        after: this.newBoxCode
+        after: this.newBoxCode,
+        list : list,
+        price : this.price
       }
       console.log(data)
       axios.post('/api/boxToBoxPay', data)
