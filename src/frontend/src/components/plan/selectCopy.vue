@@ -1,6 +1,6 @@
 <template>
 	<div class="background">
-		<img class="imgbackground" src="@/assets/campwall2.webp" />
+		<img class="imgbackground1" src="@/assets/campwall2.webp" />
 		<div class="MenuPosition">
 			<div class="SelectMenu">
 				<button class="SelectBtn" @click="reference">
@@ -40,12 +40,10 @@ export default {
 </script>
 
 <style>
-.background {
-}
 
-.imgbackground {
+
+.imgbackground1 {
 	width: 100%;
-
 	object-fit: cover;
 }
 
