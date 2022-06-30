@@ -80,21 +80,21 @@ export default {
 .backImg{
   margin-top: 1px;
   width: 100%;
-  height: 150%;
+  height: auto;
+  min-height: 100%;
   position: absolute;
   z-index: 1;
 }
 .divBody{
   border-radius: 100px;
-  padding: 30px;
-  padding-top: 5%;
+  padding: 50px;
   position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
   margin-left: 10%;
   margin-right: 10%;
   width: 80%;
-  height: 143%;
+  height: 80%;
   background: white;
   z-index: 2;
 }

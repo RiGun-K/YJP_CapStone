@@ -120,15 +120,14 @@ export default {
 }
 .divBody{
   border-radius: 100px;
-  padding: 30px;
-  padding-top: 5%;
+  padding: 50px;
   position: absolute;
   margin-top: 2%;
   margin-bottom: 5%;
   margin-left: 10%;
   margin-right: 10%;
   width: 80%;
-  height: 93%;
+  height: 80%;
   background: white;
   z-index: 2;
 }
