@@ -27,10 +27,12 @@ public class PlanDto {
     private String address;
     private String detailAddress;
     private String campingName;
-    private String planImg;
+    private String origFilename;
+    private String filename;
+    private String filePath;
 
     @Builder
-    public PlanDto( String planImg, String address, String detailAddress, String campingName, Long planCode, TeamDto teamCode, String planDestination, String planName, int planBudget, String planType, String planStart, String planEnd, String planOpen, int planNumber, int planTotalDate, Integer planViews, Integer planUsedCount) {
+    public PlanDto(String origFilename, String filename, String filePath, String address, String detailAddress, String campingName, Long planCode, TeamDto teamCode, String planDestination, String planName, int planBudget, String planType, String planStart, String planEnd, String planOpen, int planNumber, int planTotalDate, Integer planViews, Integer planUsedCount) {
         this.planCode = planCode;
         this.teamCode = teamCode;
         this.planDestination = planDestination;
@@ -47,7 +49,9 @@ public class PlanDto {
         this.detailAddress = detailAddress;
         this.campingName = campingName;
         this.address = address;
-        this.planImg = planImg;
+        this.origFilename = origFilename;
+        this.filename = filename;
+        this.filePath = filePath;
     }
 
     public PlanDto(Plan plan) {
@@ -73,7 +77,9 @@ public class PlanDto {
         this.detailAddress = plan.getDetailAddress();
         this.campingName = plan.getCampingName();
         this.address = plan.getAddress();
-        this.planImg = plan.getPlanImg();
+      this.filePath = plan.getFilePath();
+      this.filename = plan.getFilename();
+      this.origFilename = plan.getOrigFilename();
     }
 
 

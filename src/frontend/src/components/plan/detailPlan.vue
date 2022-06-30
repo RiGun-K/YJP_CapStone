@@ -49,7 +49,7 @@
 					:key="index"
 				>
 					<button
-						class="w-btn w-btn-blue"
+						class="w-btn w-btn-blue8"
 						@click="datesButton(index)"
 					>
 						{{ index }}일차
@@ -138,13 +138,13 @@
 					<tr class="a">
 						<td style="border-bottom: none" colspan="7">
 							<button
-								class="w-btn-outline w-btn-red-outline"
+								class="w-btn-outline w-btn-red-outline8"
 								@click="savePlan"
 							>
 								플랜저장
 							</button>
 							<button
-								class="w-btn-outline w-btn-red-outline"
+								class="w-btn-outline w-btn-red-outline8"
 								@click="editPlan"
 							>
 								플랜수정
@@ -414,9 +414,7 @@ td {
 	margin-top: 15%;
 	margin-bottom: 3%;
 }
-.sidebar-link {
-	color: black;
-}
+
 .collapse-icon {
 	position: absolute;
 	top: 80%;
@@ -444,7 +442,7 @@ td {
 	width: 60px;
 	height: 60px;
 }
-.w-btn-blue {
+.w-btn-blue8 {
 	background-color: #6aafe6;
 	color: #d4dfe6;
 }
@@ -475,12 +473,7 @@ td {
 	display: block;
 	width: 90%;
 }
-.buttonDiv {
-	background: red;
-}
-.buttonDiv button {
-	float: right;
-}
+
 .detailPlan input {
 	border-radius: 7px;
 }
@@ -494,11 +487,13 @@ td {
 	font-weight: 600;
 	transition: 0.25s;
 }
-.w-btn-red-outline {
+.w-btn-red-outline8 {
 	border: 3px solid #ff5f2e;
-	color: #6e6e6e;
+	color: #ff5f2e;
+	background-color: #f3f3f3;
+
 }
-.w-btn-red-outline:hover {
+.w-btn-red-outline8:hover {
 	background-color: #ff5f2e;
 	color: #e1eef6;
 }

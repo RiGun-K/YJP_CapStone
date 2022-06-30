@@ -320,9 +320,25 @@ export default {
 
 		createPlan: function () {
 			const formData = new FormData();
+			// const data = {
+			// 	'planName': this.planName,
+			// 	'teamCode':this.$store.state.teamCode.teamCode,
+			// 	'planStart': this.planStart,
+			// 	'planEnd':this.planEnd,
+			// 	'planDestination':this.planDestination,
+			// 	'planType':this.planType,
+			// 	'planNumber': this.planNumber,
+			// 	'planBudget':this.planBudget,
+			// 	'planTotalDate': this.diff,
+			// 	'planOpen': this.planOpen,
+			// 	'address': this.address,
+			// 	'detailAddress': this.detailAddress,
+			// 	'campingName':this.campingName,
+			// };
 
+		//	formData.append('plan', data);
 			formData.append('planName', this.planName);
-			formData.append('teamCode', this.$store.state.teamCode.teamCode);
+			formData.append('teamCode', this.$store.state.teamCode.teamCode.teamCode);
 			formData.append('planStart', this.planStart);
 			formData.append('planEnd', this.planEnd);
 			formData.append('planDestination', this.planDestination);
@@ -338,8 +354,7 @@ export default {
 			formData.append('tagContentList', this.TagContentList);
 
 			console.log(this.planName);
-			console.log(formData.planName);
-
+			console.log(formData.get('planName'));
 			if (
 				this.planName !== '' &&
 				this.planBudget !== '' &&

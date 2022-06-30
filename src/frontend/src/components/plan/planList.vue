@@ -44,6 +44,7 @@
           v-for="(value, index) in filteredPlanList"
           :key="index"
         >
+         <img :src="'/api/product_detail_image/' + value.filename" class="imgbackground"  />
           {{ value.teamCode.teamName }}팀의{{ value.planName }} 플랜
           <br />조회수:
           {{ value.planViews }}
@@ -195,8 +196,8 @@ export default {
 .w-btn-red-outline {
   border: 3px solid #ff5f2e;
   color: #6e6e6e;
-  width: 300px;
-  height: 270px;
+  width: 380px;
+  height: 450px;
   margin: 20px;
   font-size: 25px;
   float: left;
@@ -311,5 +312,11 @@ export default {
 }
 .box {
   display: inline-block;
+}
+.imgbackground{
+
+height: 200px;
+width: 300px;
+
 }
 </style>
