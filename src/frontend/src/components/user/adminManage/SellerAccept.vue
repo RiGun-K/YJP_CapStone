@@ -135,7 +135,7 @@ export default {
 .backImg{
   margin-top: 1px;
   width: 100%;
-  height: 100%;
+  height: 150%;
   position: absolute;
   z-index: 1;
 }
@@ -149,7 +149,7 @@ export default {
   margin-left: 10%;
   margin-right: 10%;
   width: 80%;
-  height: 93%;
+  height: 143%;
   background: white;
   z-index: 2;
 }

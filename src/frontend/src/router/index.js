@@ -20,7 +20,7 @@ const routes = [
 	{
 		path: '/company',
 		name: 'Company',
-		component: () => import('@/components/user/Company.vue')
+		component: () => import('@/components/user/myPage/Company.vue')
 	},
 	{
 		path: '/login',
