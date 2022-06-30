@@ -244,7 +244,6 @@ public class UseStorageController {
             }
 
 
-
             return new Result("ok");
         } else if (useStorageBox.get().getUseStorageState() == "1") {
             return new Result("umm");
@@ -359,60 +358,46 @@ public class UseStorageController {
         UseStorageBox before = beforeUSBox.get();
         StorageBox bfbox = before.getStorageBoxCode();
 //        장비 이동 하는데 체크
-        int ck =0;
+        int ck = 0;
         //        보관함 장비 이동
         for (int i = 0; i < boxItemList.size(); i++) {
             BoxItem boxItem = boxItemList.get(i);
-            BoxItem item = new BoxItem();
-            item.setUseStorageBoxCode(afterUSBox.get());
-            item.setMemEquipmentCode(boxItem.getMemEquipmentCode());
-
             int a = Integer.parseInt(boxItem.getBoxItemState().substring(1));
             int b = boxItem.getBoxItemCount();
-            if ((a < b)&&!(a==b)){
-                System.out.println("========"+a+"========"+b+"========");
-                System.out.println("========"+a+"========"+b+"========");
-                System.out.println("========"+a+"========"+b+"========");
-                System.out.println("========"+a+"========"+b+"========");
-                System.out.println("========"+a+"========"+b+"========");
-                System.out.println("========"+a+"========"+b+"========");
-                System.out.println("========"+a+"========"+b+"========");
-                boxItem.setBoxItemCount(boxItem.getBoxItemCount()-Integer.parseInt(boxItem.getBoxItemState().substring(1)));
-                item.setBoxItemCount(a);
-//                boxItem.setBoxItemState(null);
-                boxItemRepository.save(boxItem);
-            }
-            if(a == b){
-                System.out.println("-------------"+a+"-------------"+b+"-------------=");
-                System.out.println("-------------"+a+"-------------"+b+"-------------=");
-                System.out.println("-------------"+a+"-------------"+b+"-------------=");
-                System.out.println("-------------"+a+"-------------"+b+"-------------=");
-                System.out.println("-------------"+a+"-------------"+b+"-------------=");
-                item.setBoxItemCount(Integer.parseInt(boxItem.getBoxItemState().substring(1)));
-                long aa = boxItem.getBoxItemCode();
-                Optional<BoxItem> ii = boxItemRepository.findById(aa);
+            if (a != 0) {
+                BoxItem item = new BoxItem();
+                item.setUseStorageBoxCode(afterUSBox.get());
+                item.setMemEquipmentCode(boxItem.getMemEquipmentCode());
 
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
-                System.out.println(item.getBoxItemCount());
+                if ((a < b) && !(a == b)) {
+//                기존 박스에 수량 변경 기존 - 이동할거
+                    boxItem.setBoxItemCount(boxItem.getBoxItemCount() - Integer.parseInt(boxItem.getBoxItemState().substring(1)));
 
+//                새로운거에 넣음 -
+                    item.setBoxItemCount(a);
+                    System.out.println(item.getBoxItemCount() + "1111111111111111");
+                    boxItem.setBoxItemState(null);
+                    boxItemRepository.save(boxItem);
+                }
+                if (a == b) {
 
-                boxItemRepository.delete(ii.get());
-                ck++;
+                    item.setBoxItemCount(b);
+                    System.out.println(item.getBoxItemCount() + "00000000000000000");
+
+                    long aa = boxItem.getBoxItemCode();
+                    Optional<BoxItem> ii = boxItemRepository.findById(aa);
+
+                    boxItemRepository.delete(ii.get());
+                    ck++;
+                }
+
+                boxItemRepository.save(item);
             }
 
-            boxItemRepository.save(item);
         }
 
 //        체크해야함
-        if (ck == boxItemList.size()){
+        if (ck == boxItemList.size()) {
             before.setUseStorageState("1");
             before.setUseStorageEndTime(nowTime);
             StorageBox storageBox = beforeUSBox.get().getStorageBoxCode();
@@ -483,16 +468,16 @@ public class UseStorageController {
 
     // 보관함에 장비 추가
     @PostMapping("addBoxInItem")
-    private Result addBoxInItem(@RequestBody AddBoxItem addBoxItem){
+    private Result addBoxInItem(@RequestBody AddBoxItem addBoxItem) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(addBoxItem.getUseBoxCode());
-        if (useStorageBox.isEmpty()){
+        if (useStorageBox.isEmpty()) {
             return new Result("no");
         }
         UseStorageBox useCode = useStorageBox.get();
 
         for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<BoxItem> item = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(),addBoxItem.getItemList().get(i).getItemCode());
-            if (item.isEmpty()){
+            Optional<BoxItem> item = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(), addBoxItem.getItemList().get(i).getItemCode());
+            if (item.isEmpty()) {
                 BoxItem boxItem = new BoxItem();
                 Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i).getItemCode());
                 MemberEquipment equipment = memberEquipment.get();
@@ -504,7 +489,7 @@ public class UseStorageController {
                 boxItem.setMemEquipmentCode(equipment);
                 boxItem.setBoxItemCount(addBoxItem.getItemList().get(i).getCount());
                 boxItemRepository.save(boxItem);
-            }else{
+            } else {
                 item.get().setBoxItemCount(item.get().getBoxItemCount() + addBoxItem.getItemList().get(i).getCount());
                 boxItemRepository.save(item.get());
             }
@@ -514,18 +499,18 @@ public class UseStorageController {
 
     //보관함에 장비제거
     @PostMapping("outBoxInItem")
-    private Result outBoxInItem(@RequestBody AddBoxItem addBoxItem){
+    private Result outBoxInItem(@RequestBody AddBoxItem addBoxItem) {
 
         for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<BoxItem> boxItem = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(),addBoxItem.getItemList().get(i).getItemCode());
+            Optional<BoxItem> boxItem = boxItemRepository.findByUseCodeAndMemCode(addBoxItem.getUseBoxCode(), addBoxItem.getItemList().get(i).getItemCode());
             BoxItem bi = boxItem.get();
-            if (bi.getBoxItemCount() == addBoxItem.getItemList().get(i).getCount()){
+            if (bi.getBoxItemCount() == addBoxItem.getItemList().get(i).getCount()) {
                 MemberEquipment memberEquipment = bi.getMemEquipmentCode();
                 memberEquipment.setMemEquipmentState("0");
                 memberEquipmentRepository.save(memberEquipment);
                 boxItemRepository.delete(bi);
-            }else{
-                bi.setBoxItemCount(bi.getBoxItemCount()-addBoxItem.getItemList().get(i).getCount());
+            } else {
+                bi.setBoxItemCount(bi.getBoxItemCount() - addBoxItem.getItemList().get(i).getCount());
                 boxItemRepository.save(bi);
             }
         }
@@ -562,7 +547,7 @@ public class UseStorageController {
 
     //    구족종료시에 현재시간과 남은시간이 가까울 때 정보보내기
     @GetMapping("remainderTime/{useCode}")
-    public int remainderTime(@PathVariable(value = "useCode")long useCode){
+    public int remainderTime(@PathVariable(value = "useCode") long useCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
 
         Period period = useStorageBox.get().getUseStorageEndTime().until(LocalDate.now());
@@ -572,10 +557,10 @@ public class UseStorageController {
 
     //    구독 종료 후 추가 구독했는지 조회
     @GetMapping("findUseState/{boxCode}")
-    public Boolean findUseState(@PathVariable(value = "boxCode")long boxCode){
+    public Boolean findUseState(@PathVariable(value = "boxCode") long boxCode) {
         List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByBoxCode(boxCode);
         for (int i = 0; i < useStorageBoxList.size(); i++) {
-            if (useStorageBoxList.get(i).getUseStorageState().equals("2")){
+            if (useStorageBoxList.get(i).getUseStorageState().equals("2")) {
                 return true;
             }
         }
@@ -585,7 +570,7 @@ public class UseStorageController {
     ////////////////////////// 수리상품 조회 ////////////////////////
 
     @GetMapping("RepairGroupList")
-    private List<Kind> getRepairGroupList(){
+    private List<Kind> getRepairGroupList() {
         List<Kind> kindList = kindRepository.findByRepairGroupList();
         return kindList;
     }
@@ -661,9 +646,9 @@ public class UseStorageController {
     }
 
 
-//    장비수리하는거 보여 주기
+    //    장비수리하는거 보여 주기
     @GetMapping("getCareList/{useCode}")
-    private List<RepairItem> getCareList(@PathVariable(value = "useCode")long useCode){
+    private List<RepairItem> getCareList(@PathVariable(value = "useCode") long useCode) {
         List<RepairItem> repairItemList = repairItemRepository.findByBoxItemCode(useCode);
         return repairItemList;
     }
