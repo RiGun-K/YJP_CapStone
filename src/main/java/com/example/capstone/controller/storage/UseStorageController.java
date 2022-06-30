@@ -375,14 +375,12 @@ public class UseStorageController {
 
 //                새로운거에 넣음 -
                     item.setBoxItemCount(a);
-                    System.out.println(item.getBoxItemCount() + "1111111111111111");
                     boxItem.setBoxItemState(null);
                     boxItemRepository.save(boxItem);
                 }
                 if (a == b) {
 
                     item.setBoxItemCount(b);
-                    System.out.println(item.getBoxItemCount() + "00000000000000000");
 
                     long aa = boxItem.getBoxItemCode();
                     Optional<BoxItem> ii = boxItemRepository.findById(aa);
