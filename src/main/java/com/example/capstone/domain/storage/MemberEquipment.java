@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "MEMEQUIPMENT")
@@ -34,11 +36,6 @@ public class MemberEquipment {
     @ManyToOne
     @JoinColumn(name = "kindid")
     private Kind kindid;
-
-    @ManyToOne
-    @JoinColumn(name = "boxItemCode")
-    @JsonBackReference
-    private BoxItem boxItemCode;
 
     public MemberEquipment() {
     }

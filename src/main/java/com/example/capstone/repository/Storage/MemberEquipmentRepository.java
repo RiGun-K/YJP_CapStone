@@ -17,7 +17,7 @@ public interface MemberEquipmentRepository extends JpaRepository<MemberEquipment
 
     @Query(value = "select m.* from MEMEQUIPMENT m \n" +
             "left join BOXITEM b on m.MEM_EQUIPMENT_CODE = b.MEM_EQUIPMENT_CODE \n" +
-            "where MCODE = 2 and b.MEM_EQUIPMENT_CODE  is null", nativeQuery = true)
+            "where MCODE = 2 and b.MEM_EQUIPMENT_CODE  is null or m.MEM_EQUIPMENT_COUNT > b.BOX_ITEM_COUNT", nativeQuery = true)
     List<MemberEquipment> findByMemEquipment(@Param("mCode")long mCode);
 
 }

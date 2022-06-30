@@ -274,6 +274,7 @@ export default {
       formData.append('storageName',this.form.storageName)
       formData.append('storageZipcode',this.form.storageZipcode)
       formData.append('storageAddress',this.form.storageAddress)
+      formData.append('storageTel',this.form.storageTel)
       formData.append('storageDetailAddress',this.form.storageDetailAddress)
       formData.append('latitude',this.form.latitude)
       formData.append('longitude',this.form.longitude)
