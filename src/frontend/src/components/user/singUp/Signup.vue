@@ -6,7 +6,7 @@
       <br>
       <div>
         <h3 class="join_title">
-          <label for="id">아이디</label>
+          <label>아이디</label>
         </h3>
 
         <span class="input-group mb-3">
@@ -16,7 +16,7 @@
         </span>
         <span class="error_next_box"></span>
         <h3 class="join_title">
-          <label for="id">비밀번호</label>
+          <label>비밀번호</label>
         </h3>
         <span class="input-group mb-3">
                         <input type="password" v-model="password" placeholder="비밀번호 입력" class="form-control"
@@ -28,7 +28,7 @@
       <!-- PW1 -->
       <div>
         <h3 class="join_title">
-          <label for="password">비밀번호 재입력</label>
+          <label>비밀번호 재입력</label>
         </h3>
         <!--        <input type="password" v-model="pasCheck">-->
 
@@ -41,7 +41,7 @@
       </div>
       <div>
         <h3 class="join_title">
-          <label for="pswd2">닉네임</label>
+          <label>닉네임</label>
         </h3>
         <span class="input-group mb-3">
         <input type="text" v-model="nick" class="form-control" placeholder="닉네임 입력" aria-label="Recipient's username"
@@ -53,7 +53,7 @@
 
       <div>
         <h3 class="join_title">
-          <label for="Addtess">주소</label>
+          <label>주소</label>
         </h3>
         <span class="input-group mb-3">
           <input readonly id="postcode" type="text" v-model="zadd" class="form-control" placeholder="우편주소 입력"

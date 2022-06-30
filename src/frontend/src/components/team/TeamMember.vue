@@ -126,14 +126,15 @@
             </button>
           </div>
           <div v-for="(value, index) in planList" :key="index" class="planInfo">
+          <div class="planImg">
+         <img :src="'/api/product_detail_image/' + value.filename" class="imgbackground"  />
+          </div>
             <div>
               <button
                 @Click="updatePlanCode(value)"
                 class="w-btn-outline w-btn-red-outline"
               >
                 <p>{{ value.planName }}</p>
-                <p>인원: {{ value.planNumber }}</p>
-                <p>{{ value.planDestination }}</p>
                 <p>{{ value.planStart }}~{{ value.planEnd }}</p>
               </button>
               <button
@@ -522,8 +523,17 @@ export default {
   transition: 0.25s;
 }
 .w-btn-red-outline {
-  border: 3px solid #ff5f2e;
-  color: #6e6e6e;
+  border: none;
+  color: #e1eef6;
+  background-color: #6e6e6e;
+  width: 300px;
+  height: 60px;
+  margin-left:125px ;
+  border-radius: 0%;
+}
+.w-btn-red-outline p{
+  line-height: 1px;
+
 }
 .w-btn-red-outline:hover {
   background-color: #ff5f2e;
@@ -658,4 +668,11 @@ export default {
   border: none;
   background-color: transparent;
 }
+.imgbackground{
+
+height: 200px;
+width: 300px;
+
+}
+
 </style>

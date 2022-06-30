@@ -1,6 +1,6 @@
 <template>
   <img :src="backImg" class="backImg">
-  <div class="bodyDiv">
+  <div id="bodyDiv">
     <div>
       <h2>정보수정</h2>
     </div>
@@ -278,9 +278,9 @@ export default {
   position: absolute;
   z-index: 1;
 }
-.bodyDiv{
+#bodyDiv{
   padding: 30px;
-  padding-top: 8%;
+  padding-top: 5%;
   padding-bottom: 5%;
   background: white;
   margin-left: 25%;
@@ -290,7 +290,7 @@ export default {
   width: 50%;
   height: 93%;
   z-index: 2;
-  position: relative;
+  position: absolute;
   border-radius: 100px;
 }
 label{

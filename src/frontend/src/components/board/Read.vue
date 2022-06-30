@@ -126,7 +126,7 @@ export default {
   border-radius: 50px;
   background-color: rgb(247, 246, 230);
   width: 86%;
-  height: 800px;
+  height: auto;
   margin: auto;
 }
 
