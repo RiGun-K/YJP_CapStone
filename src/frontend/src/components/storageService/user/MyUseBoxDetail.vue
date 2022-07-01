@@ -50,17 +50,17 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
+              <tr v-if="moveBoxInfo.moveState == 3">
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
                 <td>접수</td>
               </tr>
               <tr v-if="moveBoxInfo.moveState == 4">
-                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                <td>이동중</td>
+                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
+                <td>접수</td>
               </tr>
               <tr v-if="moveBoxInfo.moveState == 5">
                 <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                <td>도착</td>
+                <td>이동중</td>
               </tr>
               </tbody>
             </table>
@@ -164,7 +164,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div v-if="repairList.length>0">
             <h3>수리장비</h3>
             <div class="box-info">
               <table>
@@ -227,6 +227,11 @@ export default {
     this.detailBox(this.useData)
 
   },
+  watch:{
+    useData:function (){
+      this.detailBox(this.useData)
+    }
+  },
   methods: {
     stateCheck(sCode) {
       switch (sCode) {
@@ -262,7 +267,7 @@ export default {
       this.getRepairList()
       if (us.moveUseCode != undefined) {
         this.moveInfo = true
-        if (us.useState == 3 || us.useState == 4 || us.useState == 5) {
+        if (us.useState == 3 || us.useState == 4 || us.useState == 5 || us.useState == 'a') {
           this.boxDetailMoveInfo(us.moveUseCode, us.useState)
         }
       }
@@ -335,7 +340,6 @@ export default {
               this.myItem[i].count = this.myItem[i].boxItemCount
             }
             this.getMyItem()
-
           })
           .catch(err => {
             console.log(err)
@@ -344,9 +348,7 @@ export default {
     getRepairList(){
       axios.get('/api/getCareList/'+this.pickUseBox)
           .then(res => {
-            console.log(res.data)
             this.repairList = res.data
-
           })
           .catch(err => {
             console.log(err)
@@ -414,8 +416,6 @@ export default {
         useBoxCode: this.pickUseBox,
         itemList: arry
       }
-      console.log('data')
-      console.log(data)
       axios.post('/api/addBoxInItem', data)
           .then(res => {
             if (res.data.result == 'ok') {
@@ -451,8 +451,6 @@ export default {
         useBoxCode: this.pickUseBox,
         itemList: list
       }
-      console.log('data')
-      console.log(data)
       axios.post('/api/outBoxInItem', data)
           .then(res => {
             if (res.data.result == 'ok') {

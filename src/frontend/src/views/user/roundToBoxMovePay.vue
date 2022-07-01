@@ -27,8 +27,8 @@
           <table>
             <tr v-for="(item,index) in myItem" :key="index">
               <td>{{ index + 1 }}</td>
-              <td>{{ item.memEquipmentName }}</td>
-              <td>{{ item.memEquipmentCount }}개</td>
+              <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
+              <td>{{ item.count }}개</td>
             </tr>
           </table>
         </div>
@@ -42,6 +42,10 @@
             <tr>
               <td>받는사람</td>
               <td>{{ data.name }}</td>
+            </tr>
+            <tr>
+              <td>연락처</td>
+              <td>{{ data.tel }}</td>
             </tr>
             <tr>
               <td>우편번호</td>
@@ -80,6 +84,7 @@
       <br>
       <br>
       <div>
+        <button @click="$router.push({name:'myBox'})">취소</button>
         <button class="payNow-r" @click="paymentBtn()">결제</button>
       </div>
     </div>
@@ -94,29 +99,23 @@ export default {
   name: "roundToBoxMovePay",
   mounted() {
     this.data = this.$store.state.moveBoxInfo
-    console.log('this.data')
-    this.getBoxInfo(this.data)
     this.getBoxInfo()
-    this.boxinItem()
+    this.myItem = this.data.myItem
+    for (let i = 0; i < this.myItem.length; i++) {
+      if (this.myItem[i].count == 0){
+        this.myItem.splice(i,1)
+      }
+    }
   },
   data() {
     return {
       data: {},
       moveBoxInfo: {},
-      myItem: {},
+      myItem: [],
       price: 10000
     }
   },
   methods: {
-    boxinItem() {
-      axios.get('/api/getBoxInItem/' + this.data.useBoxCode)
-          .then(res => {
-            this.myItem = res.data
-          })
-          .catch(err => {
-            console.log(err)
-          })
-    },
     getBoxInfo() {
       axios.get('/api/moveBoxInfo/' + this.data.useBoxCode)
           .then(res => {
@@ -157,10 +156,13 @@ export default {
     pay() {
       const form = {
         userId: store.getters.getLoginState.loginState,
+        name: this.data.name,
         useBoxCode: this.data.useBoxCode,
         zipCode: this.data.zipCode,
         address: this.data.address,
         detailAddress: this.data.detailAddress,
+        tel : this.data.tel,
+        list: this.data.list,
         price: this.price
       }
       console.log(form)

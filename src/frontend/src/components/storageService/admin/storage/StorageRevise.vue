@@ -240,11 +240,9 @@ export default {
       }
     },
     postManager() {
-      let memberId = this.memberId
-      let storageCode = this.boxList.storageCode
       let manager = {
-        member: memberId,
-        storage: storageCode
+        member: this.memberId,
+        storage: this.boxList.storageCode
       }
       if (this.memberIdCheck) {
         axios.post('/api/postManager', manager)
@@ -252,7 +250,7 @@ export default {
               console.log(res.data.result)
               if (res.data.result === 'ok') {
                 alert('추가되었습니다')
-                this.GetManger(storageCode)
+                this.GetManger(this.boxList.storageCode)
                 this.clearInput()
                 this.memberIdCheck = false
               } else {

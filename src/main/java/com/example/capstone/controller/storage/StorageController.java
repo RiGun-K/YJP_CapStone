@@ -466,6 +466,46 @@ public class StorageController {
         return storageBox.get().getStorageBoxPrice();
     }
 
+//    매니저가 사용자 장비 집으로 배송
+    @GetMapping("endMoveToHome/{useCode}")
+    private Result endMoveToHome(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useBox = useStorageBoxRepository.findById(useCode);
+        UseStorageBox useStorageBox = useBox.get();
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox);
+        for (int i = 0; i < boxItemList.size(); i++) {
+            BoxItem boxItem = boxItemList.get(i);
+            if (boxItem.getBoxItemState().substring(0,1).equals("4")){
+                int count =  Integer.parseInt(boxItem.getBoxItemState().substring(1));
+                if (boxItem.getBoxItemCount() == count){
+                    boxItemRepository.delete(boxItem);
+                }else{
+                    boxItem.setBoxItemCount(boxItem.getBoxItemCount()-count);
+                    boxItemRepository.save(boxItem);
+                }
+            }else if(boxItem.getBoxItemState().substring(0,1).equals("5")){
+                int count =  Integer.parseInt(boxItem.getBoxItemState().substring(1));
+                if (boxItem.getBoxItemCount() == count){
+                    boxItemRepository.delete(boxItem);
+                }else{
+                    boxItem.setBoxItemCount(boxItem.getBoxItemCount()-count);
+                    boxItemRepository.save(boxItem);
+                }
+            }else{
+                return new Result("no");
+            }
+        }
+        useStorageBox.setUseStorageState("2");
+        useStorageBoxRepository.save(useStorageBox);
+        StorageBox storageBox = useStorageBox.getStorageBoxCode();
+        storageBox.setStorageBoxState("2");
+        storageBoxRepository.save(storageBox);
+
+        return new Result("ok");
+    }
+
+//    매니저가 장소로 장비 배송
+
+
 
     ////////////////////////// 지역 조회  //////////////////////////
 

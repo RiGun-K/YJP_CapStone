@@ -15,6 +15,8 @@ public interface BoxItemRepository extends JpaRepository<BoxItem,Long> {
     @Query(value = "select * from BoxItem where USE_STORAGE_BOX_CODE = :useBoxCode and MEM_EQUIPMENT_CODE = :memCode",nativeQuery = true)
     Optional<BoxItem> findByUseCodeAndMemCode(@Param("useBoxCode")long useBoxCode, @Param("memCode")long memCode);
 
+
+
     List<BoxItem> findByUseStorageBoxCode(UseStorageBox useStorageBox);
 
     List<BoxItem> findByMemEquipmentCode(MemberEquipment memberEquipment);

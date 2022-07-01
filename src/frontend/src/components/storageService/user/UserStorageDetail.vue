@@ -102,6 +102,7 @@ export default {
     axios.get('/api/myItem/' + this.userId)
         .then(res => {
           this.myItem = res.data
+
         }).catch(err => {
       console.log(err)
     });
@@ -239,7 +240,7 @@ export default {
       this.putItem.itemCode = item.memEquipmentCode
       this.putItem.itemName = item.memEquipmentName
       this.putItem.itemCount = item.memEquipmentCount
-      this.putItem.count = 1
+      this.putItem.count = this.putItem.itemCount
       for (let i = 0; i < this.checkItem.length; i++) {
         if (this.checkItem[i].itemCode == this.putItem.itemCode) {
           let a = document.getElementsByClassName("item")
