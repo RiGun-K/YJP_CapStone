@@ -102,7 +102,7 @@ export default {
     axios.get('/api/myItem/' + this.userId)
         .then(res => {
           this.myItem = res.data
-
+          console.log(this.myItem)
         }).catch(err => {
       console.log(err)
     });
