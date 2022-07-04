@@ -11,8 +11,14 @@ import com.example.capstone.service.PlanService;
 import com.example.capstone.service.TeamMemberService;
 import com.example.capstone.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 //
@@ -47,6 +53,26 @@ public class TeamManagementApiController {
             return null;
         } else return teamMcode;
     }
+
+    /* 상품 결제 페이지 전 해당 상품이미지 불러오기 */
+    @GetMapping(value = "/api/product_detail_image/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] imagesSearch(@PathVariable("filename") String filename, HttpServletResponse httpServletResponse) throws IOException {
+
+       String requestPath;
+        if(filename.equals("null")) {
+           requestPath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets\\" + "noImg.png";
+            System.out.println("1111111111111111");
+        }else {
+            requestPath = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets\\" + filename;
+            System.out.println("2222222222");
+        }
+
+        InputStream imageStream = new FileInputStream(requestPath);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return imageByteArray;
+    }
+
 
     @PutMapping("/api/addTeam")
     public String addTeam(@RequestBody Team tm) {

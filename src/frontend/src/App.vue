@@ -1,8 +1,9 @@
 <template>
 	<div id="app">
 		<Header />
-		<NavBar />
+<!--		<NavBar />-->
 		<router-view />
+    <Footer />
 	</div>
 </template>
 
@@ -14,8 +15,9 @@ import NavBar from '@/components/common/NavBar';
 export default {
 	name: 'App',
 	components: {
+    Footer,
 		Header,
-		NavBar,
+		// NavBar,
 	},
 };
 </script>
@@ -37,9 +39,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	//text-align: center;
 	color: #2c3e50;
-}
-h1 {
-	color: #43b984;
 }
 table {
 	width: 100%;

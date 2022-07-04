@@ -7,12 +7,14 @@ import com.example.capstone.domain.Plan.PlanTag;
 import com.example.capstone.domain.Plan.Team;
 import com.example.capstone.dto.plan.PlanDetailDto;
 import com.example.capstone.dto.plan.PlanDto;
-import com.example.capstone.dto.plan.TeamDto;
+import com.example.capstone.dto.plan.PlanTagDto;
 import com.example.capstone.repository.Plan.PlanDetailRepository;
 import com.example.capstone.repository.Plan.PlanRepository;
 import com.example.capstone.repository.Plan.PlanTagRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,9 +35,28 @@ public class PlanService {
     private final PlanTagRepository planTagRepository;
 
 
-    public Plan createPlan(Plan plan) {
-        planRepository.save(plan);
-        return plan;
+    public Plan createPlan(PlanTagDto plan) {
+        Plan newPlan = new Plan();
+        Team team = new Team();
+        team.setTeamCode(plan.getTeamCode());
+        newPlan.setPlanBudget(plan.getPlanBudget());
+        newPlan.setPlanEnd(plan.getPlanEnd());
+        newPlan.setPlanName(plan.getPlanName());
+        newPlan.setPlanNumber(plan.getPlanNumber());
+        newPlan.setPlanOpen(plan.getPlanOpen());
+        newPlan.setPlanStart(plan.getPlanStart());
+        newPlan.setPlanType(plan.getPlanType());
+        newPlan.setAddress(plan.getAddress());
+        newPlan.setDetailAddress(plan.getDetailAddress());
+        newPlan.setPlanTotalDate(plan.getPlanTotalDate());
+        newPlan.setTeamCode(team);
+        newPlan.setPlanDestination(plan.getPlanDestination());
+        newPlan.setOrigFilename(plan.getOrigFilename());
+        newPlan.setFilename(plan.getFilename());
+        newPlan.setFilePath(plan.getFilePath());
+
+        planRepository.save(newPlan);
+        return newPlan;
     }
 
     public PlanDto editPlan(PlanDto plan) {
@@ -123,23 +144,13 @@ public class PlanService {
             System.out.println(planDetailDto);
             planDetailDtos.add(planDetailDto);
         }
-        System.out.println("sssssssssssssss");
-        System.out.println("sssssssssssssss");
-        System.out.println("sssssssssssssss");
-
         return planDetailDtos;
     }
 
-    public List<PlanDto> loadAllPlans() {
+    public Page<PlanDto> loadAllPlans(Pageable pageable) {
 
-        List<Plan> plans = planRepository.findAll();
-        List<PlanDto> planDtos = new ArrayList<>();
-
-        for (Plan plan : plans) {
-            planDtos.add(plan.toPlanDto());
-        }
-
-
+        Page<Plan> plans = planRepository.findAll(pageable);
+        Page<PlanDto> planDtos =plans.map(a -> a.toPlanDto());
         return planDtos;
     }
 

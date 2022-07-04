@@ -11,13 +11,13 @@ import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Plan.TeamBoardRepository;
 import com.example.capstone.repository.Plan.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,22 +59,30 @@ public class TeamBoardService {
 //        return teamBoardDtos;
     }
 
-    public List<TeamBoardDto> loadTeamBoards(Long teamDto) {
+    public Page<TeamBoardDto> loadTeamBoards(Long teamDto, Pageable pageable) {
         Optional<Team> team = teamRepository.findById(teamDto);
-        List<TeamBoard> teamBoards = teamBoardRepository.findByTeamCodeOrderByBoardDate(team.get());
-        List<TeamBoardDto> teamBoardDtos = new ArrayList<>();
+        Page<TeamBoard> teamBoards = teamBoardRepository.findByTeamCodeOrderByBoardDate(team.get(),pageable);
+        Page<TeamBoardDto> teamBoardsDtoPage = teamBoards.map(tb -> TeamBoardDto.builder()
+                .teamDto(new TeamDto(tb.getTeamCode()))
+                .contentDto(tb.getBoardContent())
+                .memberDto(new MemberDto(tb.getMcode()))
+                .boardDateDto(tb.getBoardDate())
+                .teamBoardCodeDto(tb.getTeamBoardCode())
+                .build());
 
-        for (TeamBoard tb : teamBoards) {
-            TeamBoardDto teamBoardDto1 = TeamBoardDto.builder()
-                    .teamDto(new TeamDto(tb.getTeamCode()))
-                    .contentDto(tb.getBoardContent())
-                    .memberDto(new MemberDto(tb.getMcode()))
-                    .boardDateDto(tb.getBoardDate())
-                    .teamBoardCodeDto(tb.getTeamBoardCode())
-                    .build();
-            teamBoardDtos.add(teamBoardDto1);
-        }
-        return teamBoardDtos;
+//        List<TeamBoardDto> teamBoardDtos = new ArrayList<>();
+//
+//        for (TeamBoard tb : teamBoards.getContent()) {
+//            TeamBoardDto teamBoardDto1 = TeamBoardDto.builder()
+//                    .teamDto(new TeamDto(tb.getTeamCode()))
+//                    .contentDto(tb.getBoardContent())
+//                    .memberDto(new MemberDto(tb.getMcode()))
+//                    .boardDateDto(tb.getBoardDate())
+//                    .teamBoardCodeDto(tb.getTeamBoardCode())
+//                    .build();
+//            teamBoardDtos.add(teamBoardDto1);
+//        }
+        return teamBoardsDtoPage;
     }
 
     public void editContent(TeamBoardDto teamBoardDto) {

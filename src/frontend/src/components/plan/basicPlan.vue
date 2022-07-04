@@ -108,6 +108,7 @@
 							<option>제주도</option>
 							<option>충청도</option>
 							<option>울산시</option>
+							<option>경북</option>
 						</select>
 					</p>
 				</div>
@@ -167,6 +168,26 @@
 						# {{ value }}
 					</button>
 				</div>
+
+				<div class="input-group">
+					<form>
+						<input
+							multiple
+							type="file"
+							id="file"
+							name="profile_files"
+							ref="serveyImage"
+							@change="handleImage"
+							enctype="multipart/form-data"
+							aria-describedby="inputGroupFileAddon04"
+							aria-label="Upload"
+							placeholder="상품을 설명할 이미지 파일을 업로드하세요."
+							accept="image/*"
+							drop-placeholder="Drop file here..."
+						/>
+						<div id="image_container" />
+					</form>
+				</div>
 				<div>
 					<button
 						class="w-btn-outline w-btn-blue-outline"
@@ -196,7 +217,8 @@ export default {
 			today: new Date(),
 			planStart: '',
 			planEnd: '',
-			planDestination: this.$store.state.camping.camping.areaId.areaName,
+			planDestination:
+				this.$store.state.camping.areaId.parentcampingarea.areaName,
 			planType: '',
 			planNumber: 0,
 			planBudget: '0',
@@ -207,14 +229,42 @@ export default {
 			planOpen: '전체공개',
 			tag: '',
 			TagContentList: [],
-			campingName: this.$store.state.camping.camping.campingName,
+			campingName: this.$store.state.camping.campingName,
 			address: '',
 			postalAddress: '',
 			detailAdress: '',
-			address: this.$store.state.camping.camping.address,
+			address: this.$store.state.camping.address,
+			file: '',
 		};
 	},
 	methods: {
+		handleImage(e) {
+			this.file = e.target.files[0];
+			let self = this;
+			if (e.target.files[0]) {
+				// 파일 읽는 라이브러리
+				const reader = new FileReader();
+				console.log(this.file);
+				// 파일 읽기가 완료되는 시점
+				reader.addEventListener('load', function (e1) {
+					// 완료되는 시점!!!!!!!!!!!!!!!
+					self.imgsrc = e1.target.result;
+					// 지금 reader 안에서는 this 못 씀. 그래서 35줄에 this를 self로 변수지정함
+
+					let img = document.createElement('img');
+					img.setAttribute('src', e1.target.result);
+					document
+						.querySelector('div#image_container')
+						.appendChild(img);
+				});
+
+				// 파일 읽기 시작
+				reader.readAsDataURL(e.target.files[0]);
+				this.stateCheck = true;
+			} else {
+				return false;
+			}
+		},
 		zcGet() {
 			new window.daum.Postcode({
 				oncomplete: (data) => {
@@ -269,22 +319,42 @@ export default {
 		},
 
 		createPlan: function () {
-			const data = {
-				planName: this.planName,
-				teamCode: this.$store.state.teamCode.teamCode,
-				planStart: this.planStart,
-				planEnd: this.planEnd,
-				planDestination: this.planDestination,
-				planType: this.planType,
-				planNumber: this.planNumber,
-				planBudget: this.planBudget,
-				planTotalDate: this.diff,
-				planOpen: this.planOpen,
-				address: this.address,
-				detailAddress: this.detailAddress,
-				campingName: this.campingName,
-			};
-			const form = { plan: data, tagContentList: this.TagContentList };
+			const formData = new FormData();
+			// const data = {
+			// 	'planName': this.planName,
+			// 	'teamCode':this.$store.state.teamCode.teamCode,
+			// 	'planStart': this.planStart,
+			// 	'planEnd':this.planEnd,
+			// 	'planDestination':this.planDestination,
+			// 	'planType':this.planType,
+			// 	'planNumber': this.planNumber,
+			// 	'planBudget':this.planBudget,
+			// 	'planTotalDate': this.diff,
+			// 	'planOpen': this.planOpen,
+			// 	'address': this.address,
+			// 	'detailAddress': this.detailAddress,
+			// 	'campingName':this.campingName,
+			// };
+
+		//	formData.append('plan', data);
+			formData.append('planName', this.planName);
+			formData.append('teamCode', this.$store.state.teamCode.teamCode.teamCode);
+			formData.append('planStart', this.planStart);
+			formData.append('planEnd', this.planEnd);
+			formData.append('planDestination', this.planDestination);
+			formData.append('planType', this.planType);
+			formData.append('planNumber', this.planNumber);
+			formData.append('planBudget', this.planBudget);
+			formData.append('planTotalDate', this.diff);
+			formData.append('planOpen', this.planOpen);
+			formData.append('address', this.address);
+			formData.append('detailAddress', this.detailAddress);
+			formData.append('campingName', this.campingName);
+			formData.append('file', this.file);
+			formData.append('tagContentList', this.TagContentList);
+
+			console.log(this.planName);
+			console.log(formData.get('planName'));
 			if (
 				this.planName !== '' &&
 				this.planBudget !== '' &&
@@ -300,7 +370,9 @@ export default {
 				} else {
 					const url = '/api/createPlan';
 					axios
-						.post(url, form)
+						.post(url, formData, {
+							headers: { 'Content-Type': 'multipart/form-data' },
+						})
 						.then((response) => {
 							this.planCode = response.data;
 							this.$store.commit('updatePlanCode', response.data);

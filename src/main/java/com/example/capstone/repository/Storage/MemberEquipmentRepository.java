@@ -13,10 +13,11 @@ import java.util.Optional;
 public interface MemberEquipmentRepository extends JpaRepository<MemberEquipment, Long> {
 
     List<MemberEquipment> findAllByMCode(Member member);
-    List<MemberEquipment> findByUseStorageBoxCode(UseStorageBox useStorageBox);
     Optional<MemberEquipment> findByMemEquipmentCode(Long code);
 
-    @Query(value = "select * from MEMEQUIPMENT where MCODE = :mCode and USE_STORAGE_BOX_CODE is null", nativeQuery = true)
+    @Query(value = "select m.* from MEMEQUIPMENT m \n" +
+            "left join BOXITEM b on m.MEM_EQUIPMENT_CODE = b.MEM_EQUIPMENT_CODE \n" +
+            "where MCODE = :mCode and b.MEM_EQUIPMENT_CODE  is null or m.MEM_EQUIPMENT_COUNT > b.BOX_ITEM_COUNT", nativeQuery = true)
     List<MemberEquipment> findByMemEquipment(@Param("mCode")long mCode);
 
 }

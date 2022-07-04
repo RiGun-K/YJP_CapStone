@@ -24,10 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -59,6 +56,9 @@ public class StorageController {
 
     @Autowired
     CampingAreaRepository campingAreaRepository;
+
+    @Autowired
+    BoxItemRepository boxItemRepository;
 
     @PostMapping("/postStorage")
     public Result postStorage(@RequestParam(value = "file", required = false) MultipartFile uploadFile, StorageData storageData)throws IllegalStateException, IOException {
@@ -164,28 +164,23 @@ public class StorageController {
 
     //   보관소 매니저 체크
     @GetMapping("/checkManager/{memberId}")
-    public Result checkManager(@PathVariable String memberId) throws NoSuchElementException {
-        try {
-
+    public Result checkManager(@PathVariable String memberId) {
             Optional<Member> member = memberRepository.findByMID(memberId);
             System.out.println(member.get().getMID());
             Optional<StorageManager> storageManager = storageManagerRepository.findByMCode(member.get());
 
-            if (storageManager.isPresent()) {
+            if (!storageManager.isEmpty()) {
                 // 중복
                 return new Result("overlap");
-
             } else {
                 // 가능
-                if(member.get().getMSC() != "5"){
+
+                if(member.get().getMSC().equals("5")){
+                    return new Result("ok");
+                }else{
                     return new Result("no");
                 }
-                return new Result("ok");
             }
-        } catch (NoSuchElementException n) {
-            System.out.println(n);
-            return new Result("no");
-        }
     }
 
     //관리자 보관소 리스트
@@ -471,81 +466,47 @@ public class StorageController {
         return storageBox.get().getStorageBoxPrice();
     }
 
-
-    // 보관함에 장비 추가
-    @PostMapping("addBoxInItem")
-    private Result addBoxInItem(@RequestBody AddBoxItem addBoxItem){
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(addBoxItem.getUseBoxCode());
-        if (useStorageBox.isEmpty()){
-            return new Result("no");
-        }
-        UseStorageBox useCode = useStorageBox.get();
-
-        for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i));
-            memberEquipment.get().setUseStorageBoxCode(useCode);
-            memberEquipmentRepository.save(memberEquipment.get());
-        }
-        return new Result("ok");
-    }
-
-    //보관함에 장비제거
-    @PostMapping("outBoxInItem")
-    private Result outBoxInItem(@RequestBody AddBoxItem addBoxItem){
-        for (int i = 0; i < addBoxItem.getItemList().size(); i++) {
-            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(addBoxItem.getItemList().get(i));
-            memberEquipment.get().setUseStorageBoxCode(null);
-            memberEquipmentRepository.save(memberEquipment.get());
-        }
-        return new Result("ok");
-    }
-
-    //사용자 사용하는 보관함의 장비 조회
-    @GetMapping("getBoxInItem/{useBoxCode}")
-    private List<MemberEquipment> getMyItem(@PathVariable(value = "useBoxCode") Long useBoxCode) {
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useBoxCode);
-        List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByUseStorageBoxCode(useStorageBox.get());
-
-        return memberEquipmentList;
-    }
-
-    //사용자주소 조회
-    @GetMapping("myAddress/{mid}")
-    private Member getMemberAddress(@PathVariable(value = "mid") String mid) {
-        Optional<Member> member = memberRepository.findByMID(mid);
-
-        return member.get();
-    }
-
-    // 사용중인 보관함코드로 사용자의 주소 조회
-    @GetMapping("UseBoxMemAddress/{useCode}")
-    private Member getMemberAddressUseCode(@PathVariable(value = "useCode") long useCode) {
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
-
-        return useStorageBox.get().getMCode();
-    }
-
-//    구족종료시에 현재시간과 남은시간이 가까울 때 정보보내기
-    @GetMapping("remainderTime/{useCode}")
-    public int remainderTime(@PathVariable(value = "useCode")long useCode){
-        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
-
-        Period period = useStorageBox.get().getUseStorageEndTime().until(LocalDate.now());
-
-        return period.getDays();
-    }
-
-//    구독 종료 후 추가 구독했는지 조회
-    @GetMapping("findUseState/{boxCode}")
-    public Boolean findUseState(@PathVariable(value = "boxCode")long boxCode){
-        List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByBoxCode(boxCode);
-        for (int i = 0; i < useStorageBoxList.size(); i++) {
-            if (useStorageBoxList.get(i).getUseStorageState().equals("2")){
-                return true;
+//    매니저가 사용자 장비 집으로 배송
+    @GetMapping("endMoveToHome/{useCode}")
+    private Result endMoveToHome(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useBox = useStorageBoxRepository.findById(useCode);
+        UseStorageBox useStorageBox = useBox.get();
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox);
+        for (int i = 0; i < boxItemList.size(); i++) {
+            BoxItem boxItem = boxItemList.get(i);
+            if (boxItem.getBoxItemState().substring(0,1).equals("4")){
+                int count =  Integer.parseInt(boxItem.getBoxItemState().substring(1));
+                if (boxItem.getBoxItemCount() == count){
+                    boxItemRepository.delete(boxItem);
+                }else{
+                    boxItem.setBoxItemCount(boxItem.getBoxItemCount()-count);
+                    boxItemRepository.save(boxItem);
+                }
+            }else if(boxItem.getBoxItemState().substring(0,1).equals("5")){
+                int count =  Integer.parseInt(boxItem.getBoxItemState().substring(1));
+                if (boxItem.getBoxItemCount() == count){
+                    boxItemRepository.delete(boxItem);
+                }else{
+                    boxItem.setBoxItemCount(boxItem.getBoxItemCount()-count);
+                    boxItemRepository.save(boxItem);
+                }
+            }else{
+                return new Result("no");
             }
         }
-        return false;
+        useStorageBox.setUseStorageState("2");
+        useStorageBoxRepository.save(useStorageBox);
+        StorageBox storageBox = useStorageBox.getStorageBoxCode();
+        storageBox.setStorageBoxState("2");
+        storageBoxRepository.save(storageBox);
+
+        return new Result("ok");
     }
+
+//    매니저가 장소로 장비 배송
+
+
+
     ////////////////////////// 지역 조회  //////////////////////////
 
     @GetMapping("aRound")

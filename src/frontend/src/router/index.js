@@ -20,7 +20,7 @@ const routes = [
 	{
 		path: '/company',
 		name: 'Company',
-		component: () => import('@/components/user/Company.vue')
+		component: () => import('@/components/user/myPage/Company.vue')
 	},
 	{
 		path: '/login',
@@ -490,20 +490,14 @@ const routes = [
 		component: () => import('@/views/admin/storage/StorageView.vue'),
 	},
 	{
-		path: '/storageAdmin/storageRevise',
+		path: '/storageAdmin/storageRevise/:storageCode',
 		name: 'StorageRevise',
-		component: () =>
-			import(
-				'@/components/storageService/admin/storage/StorageRevise.vue'
-			),
+		component: () => import('@/components/storageService/admin/storage/StorageRevise.vue'),
 	},
 	{
 		path: '/storageAdmin/inputManager',
 		name: 'InputStorageManager',
-		component: () =>
-			import(
-				'@/components/storageService/admin/manager/InputStorageManager.vue'
-			),
+		component: () => import('@/components/storageService/admin/manager/InputStorageManager.vue'),
 	},
 	{
 		path: '/storageView',
@@ -513,8 +507,7 @@ const routes = [
 	{
 		path: '/storageViewDetail',
 		name: 'userStorageDetail',
-		component: () =>
-			import('@/components/storageService/user/UserStorageDetail.vue'),
+		component: () => import('@/components/storageService/user/UserStorageDetail.vue'),
 	},
 	{
 		path: '/storageView/paypage',
@@ -529,14 +522,12 @@ const routes = [
 	{
 		path: '/myBox/renewalBox',
 		name: 'renewalBox',
-		component: () =>
-			import('@/components/storageService/user/RenewalBox.vue'),
+		component: () => import('@/components/storageService/user/RenewalBox.vue'),
 	},
 	{
 		path: '/myBox/closeBox',
 		name: 'closeBox',
-		component: () =>
-			import('@/components/storageService/user/CloseBox.vue'),
+		component: () => import('@/components/storageService/user/CloseBox.vue'),
 	},
 	{
 		path: '/myBox/:useBoxCode/moveBox',

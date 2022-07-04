@@ -52,6 +52,12 @@ public class Plan {
     private String detailAddress;
     @Column
     private String campingName;
+    @Column
+    private String origFilename;
+    @Column
+    private String filename;
+    @Column
+    private String filePath;
 
 
     public PlanDto toPlanDto() {
@@ -77,11 +83,15 @@ public class Plan {
                 .planUsedCount(this.getPlanUsedCount())
                 .planTotalDate(this.getPlanTotalDate())
                 .planType(this.getPlanType())
+                .origFilename(this.getOrigFilename())
+                .filename(this.getFilename())
+                .filePath(this.getFilePath())
                 .build();
 
         return planDto;
     }
+
     public void 조회햇음() {
-        this.planViews = this.planViews +1;
+        this.planViews = this.planViews + 1;
     }
 }

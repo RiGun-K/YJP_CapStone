@@ -3,13 +3,17 @@ package com.example.capstone.domain.storage;
 import com.example.capstone.domain.Member.Member;
 import com.example.capstone.domain.Product.Kind;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Columns;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "MEMEQUIPMENT")
+@Getter
+@Setter
 public class MemberEquipment {
 
     @Id
@@ -33,69 +37,10 @@ public class MemberEquipment {
     @JoinColumn(name = "kindid")
     private Kind kindid;
 
-    @ManyToOne
-    @JoinColumn(name = "useStorageBoxCode")
-    @JsonBackReference
-    private UseStorageBox useStorageBoxCode;
-
     public MemberEquipment() {
     }
 
-    public long getMemEquipmentCode() {
-        return memEquipmentCode;
-    }
 
-    public void setMemEquipmentCode(long memEquipmentCode) {
-        this.memEquipmentCode = memEquipmentCode;
-    }
-
-    public Member getMCode() {
-        return MCode;
-    }
-
-    public void setMCode(Member MCode) {
-        this.MCode = MCode;
-    }
-
-    public String getMemEquipmentName() {
-        return memEquipmentName;
-    }
-
-    public void setMemEquipmentName(String memEquipmentName) {
-        this.memEquipmentName = memEquipmentName;
-    }
-
-    public String getMemEquipmentState() {
-        return memEquipmentState;
-    }
-
-    public void setMemEquipmentState(String memEquipmentState) {
-        this.memEquipmentState = memEquipmentState;
-    }
-
-    public int getMemEquipmentCount() {
-        return memEquipmentCount;
-    }
-
-    public void setMemEquipmentCount(int memEquipmentCount) {
-        this.memEquipmentCount = memEquipmentCount;
-    }
-
-    public Kind getKindid() {
-        return kindid;
-    }
-
-    public void setKindid(Kind kindid) {
-        this.kindid = kindid;
-    }
-
-    public UseStorageBox getUseStorageBoxCode() {
-        return useStorageBoxCode;
-    }
-
-    public void setUseStorageBoxCode(UseStorageBox useStorageBoxCode) {
-        this.useStorageBoxCode = useStorageBoxCode;
-    }
 }
 
 

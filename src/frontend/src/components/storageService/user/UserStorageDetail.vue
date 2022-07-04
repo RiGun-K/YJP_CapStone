@@ -38,9 +38,36 @@
             <h5>내 캠핑장비 선택</h5>
             <hr>
             <div>
-              <ul v-for="(item, index) in myItem" :key="index">
-                <li><input type="checkbox" v-model="checkItem" v-bind:value="item">{{ item.memEquipmentName }}</li>
+              <ul v-for="(item, index) in myItem" :key="index" class="item">
+                <li @click="checkItemList(item,index)">{{ item.memEquipmentName }}</li>
               </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5>보관 장비</h5>
+          <hr>
+          <div>
+            <div  class="chkItemList">
+              <table>
+                <thead>
+                  <tr>
+                    <th>장비</th>
+                    <th>수량</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item,index) in checkItem">
+                    <td>{{ item.itemName }}</td>
+                    <td>
+                      <select v-model="item.count">
+                        <option v-for="inx in item.itemCount" :value="inx">{{inx}}</option>
+                      </select>
+                      개
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -75,6 +102,7 @@ export default {
     axios.get('/api/myItem/' + this.userId)
         .then(res => {
           this.myItem = res.data
+          console.log(this.myItem)
         }).catch(err => {
       console.log(err)
     });
@@ -109,7 +137,8 @@ export default {
       disabledDates: [],
       stateCheck: false,
       boxArray: [],
-      backFlag: false
+      backFlag: false,
+      putItem:{},
     }
   },
   methods: {
@@ -206,6 +235,27 @@ export default {
       }
       this.form.price = boxCode.storageBoxPrice
       this.form.storageBoxCode = boxCode.storageBoxCode
+    },
+    checkItemList(item, index) {
+      this.putItem.itemCode = item.memEquipmentCode
+      this.putItem.itemName = item.memEquipmentName
+      this.putItem.itemCount = item.memEquipmentCount
+      this.putItem.count = this.putItem.itemCount
+      for (let i = 0; i < this.checkItem.length; i++) {
+        if (this.checkItem[i].itemCode == this.putItem.itemCode) {
+          let a = document.getElementsByClassName("item")
+          a[index].style.backgroundColor = "white"
+          this.checkItem.splice(i,1)
+          return
+        }
+      }
+      this.additem(this.putItem, index)
+    },
+    additem(putItem, index){
+      this.checkItem.push(putItem)
+      this.putItem = {}
+      let a = document.getElementsByClassName("item")
+      a[index].style.backgroundColor = "#cde1e8"
     },
     pay() {
       if (this.date == null) {
@@ -383,5 +433,14 @@ ul {
 .pay-btn:hover {
   color: white;
   background-color: #b2e2fd;
+}
+
+.chkItemList thead{
+  background-color: #6e6e6e;
+  color: white;
+}
+
+.chkItemList tr{
+  border-bottom: 1px solid black;
 }
 </style>

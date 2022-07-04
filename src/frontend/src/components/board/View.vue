@@ -52,7 +52,7 @@
   <br><br><br>
   <div class="dap_ins">
       <div style="margin-top:30px; ">
-        <textarea name="commenttext" v-model="comment" class="reply_content" id="re_content" />
+        <textarea name="commenttext" v-model="comment" class="reply_content" id="re_content" style="resize: none"/>
         <button @click="addComments" id="rep_bt" class="re_bt">댓글작성</button>
       </div>
 
@@ -223,6 +223,7 @@ export default {
   background-size: 100%;
   width: 100%;
   height: auto;
+  min-height: 80%;
   background-repeat: repeat-y;
   padding: auto;
 }
