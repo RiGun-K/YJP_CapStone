@@ -64,40 +64,6 @@
     </symbol>
   </svg>
 
-<!--  <div class="sidebar" :style="{ width: sidebarWidth }">-->
-<!--    <h1>-->
-<!--      <span v-if="collapsed">-->
-<!--        <div>C</div>-->
-<!--      </span>-->
-<!--      <span v-else >Category</span>-->
-<!--    </h1>-->
-
-<!--    <h5><span v-if="collapsed">-->
-<!--      </span></h5>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="goData">캠핑장 전체</button>-->
-<!--    <br>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(1)">캠핑</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(2)">카라반</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(3)">글램핑</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(4)">팬션</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(5)">차박</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(6)">당일 피크닉</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(7)">기타</button>-->
-
-<!--    <span-->
-<!--        class="collapse-icon"-->
-<!--        :class="{ 'rotate-180': collapsed }"-->
-<!--        @click="toggleSidebar">-->
-<!--          <i class='fas fa-angle-double-left'>  〈〈  </i>-->
-<!--      </span>-->
-<!--  </div>-->
-
-<!--  <div :style="{ 'margin-left': sidebarWidth }">-->
-<!--    <router-view />-->
-<!--  </div>-->
-
-
-
 
   <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 200px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -160,12 +126,6 @@
 
 
   </div>
-
-
-
-
-
-
 
   <div class="infoter">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -315,6 +275,10 @@ export default {
             .then((res) => {
               console.log(res.data);
               this.list = res.data;
+              if(this.list.length == 0) {
+                alert("캠핑장이 없습니다.")
+                this.goData();
+              }
             })
             .catch(e => {
               console.log(e)
@@ -325,6 +289,10 @@ export default {
             .then((res) => {
               console.log(res.data);
               this.list = res.data;
+              if(this.list.length == 0) {
+                alert("캠핑장이 없습니다.")
+                this.goData();
+              }
             })
             .catch(e => {
               console.log(e)
@@ -407,7 +375,8 @@ export default {
 .infoter{
   width: 60%;
   height: 100%;
-  margin-top: -20%;
+  margin-top: -18%;
+
   margin-left: 21%;
 }
 .infoter button{
@@ -591,8 +560,6 @@ img {
   transform: scale(1.5);
 }
 
-
-
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -625,14 +592,12 @@ img {
   vertical-align: -.125em;
   fill: currentColor;
 }
-
 .nav-scroller {
   position: relative;
   z-index: 2;
   height: 2.75rem;
   overflow-y: hidden;
 }
-
 .nav-scroller .nav {
   display: flex;
   flex-wrap: nowrap;
@@ -643,9 +608,8 @@ img {
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
-
 .d-flex flex-column flex-shrink-0 p-3 bg-light{
   padding: 10px;
 }
-
 </style>
+
