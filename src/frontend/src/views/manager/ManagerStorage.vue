@@ -1,37 +1,45 @@
 <template>
   <!--  관리하는 보관함 보기 -->
-  <div class="storage">
-    <div style="width: 100%">
-      <h3 style="margin: 10px">보관소 이름: {{ this.storageList.storageName }}</h3>
+  <div class="container">
+    <br><br><br>
+    <div>
+      <h3>{{ this.storageList.storageName }} 보관소</h3>
     </div>
     <div class="storage-view">
-      <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
-           @click="modalViewChk(box)">
-        <div>
-          <ul>
-            <li>보관함 : {{ box.storageBoxName }}</li>
-            <li>상태 : {{stateString(box.storageBoxState)}}</li>
-          </ul>
+      <div class="scoll-list">
+        <div class="storage-box" v-for="(box) in storageList.storageBoxes" :key="index"
+             @click="modalViewChk(box)">
+          <div>
+            <ul>
+              <li>보관함 : {{ box.storageBoxName }}</li>
+              <li>상태 : {{stateString(box.storageBoxState)}}</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- 모달-->
-  <div v-if="modalView">
-    <div style="width: 100%; text-align: right">
-      <button @click="modalView = false" class="cancleBtn">X</button>
-    </div>
-    <div v-if="useChk == 'not'">
-      <NotUsingInfo :boxCode="boxCode" @updata="getBackData()" />
-    </div>
-    <div v-else-if="useChk == 'use'">
-      <UsingBoxInfo :boxCode="boxCode" @updata="getBackData()"/>
-    </div>
-    <div>
 
     </div>
+
+    <!-- 모달-->
+    <div v-if="modalView" class="right-box">
+      <div style="width: 100%; text-align: right">
+        <button @click="modalView = false" class="cancleBtn">X</button>
+      </div>
+
+      <div>
+        <NotUsingInfo :boxCode="boxCode" @updata="getBackData()" v-if="useChk == 'not'"/>
+        <UsingBoxInfo :boxCode="boxCode" @updata="getBackData()" v-else-if="useChk == 'use'"/>
+
+      </div>
+
+    </div>
+
+    <br><br><br><br>
+
   </div>
+
+
+
 </template>
 
 <script>
@@ -115,17 +123,34 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.container {
+  position: center;
+  height: 100%;
+  width: 95%;
+}
 .storage-box {
   margin: 10px;
   border: solid 3px #DAA520;
   border-radius: 10px;
-  width: 15%;
+  width: 60%;
 }
 
 .storage-view {
-  display: -webkit-flex;
-  display: flex;
-  width: 100%;
+  width: 50%;
+  float: left;
+}
+.right-box{
+  width: 40%;
+  float: right;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  border: 1px solid black;
+}
+.scoll-list{
+  border: 1px solid black;
+  height: 400px;
+  overflow: auto;
+  width: 80%;
 }
 
 .storage {
@@ -136,9 +161,14 @@ export default {
   width: 90%;
 }
 .cancleBtn{
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-top: 1%;
+  position: center;
+  text-align: center;
+  width: 5%;
+  background-color: #ffffff;
+  font-weight: bolder;
+  color: #00a3de;
+  border-color: #00a3de;
+
 }
 .cancleBtn:hover{
   background: black;

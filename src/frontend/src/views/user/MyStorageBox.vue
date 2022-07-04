@@ -1,37 +1,33 @@
 <template>
-  <div class="renewal-box">
-    <h3>사용 중인 보관함 조회</h3>
-    <div class="card" style="width: 50%; font-weight: bolder; margin-left: 7%">
+  <div class="container">
+    <div class="container-top">
+      <br><br><br>
+      <h3>사용 중인 보관함 조회</h3>
+    </div>
+    <div class="left-box">
       <div class="card-body">
         <div>
           <table class='scrolltbody'>
+            <thead>
+              <tr>
+                <th>보관소</th>
+                <th>보관함</th>
+                <th>상태</th>
+              </tr>
+            </thead>
             <tbody>
-            <tr>
-              <th>보관소</th>
-              <th>보관함</th>
-              <th>상태</th>
-            </tr>
-            <tr v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox)">
-              <td>{{ useBox.storageName }}</td>
-              <td>{{ useBox.boxName }}</td>
-              <td v-if="useBox.useState == 0">결제완료</td>
-              <td v-if="useBox.useState == 2">사용중</td>
-              <td v-if="useBox.useState == 3">보관함이동</td>
-              <td v-if="useBox.useState == 4">보관함이동</td>
-              <td v-if="useBox.useState == 5">배송</td>
-              <td v-if="useBox.useState == 6">수리신청</td>
-              <td v-if="useBox.useState == 7">수리 중</td>
-              <td v-if="useBox.useState == 8">수리완료</td>
-              <td v-if="useBox.useState == 9">배송</td>
-            </tr>
+              <tr v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox)">
+                <td>{{ useBox.storageName }}</td>
+                <td>{{ useBox.boxName }}</td>
+                <td>{{updateState(useBox.useState)}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
-
-  <div v-if="modal">
+  <div v-if="modal" class="right-box" >
     <MyUseBoxDetail :modal="modal" :useData="useData" @close="close()" />
   </div>
 </template>
@@ -58,6 +54,35 @@ export default {
     this.getBakData()
   },
   methods: {
+    updateState(state){
+      switch (state){
+        case "0":
+          return "결제완료"
+        break
+        case "2":
+          return "사용중"
+          break
+        case "3":
+          case "4":
+          return "보관함이동"
+          break
+        case "5":
+          return "배송"
+          break
+        case "6":
+          return "수리신청"
+          break
+        case "7":
+          return "수리 중"
+          break
+        case "8":
+          return "수리완료"
+          break
+        case "9":
+          return "배송"
+          break
+      }
+    },
     getBakData() {
       this.memberId = store.getters.getLoginState.loginState
       this.useBoxes = []
@@ -77,9 +102,12 @@ export default {
                 box.boxState = boxes[i][4]
                 box.useCode = boxes[i][5]
                 box.useState = boxes[i][6].toString().charAt(0)
-                if (boxes[i][6].length > 1) {
-                  box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
-
+                if (box.useState == "9"){
+                  box.del = boxes[i][6].substring(1, boxes[i][6].length)
+                }else {
+                  if (boxes[i][6].length > 1) {
+                    box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
+                  }
                 }
                 this.useBoxes.push(box)
               }
@@ -93,6 +121,7 @@ export default {
       this.modal = false
     },
     detailBox(us) {
+      this.useData = {}
       if (!this.modal) {
         this.modal = !this.modal
       }
@@ -104,6 +133,31 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  padding: initial;
+  position: center;
+  width: 95%;
+}
+.left-box{
+  border: 1px solid black;
+  float: left;
+  width: 40%;
+}
+.right-box{
+  border: 1px solid black;
+  float: right;
+  margin-right: 10%;
+  height: 50%;
+  width: 40%;
+}
+td{
+  border-bottom: 1px solid black;
+  padding-top:17px;
+  padding-bottom:12px;
+  word-spacing:9px;
+  text-align:center;
+}
+
 .scrolltbody {
   display: block;
   border-collapse: collapse;

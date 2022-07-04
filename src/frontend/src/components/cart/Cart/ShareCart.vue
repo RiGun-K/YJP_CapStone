@@ -1,44 +1,50 @@
 <template>
-  <h2 style="margin-left: 4%; margin-top: 4%">장바구니(예약)</h2>
-  <div class="share-cart">
+  <div class="back">
+    <br>
+    <div class="frame">
+      <h2 style="padding: 4%; font-weight: bold">장바구니(대여)</h2>
+      <div class="share-cart">
 
-    <table class="share-cart-item-info">
-      <tr>
-        <td class="share-cart-checkbox"><input type="checkbox"
-                                               v-model="allChecked"
-                                               @click="checkedAll($event.target.checked)"
-        >전체선택</td>
-        <td>상품/옵션 정보</td>
-      </tr>
-      <tr  v-for="(shareCart, index) in shareCart" :key="index">
-        <td class="share-cart-checkbox"><input type="checkbox"
-                                               :id="'check_' + shareCart.cartCode"
-                                               :value="shareCart.cartCode"
-                                               v-model="this.selected[index]"
-                                               @change="selectedMethod($event)" ></td>
-        <td>
-          <div class="card mb-3" style="width: 100%;" @click="rentalDetailPage(shareCart.rental.rentalId)">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img :src="'/api/product_detail_images/' + shareCart.rental.filename" class="img-fluid rounded-start" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title" style="padding: 4%">{{shareCart.rental.rentalName}}</h5>
+        <table class="share-cart-item-info">
+          <tr>
+            <td class="share-cart-checkbox"><input type="checkbox"
+                                                   v-model="allChecked"
+                                                   @click="checkedAll($event.target.checked)"
+            >전체선택</td>
+            <td>상품/옵션 정보</td>
+          </tr>
+          <tr  v-for="(shareCart, index) in shareCart" :key="index">
+            <td class="share-cart-checkbox"><input type="checkbox"
+                                                   :id="'check_' + shareCart.cartCode"
+                                                   :value="shareCart.cartCode"
+                                                   v-model="this.selected[index]"
+                                                   @change="selectedMethod($event)" ></td>
+            <td>
+              <div class="card mb-3" style="width: 100%;" @click="rentalDetailPage(shareCart.rental.rentalId)">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img :src="'/api/product_detail_images/' + shareCart.rental.filename" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title" style="padding: 4%">{{shareCart.rental.rentalName}}</h5>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="share-cart-delete-div">
-    <button class="share-cart-delete" @click="rentalCartDelete()">장바구니에서 삭제</button>
-  </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="share-cart-delete-div">
+        <button class="share-cart-delete" @click="rentalCartDelete()">장바구니에서 삭제</button>
+      </div>
 
-  <div class="share-cart-btn-list">
-    <button class="share-cart-btn">계속 쇼핑하기</button>
+      <div class="share-cart-btn-list">
+        <button class="share-cart-btn">계속 쇼핑하기</button>
+      </div>
+    </div>
+    <br>
   </div>
 </template>
 
@@ -147,11 +153,12 @@ export default {
   text-align: center;
   margin-top: 7%;
   width: 100%;
+  padding-bottom: 3%;
 }
 .share-cart-btn{
   margin-left: 2%;
   margin-right: 3%;
-  width: 8%;
+  width: 10%;
   padding: 1%;
   background-color: #ffffff;
   color: #00a3de;
@@ -179,5 +186,22 @@ export default {
 .share-cart-delete-div{
   margin-top: 3%;
   margin-left: 75%;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 </style>

@@ -72,6 +72,7 @@ public class StorageController {
         storage.setStorageTel(storageData.getStorageTel());
         storage.setLatitude(storageData.getLatitude());
         storage.setLongitude(storageData.getLongitude());
+        storage.setStorageState("1");
         Box box = new Box();
         box.setSmall(storageData.getSmall());
         box.setMedium(storageData.getMedium());

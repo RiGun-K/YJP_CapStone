@@ -8,17 +8,19 @@
       </div>
       <hr>
       <div>
-        <div v-if="moveOption=='home'">
+        <div class="container-box" v-if="moveOption=='home'">
           <HomeMoveBox :useBoxCode="useBoxCode" class="option"/>
         </div>
-        <div v-if="moveOption=='round'">
+        <div class="container-box" v-if="moveOption=='round'">
           <RoundMoveBox :useBoxCode="useBoxCode" class="option"/>
         </div>
-        <div v-if="moveOption=='storage'">
+        <div class="container-box" v-if="moveOption=='storage'">
           <StorageMoveBox :useBoxCode="useBoxCode" class="option"/>
         </div>
       </div>
     </div>
+    <br>
+    <br>
     <hr>
     <div>
       <button @click="$router.push({name:'myBox'})">취소</button>

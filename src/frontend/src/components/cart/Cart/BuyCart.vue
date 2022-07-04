@@ -1,55 +1,61 @@
 <template>
-  <h2 style="margin-left: 4%; margin-top: 4%">장바구니(구매)</h2>
+  <div class="back">
+    <br>
+    <div class="frame">
+      <h2 style="padding: 4%; font-weight: bold">장바구니(구매)</h2>
 
-  <div class="buy-cart">
-    <table class="buy-cart-item-info">
-      <tr>
-        <td class="buy-cart-checkbox"><input type="checkbox"
-                                             v-model="allChecked"
-                                             @click="checkedAll($event.target.checked)"
-        >전체선택</td>
-        <td>상품/옵션 정보</td>
-        <td>수량</td>
-        <td>상품 금액</td>
-        <td>배송비</td>
-      </tr>
-      <tr  v-for="(buyCart, index) in buyCartLists" :key="index">
-        <td class="buy-cart-checkbox"><input type="checkbox"
-                                             :id="'check_' + buyCart.cartCode"
-                                             :value="buyCart.cartCode"
-                                             v-model="this.selected[index]"
-                                             @change="selectedMethod($event)"
-        ></td>
-        <td>
-          <div class="card mb-3" style="width: 100%;">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img :src="'/api/product_detail_images/' + buyCart.menuBuy.filename" class="img-fluid rounded-start" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h3 class="card-title" style="padding: 4%">{{ buyCart.menuBuy.buyName }}</h3>
+      <div class="buy-cart">
+        <table class="buy-cart-item-info">
+          <tr>
+            <td class="buy-cart-checkbox"><input type="checkbox"
+                                                 v-model="allChecked"
+                                                 @click="checkedAll($event.target.checked)"
+            >전체선택</td>
+            <td>상품/옵션 정보</td>
+            <td>수량</td>
+            <td>상품 금액</td>
+            <td>배송비</td>
+          </tr>
+          <tr  v-for="(buyCart, index) in buyCartLists" :key="index">
+            <td class="buy-cart-checkbox"><input type="checkbox"
+                                                 :id="'check_' + buyCart.cartCode"
+                                                 :value="buyCart.cartCode"
+                                                 v-model="this.selected[index]"
+                                                 @change="selectedMethod($event)"
+            ></td>
+            <td>
+              <div class="card mb-3" style="width: 100%;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img :src="'/api/product_detail_images/' + buyCart.menuBuy.filename" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h3 class="card-title" style="padding: 4%">{{ buyCart.menuBuy.buyName }}</h3>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </td>
-        <td class="count-td"><button class="buy-count-sub" @click="subCount(index)"> - </button>{{this.cartItemCounts[index]}}<button class="buy-count-add" @click="addCount(index)"> + </button></td>
-        <td style="width: 15%">{{ buyCart.menuBuy.buyPrice }}</td>
-        <td style="width: 10%">10000</td>
-      </tr>
-    </table>
-  </div>
-  <div class="buy-cart-delete-div">
-    <button class="buy-cart-delete" @click="buyCartDelete()">장바구니에서 삭제</button>
-  </div>
-  <div class="buy-cart-all">
-    <p>상품금액 {{priceAll}} + 배송비 10000 = 주문금액 {{ priceAll+10000}} </p>
-  </div>
+            </td>
+            <td class="count-td"><button class="buy-count-sub" @click="subCount(index)"> - </button>{{this.cartItemCounts[index]}}<button class="buy-count-add" @click="addCount(index)"> + </button></td>
+            <td style="width: 15%">{{ buyCart.menuBuy.buyPrice }}</td>
+            <td style="width: 10%">10000</td>
+          </tr>
+        </table>
+      </div>
+      <div class="buy-cart-delete-div">
+        <button class="buy-cart-delete" @click="buyCartDelete()">장바구니에서 삭제</button>
+      </div>
+      <div class="buy-cart-all">
+        <p>상품금액 {{priceAll}} + 배송비 10000 = 주문금액 {{ priceAll+10000}} </p>
+      </div>
 
-  <div class="buy-cart-btn-list">
-    <button class="buy-cart-btn" @click="continueBuy()">계속 쇼핑하기</button>
-    <button class="buy-cart-btn" @click="AllMenuOrder()">구매하기</button>
+      <div class="buy-cart-btn-list">
+        <button class="buy-cart-btn" @click="continueBuy()">계속 쇼핑하기</button>
+        <button class="buy-cart-btn" @click="AllMenuOrder()">구매하기</button>
+      </div>
+    </div>
+    <br>
   </div>
 </template>
 
@@ -211,6 +217,7 @@ export default {
   border: 1px solid #444444;
   border-collapse: collapse;
 }
+
 .buy-cart td {
   border: 1px solid #444444;
   padding: 1%;
@@ -244,11 +251,12 @@ export default {
   text-align: center;
   margin-top: 7%;
   width: 100%;
+  padding-bottom: 3%;
 }
 .buy-cart-btn{
   margin-left: 2%;
   margin-right: 3%;
-  width: 10%;
+  width: 12%;
   padding: 1%;
   background-color: #ffffff;
   color: #00a3de;
@@ -277,5 +285,22 @@ export default {
 .buy-cart-delete-div{
   margin-top: 7%;
   margin-left: 75%;
+}
+.back {
+  position: absolute;
+  background-image: url(@/assets/campwall2.webp);
+  background-size: 100%;
+  width: 100%;
+  height: auto;
+  background-repeat: repeat-y;
+  padding: auto;
+}
+.frame {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 86%;
+  height: auto;
+  margin: auto;
 }
 </style>
