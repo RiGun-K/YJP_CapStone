@@ -405,6 +405,13 @@ const routes = [
 		props: true,
 	},
 	{
+		path: '/infoter/infoterList/:campingId/:detailId',
+		name: 'InfoterDetailListImages',
+		component: () =>
+			import('@/components/cart/Infoter/InfoterDetailListImages.vue'),
+		props: true,
+	},
+	{
 		path: '/infoter/infoterBoard',
 		name: 'InfoterDetailBoard',
 		component: () =>
