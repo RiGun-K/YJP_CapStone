@@ -105,10 +105,10 @@
     <div class="listBody">
       <h1> 객실 선택 및 예약 </h1>
       <div v-for="(room,index) in roomContent" :key="index"
-           @click="toDetail(room)" class="listObj">
+            class="listObj">
         <div class="card">
           <div class="card-body">
-            <img :src="'/api/product_detail_images/' + room.filename" alt="...">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="..." @click="toDetail(room)">
           </div>
           <div class="card-body">
             객실명 - {{ room.detailName }}

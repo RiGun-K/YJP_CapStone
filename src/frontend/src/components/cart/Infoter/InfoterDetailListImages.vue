@@ -73,6 +73,10 @@
 <!--  <div v-for="(room,index) in images" :key="index">-->
 <!--    <img :src="'/api/product_detail_images/' + room.filename" alt="...">-->
 <!--  </div>-->
+
+  <br>
+  <button class="w-btn-neon2" @click="beforeList()" style="margin-top: 8%">뒤로가기</button>
+  <br>
 </template>
 <script>
 import axios from "axios";
@@ -90,6 +94,7 @@ export default {
   },
   methods: {
     DataList() {
+      this.cam = this.$route.params.campingId
       this.id = this.$route.params.detailId;
       console.log(this.id);
       axios.get('/api/product_RoomImages/' + this.id)
@@ -101,6 +106,11 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    },
+    beforeList() {
+      this.$router.push({
+        path: `/infoter/infoterList/${this.cam}`
+      })
     }
   },
 
@@ -198,5 +208,57 @@ input#img-4:checked ~ .nav-dots label#img-dot-4,
 input#img-5:checked ~ .nav-dots label#img-dot-5,
 input#img-6:checked ~ .nav-dots label#img-dot-6 {
   background: rgba(0, 0, 0, 0.8);
+}
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+.w-btn-neon2 {
+  position: relative;
+  margin-left: 45%;
+  border: none;
+  min-width: 200px;
+  min-height: 50px;
+  background: linear-gradient(
+      90deg,
+      rgba(129, 230, 217, 1) 0%,
+      rgba(79, 209, 197, 1) 100%
+  );
+  border-radius: 1000px;
+  color: darkslategray;
+  cursor: pointer;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.w-btn-neon2:hover {
+  transform: scale(1.2);
+}
+
+.w-btn-neon2:hover::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
 }
 </style>
