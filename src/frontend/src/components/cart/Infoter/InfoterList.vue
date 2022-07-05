@@ -276,7 +276,7 @@ export default {
               console.log(res.data);
               this.list = res.data;
               if(this.list.length == 0) {
-                alert("캠핑장이 없습니다.")
+                alert("해당 캠핑장이 없습니다.")
                 this.goData();
               }
             })
@@ -290,7 +290,7 @@ export default {
               console.log(res.data);
               this.list = res.data;
               if(this.list.length == 0) {
-                alert("캠핑장이 없습니다.")
+                alert("해당 캠핑장이 없습니다.")
                 this.goData();
               }
             })
