@@ -64,40 +64,6 @@
     </symbol>
   </svg>
 
-  <!--  <div class="sidebar" :style="{ width: sidebarWidth }">-->
-  <!--    <h1>-->
-  <!--      <span v-if="collapsed">-->
-  <!--        <div>C</div>-->
-  <!--      </span>-->
-  <!--      <span v-else >Category</span>-->
-  <!--    </h1>-->
-
-  <!--    <h5><span v-if="collapsed">-->
-  <!--      </span></h5>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="goData">캠핑장 전체</button>-->
-  <!--    <br>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(1)">캠핑</button>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(2)">카라반</button>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(3)">글램핑</button>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(4)">팬션</button>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(5)">차박</button>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(6)">당일 피크닉</button>-->
-  <!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(7)">기타</button>-->
-
-  <!--    <span-->
-  <!--        class="collapse-icon"-->
-  <!--        :class="{ 'rotate-180': collapsed }"-->
-  <!--        @click="toggleSidebar">-->
-  <!--          <i class='fas fa-angle-double-left'>  〈〈  </i>-->
-  <!--      </span>-->
-  <!--  </div>-->
-
-  <!--  <div :style="{ 'margin-left': sidebarWidth }">-->
-  <!--    <router-view />-->
-  <!--  </div>-->
-
-
-
 
   <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 200px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -160,7 +126,6 @@
 
 
   </div>
-
 
   <div class="infoter">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -235,7 +200,6 @@ import { collapsed, toggleSidebar } from '@/components/cart/Sidebar/state'
 import Sidebar from '@/components/cart/Sidebar/Sidebar'
 import { sidebarWidth } from '@/components/cart/Sidebar/state'
 import SidebarLink from '@/components/cart/Sidebar/SidebarLink'
-
 export default {
   name: 'InfoterList',
   components: { SidebarLink },
@@ -247,23 +211,20 @@ export default {
   },
   created() {
     this.goData(),
-    axios.get('/api/campingRound')
-        .then(res => {
-          console.log(res.data)
-          this.bigRound = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-
+        axios.get('/api/campingRound')
+            .then(res => {
+              console.log(res.data)
+              this.bigRound = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
   },
-
   data() {
     return {
       selected: false,
       list: [],
       product: '',
-
       bigRound: [],
       smallRound: [],
       bigPick: 0,
@@ -277,7 +238,6 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.list = res.data;
-
             axios.get('/api/product_detail_images/' + this.product.filename )
                 .then(res => {
                   console.log("이미지 불러오기 성공");
@@ -290,7 +250,6 @@ export default {
             console.log(e)
           })
     },
-
     bigCheck(index) {
       if (index == '0') {
         this.smallRound = []
@@ -306,7 +265,6 @@ export default {
               console.log(err)
             })
       }
-
     },
     search() {
       if (this.bigPick == "0" && this.smallPick == "0") {
@@ -340,11 +298,7 @@ export default {
               console.log(e)
             })
       }
-
-
-
     },
-
     // 상세페이지 접속
     toDetail(product){
       console.log(product.campingId);
@@ -359,11 +313,9 @@ export default {
             .catch(e => {
               console.log(e)
             })
-
       } else {
         alert("객실이 없습니다.")
       }
-
     },
     cam(index) {
       axios.get('/api/product_detail_camping/' + index)
@@ -374,31 +326,28 @@ export default {
               alert("캠핑장이 없습니다.")
               window.location.href = 'http://localhost:8081/infoter'
             }
-
           })
           .catch(e => {
             console.log(e)
           })
     },
-
     campingFilter(index) {
       if (this.searchCamping == '') {
         this.goData();
       } else {
         axios.get('/api/search_CampingList', { params: { searchCamping: index }})
-         .then((res) => {
-           this.list = res.data;
-           if (this.list.length == 0) {
-             alert("해당 상품은 존재하지 않습니다.")
-             window.location.href = 'http://localhost:8081/infoter'
-           }
-           })
-         .catch(e => {
-           console.log(e)
-         })
+            .then((res) => {
+              this.list = res.data;
+              if (this.list.length == 0) {
+                alert("해당 상품은 존재하지 않습니다.")
+                window.location.href = 'http://localhost:8081/infoter'
+              }
+            })
+            .catch(e => {
+              console.log(e)
+            })
       }
     },
-
     orderByView() {
       axios.get('/api/product_detail_campingManyViews')
           .then((res) => {
@@ -417,18 +366,17 @@ export default {
             console.log(e)
           })
     }
-
   }
 }
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
-
 .infoter{
   width: 60%;
   height: 100%;
   margin-top: -18%;
+
   margin-left: 21%;
 }
 .infoter button{
@@ -459,8 +407,6 @@ export default {
   color: white;
   background-color: #b2e2fd;
 }
-
-
 .table table-striped {
   width : 30%;
   height: 30%;
@@ -469,14 +415,10 @@ export default {
   width : 20%;
   height: 20%;
 }
-
-
-
 img {
   width : 10%;
   height: 10%;
 }
-
 .search {
   width: 300px;
   height: 100px;
@@ -489,7 +431,6 @@ img {
   border: none;
   border-bottom: 1px black solid;
 }
-
 .search button {
   font-size: 18px;
   border: none;
@@ -503,7 +444,6 @@ img {
   margin-top: -30%;
 }
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
-
 .campingkindimage {
   width:380px;
   height:320px;
@@ -512,16 +452,13 @@ select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: in
 .image-thumbnail{
   float: left;
 }
-
 img {
   width: 40%;
   height: 40%;
 }
-
 .card {
   width: 50%;
 }
-
 .card-body {
   overflow: hidden;
 }
@@ -531,40 +468,11 @@ img {
 .card-body:hover img {
   transform: scale(1.5);
 }
-.sidebar {
-   color: black;
-   background-color: var(--sidebar-bg-color);
-   float: left;
-   z-index: 1;
-   height: 100%;
-   left: 0;
-   bottom: 0;
-   padding-bottom: 3%;
-   margin-right: 3%;
-   transition: 0.3s ease;
-   display: flex;
-   flex-direction: column;
- }
-.sidebar h5{
-  margin-left: 10%;
-  margin-top: 15%;
-  margin-bottom: 3%;
-}
-.sidebar-link{
-  color: black;
-}
-.collapse-icon{
-  position: absolute;
-  top: 80% ;
-  padding: 0.75em;
-  color: black;
-  transition: 0.2s linear;
-}
+
 .rotate-180 {
   transform: rotate(180deg);
   transition: 0.2s linear;
 }
-
 .listObj {
   width: 50%;
   float: left;
@@ -585,7 +493,6 @@ img {
     opacity: 0;
   }
 }
-
 .w-btn-neon2 {
   position: relative;
   margin-left: 45%;
@@ -604,11 +511,9 @@ img {
   font-weight: 700;
   transition: 0.3s;
 }
-
 .w-btn-neon2:hover {
   transform: scale(1.2);
 }
-
 .w-btn-neon2:hover::after {
   content: "";
   width: 30px;
@@ -662,11 +567,13 @@ img {
   -moz-user-select: none;
   user-select: none;
 }
+
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
 }
+
 .b-example-divider {
   height: 3rem;
   background-color: rgba(0, 0, 0, .1);
@@ -674,11 +581,13 @@ img {
   border-width: 1px 0;
   box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
 }
+
 .b-example-vr {
   flex-shrink: 0;
   width: 1.5rem;
   height: 100vh;
 }
+
 .bi {
   vertical-align: -.125em;
   fill: currentColor;
@@ -703,3 +612,4 @@ img {
   padding: 10px;
 }
 </style>
+
