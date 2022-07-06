@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface StorageBoxRepository extends JpaRepository<StorageBox, Long> {
@@ -26,6 +27,14 @@ public interface StorageBoxRepository extends JpaRepository<StorageBox, Long> {
             "where b.STORAGE_BOX_CODE = :storageBoxCode \n" +
             "and sysdate between u.USE_STORAGE_START_TIME and u.USE_STORAGE_END_TIME" , nativeQuery = true)
     public Object[] findByBoxInformation(@Param("storageBoxCode")long storageBoxCode);
+
+//    @Query(value = "select m.MNICK, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME,b.STORAGE_BOX_STATE, b.STORAGE_CODE, u.USE_STORAGE_BOX_CODE,u.USE_STORAGE_STATE \n" +
+//            "from STORAGEBOX b \n" +
+//            "join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE\n" +
+//            "join MEMBER m on u.MCODE = m.MCODE \n" +
+//            "where b.STORAGE_BOX_CODE = :storageBoxCode \n" +
+//            "and sysdate between u.USE_STORAGE_START_TIME and u.USE_STORAGE_END_TIME" , nativeQuery = true)
+//    public List<Map<String, Object>> findByBoxInformation(@Param("storageBoxCode")long storageBoxCode);
 
     @Query(value = "select m.MNICK, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME,b.STORAGE_BOX_STATE, b.STORAGE_CODE, u.USE_STORAGE_BOX_CODE,u.USE_STORAGE_STATE \n" +
             "from STORAGEBOX b \n" +
