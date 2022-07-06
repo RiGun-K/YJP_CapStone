@@ -11,7 +11,7 @@
         <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"
                 @click="repairBox(pickUseBox)">장비 수리
         </button>
-        <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3" @click="renewalPay(pickUseBox)">연장</button>
+        <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3 && detailUseState != 1" @click="renewalPay(pickUseBox)">연장</button>
         <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지
         </button>
       </div>
