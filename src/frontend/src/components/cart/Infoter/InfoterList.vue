@@ -1,6 +1,7 @@
 <template>
   <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sidebars/">
-
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/album/">
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dropdowns/">
 
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="bootstrap" viewBox="0 0 118 94">
@@ -64,132 +65,191 @@
     </symbol>
   </svg>
 
-<!--  <div class="sidebar" :style="{ width: sidebarWidth }">-->
-<!--    <h1>-->
-<!--      <span v-if="collapsed">-->
-<!--        <div>C</div>-->
-<!--      </span>-->
-<!--      <span v-else >Category</span>-->
-<!--    </h1>-->
 
-<!--    <h5><span v-if="collapsed">-->
-<!--      </span></h5>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="goData">캠핑장 전체</button>-->
-<!--    <br>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(1)">캠핑</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(2)">카라반</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(3)">글램핑</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(4)">팬션</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(5)">차박</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(6)">당일 피크닉</button>-->
-<!--    <button class="w-btn-outline w-btn-red-outline" @click="cam(7)">기타</button>-->
 
-<!--    <span-->
-<!--        class="collapse-icon"-->
-<!--        :class="{ 'rotate-180': collapsed }"-->
-<!--        @click="toggleSidebar">-->
-<!--          <i class='fas fa-angle-double-left'>  〈〈  </i>-->
-<!--      </span>-->
+<!--  <div class="col-md-4">-->
+<!--    <div class="position-sticky" style="top: 2rem;">-->
+<!--      <div class="p-4 mb-3 bg-light rounded">-->
+<!--        <h4 class="fst-italic">About</h4>-->
+<!--        <p class="mb-0">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>-->
+<!--      </div>-->
+
+<!--      <div class="p-4">-->
+<!--        <h4 class="fst-italic">Archives</h4>-->
+<!--        <ol class="list-unstyled mb-0">-->
+<!--          <li><a href="#">March 2021</a></li>-->
+<!--          <li><a href="#">February 2021</a></li>-->
+<!--          <li><a href="#">January 2021</a></li>-->
+<!--          <li><a href="#">December 2020</a></li>-->
+<!--          <li><a href="#">November 2020</a></li>-->
+<!--          <li><a href="#">October 2020</a></li>-->
+<!--          <li><a href="#">September 2020</a></li>-->
+<!--          <li><a href="#">August 2020</a></li>-->
+<!--          <li><a href="#">July 2020</a></li>-->
+<!--          <li><a href="#">June 2020</a></li>-->
+<!--          <li><a href="#">May 2020</a></li>-->
+<!--          <li><a href="#">April 2020</a></li>-->
+<!--        </ol>-->
+<!--      </div>-->
+
+<!--      <div class="p-4">-->
+<!--        <h4 class="fst-italic">Elsewhere</h4>-->
+<!--        <ol class="list-unstyled">-->
+<!--          <li><a href="#">GitHub</a></li>-->
+<!--          <li><a href="#">Twitter</a></li>-->
+<!--          <li><a href="#">Facebook</a></li>-->
+<!--        </ol>-->
+<!--      </div>-->
+<!--    </div>-->
 <!--  </div>-->
 
-<!--  <div :style="{ 'margin-left': sidebarWidth }">-->
-<!--    <router-view />-->
+
+
+<!--  <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">-->
+<!--    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">-->
+<!--      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#sidebar"/></svg>-->
+<!--      <span class="fs-4">Category</span>-->
+<!--    </a>-->
+<!--    <hr>-->
+<!--    <ul class="nav nav-pills flex-column mb-auto">-->
+<!--      <li class="nav-item">-->
+<!--        <a href="#" class="nav-link active" aria-current="page" @click="goData">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>-->
+<!--          캠핑장 전체-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(1)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          캠핑-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(2)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          카라반-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(3)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          글램핑-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(4)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          팬션-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(5)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          차박-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(6)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          당일 피크닉-->
+<!--        </a>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <a href="#" class="nav-link link-dark" @click="cam(7)">-->
+<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
+<!--          기타-->
+<!--        </a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--    <hr>-->
+
 <!--  </div>-->
 
-
-
-
-  <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 200px;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#sidebar"/></svg>
-      <span class="fs-4">Category</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page" @click="goData">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-          캠핑장 전체
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(1)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          캠핑
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(2)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          카라반
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(3)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          글램핑
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(4)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          팬션
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(5)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          차박
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(6)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          당일 피크닉
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark" @click="cam(7)">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          기타
-        </a>
-      </li>
-    </ul>
-    <hr>
-
-
-
-  </div>
-
-
-
-
-
+  <ul class="nav col-12 col-lg-auto my-2 my-md-0 justify-content-center text-small">
+    <li style="width: 100px">
+      <a class="nav-link text-black" aria-current="page" @click="goData">
+        <img :src="require('@/assets/bonfire.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left: 8px">전체</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(1)">
+        <img :src="require('@/assets/free-icon-camping-1054092.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left: 8px">텐트</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(2)">
+        <img :src="require('@/assets/caravan.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left:3px">카라반</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(3)">
+        <img :src="require('@/assets/tent.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left: 3px">글램핑</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(4)">
+        <img :src="require('@/assets/house.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left: 8px">펜션</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(5)">
+        <img :src="require('@/assets/camper-van.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left: 8px">차박</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(6)">
+        <img :src="require('@/assets/premium-icon-picnic-2864462.png')" style="width: 50px; height: 50px">
+        <p style="padding-left: 8px">당일</p>
+        <p style="padding-left: 3px; margin-top: -20px">피크닉</p>
+      </a>
+    </li>
+    <li style="width: 100px">
+      <a class="nav-link text-black" @click="cam(7)">
+        <img :src="require('@/assets/traveller.png')"  style="width: 50px; height: 50px">
+        <p style="padding-left: 8px">기타</p>
+      </a>
+    </li>
+  </ul>
 
 
   <div class="infoter">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-      <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>
 
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio2" @click="orderByLatest">최신순</label>
-
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-      <label class="btn btn-outline-primary" for="btnradio3" @click="orderByView">인기순</label>
-    </div>
-
-    <h1>지역분류</h1>
-    <div class="searchDiv">
-      <select v-model="bigPick" @change="bigCheck(bigPick)">
+    <div class="searchDiv" style="display: flex; margin-top: 34%">
+      <select class="form-select" aria-label="Default select example" v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick">
+      <select class="form-select" aria-label="Default select example"  v-model="smallPick" style="margin-left: 1%">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <button class="w-btn-neon2"  @click="search()">검색</button>
+      <button type="button" class="btn btn-outline-secondary" @click="search()" style="margi  n-left: 5%">검색</button>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <!--      <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>-->
+      <!--      <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>-->
+
+      <!--      <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">-->
+      <!--      <label class="btn btn-outline-primary" for="btnradio2" @click="orderByLatest">최신순</label>-->
+
+      <!--      <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">-->
+      <!--      <label class="btn btn-outline-primary" for="btnradio3" @click="orderByView">인기순</label>-->
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-outline-secondary" for="btnradio1" @click="goData" style="width: 80px">전체</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" for="btnradio2" @click="orderByLatest" style="width: 80px">최신순</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" for="btnradio3" @click="orderByView" style="width: 80px">인기순</button>
+      </div>
+
     </div>
 
 
@@ -200,34 +260,23 @@
       </div>
     </section>
 
-
-    <div class="listBody">
-      <div v-for="(product,index) in list" :key="product.id"
-           :item="product" @click="toDetail(product)" class="listObj">
-        <div class="card">
-          <div class="card-body">
-            <img :src="'/api/product_detail_images/' + product.filename" alt="...">
+    <div class="row mb-2" style="margin-top: 100px">
+      <div class="col-md-6" v-for="(product,index) in list" :key="product.id"
+           :item="product" @click="toDetail(product)">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">{{ product.infoterId.infoterName }}</strong>
+            <h3 class="mb-0">{{ product.campingName }}</h3>
+            <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">조회수 - {{ product.campingViews }}</div>
+            <p class="card-text mb-auto">{{ product.campingInfo }}</p>
+            <a href="#" class="stretched-link"></a>
           </div>
-          <div class="card-body">
-            분류 - {{ product.infoterId.infoterName }}
-          </div>
-          <div class="card-body">
-            캠핑장명 - {{ product.campingName }}
-          </div>
-          <div class="card-body">
-            주소 - {{ product.address }}
-          </div>
-          <div class="card-body">
-            조회수 - {{ product.campingViews }}
-          </div>
-          <div class="card-body">
-            잔여 객실수 - {{ product.campingDetails.length }}
+          <div class="col-auto d-none d-lg-block">
+            <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >
           </div>
         </div>
-        <br>
       </div>
     </div>
-
 
   </div>
 
@@ -240,9 +289,10 @@ import { collapsed, toggleSidebar } from '@/components/cart/Sidebar/state'
 import Sidebar from '@/components/cart/Sidebar/Sidebar'
 import { sidebarWidth } from '@/components/cart/Sidebar/state'
 import SidebarLink from '@/components/cart/Sidebar/SidebarLink'
+import Main from "@/components/product/ProductMain";
 export default {
   name: 'InfoterList',
-  components: { SidebarLink },
+  components: {Main, SidebarLink },
   return: {
     ProductList, sidebarWidth
   },
@@ -410,42 +460,12 @@ export default {
   margin-top: -20%;
   margin-left: 21%;
 }
-.infoter button{
-  margin: 5%;
-}
-.infoter .btn-group{
-  margin-top: 2%;
-  margin-left: 75%;
-  width: 25%;
-}
-.infoter-btn-group{
-  text-align: center;
-  margin: 30%;
-  width: 50%;
-}
-.infoter-btn-group .infoter-list-btn{
-  margin-left: 2%;
-  margin-right: 3%;
-  width: 17%;
-  padding: 1.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-  border-radius: 1em;
-}
-.infoter-list-btn:hover{
-  color: white;
-  background-color: #b2e2fd;
-}
+
 .table table-striped {
   width : 30%;
   height: 30%;
 }
-.buy-list {
-  width : 20%;
-  height: 20%;
-}
+
 img {
   width : 10%;
   height: 10%;
@@ -475,174 +495,18 @@ img {
   margin-top: -30%;
 }
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
-.campingkindimage {
-  width:380px;
-  height:320px;
-  margin:0 auto;  /* 양 사이즈 간격  */
-}
-.image-thumbnail{
-  float: left;
-}
 img {
   width: 40%;
   height: 40%;
 }
-.card {
-  width: 50%;
-}
-.card-body {
-  overflow: hidden;
-}
-.card-body img {
-  transition: all 0.2s linear;
-}
-.card-body:hover img {
-  transform: scale(1.5);
-}
 
-.rotate-180 {
-  transform: rotate(180deg);
-  transition: 0.2s linear;
-}
-.listObj {
-  width: 50%;
-  float: left;
-  position: relative;
-  flex-direction: row;
-  margin: 0 auto;
-  text-align: center;
-}
-@keyframes ring {
-  0% {
-    width: 30px;
-    height: 30px;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-  }
-}
-.w-btn-neon2 {
-  position: relative;
-  margin-left: 45%;
-  border: none;
-  min-width: 200px;
-  min-height: 50px;
-  background: linear-gradient(
-      90deg,
-      rgba(129, 230, 217, 1) 0%,
-      rgba(79, 209, 197, 1) 100%
-  );
-  border-radius: 1000px;
-  color: darkslategray;
-  cursor: pointer;
-  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
-  font-weight: 700;
-  transition: 0.3s;
-}
-.w-btn-neon2:hover {
-  transform: scale(1.2);
-}
-.w-btn-neon2:hover::after {
-  content: "";
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  border: 6px solid #00ffcb;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: ring 1.5s infinite;
-}
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 .w-btn:hover {
   letter-spacing: 2px;
   transform: scale(1.2);
   cursor: pointer;
 }
-.w-btn-outline {
-  position: relative;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: 'paybooc-Light', sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-}
-.w-btn-red-outline {
-  border: 3px solid #2093e5;
-  color: #6e6e6e;
-}
-.w-btn-red-outline:hover {
-  background-color: #2093e5;
-  color: #e1eef6;
-}
-.w-btn-outline:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline:active {
-  transform: scale(1.5);
-}
 
-
-
-.bd-placeholder-img {
-  font-size: 1.125rem;
-  text-anchor: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
-@media (min-width: 768px) {
-  .bd-placeholder-img-lg {
-    font-size: 3.5rem;
-  }
-}
-
-.b-example-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, .1);
-  border: solid rgba(0, 0, 0, .15);
-  border-width: 1px 0;
-  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-}
-
-.b-example-vr {
-  flex-shrink: 0;
-  width: 1.5rem;
-  height: 100vh;
-}
-
-.bi {
-  vertical-align: -.125em;
-  fill: currentColor;
-}
-
-.nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 2.75rem;
-  overflow-y: hidden;
-}
-
-.nav-scroller .nav {
-  display: flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-}
 
 .d-flex flex-column flex-shrink-0 p-3 bg-light{
   padding: 10px;
