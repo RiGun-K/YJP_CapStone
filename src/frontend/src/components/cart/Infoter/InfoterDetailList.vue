@@ -105,10 +105,10 @@
     <div class="listBody">
       <h1> 객실 선택 및 예약 </h1>
       <div v-for="(room,index) in roomContent" :key="index"
-           @click="" class="listObj">
+            class="listObj">
         <div class="card">
           <div class="card-body">
-            <img :src="'/api/product_detail_images/' + room.filename" alt="...">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="..." @click="toDetail(room)">
           </div>
           <div class="card-body">
             객실명 - {{ room.detailName }}
@@ -120,7 +120,7 @@
             최대인원 - {{ room.maximumNumber }}
           </div>
           <div class="card-body">
-            객실 가격 - {{ room.detailPrice }}
+            1 박 가격 - {{ room.detailPrice }}
           </div>
           <br>
           <p>예약기간 설정</p>
@@ -142,8 +142,9 @@
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
           </div>
-          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%">예약 및 결제</button>
+          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
         </div>
+        <br>
       </div>
     </div>
   </div>
@@ -565,6 +566,12 @@ export default {
         console.log(err)
       })
     },
+    toDetail(room) {
+      console.log(room.images);
+      this.$router.push({
+        path: `/infoter/infoterList/${this.id}/${room.detailId}`
+      })
+    }
 
   }
 }

@@ -120,6 +120,13 @@ public class ProductController {
         return campingDetailList;
     }
 
+    /* 캠핑장 결제전 상세 페이지 */
+    @GetMapping("/product_RoomImages/{detailId}")
+    public Optional<CampingDetail> getProduct_DetailI(@PathVariable("detailId") int detailId) {
+        Optional<CampingDetail> DetailList = campingDetailRepository.findById(detailId);
+        return DetailList;
+    }
+
     /* 캠핑장 결제전 상세 페이지에서 객실조회 후 예약 및 결제 페이지 */
     @GetMapping("/product_detailR/{detailId}")
     public Optional<CampingDetail> getProduct_DetailR(@PathVariable("detailId") int detailId) {
