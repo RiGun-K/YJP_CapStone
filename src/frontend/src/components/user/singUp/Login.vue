@@ -118,10 +118,6 @@ body {
   height: 100%;
   background-color: #E6E6FA;
 }
-#wrapper {
-  position: relative;
-  height: 100%;
-}
 #content {
   position: absolute;
   left: 50%;
