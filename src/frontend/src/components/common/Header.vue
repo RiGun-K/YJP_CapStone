@@ -353,7 +353,7 @@ export default {
                 stateCode:res.data.msc,
                 mcode:res.data.mcode
               })
-              this.$router.push("/");
+              this.$router.go();
               break;
           }
         }).catch(err =>{
