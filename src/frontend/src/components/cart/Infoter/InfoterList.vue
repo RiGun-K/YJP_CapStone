@@ -67,103 +67,7 @@
 
 
 
-<!--  <div class="col-md-4">-->
-<!--    <div class="position-sticky" style="top: 2rem;">-->
-<!--      <div class="p-4 mb-3 bg-light rounded">-->
-<!--        <h4 class="fst-italic">About</h4>-->
-<!--        <p class="mb-0">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>-->
-<!--      </div>-->
 
-<!--      <div class="p-4">-->
-<!--        <h4 class="fst-italic">Archives</h4>-->
-<!--        <ol class="list-unstyled mb-0">-->
-<!--          <li><a href="#">March 2021</a></li>-->
-<!--          <li><a href="#">February 2021</a></li>-->
-<!--          <li><a href="#">January 2021</a></li>-->
-<!--          <li><a href="#">December 2020</a></li>-->
-<!--          <li><a href="#">November 2020</a></li>-->
-<!--          <li><a href="#">October 2020</a></li>-->
-<!--          <li><a href="#">September 2020</a></li>-->
-<!--          <li><a href="#">August 2020</a></li>-->
-<!--          <li><a href="#">July 2020</a></li>-->
-<!--          <li><a href="#">June 2020</a></li>-->
-<!--          <li><a href="#">May 2020</a></li>-->
-<!--          <li><a href="#">April 2020</a></li>-->
-<!--        </ol>-->
-<!--      </div>-->
-
-<!--      <div class="p-4">-->
-<!--        <h4 class="fst-italic">Elsewhere</h4>-->
-<!--        <ol class="list-unstyled">-->
-<!--          <li><a href="#">GitHub</a></li>-->
-<!--          <li><a href="#">Twitter</a></li>-->
-<!--          <li><a href="#">Facebook</a></li>-->
-<!--        </ol>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-
-
-<!--  <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">-->
-<!--    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">-->
-<!--      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#sidebar"/></svg>-->
-<!--      <span class="fs-4">Category</span>-->
-<!--    </a>-->
-<!--    <hr>-->
-<!--    <ul class="nav nav-pills flex-column mb-auto">-->
-<!--      <li class="nav-item">-->
-<!--        <a href="#" class="nav-link active" aria-current="page" @click="goData">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>-->
-<!--          캠핑장 전체-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(1)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          캠핑-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(2)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          카라반-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(3)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          글램핑-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(4)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          팬션-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(5)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          차박-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(6)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          당일 피크닉-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a href="#" class="nav-link link-dark" @click="cam(7)">-->
-<!--          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>-->
-<!--          기타-->
-<!--        </a>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--    <hr>-->
-
-<!--  </div>-->
 
   <ul class="nav col-12 col-lg-auto my-2 my-md-0 justify-content-center text-small">
     <li style="width: 100px">
@@ -216,6 +120,7 @@
       </a>
     </li>
   </ul>
+
 
 
   <div class="infoter">
@@ -365,6 +270,10 @@ export default {
             .then((res) => {
               console.log(res.data);
               this.list = res.data;
+              if(this.list.length == 0) {
+                alert("해당 캠핑장이 없습니다.")
+                this.goData();
+              }
             })
             .catch(e => {
               console.log(e)
@@ -375,6 +284,10 @@ export default {
             .then((res) => {
               console.log(res.data);
               this.list = res.data;
+              if(this.list.length == 0) {
+                alert("해당 캠핑장이 없습니다.")
+                this.goData();
+              }
             })
             .catch(e => {
               console.log(e)
@@ -457,7 +370,8 @@ export default {
 .infoter{
   width: 60%;
   height: 100%;
-  margin-top: -20%;
+  margin-top: -18%;
+
   margin-left: 21%;
 }
 
@@ -507,9 +421,8 @@ img {
   cursor: pointer;
 }
 
-
 .d-flex flex-column flex-shrink-0 p-3 bg-light{
   padding: 10px;
 }
-
 </style>
+
