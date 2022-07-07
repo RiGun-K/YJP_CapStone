@@ -151,7 +151,7 @@
       </div>
     </div>
   </div>
-  <div v-if="box.useStorageState == 1">
+  <div v-if="box.useStorageState == '1'">
     <div v-if="remainder">
       <h5>종료까지 {{ remainderTime }}일 남았습니다.</h5>
       <div>
@@ -181,7 +181,7 @@
       </div>
     </div>
     <div>
-      <button @click="moveDel()">배송시작</button>
+      <button v-if="backchk" @click="moveDel()">배송시작</button>
     </div>
   </div>
 </template>
@@ -216,11 +216,21 @@ export default {
       useStateString: '',
       del:'',
       order:{},
+      backchk:false,
     }
   },
   methods: {
     moveDel(){
       this.box.useStorageState =2
+      axios.get('/api/endBoxState/'+this.box.useStorageCode)
+          .then(res=>{
+            console.log(res)
+            this.getBoxInfo()
+            this.$emit('updata')
+          })
+          .catch(err=>{
+            console.log(err)
+          })
     },
     changeState(state) {
       switch (state) {
@@ -324,6 +334,8 @@ export default {
       if (data.useStorageState == "9" || data.useStorageState == "a"){
         this.del = arry[0][6]?.substring(1, arry[0][6].length)||''
         this.delInfo()
+      }else if(data.useStorageState == "1" && arry[0][6]?.substring(1, arry[0][6].length) == "b"){
+        this.backchk = true
       }else{
         this.box.updateusbCode = arry[0][6]?.substring(1, arry[0][6].length)||''
       }
@@ -353,9 +365,11 @@ export default {
     addUseBoxInfo() {
       axios.get('/api/moreUseBox/' + this.box.boxCode)
           .then(res => {
-            this.box = {}
-            this.addUseBoxInfoSetting(res.data)
-            this.checkMoreReNewal()
+            if (res.data.length>0){
+              this.box = {}
+              this.addUseBoxInfoSetting(res.data)
+              this.checkMoreReNewal()
+            }
           })
           .catch(err => {
             console.log(err)
