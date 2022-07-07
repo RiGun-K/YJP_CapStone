@@ -72,7 +72,7 @@
 
 
 
-    <div class="row mb-2" style="margin-top: 100px">
+    <div class="row mb-2" style="margin-top: 100px; width: 100%;">
       <div class="col-md-6" v-for="(room,index) in roomContent" :key="index">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
@@ -82,12 +82,9 @@
             <p class="card-text mb-auto">최대인원 - {{ room.maximumNumber }}</p>
             <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>
           </div>
-          <div class="col-auto d-none d-lg-block">
-            <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 600px; height:300px "  >
-          </div>
-          <p>예약기간 설정</p>
-          <div class="reservation">
-            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 40%"
+
+          <div class="reservation" style="display: flex; margin-top: -15px">
+            <Datepicker style="width: 450px; margin-left: 20px; margin-bottom: 20px"
                         locale="ko-KR"
                         :min-date="today"
                         :max-date="end"
@@ -103,7 +100,10 @@
                         v-model="reservationDate"
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
-            <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
+            <button @click="buyData(room.detailId)" class="btn btn-outline-secondary" style="height: 40px; margin-left: 20px">예약 및 결제</button>
+          </div>
+          <div class="col-auto d-none d-lg-block" style="margin-left: 20px; margin-bottom: 20px">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 580px; height:300px "  >
           </div>
           <div class="col-auto d-none d-lg-block">
             <!--                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >-->
@@ -650,10 +650,7 @@ export default {
 /*}*/
 
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
-img {
-  width: 20%;
-  height: 20%;
-}
+
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
 /*@keyframes ring {*/
@@ -919,34 +916,34 @@ img {
   font-size: 1.5em;
 }
 
-.w-btn-outline {
-  position: relative;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: 'paybooc-Light', sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
+/*.w-btn-outline {*/
+/*  position: relative;*/
+/*  padding: 15px 30px;*/
+/*  border-radius: 15px;*/
+/*  font-family: 'paybooc-Light', sans-serif;*/
+/*  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);*/
+/*  text-decoration: none;*/
+/*  font-weight: 600;*/
+/*  transition: 0.25s;*/
 
-  margin-top: 5% ;
-  margin-left: 55%;
-}
-.w-btn-red-outline {
-  border: 3px solid #2093e5;
-  color: #6e6e6e;
-}
-.w-btn-red-outline:hover {
-  background-color: #2093e5;
-  color: #e1eef6;
-}
-.w-btn-outline:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline:active {
-  transform: scale(1.5);
-}
+/*  margin-top: 5% ;*/
+/*  margin-left: 55%;*/
+/*}*/
+/*.w-btn-red-outline {*/
+/*  border: 3px solid #2093e5;*/
+/*  color: #6e6e6e;*/
+/*}*/
+/*.w-btn-red-outline:hover {*/
+/*  background-color: #2093e5;*/
+/*  color: #e1eef6;*/
+/*}*/
+/*.w-btn-outline:hover {*/
+/*  letter-spacing: 2px;*/
+/*  transform: scale(1.2);*/
+/*  cursor: pointer;*/
+/*}*/
+/*.w-btn-outline:active {*/
+/*  transform: scale(1.5);*/
+/*}*/
 
 </style>
