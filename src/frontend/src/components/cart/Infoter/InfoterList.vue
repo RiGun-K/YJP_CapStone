@@ -68,7 +68,7 @@
 
 
 
-
+<div  style="margin-top: 80px">
   <ul class="nav col-12 col-lg-auto my-2 my-md-0 justify-content-center text-small">
     <li style="width: 100px">
       <a class="nav-link text-black" aria-current="page" @click="goData">
@@ -120,12 +120,12 @@
       </a>
     </li>
   </ul>
-
+</div>
 
 
   <div class="infoter">
 
-    <div class="searchDiv" style="display: flex; margin-top: 34%">
+    <div class="searchDiv" style="display: flex; margin-top: 340px">
       <select class="form-select" aria-label="Default select example" v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
@@ -134,21 +134,13 @@
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <button type="button" class="btn btn-outline-secondary" @click="search()" style="margi  n-left: 5%">검색</button>
+      <button type="button" class="btn btn-outline-secondary" @click="search()" style="margin-left:2%">검색</button>
     </div>
 
     <br>
     <br>
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-      <!--      <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>-->
-      <!--      <label class="btn btn-outline-primary" for="btnradio1" @click="goData">전체</label>-->
-
-      <!--      <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">-->
-      <!--      <label class="btn btn-outline-primary" for="btnradio2" @click="orderByLatest">최신순</label>-->
-
-      <!--      <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">-->
-      <!--      <label class="btn btn-outline-primary" for="btnradio3" @click="orderByView">인기순</label>-->
       <div class="btn-group">
         <button type="button" class="btn btn-sm btn-outline-secondary" for="btnradio1" @click="goData" style="width: 80px">전체</button>
         <button type="button" class="btn btn-sm btn-outline-secondary" for="btnradio2" @click="orderByLatest" style="width: 80px">최신순</button>
@@ -157,15 +149,16 @@
 
     </div>
 
+    <div class="d-flex flex-wrap" style="justify-content: right; margin-top: 30px">
+      <section>
+        <div class="search" style="display: flex">
+          <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
+          <button type="button" class="btn btn-outline-secondary" @click="campingFilter(this.searchCamping)" style="margin-left:2%; padding: 1%; width: 50px; height: 30px; ">검색</button>
+        </div>
+      </section>
+    </div>
 
-    <section>
-      <div class="search">
-        <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
-        <button @click="campingFilter(this.searchCamping)">검색</button>
-      </div>
-    </section>
-
-    <div class="row mb-2" style="margin-top: 100px">
+    <div class="row mb-2" style="margin-top:60px">
       <div class="col-md-6" v-for="(product,index) in list" :key="product.id"
            :item="product" @click="toDetail(product)">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -386,28 +379,17 @@ img {
 }
 .search {
   width: 300px;
-  height: 100px;
-  margin-left: 75%;
+  height: 30px;
+  /*margin-left: 75%;*/
 }
 .search input {
-  width: 80%;
+  width: 250px;
   height: 30px;
   font-size: 18px;
   border: none;
   border-bottom: 1px black solid;
 }
-.search button {
-  font-size: 18px;
-  border: none;
-  background-color: green;
-  width: 50px;
-  height: 30px;
-  border-radius: 15px;
-  color: #fff;
-  cursor: pointer;
-  margin-left: 85%;
-  margin-top: -30%;
-}
+
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
 img {
   width: 40%;
