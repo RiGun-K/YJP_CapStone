@@ -103,8 +103,8 @@
                         v-model="reservationDate"
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
-            <input type="text" v-model="insertNumber" placeholder="인원을 입력하세요" v-if="room.baseNumber <= insertNumber <= room.maximumNumber">
-            <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
+            <input type="text" v-model="room.detailEx" placeholder="인원을 입력하세요">
+            <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
           </div>
           <div class="col-auto d-none d-lg-block">
             <!--                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >-->
@@ -421,17 +421,21 @@ export default {
       this.stateCheck = true;
     },
 
-    buyData(detailId) {
+    buyData(detailId,detailEx,baseNumber,maximumNumber) {
       console.log(this.startDate)
       console.log(this.endDate)
-      console.log(this.insertNumber)
       console.log(detailId)
+      console.log(detailEx)
       const period = this.endDate - this.startDate
+      const reservationNumber = detailEx
       if (this.startDate == this.endDate) {
         alert('예약 날짜를 선택해주세요.')
         return
-      } else if(this.insertNumber == 0) {
+      } else if(`${detailEx}` == 0) {
         alert('인원을 입력해주세요.')
+        return
+      } else if(`${detailEx}` < `${baseNumber}` | `${detailEx}` > `${maximumNumber}`) {
+        alert('예약인원을 다시 설정해주세요.')
         return
       } else {
         this.$router.push({
@@ -439,7 +443,8 @@ export default {
           query: {
             startDate: this.startDate,
             endDate: this.endDate,
-            period: period
+            period: period,
+            reservationNumber: reservationNumber,
           }
         })
       }},
