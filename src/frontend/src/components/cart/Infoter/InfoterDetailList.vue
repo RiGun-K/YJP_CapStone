@@ -69,24 +69,95 @@
         <button type="button" class="btn btn-outline-secondary"  @click="putResCart()" style="margin-top: 8px; margin-left: 450px">찜</button>
       </div>
     </div>
-  </main>
 
-  <div class="row mb-2" style="margin-top:60px">
-  <div>
-    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-      <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">qqqq</strong>
-                    <h3 class="mb-0">qqq}</h3>
-                    <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">qqqq}</div>
-                    <p class="card-text mb-auto">qqqqqqqqqqqqq</p>
-                    <a href="#" class="stretched-link"></a>
+
+
+    <div class="row mb-2" style="margin-top: 100px">
+      <div class="col-md-6" v-for="(room,index) in roomContent" :key="index">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">객실 선택 및 예약</strong>
+            <h3 class="mb-0">객실명 - {{ room.detailName }}</h3>
+            <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">설명 - {{ room.detailFunction }}</div>
+            <p class="card-text mb-auto">기준인원 - {{room.baseNumber}} | 최대인원 - {{ room.maximumNumber }}</p>
+            <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 600px; height:300px "  >
+          </div>
+          <p>예약기간 설정</p>
+          <div class="reservation">
+            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 40%"
+                        locale="ko-KR"
+                        :min-date="today"
+                        :max-date="end"
+                        type="date"
+                        range
+                        format="yyyy/MM/dd"
+                        value-format="yyyyMMdd"
+                        :enableTimePicker="false"
+                        autoApply
+                        v-on="toString()"
+                        :closeOnAutoApply="false"
+                        placeholder="예약 날짜를 선택해주세요."
+                        v-model="reservationDate"
+                        @click="DayList(room.orderMenus)"
+                        :disabledDates="disabledDates"/>
+            <input type="text" v-model="insertNumber" placeholder="인원을 입력하세요" v-if="room.baseNumber <= insertNumber <= room.maximumNumber">
+            <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <!--                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >-->
+          </div>
+        </div>
+
       </div>
-      <div class="col-auto d-none d-lg-block">
-<!--                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >-->
-      </div>
+
+
+<!--  <div class="row mb-2" style="margin-top:60px">-->
+<!--  <div>-->
+<!--    <div v-for="(room,index) in roomContent" :key="index"-->
+<!--         class="listObj">-->
+<!--      <div class="card-body">-->
+<!--        <img :src="'/api/product_detail_images/' + room.filename" alt="..." @click="toDetail(room)">-->
+<!--      </div>-->
+<!--    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">-->
+<!--      <div class="col p-4 d-flex flex-column position-static">-->
+<!--                    <strong class="d-inline-block mb-2 text-primary">객실 선택 및 예약</strong>-->
+<!--                    <h3 class="mb-0">객실명 - {{ room.detailName }}</h3>-->
+<!--                    <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">qqqq}</div>-->
+<!--                    <p class="card-text mb-auto">설명 - {{ room.detailFunction }}</p>-->
+<!--                    <p class="mb-0">최대인원 - {{ room.maximumNumber }}</p>-->
+<!--                    <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>-->
+
+
+<!--      </div>-->
+<!--      <br>-->
+<!--      <p>예약기간 설정</p>-->
+<!--      <div class="reservation">-->
+<!--        <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"-->
+<!--                    locale="ko-KR"-->
+<!--                    :min-date="today"-->
+<!--                    :max-date="end"-->
+<!--                    type="date"-->
+<!--                    range-->
+<!--                    format="yyyy/MM/dd"-->
+<!--                    value-format="yyyyMMdd"-->
+<!--                    :enableTimePicker="false"-->
+<!--                    autoApply-->
+<!--                    v-on="toString()"-->
+<!--                    :closeOnAutoApply="false"-->
+<!--                    placeholder="예약 날짜를 선택해주세요."-->
+<!--                    v-model="reservationDate"-->
+<!--                    @click="DayList(room.orderMenus)"-->
+<!--                    :disabledDates="disabledDates"/>-->
+<!--      <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>-->
+<!--      </div>-->
+<!--      <div class="col-auto d-none d-lg-block">-->
+<!--&lt;!&ndash;                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >&ndash;&gt;-->
+<!--      </div>-->
     </div>
-  </div>
-  </div>
+
 
   <br>
   <br>
@@ -96,11 +167,9 @@
   <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
   <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
 
+  </main>
 
-
-
-
-<!--    <div class="listBody">-->
+<!--    <div>-->
 <!--      <h1> 객실 선택 및 예약 </h1>-->
 <!--      <div v-for="(room,index) in roomContent" :key="index"-->
 <!--            class="listObj">-->
@@ -282,6 +351,7 @@ export default {
       reservationDate: [],
       // date: [],
       member: [],
+      insertNumber: '',
 
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
@@ -354,9 +424,14 @@ export default {
     buyData(detailId) {
       console.log(this.startDate)
       console.log(this.endDate)
+      console.log(this.insertNumber)
+      console.log(detailId)
       const period = this.endDate - this.startDate
       if (this.startDate == this.endDate) {
         alert('예약 날짜를 선택해주세요.')
+        return
+      } else if(this.insertNumber == 0) {
+        alert('인원을 입력해주세요.')
         return
       } else {
         this.$router.push({
@@ -576,9 +651,15 @@ export default {
 </script>
 
 <style scoped>
+/*img {*/
+/*  width : 10%;*/
+/*  height: 10%;*/
+/*}*/
+
+select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
 img {
-  width: 600px;
-  height: 400px;
+  width: 20%;
+  height: 20%;
 }
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
@@ -844,15 +925,6 @@ img {
   border-radius: 1em;
   font-size: 1.5em;
 }
-..w-btn-red {
-  background-color: #ff5f2e;
-  color: #e1eef6;
-}
-.w-btn:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
 
 .w-btn-outline {
   position: relative;
@@ -883,4 +955,5 @@ img {
 .w-btn-outline:active {
   transform: scale(1.5);
 }
+
 </style>
