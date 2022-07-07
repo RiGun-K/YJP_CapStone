@@ -130,7 +130,7 @@
                 </a>
               </li>
               <li v-if="uiLogin">
-                <a href="/storageView" class="nav-link text-black">
+                <a href="/storageView" class="nav-link text-black" >
                   <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#box_seam"/></svg>
                   Storage
                 </a>
@@ -303,9 +303,11 @@ export default {
   methods: {
     signup() {
       this.$router.push('agreement')
+      this.loginBtn()
     },
     search(){
       this.$router.push('searchSelect')
+      this.loginBtn()
     },
     logout() {
       alert("로그아웃")

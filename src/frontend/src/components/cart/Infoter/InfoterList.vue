@@ -134,7 +134,7 @@
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-      <button type="button" class="btn btn-outline-secondary" @click="search()" style="margi  n-left: 5%">검색</button>
+      <button type="button" class="btn btn-outline-secondary" @click="search()" style="margin-left: 5%">검색</button>
     </div>
 
     <br>
