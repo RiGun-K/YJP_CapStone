@@ -45,7 +45,7 @@
             <td>010-9699-4238</td>
           </tr>
           <tr>
-            <th scope="row">2</th>
+            <th scope="row">캠핑장 소개</th>
             <td>{{ this.content.campingInfo }}</td>
           </tr>
           <tr>

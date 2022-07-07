@@ -248,10 +248,10 @@
                   <label for="floatingInput">ID</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" name="MPASS" v-model="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
+                  <input type="password" name="MPASS" v-model="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password"  autocomplete="off">
                   <label for="floatingPassword">Password</label>
                 </div>
-                <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" @click="login">Login</button>
+                <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button" @click="login">Login</button>
                 <small class="text-muted">By clicking Login, you agree to the terms of use.</small>
                 <hr class="my-4">
                 <h2 class="fs-5 fw-bold mb-3">Do you need a hand?</h2>
