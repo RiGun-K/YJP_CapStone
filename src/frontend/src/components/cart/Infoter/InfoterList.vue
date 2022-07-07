@@ -158,12 +158,14 @@
     </div>
 
 
-    <section>
-      <div class="search">
-        <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
-        <button @click="campingFilter(this.searchCamping)">검색</button>
-      </div>
-    </section>
+    <div class="d-flex flex-wrap" style="justify-content: right; margin-top: 30px">
+      <section>
+        <div class="search" style="display: flex">
+          <input type="text" v-model="searchCamping" placeholder="검색어를 입력하세요">
+          <button type="button" class="btn btn-outline-secondary" @click="campingFilter(this.searchCamping)" style="margin-left:2%; padding: 1%; width: 50px; height: 30px; ">검색</button>
+        </div>
+      </section>
+    </div>
 
     <div class="row mb-2" style="margin-top: 100px">
       <div class="col-md-6" v-for="(product,index) in list" :key="product.id"
@@ -386,27 +388,15 @@ img {
 }
 .search {
   width: 300px;
-  height: 100px;
-  margin-left: 75%;
+  height: 30px;
+  /*margin-left: 75%;*/
 }
 .search input {
-  width: 80%;
+  width: 250px;
   height: 30px;
   font-size: 18px;
   border: none;
   border-bottom: 1px black solid;
-}
-.search button {
-  font-size: 18px;
-  border: none;
-  background-color: green;
-  width: 50px;
-  height: 30px;
-  border-radius: 15px;
-  color: #fff;
-  cursor: pointer;
-  margin-left: 85%;
-  margin-top: -30%;
 }
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
 img {
