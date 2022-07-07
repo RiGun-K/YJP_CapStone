@@ -8,7 +8,7 @@
         <label @click="viewCheck(index)" v-show="!checkList[index]">보이기</label>
       </div>
       <div v-for="(obj2, index2) in smallList[index]" class="btnDiv"  v-show="checkList[index]">
-        <button class="btn" @click="chBack(index, index2)">{{obj2.kindname}}</button>
+        <button class="btnPre" @click="chBack(index, index2)">{{obj2.kindname}}</button>
       </div>
     </div>
   </div>
@@ -67,18 +67,23 @@ export default {
     setTimeout(()=>{
       this.flag = true
     },400)
+    console.log(this.smallList)
   },
   methods:{
     chBack(index, index2){
       //버튼 색상 변경
-      var btn = document.getElementsByClassName("btn")
+      var btn = document.getElementsByClassName("btnPre")
       var i = index2;
+      console.log(index)
+      console.log(index2)
 
       if(index != 0){
         for(var x = 0; x < index; x++){
           i += this.smallList[x].length
         }
+        console.log(i)
       }
+      console.log(btn)
       //이미 선택한 버튼 선택 취소, 유저 선호도 목록에서 삭제
       if(btn[i].classList.item(1) == "clicked"){
         btn[i].classList.remove("clicked")
@@ -115,7 +120,7 @@ export default {
     flag(){
       var check = false
       var index = 0
-      var btn = document.getElementsByClassName("btn")
+      var btn = document.getElementsByClassName("btnPre")
 
       for(var x = 0; x < this.userList.length; x++){
         for(var y = 0; y < this.smallList.length; y++){
@@ -173,7 +178,7 @@ export default {
   border: 1px solid black;
   text-align: left;
 }
-.btn{
+.btnPre{
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -181,7 +186,7 @@ export default {
   color: black;
   width: 100px;
 }
-.btn:hover{
+.btnPre:hover{
   background: #000a69;
   color: white;
 }
