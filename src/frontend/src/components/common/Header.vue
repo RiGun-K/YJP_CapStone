@@ -130,7 +130,7 @@
                 </a>
               </li>
               <li v-if="uiLogin">
-                <a href="/storageView" class="nav-link text-black">
+                <a href="/storageView" class="nav-link text-black" >
                   <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#box_seam"/></svg>
                   Storage
                 </a>
@@ -211,19 +211,19 @@
                   <li @click="logout" style="display: flex"><a class="dropdown-item" >Sign out</a></li>
                 </ul>
               </div>
-<!--              <a href="/memberUpdate" class="nav-link text-black"  v-if="uiLogin">-->
-<!--                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>-->
-<!--              </a>-->
-                <div class="flex-shrink-0 dropdown" v-if="uiLogin!='' && uiLogin!=5" style="margin-right: 30px">
-                  <a href="/cart" class="d-block link-dark text-decoration-none" data-bs-toggle="dropdown">
-                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#cart" /></svg>
-                  </a>
-                  <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li @click="buyCartLink()"><a class="dropdown-item">구매</a></li>
-                    <li @click="shareCartLink()"><a class="dropdown-item">대여</a></li>
-                    <li @click="reservationCartLink()"><a class="dropdown-item">예약</a></li>
-                  </ul>
-                </div>
+              <!--              <a href="/memberUpdate" class="nav-link text-black"  v-if="uiLogin">-->
+              <!--                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>-->
+              <!--              </a>-->
+              <div class="flex-shrink-0 dropdown" v-if="uiLogin!='' && uiLogin!=5" style="margin-right: 30px">
+                <a href="/cart" class="d-block link-dark text-decoration-none" data-bs-toggle="dropdown">
+                  <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#cart" /></svg>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                  <li @click="buyCartLink()"><a class="dropdown-item">구매</a></li>
+                  <li @click="shareCartLink()"><a class="dropdown-item">대여</a></li>
+                  <li @click="reservationCartLink()"><a class="dropdown-item">예약</a></li>
+                </ul>
+              </div>
               <button type="button" class="btn btn-light text-dark me-2" @click="logout" v-if="uiLogin!='' && uiLogin==5">Sign out</button>
             </div>
           </div>
@@ -248,10 +248,10 @@
                   <label for="floatingInput">ID</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" name="MPASS" v-model="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
+                  <input type="password" name="MPASS" v-model="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password" aria-label="Recipient's username" aria-describedby="button-addon2">
                   <label for="floatingPassword">Password</label>
                 </div>
-                <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" @click="login">Login</button>
+                <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="button-addon2" type="button" @click="login">Login</button>
                 <small class="text-muted">By clicking Login, you agree to the terms of use.</small>
                 <hr class="my-4">
                 <h2 class="fs-5 fw-bold mb-3">Do you need a hand?</h2>
@@ -269,17 +269,17 @@
     </div>
 
   </main>
-<!--  <div class="header-info">-->
-<!--    <header>-->
-<!--      <h1 class="header-name"><a href="/" class="header-name-link"><img :src="require('@/assets/campingLogo.jpg')" alt="...">Camping Planner</a></h1>-->
-<!--      <a class="header-signup-link" href="/cart"  v-if="uiLogin">CART / LIKE</a>-->
-<!--      <a class="header-signup-link" href="/agreement" v-if="!uiLogin">회원가입</a>-->
-<!--      <a class="header-login-link" href="/login" v-if="!uiLogin">로그인</a>-->
-<!--      <a class="header-login-link" @click="logout"  v-if="uiLogin">로그아웃</a>-->
+  <!--  <div class="header-info">-->
+  <!--    <header>-->
+  <!--      <h1 class="header-name"><a href="/" class="header-name-link"><img :src="require('@/assets/campingLogo.jpg')" alt="...">Camping Planner</a></h1>-->
+  <!--      <a class="header-signup-link" href="/cart"  v-if="uiLogin">CART / LIKE</a>-->
+  <!--      <a class="header-signup-link" href="/agreement" v-if="!uiLogin">회원가입</a>-->
+  <!--      <a class="header-login-link" href="/login" v-if="!uiLogin">로그인</a>-->
+  <!--      <a class="header-login-link" @click="logout"  v-if="uiLogin">로그아웃</a>-->
 
-<!--      <store></store>-->
-<!--    </header>-->
-<!--  </div>-->
+  <!--      <store></store>-->
+  <!--    </header>-->
+  <!--  </div>-->
 </template>
 
 <script>
@@ -303,9 +303,11 @@ export default {
   methods: {
     signup() {
       this.$router.push('agreement')
+      this.loginBtn()
     },
     search(){
       this.$router.push('searchSelect')
+      this.loginBtn()
     },
     logout() {
       alert("로그아웃")
