@@ -1,58 +1,94 @@
 <template>
-  <div class="user-storage-view">
-    <h3>보관소</h3>
-    <div class="searchDiv">
-      <select v-model="bigPick" @change="bigCheck(bigPick)">
+  <symbol id="box_seam" viewBox="0 0 16 16">
+    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+  </symbol>
+
+  <h3 style="margin-top: 2%; margin-left: 250px; margin-bottom: 2%;">Storage Search</h3>
+
+  <main class="container">
+    <div class="searchDiv" style="display: flex;">
+      <select class="form-select" aria-label="Default select example" v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
         <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
       </select>
-      <select v-model="smallPick" @change="search()" style="margin-left: 5px">
+      <select class="form-select" aria-label="Default select example"  v-model="smallPick" style="margin-left: 1%">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
       </select>
-    </div>
-    <div class="searchDiv">
-      <label for="storageName">보관소이름</label>
-      <input type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
-             style="margin-left: 5px">
-      <button @click="storageSearch()" style="margin-left: 8px">검색</button>
+      <button type="button" class="btn btn-outline-secondary" @click="search()" style="margin-left: 1%">검색</button>
     </div>
 
-    <div class="listBody">
-      <div v-for="(storage,index) in storageList" :key="index"
-           @click="GetStorageDetail(storage.storageCode)" class="listObj">
-        <div class="card">
-          <table>
-            <tbody>
-            <tr>
-              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.storageCode"></td>
-              <td>이름</td>
-              <td>{{ storage.storageName }}</td>
-            </tr>
-            <tr>
-              <td>주소</td>
-              <td>{{ storage.storageAddress }}</td>
-            </tr>
-            <tr>
-              <td>전화번호</td>
-              <td>{{ storage.storageTel }}</td>
-            </tr>
-            <tr>
-              <td colspan="2">
+    <div class="d-flex flex-wrap" style="justify-content: right; margin-top: 30px">
+      <section>
+        <div class="search" style="display: flex">
+          <input  type="text" id="storageName" v-model="stSearch" placeholder="보관소이름" @keyup.enter="storageSearch()"
+                  style="margin-left: 5px">
+          <button type="button" class="btn btn-outline-secondary" @click="storageSearch()" style="margin-left:2%; padding: 1%; width: 50px; height: 30px;">검색</button>
+        </div>
+      </section>
+    </div>
+
+
+
+      <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 200px">
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 380px;">
+          <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+            <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#box_seam"/></svg>
+            <span class="fs-5 fw-semibold">Storage</span>
+          </a>
+          <div class="list-group list-group-flush border-bottom scrollarea"  style="overflow: scroll; width: 380px; height: 600px">
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true"
+               v-for="(storage,index) in storageList" :key="index"
+               @click="GetStorageDetail(storage.storageCode)">
+              <div class="d-flex w-100 align-items-center justify-content-between">
+                <strong class="mb-1">{{ storage.storageName }}</strong>
+                <img :src="'/api/product_detail_images/' + storage.filename" alt="..." style="width: 50px; height:50px; margin-top: 10px" >
+              </div>
+              <div style="display: flex">
+                <div class="col-10 mb-1 small">{{ storage.storageAddress }}</div>
                 <button @click="askBox(storage)" class="storage-submit-btn">자세히</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="mapDiv">
+          <div id="map"></div>
         </div>
       </div>
-    </div>
 
-    <div class="mapDiv">
-      <div id="map"></div>
-    </div>
 
-  </div>
+
+<!--    <div class="listBody">-->
+<!--      <div v-for="(storage,index) in storageList" :key="index"-->
+<!--           @click="GetStorageDetail(storage.storageCode)" class="listObj">-->
+<!--        <div class="card">-->
+<!--          <table>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--              <td rowspan="3"><img class="storage-image" :src="'/api/storageImage/'+storage.storageCode"></td>-->
+<!--              <td>이름</td>-->
+<!--              <td>{{ storage.storageName }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>주소</td>-->
+<!--              <td>{{ storage.storageAddress }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>전화번호</td>-->
+<!--              <td>{{ storage.storageTel }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td colspan="2">-->
+<!--                <button @click="askBox(storage)" class="storage-submit-btn">자세히</button>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+  </main>
 </template>
 <script>
 import axios from "axios";
@@ -302,44 +338,41 @@ export default {
 </script>
 
 <style scoped>
-/*추가*/
-.listBody {
-  padding: 0.5%;
-  margin-left: 5%;
-  margin-top: 1%;
-  margin-right: 1%;
-  width: 40%;
-  float: left;
-  overflow: auto;
-  height: 550px;
-}
-
 .searchDiv {
-  margin-left: 5.5%;
-  margin-top: 1%;
+  margin-top: 100px;
 }
 
-.listObj {
-  width: 100%;
-}
+select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
+
 
 .mapDiv {
-  margin-top: 1%;
-  margin-right: 1%;
+  margin-top: 60px;
+  margin-left: 3%;
   margin-bottom: 1%;
-  width: 50%;
-  float: right;
+  width: 900px;
+  height: 600px;
+  border: solid 1px black;
 }
 
-.card {
-  margin-top: 1%;
-  width: 100%;
-  text-align: right;
+.search {
+  width: 300px;
+  height: 30px;
+
 }
+.search input {
+  width: 250px;
+  height: 30px;
+  font-size: 18px;
+  border: none;
+  border-bottom: 1px black solid;
+}
+select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
+
+
 
 /*기존*/
 #map {
-  width: 98%;
+  width: 100%;
   height: 600px;
 }
 
@@ -349,31 +382,9 @@ export default {
 }
 
 .user-storage-view h3 {
-  margin-top: 3%;
-  margin-left: 7%;
+  margin-top: 2%;
+  margin-left: 250px;
   margin-bottom: 5%;
-}
-
-.storage-submit-btn {
-  margin: 2% -30% 2% 33%;
-  text-align: center;
-  width: 20%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
-  float: right;
-}
-
-.storage-submit-btn:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-
-.storage-image {
-  float: left;
-  width: 30%;
-  height: 30%;
 }
 
 td {
