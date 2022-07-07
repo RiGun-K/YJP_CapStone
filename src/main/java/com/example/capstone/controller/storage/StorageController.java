@@ -366,6 +366,25 @@ public class StorageController {
         return storageBox.get();
     }
 
+//    매니저가 해지하는 보관소 배송시작 시 보관함 상태코드 0으로 변경
+    @GetMapping("endBoxState/{useCode}")
+    Result endBoxState(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox.get());
+        Optional<StorageBox> storageBox = storageBoxRepository.findById(useStorageBox.get().getStorageBoxCode().getStorageBoxCode());
+        StorageBox storageBox1 = storageBox.get();
+        storageBox1.setStorageBoxState("0");
+        storageBoxRepository.save(storageBox1);
+
+        for (int i = 0; i < boxItemList.size(); i++) {
+            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(boxItemList.get(i).getMemEquipmentCode().getMemEquipmentCode());
+            memberEquipment.get().setMemEquipmentState("0");
+            memberEquipmentRepository.save(memberEquipment.get());
+            boxItemRepository.delete(boxItemList.get(i));
+        }
+        return new Result("ok");
+    }
+
 
     //보관소 정보 업데이트
     @PostMapping("updateStorage")
