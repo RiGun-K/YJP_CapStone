@@ -79,7 +79,7 @@
             <strong class="d-inline-block mb-2 text-primary">객실 선택 및 예약</strong>
             <h3 class="mb-0">객실명 - {{ room.detailName }}</h3>
             <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">설명 - {{ room.detailFunction }}</div>
-            <p class="card-text mb-auto">최대인원 - {{ room.maximumNumber }}</p>
+            <p class="card-text mb-auto">기준인원 - {{room.baseNumber}} | 최대인원 - {{ room.maximumNumber }}</p>
             <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>
           </div>
           <div class="col-auto d-none d-lg-block">
@@ -103,6 +103,7 @@
                         v-model="reservationDate"
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
+            <input type="text" v-model="insertNumber" placeholder="인원을 입력하세요" v-if="room.baseNumber <= insertNumber <= room.maximumNumber">
             <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
           </div>
           <div class="col-auto d-none d-lg-block">
@@ -350,6 +351,7 @@ export default {
       reservationDate: [],
       // date: [],
       member: [],
+      insertNumber: '',
 
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
@@ -422,9 +424,14 @@ export default {
     buyData(detailId) {
       console.log(this.startDate)
       console.log(this.endDate)
+      console.log(this.insertNumber)
+      console.log(detailId)
       const period = this.endDate - this.startDate
       if (this.startDate == this.endDate) {
         alert('예약 날짜를 선택해주세요.')
+        return
+      } else if(this.insertNumber == 0) {
+        alert('인원을 입력해주세요.')
         return
       } else {
         this.$router.push({
