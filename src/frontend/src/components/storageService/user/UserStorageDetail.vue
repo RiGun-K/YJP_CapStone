@@ -3,16 +3,14 @@
     <button @click="backPage" class="storage-back-btn">되돌아가기</button>
     <h5 class="storage-name-h5">보관소 이름:{{ name }}</h5>
 
-    <div class="storage-view" v-for="(obj, index) in boxArray">
-      <div class="storage-box" v-for="(box) in boxArray[index]" @click="findTime(box)">
-        <ul>
-          <li>{{ box.storageBoxName }}</li>
-          <li v-if="box.storageBoxState == '0'">사용가능</li>
-          <li v-else-if="box.storageBoxState == '6'">사용가능 <br>(바로사용불가)</li>
-          <li v-else>사용불가능</li>
-          <li>가격 : {{ box.storageBoxPrice }}원</li>
-        </ul>
-      </div>
+    <div class="storage-box" v-for="box in this.boxList.storageBoxes" @click="findTime(box)">
+      <ul>
+        <li>{{ box.storageBoxName }}</li>
+        <li v-if="box.storageBoxState == '0'">사용가능</li>
+        <li v-else-if="box.storageBoxState == '6'">사용가능 <br>(바로사용불가)</li>
+        <li v-else>사용불가능</li>
+        <li>가격 : {{ box.storageBoxPrice }}원</li>
+      </ul>
     </div>
     <div v-if="stateCheck" class="detailDiv">
       <div><h3>{{ boxName }}</h3></div>
@@ -48,24 +46,24 @@
           <h5>보관 장비</h5>
           <hr>
           <div>
-            <div  class="chkItemList">
+            <div class="chkItemList">
               <table>
                 <thead>
-                  <tr>
-                    <th>장비</th>
-                    <th>수량</th>
-                  </tr>
+                <tr>
+                  <th>장비</th>
+                  <th>수량</th>
+                </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item,index) in checkItem">
-                    <td>{{ item.itemName }}</td>
-                    <td>
-                      <select v-model="item.count">
-                        <option v-for="inx in item.itemCount" :value="inx">{{inx}}</option>
-                      </select>
-                      개
-                    </td>
-                  </tr>
+                <tr v-for="(item,index) in checkItem">
+                  <td>{{ item.itemName }}</td>
+                  <td>
+                    <select v-model="item.count">
+                      <option v-for="inx in item.itemCount" :value="inx">{{ inx }}</option>
+                    </select>
+                    개
+                  </td>
+                </tr>
                 </tbody>
               </table>
             </div>
@@ -138,7 +136,7 @@ export default {
       stateCheck: false,
       boxArray: [],
       backFlag: false,
-      putItem:{},
+      putItem: {},
     }
   },
   methods: {
@@ -245,13 +243,13 @@ export default {
         if (this.checkItem[i].itemCode == this.putItem.itemCode) {
           let a = document.getElementsByClassName("item")
           a[index].style.backgroundColor = "white"
-          this.checkItem.splice(i,1)
+          this.checkItem.splice(i, 1)
           return
         }
       }
       this.additem(this.putItem, index)
     },
-    additem(putItem, index){
+    additem(putItem, index) {
       this.checkItem.push(putItem)
       this.putItem = {}
       let a = document.getElementsByClassName("item")
@@ -288,15 +286,13 @@ export default {
     backFlag() {
       var divItem = document.getElementsByClassName("storage-box")
       var index = 0
-      for (var x = 0; x < this.boxArray.length; x++) {
-        for (var y = 0; y < this.boxArray[x].length; y++) {
-          if (this.boxArray[x][y].storageBoxState != 0) {
-            divItem[index].classList.add("disabledDiv")
-          } else if (this.boxArray[x][y].storageBoxState == 6) {
-            divItem[index].classList.add("playOutDiv")
-          }
-          index++
+      for (var x = 0; x < this.boxList.storageBoxes.length; x++) {
+        if (this.boxList.storageBoxes[x].storageBoxState != 0) {
+          divItem[index].classList.add("disabledDiv")
+        } else if (this.boxList.storageBoxes[x].storageBoxState == 6) {
+          divItem[index].classList.add("playOutDiv")
         }
+        index++
       }
     }
   }
@@ -435,12 +431,12 @@ ul {
   background-color: #b2e2fd;
 }
 
-.chkItemList thead{
+.chkItemList thead {
   background-color: #6e6e6e;
   color: white;
 }
 
-.chkItemList tr{
+.chkItemList tr {
   border-bottom: 1px solid black;
 }
 </style>
