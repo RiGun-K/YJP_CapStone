@@ -151,10 +151,10 @@
       </div>
     </div>
   </div>
-  <div v-if="box.useStorageState == '1'">
-    <div v-if="remainder">
+  <div v-if="box.useStorageState == 1">
+    <div v-if="remainder && backchk">
       <h5>종료까지 {{ remainderTime }}일 남았습니다.</h5>
-      <div>
+      <div  >
         <h5>주소지</h5>
         <div class="box-info">
           <table>
@@ -179,10 +179,11 @@
           </table>
         </div>
       </div>
+      <div>
+        <button  @click="enddell()">배송시작</button>
+      </div>
     </div>
-    <div>
-      <button v-if="backchk" @click="moveDel()">배송시작</button>
-    </div>
+
   </div>
 </template>
 
@@ -220,11 +221,11 @@ export default {
     }
   },
   methods: {
-    moveDel(){
-      this.box.useStorageState =2
+    enddell(){
       axios.get('/api/endBoxState/'+this.box.useStorageCode)
           .then(res=>{
-            console.log(res)
+            this.backchk = false
+            alert('배송합니다')
             this.getBoxInfo()
             this.$emit('updata')
           })
@@ -345,6 +346,7 @@ export default {
         this.getMoveBox()
       }
       this.ifCheck()
+
     },
     delInfo(){
       axios.get("/api/delInfo/"+this.del)
@@ -356,7 +358,7 @@ export default {
           })
     },
     ifCheck() {
-      if (this.box.updateusbCode != '') {
+      if (this.box.updateusbCode != undefined) {
         this.getMoveBox()
       }
       if (this.box.useStorageState == 1) {
@@ -369,8 +371,8 @@ export default {
             if (res.data.length>0){
               this.box = {}
               this.addUseBoxInfoSetting(res.data)
-              this.checkMoreReNewal()
             }
+            this.checkMoreReNewal()
           })
           .catch(err => {
             console.log(err)
@@ -415,7 +417,7 @@ export default {
       axios.get('/api/remainderTime/' + this.box.useStorageCode)
           .then(res => {
             this.remainderTime = res.data
-            if (this.remainderTime < 4) {
+            if (this.remainderTime < 6) {
               this.remainder = true
             } else {
               this.remainder = false

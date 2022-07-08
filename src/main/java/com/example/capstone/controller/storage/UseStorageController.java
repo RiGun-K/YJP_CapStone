@@ -557,7 +557,7 @@ public class UseStorageController {
     public int remainderTime(@PathVariable(value = "useCode") long useCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
 
-        Period period = useStorageBox.get().getUseStorageEndTime().until(LocalDate.now());
+        Period period = LocalDate.now().until(useStorageBox.get().getUseStorageEndTime());
 
         return period.getDays();
     }
