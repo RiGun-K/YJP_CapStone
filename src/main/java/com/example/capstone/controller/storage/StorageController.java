@@ -451,7 +451,7 @@ public class StorageController {
         Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
         List<UseStorageBox> useStorageBoxes = useStorageBoxRepository.findByStorageBoxCode(storageBox.get());
         for (int i = 0; i < useStorageBoxes.size(); i++) {
-            if (useStorageBoxes.get(i).getUseStorageState() != "1"){
+            if (!useStorageBoxes.get(i).getUseStorageState().equals("1")){
                 return new Result("no");
             }
         }
