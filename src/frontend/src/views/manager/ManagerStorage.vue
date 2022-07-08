@@ -67,6 +67,15 @@ export default {
       useChk:'',
     }
   },
+  created() {
+    axios.get('/api/updateBoxStateChk/'+this.storageList.storageCode)
+        .then(res=>{
+          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+  },
   mounted() {
     this.managerId = store.getters.getLoginState.loginState
     if(store.getters.getLoginState.stateCode != 5){
@@ -101,7 +110,6 @@ export default {
       axios.get('/api/getManagerStorage/' + this.managerId)
           .then(res => {
             this.storageList = res.data
-
           })
           .catch(err => {
             console.log(err)

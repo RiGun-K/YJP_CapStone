@@ -251,6 +251,7 @@ export default {
             .then(res=>{
               console.log(res)
               alert('회수 신청이 되었습니다.');
+              this.backChk = false
             })
             .catch(err=>{
               console.log(err)
