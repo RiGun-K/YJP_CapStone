@@ -77,6 +77,15 @@ export default {
     }
   },
   methods: {
+    updateStateCheck(){
+      axios.get('/api/updateBoxStateChk/'+this.storageList.storageCode)
+          .then(res=>{
+            console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
     stateString(index){
       switch (index){
         case '0':
@@ -101,7 +110,7 @@ export default {
       axios.get('/api/getManagerStorage/' + this.managerId)
           .then(res => {
             this.storageList = res.data
-
+            this.updateStateCheck()
           })
           .catch(err => {
             console.log(err)
