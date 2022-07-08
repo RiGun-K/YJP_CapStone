@@ -313,6 +313,7 @@ export default {
       let arry = []
       axios.get('/api/getBox/' + this.boxCode)
           .then(res => {
+            console.log(res.data)
             arry = res.data
             this.inputDate(arry)
           })
