@@ -31,6 +31,11 @@
         <td><input type="text" v-model="reservationTel" maxlength="12"></td>
       </tr>
       <tr>
+        <td class="infoter-now-td">예약인원</td>
+        <td>{{ this.$route.query.reservationNumber }} 명</td>
+
+      </tr>
+      <tr>
         <td class="infoter-now-td">예약 요청사항</td>
         <td><input size="40" type="text" v-model="reservationRequest"></td>
       </tr>
@@ -87,6 +92,8 @@ export default {
     console.log(this.$route.query.endDate)
     console.log("예약 총 기간")
     console.log(this.$route.query.period)
+    console.log("예약 인원")
+    console.log(this.$route.query.reservationNumber)
   },
   data () {
     return {
