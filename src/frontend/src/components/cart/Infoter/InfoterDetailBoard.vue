@@ -3,6 +3,7 @@
 
 <template>
 
+
   <div>
     <br>
     <h2> 리뷰 작성 페이지 </h2>
@@ -88,7 +89,6 @@ export default {
           img.setAttribute("src", e1.target.result);
           document.querySelector("div#image_container").appendChild(img);
         });
-
 
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);

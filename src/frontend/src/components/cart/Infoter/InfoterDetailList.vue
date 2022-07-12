@@ -4,33 +4,32 @@
 
   <main class="container d-flex flex-wrap">
     <div style="display: flex">
-    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" style="width: 600px; height: 400px">
-      <div class="carousel-indicators" >
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" ></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="5" aria-label="Slide 3"></button>
-
-      </div>
-      <div class="carousel-inner" >
-        <div class="carousel-item active" data-bs-interval="4000">
-          <img :src="'/api/product_detail_images/' + content.filename" alt="" class="d-block w-100"/>
+      <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" style="width: 600px; height: 450px">
+        <div class="carousel-indicators" >
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" ></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="5" aria-label="Slide 3"></button>
         </div>
-        <div class="carousel-item" data-bs-interval="4000" v-for="(image, index) in campingImages" :key="index" >
-          <img :src="'/api/product_detail_images/' + image.filename" alt="" class="d-block w-100"/>
+        <div class="carousel-inner" >
+          <div class="carousel-item active" data-bs-interval="4000">
+            <img :src="'/api/product_detail_images/' + content.filename" alt="" class="d-block"/>
+          </div>
+          <div class="carousel-item" data-bs-interval="4000" v-for="(image, index) in campingImages" :key="index" >
+            <img :src="'/api/product_detail_images/' + image.filename" alt="" class="d-block "/>
+          </div>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
       <div style="margin-left: 100px; margin-top: 30px; width: 500px">
         <table class="table">
           <thead>
@@ -72,7 +71,7 @@
 
 
 
-    <div class="row mb-2" style="margin-top: 100px">
+    <div class="row mb-2" style="margin-top: 100px; width: 100%;">
       <div class="col-md-6" v-for="(room,index) in roomContent" :key="index">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
@@ -82,12 +81,9 @@
             <p class="card-text mb-auto">기준인원 - {{room.baseNumber}} | 최대인원 - {{ room.maximumNumber }}</p>
             <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>
           </div>
-          <div class="col-auto d-none d-lg-block">
-            <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 600px; height:300px "  >
-          </div>
-          <p>예약기간 설정</p>
-          <div class="reservation">
-            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 40%"
+
+          <div class="reservation" style="display: flex; margin-top: -15px">
+            <Datepicker style="width: 450px; margin-left: 20px; margin-bottom: 20px"
                         locale="ko-KR"
                         :min-date="today"
                         :max-date="end"
@@ -104,62 +100,16 @@
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
             <input type="text" v-model="room.detailEx" placeholder="인원을 입력하세요">
-            <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="w-btn-outline w-btn-red-outline" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
+            <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
           </div>
-          <div class="col-auto d-none d-lg-block">
-            <!--                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >-->
+
+          <div class="col-auto d-none d-lg-block" style="margin-left: 20px; margin-bottom: 20px" v-on:click="toDetail(room)">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 580px; height:300px">
           </div>
         </div>
-
       </div>
-
-
-<!--  <div class="row mb-2" style="margin-top:60px">-->
-<!--  <div>-->
-<!--    <div v-for="(room,index) in roomContent" :key="index"-->
-<!--         class="listObj">-->
-<!--      <div class="card-body">-->
-<!--        <img :src="'/api/product_detail_images/' + room.filename" alt="..." @click="toDetail(room)">-->
-<!--      </div>-->
-<!--    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">-->
-<!--      <div class="col p-4 d-flex flex-column position-static">-->
-<!--                    <strong class="d-inline-block mb-2 text-primary">객실 선택 및 예약</strong>-->
-<!--                    <h3 class="mb-0">객실명 - {{ room.detailName }}</h3>-->
-<!--                    <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">qqqq}</div>-->
-<!--                    <p class="card-text mb-auto">설명 - {{ room.detailFunction }}</p>-->
-<!--                    <p class="mb-0">최대인원 - {{ room.maximumNumber }}</p>-->
-<!--                    <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>-->
-
-
-<!--      </div>-->
-<!--      <br>-->
-<!--      <p>예약기간 설정</p>-->
-<!--      <div class="reservation">-->
-<!--        <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"-->
-<!--                    locale="ko-KR"-->
-<!--                    :min-date="today"-->
-<!--                    :max-date="end"-->
-<!--                    type="date"-->
-<!--                    range-->
-<!--                    format="yyyy/MM/dd"-->
-<!--                    value-format="yyyyMMdd"-->
-<!--                    :enableTimePicker="false"-->
-<!--                    autoApply-->
-<!--                    v-on="toString()"-->
-<!--                    :closeOnAutoApply="false"-->
-<!--                    placeholder="예약 날짜를 선택해주세요."-->
-<!--                    v-model="reservationDate"-->
-<!--                    @click="DayList(room.orderMenus)"-->
-<!--                    :disabledDates="disabledDates"/>-->
-<!--      <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>-->
-<!--      </div>-->
-<!--      <div class="col-auto d-none d-lg-block">-->
-<!--&lt;!&ndash;                    <img :src="'/api/product_detail_images/' + product.filename" alt="..." style="width: 600px; height:300px "  >&ndash;&gt;-->
-<!--      </div>-->
     </div>
 
-
-<!--    <div v-show="is_show" style="position: fixed; z-index: 4;">-->
     <div v-show="is_show" style="position: fixed; z-index: 4;">
       <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
         <div class="modal-dialog" role="document">
@@ -201,7 +151,7 @@
                   </div>
                 </form>
               </div>
-                <br>
+              <br>
 
               <div class="col-md-7 col-lg-8">
                 <h4 class="mb-3">예약정보</h4>
@@ -267,171 +217,136 @@
                 </form>
               </div>
 
-                <br>
-                <button class="w-100 btn btn-primary btn-lg" @click="paymentBtn()" type="submit">결제하기</button>
+              <br>
+              <button class="w-100 btn btn-primary btn-lg" @click="paymentBtn()" type="submit">결제하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <br>
+    <br>
+    <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+    <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+    <!--  </div>-->
+    <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+    <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+
+    <div v-show="is_show2" style="position: fixed; z-index: 4;" >
+      <div class="col-md-6">
+        <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" style="background-color: rgba(49,49,49,0.5); ">
+          <div class="modal-dialog" role="document" style="margin-left: 550px; margin-top: 105px;">
+            <div class="modal-content rounded-4 shadow" style="width: 800px; height: 638px; background-color: rgba(0,0,0,0.1)">
+
+              <div style="display: flex;">
+                <div id="carouselExample" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+                  <div class="carousel-indicators" >
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" ></button>
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="3" aria-label="Slide 3"></button>
+                  </div>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="detailBtn()" style=" margin-left: 750px; margin-top: 1%;"></button>
+                  <div class="carousel-inner" style="margin-top: 10px">
+                    <div class="carousel-item active" data-bs-interval="4000">
+                      <img :src="'/api/product_detail_images/' + this.detail_room.filename" alt="" class="d-block" style="width: 798px; height: 600px;"/>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000" v-for="(image, index) in this.detail_room.images" :key="index" >
+                      <img :src="'/api/product_detail_images/' + image.filename" alt="" class="d-block" style="width: 798px; height: 600px"/>
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="height: 600px; margin-top: 35px">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="height: 600px;  margin-top: 35px">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-<!--    </div>-->
+    </div>
 
-  <br>
-  <br>
-  <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
-  <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
-  <!--  </div>-->
-  <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
-  <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+
+    <br>
+    <br>
+    <div style="display: flex" >
+      <button type="button" class="btn btn-secondary" @click="detail_1" style="margin-left: 70px;">캠핑장 소개 / 위치</button>
+      <button type="button" class="btn btn-secondary" @click="detail_2" style="margin-left: 70px;">이용 안내</button>
+      <button type="button" class="btn btn-secondary" @click="detail_3" style="margin-left: 70px;">위치/주변정보</button>
+      <button type="button" class="btn btn-secondary" @click="detail_4" style="margin-left: 70px;">캠핑/여행후기</button>
+    </div>
+
+    <div v-if="areaCheck1" style="margin-left: 250px; display: flex; margin-top: 60px;">
+      <br>
+      <div>
+        <img class="ilist" :src=imageC>
+        <br>
+        <img class="ilist" :src=imageC2>
+      </div>
+      <div class="mapDiv" style="margin-left: 40px;">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <div v-if="areaCheck2" style="margin-left: 250px; margin-top: 60px;">
+      <br>
+      <img class="ilist" :src=imageCC>
+      <br>
+      <img class="ilist" :src=imageCC2>
+    </div>
+
+    <div v-if="areaCheck3">
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="mapDiv">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <div v-if="areaCheck4">
+
+      <button type="button" class="btn btn-outline-secondary"  @click="detail_5" style="margin-top: 60px; margin-left: 1100px; width: 110px;">리뷰 작성</button>
+      <div class="row mb-2">
+        <div class="col-md-6" style="margin-top: 80px">
+          <div class="" v-for="(room,index) in roomContent" :key="index">
+            <div class="" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="width: 1000px; margin-left:  120px; margin-top: -20px">
+                <div class="col p-4 d-flex flex-column position-static">
+                  <button @click="delete_1(reviews)" class="delete_btn" style="width: 60px; height: 20px; margin-left: 20px; font-size: 10px; font-weight: bold; border: 0; outline: 0; text-decoration: underline; margin-top: 2px ">삭제</button>
+                  <button @click="update_1(reviews)" class="update_btn" style="width: 60px; height: 20px; margin-left: 5px; font-size: 10px; font-weight: bold; border: 0; outline: 0; text-decoration: underline; ">수정</button>
+
+                  <strong class="d-inline-block mb-2 text-primary" style="margin-bottom: 40px;">객실명 - {{ room.detailName }}</strong>
+                  <h3 class="mb-0">{{reviews.mcode.mname}} | {{reviews.savedTime}}</h3>
+                  <div class="mb-1 text-muted">{{ reviews.campingTitle }}</div>
+                  <p class="card-text mb-auto">{{ reviews.campingContent }}</p>
+                  <div class="Recommend">
+                    <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
+                  </div>
+
+                  <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                  <img :src="'/api/product_detail_images/' + reviews.filename"  style=" width: 200px; height: 250px"/>
+                  <!--            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main>
-
-<!--    <div>-->
-<!--      <h1> 객실 선택 및 예약 </h1>-->
-<!--      <div v-for="(room,index) in roomContent" :key="index"-->
-<!--            class="listObj">-->
-<!--        <div class="card">-->
-<!--          <div class="card-body">-->
-<!--            <img :src="'/api/product_detail_images/' + room.filename" alt="..." @click="toDetail(room)">-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            객실명 - {{ room.detailName }}-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            설명 - {{ room.detailFunction }}-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            최대인원 - {{ room.maximumNumber }}-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            1 박 가격 - {{ room.detailPrice }}-->
-<!--          </div>-->
-<!--          <br>-->
-<!--          <p>예약기간 설정</p>-->
-<!--          <div class="reservation">-->
-<!--            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"-->
-<!--                        locale="ko-KR"-->
-<!--                        :min-date="today"-->
-<!--                        :max-date="end"-->
-<!--                        type="date"-->
-<!--                        range-->
-<!--                        format="yyyy/MM/dd"-->
-<!--                        value-format="yyyyMMdd"-->
-<!--                        :enableTimePicker="false"-->
-<!--                        autoApply-->
-<!--                        v-on="toString()"-->
-<!--                        :closeOnAutoApply="false"-->
-<!--                        placeholder="예약 날짜를 선택해주세요."-->
-<!--                        v-model="reservationDate"-->
-<!--                        @click="DayList(room.orderMenus)"-->
-<!--                        :disabledDates="disabledDates"/>-->
-<!--          </div>-->
-<!--          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>-->
-<!--        </div>-->
-<!--        <br>-->
-<!--      </div>-->
-<!--    </div>-->
-
-
-  <br>
-
-
-  <br>
-  <div class="btn_area">
-    <button type="button" @click="detail_1" class="btn_Bottom">
-      <span>캠핑장 소개</span>
-    </button>
-    <button type="button" @click="detail_2" class="btn_Bottom_3">
-      <span>이용 안내</span>
-    </button>
-    <button type="button" @click="detail_3" class="btn_Bottom_3">
-      <span>위치/주변정보</span>
-    </button>
-    <button type="button" @click="detail_4" class="btn_Bottom_3">
-      <span>캠핑/여행후기</span>
-    </button>
-  </div>
-
-
-
-  <div v-if="areaCheck3">
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="mapDiv">
-      <div id="map"></div>
-    </div>
-  </div>
-
-
-
-  <div v-if="areaCheck1">
-    <br>
-    <img class="ilist" :src=imageC>
-    <br>
-    <img class="ilist" :src=imageC2>
-  </div>
-
-  <div v-if="areaCheck2">
-    <br>
-    <img class="ilist" :src=imageCC>
-    <br>
-    <img class="ilist" :src=imageCC2>
-  </div>
-
-  <div v-if="areaCheck4">
-    <br>
-    <div class="review-t">
-      <h2>리뷰</h2>
-    </div>
-    <div class="content-detail-list-1">
-      <br>
-      <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
-        <div class="Recommend">
-          <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
-        </div>
-
-        <div class="review">
-          <div class="review-title">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
-          <div class="review-text">{{ reviews.campingTitle }}</div>
-          <div class="review-text">{{ reviews.campingContent }}</div>
-
-          <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
-
-          <div class="my-box-3">
-          </div>
-          <div class="image_1">
-            <p class="review-image">이미지</p>
-            <img :src="'/api/product_detail_images/' + reviews.filename" />
-          </div>
-          <div class="btn_area_2">
-            <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
-              <span>삭제</span>
-            </button>
-          </div>
-
-          <div class="btn_area_2">
-            <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
-              <span>수정</span>
-            </button>
-          </div>
-
-        </div>
-
-
-
-      </div>
-
-      <br>
-      <div class="btn_area_1">
-        <button type="button" @click="detail_5" class="btn_Bottom_1">
-          <span>리뷰 작성</span>
-        </button>
-      </div>
-      <br>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -440,7 +355,6 @@ import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import dayjs from "dayjs"
 import store from "@/store";
-
 export default {
   name: "BuyDetailList",
   components: { Datepicker },
@@ -477,21 +391,17 @@ export default {
       show: false,
       reservationB: '',
       reservationRequest: '',
-
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
       endDate: new Date(),
-
       areaCheck1: false,
       areaCheck2: false,
       areaCheck3: false,
       areaCheck4: false,
-
       imageC: require('@/assets/캠핑장 소개.png'),
       imageC2: require('@/assets/캠핑장 소개2.png'),
       imageCC: require('@/assets/이용안내.png'),
       imageCC2: require('@/assets/이용안내 2.png'),
-
       //
       room: [],
       user: [],
@@ -499,6 +409,9 @@ export default {
       sDays: '',
       eDays: '',
       allPrice: '',
+
+      is_show2: false,
+      detail_room: []
     }
   },
   setup() {
@@ -523,11 +436,9 @@ export default {
             orderMenus[i].orders.endDate[0],
             orderMenus[i].orders.endDate[1] - 1,
             orderMenus[i].orders.endDate[2])
-
         var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
         const tomorrow = startDate
         this.disabledDates.push(tomorrow.toString())
-
         for (var j = 0; j < length; j++) {
           tomorrow.setDate(tomorrow.getDate() + 1)
           this.disabledDates.push(tomorrow.toString())
@@ -583,39 +494,35 @@ export default {
         this.sDays = this.startDate + ' ~ ' + this.endDate
         this.eDays = this.endDate
         axios.get('/api/product_detailR/' + this.id)
-          .then(res => {
-            console.log("해당 객실 정보입니다.")
-            console.log(res.data)
-            this.room = res.data;
-            this.allPrice = this.room.detailPrice * period
-            axios.get('/api/product_detailU/' + this.user)
-              .then(res => {
-                console.log("예약인 정보입니다.")
-                console.log(res.data)
-                this.user = res.data;
-              })
-              .catch(e => {
-                console.log(e)
-              })
-          })
-          .catch(e => {
-            console.log(e)
-          })
-
-
+            .then(res => {
+              console.log("해당 객실 정보입니다.")
+              console.log(res.data)
+              this.room = res.data;
+              this.allPrice = this.room.detailPrice * period
+              axios.get('/api/product_detailU/' + this.user)
+                  .then(res => {
+                    console.log("예약인 정보입니다.")
+                    console.log(res.data)
+                    this.user = res.data;
+                  })
+                  .catch(e => {
+                    console.log(e)
+                  })
+            })
+            .catch(e => {
+              console.log(e)
+            })
         /* 1] store 활용 , 2] DB에 임시저장 , 3] 전역변수 활용 */
-          // this.$router.push({
-          //   path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
-          //   query: {
-          //     startDate: this.startDate,
-          //     endDate: this.endDate,
-          //     period: period,
-          //     reservationNumber: reservationNumber,
-          //   }
-          // })
-
+        // this.$router.push({
+        //   path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
+        //   query: {
+        //     startDate: this.startDate,
+        //     endDate: this.endDate,
+        //     period: period,
+        //     reservationNumber: reservationNumber,
+        //   }
+        // })
       }
-
       // if(this.show) {
       //   this.is_show = !this.is_show;
       // }
@@ -628,20 +535,17 @@ export default {
       //     reservationNumber: reservationNumber,
       //   }
       // })
-
-      },
-
-    reservation() {
-
     },
-
-
+    reservation() {
+    },
+    detailBtn(){
+      this.is_show2 = !this.is_show2;
+    },
     detail_3() {
       this.areaCheck3 = true
       this.areaCheck1 = false
       this.areaCheck2 = false
       this.areaCheck4 = false
-
       // let check = prompt("1+1 은?");
       // alert("귀요미 ㅋ");
       // const point = [this.content.longitude, this.content.latitude]
@@ -771,14 +675,12 @@ export default {
             console.log(e)
           })
     },
-
     toString() {
       const start = dayjs(this.reservationDate[0]);
       this.startDate = start.format('YYYYMMDD');
       const end = dayjs(this.reservationDate[1]);
       this.endDate = end.format('YYYYMMDD');
     },
-
     detail_4() {
       this.areaCheck4 = true;
       this.areaCheck1 = false;
@@ -793,21 +695,18 @@ export default {
         }
       })
     },
-
     detail_1() {
       this.areaCheck4 = false;
       this.areaCheck1 = true;
       this.areaCheck2 = false;
       this.areaCheck3 = false;
     },
-
     detail_2() {
       this.areaCheck4 = false;
       this.areaCheck1 = false;
       this.areaCheck2 = true;
       this.areaCheck3 = false;
     },
-
     putResCart(){
       this.axios.post('http://localhost:9002/api/ResCartPut', {
         campingId: this.$route.params.campingId,
@@ -832,10 +731,16 @@ export default {
       })
     },
     toDetail(room) {
-      console.log(room.images);
-      this.$router.push({
-        path: `/infoter/infoterList/${this.id}/${room.detailId}`
-      })
+      // console.log(room.images);
+      // this.$router.push({
+      //   path: `/infoter/infoterList/${this.id}/${room.detailId}`
+      // })
+      this.detailBtn();
+      if(this.is_show2 === true){
+        console.log(room)
+
+        this.detail_room = room;
+      }
     },
     paymentBtn () {
       if (confirm('결제 하시겠습니까?')) {
@@ -901,7 +806,6 @@ export default {
         })
       }
     },
-
   },
   watch: {
     reservationTel(val) {
@@ -917,75 +821,15 @@ export default {
 </script>
 
 <style scoped>
-/*img {*/
-/*  width : 10%;*/
-/*  height: 10%;*/
-/*}*/
+img {
+  width : 650px;
+  height: 450px;
+}
 
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
-img {
-  width: 20%;
-  height: 20%;
-}
+
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
-/*@keyframes ring {*/
-/*  0% {*/
-/*    width: 30px;*/
-/*    height: 30px;*/
-/*    opacity: 1;*/
-/*  }*/
-/*  100% {*/
-/*    width: 300px;*/
-/*    height: 300px;*/
-/*    opacity: 0;*/
-/*  }*/
-/*}*/
-
-/*.w-btn-neon2 {*/
-/*  position: relative;*/
-/*  margin-left: 45%;*/
-/*  border: none;*/
-/*  min-width: 200px;*/
-/*  min-height: 50px;*/
-/*  background: linear-gradient(*/
-/*      90deg,*/
-/*      rgba(129, 230, 217, 1) 0%,*/
-/*      rgba(79, 209, 197, 1) 100%*/
-/*  );*/
-/*  border-radius: 1000px;*/
-/*  color: darkslategray;*/
-/*  cursor: pointer;*/
-/*  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);*/
-/*  font-weight: 700;*/
-/*  transition: 0.3s;*/
-/*}*/
-
-/*.w-btn-neon2:hover {*/
-/*  transform: scale(1.2);*/
-/*}*/
-
-/*.w-btn-neon2:hover::after {*/
-/*  content: "";*/
-/*  width: 30px;*/
-/*  height: 30px;*/
-/*  border-radius: 100%;*/
-/*  border: 6px solid #00ffcb;*/
-/*  position: absolute;*/
-/*  z-index: -1;*/
-/*  top: 50%;*/
-/*  left: 50%;*/
-/*  transform: translate(-50%, -50%);*/
-/*  animation: ring 1.5s infinite;*/
-/*}*/
-
-
-/*.d-grid gap-2 d-md-flex justify-content-md-end {*/
-/*  margin: auto;*/
-/*  width: 100%;*/
-/*  display: inline-block;*/
-/*  text-align: center;*/
-/*}*/
 .mapDiv{
   margin-top: -17%;
   width: 10%;
@@ -998,79 +842,11 @@ img {
   height: 400px;
 }
 
-.modalEx {
-  width: 500px;
-  height: 400px;
+.btn-secondary{
+  width: 230px;
+  height: 52px;
 }
-/*.nav label {*/
-/*  width: 150px;*/
-/*  height: 100%;*/
-/*  display: none;*/
-/*  position: absolute;*/
-/*  opacity: 0;*/
-/*  z-index: 9;*/
-/*  cursor: pointer;*/
-/*  transition: opacity .2s;*/
-/*  color: #FFF;*/
-/*  font-size: 156pt;*/
-/*  text-align: center;*/
-/*  line-height: 380px;*/
-/*  font-family: "Varela Round", sans-serif;*/
-/*  background-color: rgba(255, 255, 255, .3);*/
-/*  text-shadow: 0px 0px 15px rgb(119, 119, 119);*/
-/*}*/
-/*.slide:hover + .nav label { opacity: 0.5; }*/
-/*.nav label:hover { opacity: 1; }*/
-/*.nav .next { right: -20%; }*/
-/*input:checked + .slide-container  .slide {*/
-/*  opacity: 1;*/
-/*  transform: scale(1);*/
-/*  transition: opacity 1s ease-in-out;*/
-/*}*/
-/*input:checked + .slide-container .nav label { display: block; }*/
 
-/*input#img-1:checked ~ .nav-dots label#img-dot-1,*/
-/*input#img-2:checked ~ .nav-dots label#img-dot-2,*/
-/*input#img-3:checked ~ .nav-dots label#img-dot-3,*/
-/*input#img-4:checked ~ .nav-dots label#img-dot-4,*/
-/*input#img-5:checked ~ .nav-dots label#img-dot-5,*/
-/*input#img-6:checked ~ .nav-dots label#img-dot-6 {*/
-/*  background: rgba(0, 0, 0, 0.8);*/
-/*}*/
-.listBody{
-  padding: 0.5%;
-  margin-left: 30%;
-  margin-top: 1%;
-  margin-right: 1%;
-  width: 45%;
-}
-.btn_area {
-  margin: 20px 0 91px;
-}
-.btn_Bottom {
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10%;
-  position: center;
-}
-.btn_Bottom_3{
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10px;
-  position: center;
-}
 .my-box {               /*리뷰 젤 큰 박스*/
   border:3px solid;
   padding:50px 0 5%;
@@ -1171,59 +947,22 @@ img {
   text-align: center;
 }
 
-/*.reservation {*/
-/*  width: 285%;*/
-/*  margin-left: 80px*/
-/*}*/
-
-/*.ilist {*/
-/*  margin-left: 35%*/
-/*}*/
 .mapDiv {
   margin-left: 35%;
   margin-bottom: 70%;
 }
-.shareBtn{
-  margin-left: 45%;
-  margin-right: 3%;
-  width: 10%;
-  padding: 1%;
-  background-color: #ffffff;
-  color: #00a3de;
-  font-weight: bolder;
-  border-color: #00a3de;
-  border-radius: 1em;
-  font-size: 1.5em;
-}
-
-.w-btn-outline {
+.delete_btn{
+  background-color: transparent;
   position: relative;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: 'paybooc-Light', sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
+  bottom: 20px;
+  right: 10px;
+}
+.update_btn{
+  background-color: transparent;
+  position: relative;
+  bottom: 40px;
+  right: 30px;
+}
 
-  margin-top: 5% ;
-  margin-left: 55%;
-}
-.w-btn-red-outline {
-  border: 3px solid #2093e5;
-  color: #6e6e6e;
-}
-.w-btn-red-outline:hover {
-  background-color: #2093e5;
-  color: #e1eef6;
-}
-.w-btn-outline:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline:active {
-  transform: scale(1.5);
-}
 
 </style>
