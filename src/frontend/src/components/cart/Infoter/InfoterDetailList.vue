@@ -280,7 +280,6 @@
     <div style="display: flex" >
       <button type="button" class="btn btn-secondary" @click="detail_1" style="margin-left: 70px;">캠핑장 소개 / 위치</button>
       <button type="button" class="btn btn-secondary" @click="detail_2" style="margin-left: 70px;">이용 안내</button>
-      <button type="button" class="btn btn-secondary" @click="detail_3" style="margin-left: 70px;">위치/주변정보</button>
       <button type="button" class="btn btn-secondary" @click="detail_4" style="margin-left: 70px;">캠핑/여행후기</button>
     </div>
 
@@ -318,14 +317,14 @@
       <button type="button" class="btn btn-outline-secondary"  @click="detail_5" style="margin-top: 60px; margin-left: 1100px; width: 110px;">리뷰 작성</button>
       <div class="row mb-2">
         <div class="col-md-6" style="margin-top: 80px">
-          <div class="" v-for="(room,index) in roomContent" :key="index">
+          <div class="">
             <div class="" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
               <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="width: 1000px; margin-left:  120px; margin-top: -20px">
                 <div class="col p-4 d-flex flex-column position-static">
                   <button @click="delete_1(reviews)" class="delete_btn" style="width: 60px; height: 20px; margin-left: 20px; font-size: 10px; font-weight: bold; border: 0; outline: 0; text-decoration: underline; margin-top: 2px ">삭제</button>
                   <button @click="update_1(reviews)" class="update_btn" style="width: 60px; height: 20px; margin-left: 5px; font-size: 10px; font-weight: bold; border: 0; outline: 0; text-decoration: underline; ">수정</button>
 
-                  <strong class="d-inline-block mb-2 text-primary" style="margin-bottom: 40px;">객실명 - {{ room.detailName }}</strong>
+                  <strong class="d-inline-block mb-2 text-primary" style="margin-bottom: 40px;">{{ this.content.campingName }}</strong>
                   <h3 class="mb-0">{{reviews.mcode.mname}} | {{reviews.savedTime}}</h3>
                   <div class="mb-1 text-muted">{{ reviews.campingTitle }}</div>
                   <p class="card-text mb-auto">{{ reviews.campingContent }}</p>
@@ -696,10 +695,22 @@ export default {
       })
     },
     detail_1() {
+
       this.areaCheck4 = false;
       this.areaCheck1 = true;
       this.areaCheck2 = false;
       this.areaCheck3 = false;
+
+      if (window.kakao && window.kakao.maps) {
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
+        document.head.appendChild(script);
+      }
     },
     detail_2() {
       this.areaCheck4 = false;
