@@ -90,7 +90,6 @@ export default {
           document.querySelector("div#image_container").appendChild(img);
         });
 
-
         // 파일 읽기 시작
         reader.readAsDataURL(e.target.files[0]);
       }
