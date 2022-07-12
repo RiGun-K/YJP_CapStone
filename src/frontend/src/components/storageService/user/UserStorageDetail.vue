@@ -199,7 +199,7 @@
                   <div style="display: flex;">
                     <strong class="d-inline-block mb-0 text-success">보관 종료일</strong>
                     <div style="margin-left: 8px;">
-                      - {{  }}
+                      - {{ this.endDate }}
                     </div>
                   </div>
                 </div>
@@ -353,6 +353,7 @@ export default {
 
       payCheck: false,
       member: {},
+      endDate: null
     }
   },
   methods: {
@@ -385,6 +386,9 @@ export default {
         this.payCheck = !this.payCheck
         this.memberInfo()
         this.form.item = this.checkItem;
+
+        const start = new Date(this.date)
+        this.endDate = new Date(start.setDate(start.getDate() + 30))
       }
     },
     memberInfo(){
@@ -510,6 +514,7 @@ export default {
       let timeStorage = {}
       timeStorage.useStorageStartTime = this.date
       timeStorage.useStorageEndTime = new Date(start.setDate(start.getDate() + 30))
+      this.endDate = new Date(start.setDate(start.getDate() + 30))
       this.$store.commit('putItemStorage', this.checkItem)
       this.$store.commit('putTimeStorage', timeStorage)
       this.$store.commit('putInfoStorage', this.form)
