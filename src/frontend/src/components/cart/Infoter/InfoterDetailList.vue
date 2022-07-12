@@ -100,6 +100,7 @@
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
             <input type="text" v-model="room.detailEx" placeholder="인원을 입력하세요">
+
             <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
           </div>
 
@@ -274,6 +275,122 @@
       </div>
     </div>
 
+    <!--    <div v-show="is_show" style="position: fixed; z-index: 4;">-->
+    <div v-show="is_show" style="position: fixed; z-index: 4;">
+      <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow" style="width: 800px; height: 1200px">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+              <!-- <h5 class="modal-title">Modal title</h5> -->
+              <h2 class="fw-bold mb-0">예약 및 결제</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="buyDataBtn"></button>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">예약자 정보</h4>
+                <form class="needs-validation" novalidate>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="address" class="form-label">Name</label>
+                      <input type="text" v-model="this.user.mname" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="email" class="form-label">Email <span class="text-muted"></span></label>
+                      <input type="email" v-model="this.user.mmail" class="form-control" id="email" placeholder="you@example.com">
+                      <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="address" class="form-label">Phone Number</label>
+                      <input type="text" v-model="this.user.mph" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <br>
+
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">예약정보</h4>
+                <form class="needs-validation" novalidate>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="address" class="form-label">Reservation People</label>
+                      <input type="text" v-model="this.people" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="email" class="form-label">Reservation Requests <span class="text-muted"></span></label>
+                      <input type="email" v-model="reservationRequest" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
+                      <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="address" class="form-label">Reservation Days</label>
+                      <input type="text" v-model="this.sDays" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <br>
+
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">결제정보</h4>
+                <form class="needs-validation" novalidate>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="address" class="form-label">Room Name</label>
+                      <input type="text" v-model="this.room.detailName" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="email" class="form-label">Room Price <span class="text-muted"></span></label>
+                      <input type="email" v-model="this.room.detailPrice" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
+                      <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="address" class="form-label">All Room Price</label>
+                      <input type="text" v-model="this.allPrice" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <br>
+              <button class="w-100 btn btn-primary btn-lg" @click="paymentBtn()" type="submit">결제하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <br>
     <br>
@@ -345,6 +462,16 @@
         </div>
       </div>
     </div>
+    <!--    </div>-->
+
+    <br>
+    <br>
+    <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+    <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+    <!--  </div>-->
+    <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+    <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+
 
   </main>
 </template>
@@ -355,6 +482,7 @@ import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import dayjs from "dayjs"
 import store from "@/store";
+
 export default {
   name: "BuyDetailList",
   components: { Datepicker },
@@ -391,6 +519,7 @@ export default {
       show: false,
       reservationB: '',
       reservationRequest: '',
+
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
       endDate: new Date(),
@@ -412,6 +541,7 @@ export default {
 
       is_show2: false,
       detail_room: []
+
     }
   },
   setup() {
@@ -512,6 +642,36 @@ export default {
             .catch(e => {
               console.log(e)
             })
+            /* 1] store 활용 , 2] DB에 임시저장 , 3] 전역변수 활용 */
+            // this.$router.push({
+            //   path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
+            //   query: {
+            //     startDate: this.startDate,
+            //     endDate: this.endDate,
+            //     period: period,
+            //     reservationNumber: reservationNumber,
+            //   }
+            // })
+            .then(res => {
+              console.log("해당 객실 정보입니다.")
+              console.log(res.data)
+              this.room = res.data;
+              this.allPrice = this.room.detailPrice * period
+              axios.get('/api/product_detailU/' + this.user)
+                  .then(res => {
+                    console.log("예약인 정보입니다.")
+                    console.log(res.data)
+                    this.user = res.data;
+                  })
+                  .catch(e => {
+                    console.log(e)
+                  })
+            })
+            .catch(e => {
+              console.log(e)
+            })
+
+
         /* 1] store 활용 , 2] DB에 임시저장 , 3] 전역변수 활용 */
         // this.$router.push({
         //   path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
@@ -522,7 +682,9 @@ export default {
         //     reservationNumber: reservationNumber,
         //   }
         // })
+
       }
+
       // if(this.show) {
       //   this.is_show = !this.is_show;
       // }
@@ -808,6 +970,70 @@ export default {
       }
     },
   },
+  paymentBtn () {
+    if (confirm('결제 하시겠습니까?')) {
+      const IMP = window.IMP
+      console.log(this.startDate)
+      console.log(this.endDate)
+      IMP.init('imp35975601')
+      IMP.request_pay({
+        pg: 'html5_inicis',
+        pay_method: 'card',
+        merchant_uid: 'merchant_' + new Date().getTime(),
+        name: this.room.detailName,
+        amount: this.allPrice,
+        buyer_tel: this.user.mph,
+        buyer_name: this.user.mname,
+        buyer_email: this.user.mmail,
+        confirm_url: ''
+      }, (rsp) => {
+        if (true) {
+          let msg = '결제가 완료되었습니다.'
+          msg += '고유ID : ' + rsp.imp_uid
+          msg += '상점 거래 ID : ' + rsp.merchant_uid
+          msg += '결제 금액 : ' + rsp.paid_amount
+          msg += '카드 승인번호 : ' + rsp.apply_num
+          alert(msg)
+          console.log(this.content);
+          this.axios.post('http://localhost:9002/api/CampingRoomData', {
+            MID: this.user.mid,
+            reservationName: this.user.mname,
+            reservationTel: this.user.mph,
+            reservationRequest: this.reservationRequest,
+            // orderPrice: this.price,
+            orderPrice: this.allPrice,
+            orderType: rsp.pay_method,
+            paymentCode: rsp.merchant_uid,
+            orderState: '2',
+            orderMenuCount: 1,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            roomId: this.room.detailId,
+            campingId: this.content.campingId
+          })
+              .then((res)=>{
+                console.log(res.data);
+              })
+              .catch((err)=>{
+                console.log(err)
+              });
+          if (confirm('예약을 확인하시겠습니까?')) {
+            this.$router.push({
+              path: `/ordersList/reservationOrders/${this.user.mcode}`,
+            })
+          } else {
+            this.$router.push({
+              name: 'InfoterList',
+            })
+          }
+        } else {
+          let msg = '결제에 실패하였습니다.'
+          msg += '에러 내용 : ' + rsp.error_msg
+          alert(msg)
+        }
+      })
+    }
+  },
   watch: {
     reservationTel(val) {
       const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
@@ -847,6 +1073,37 @@ select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: in
   width: 230px;
   height: 52px;
 }
+
+.modalEx {
+  width: 500px;
+  height: 400px;
+}
+/*.nav label {*/
+/*  width: 150px;*/
+/*  height: 100%;*/
+/*  display: none;*/
+/*  position: absolute;*/
+/*  opacity: 0;*/
+/*  z-index: 9;*/
+/*  cursor: pointer;*/
+/*  transition: opacity .2s;*/
+/*  color: #FFF;*/
+/*  font-size: 156pt;*/
+/*  text-align: center;*/
+/*  line-height: 380px;*/
+/*  font-family: "Varela Round", sans-serif;*/
+/*  background-color: rgba(255, 255, 255, .3);*/
+/*  text-shadow: 0px 0px 15px rgb(119, 119, 119);*/
+/*}*/
+/*.slide:hover + .nav label { opacity: 0.5; }*/
+/*.nav label:hover { opacity: 1; }*/
+/*.nav .next { right: -20%; }*/
+/*input:checked + .slide-container  .slide {*/
+/*  opacity: 1;*/
+/*  transform: scale(1);*/
+/*  transition: opacity 1s ease-in-out;*/
+/*}*/
+/*input:checked + .slide-container .nav label { display: block; }*/
 
 .my-box {               /*리뷰 젤 큰 박스*/
   border:3px solid;
