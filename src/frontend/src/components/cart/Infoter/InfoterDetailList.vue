@@ -618,6 +618,7 @@ export default {
             console.log("fail", ex)
           })
     },
+
     fetchData() {
       console.log(this.id)
       axios.get('/api/CampingBoardlist/' + this.id)
