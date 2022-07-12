@@ -350,6 +350,7 @@
 </template>
 
 <script>
+
 import axios from "axios";
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -454,6 +455,7 @@ export default {
             console.log(res.data);
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
+            this.detailT = this.content.campingDetails.detailT;
             this.campingImages = this.content.images;
             console.log(this.roomContent);
             console.log(this.campingImages);
