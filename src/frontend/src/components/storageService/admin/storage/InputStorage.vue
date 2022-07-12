@@ -20,7 +20,7 @@
     </div>
     <div class="bodydiv">
       <label class="labelWidth">전화번호</label>
-      <input type="text" v-model="form.storageTel" placeholder="전화번호">
+      <input type="text" oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');" MAXLENGTH="16" v-model="form.storageTel" placeholder="전화번호">
     </div>
     <div class="bodydiv">
       <form>

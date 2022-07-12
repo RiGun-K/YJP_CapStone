@@ -12,8 +12,8 @@
                 @click="repairBox(pickUseBox)">장비 수리
         </button>
         <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3 && detailUseState != 1" @click="renewalPay(pickUseBox)">연장</button>
-        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지
-        </button>
+        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>
+        <button class="mystoragebox-re" v-if="detailUseState == 1 && backChk" @click="backItem()">장비회수</button>
       </div>
       <br>
       <br>
@@ -220,6 +220,7 @@ export default {
       order: {},
       kkk: false,
       repairList:[],
+      backChk:false,
     }
   },
   mounted() {
@@ -243,6 +244,21 @@ export default {
           return "비정상"
       }
     },
+    backItem(){
+      var delConfirm = confirm('장비를 회수 하겠습니까?');
+      if (delConfirm) {
+        axios.get('/api/backToItemCall/'+this.pickUseBox)
+            .then(res=>{
+              console.log(res)
+              alert('회수 신청이 되었습니다.');
+              this.backChk = false
+            })
+            .catch(err=>{
+              console.log(err)
+            })
+
+      }
+    },
     close() {
       this.$emit('close')
     },
@@ -258,6 +274,11 @@ export default {
           })
     },
     detailBox(us) {
+      console.log('us')
+      console.log(us)
+      if (us.useState == "1"){
+        this.setTimeChk()
+      }
       this.moveInfo = false
       this.pickUseBox = us.useCode
       this.detailUseState = us.useState
@@ -271,6 +292,18 @@ export default {
           this.boxDetailMoveInfo(us.moveUseCode, us.useState)
         }
       }
+    },
+    setTimeChk(){
+      axios.get('/api/remainderTime/'+this.useData.useCode)
+          .then(res=>{
+            console.log(res.data)
+            if(res.data < 5){
+              this.backChk = true
+            }
+          })
+          .catch(err=>{
+            console.log(err)
+          })
     },
     boxDetailMoveInfo(useCode, useState) {
       this.moveBoxInfo.moveState = useState

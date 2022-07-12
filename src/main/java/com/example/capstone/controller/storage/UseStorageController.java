@@ -437,6 +437,15 @@ public class UseStorageController {
         return orders.get();
     }
 
+//    장비 회수 신청
+    @GetMapping("backToItemCall/{useCode}")
+    Result backToItemCall(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
+        useStorageBox.get().setUseStorageState(useStorageBox.get().getUseStorageState()+"b");
+        useStorageBoxRepository.save(useStorageBox.get());
+        return new Result("ok");
+    }
+
     // 내가 사용중인 보관함 조회
     @GetMapping("getUseBox/{useBoxCode}")
     private UseStorageBox getUseBox(@PathVariable(value = "useBoxCode") long useBoxCode) {
@@ -548,7 +557,7 @@ public class UseStorageController {
     public int remainderTime(@PathVariable(value = "useCode") long useCode) {
         Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
 
-        Period period = useStorageBox.get().getUseStorageEndTime().until(LocalDate.now());
+        Period period = LocalDate.now().until(useStorageBox.get().getUseStorageEndTime());
 
         return period.getDays();
     }

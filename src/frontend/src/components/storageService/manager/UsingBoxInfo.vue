@@ -152,9 +152,9 @@
     </div>
   </div>
   <div v-if="box.useStorageState == 1">
-    <div v-if="remainder">
+    <div v-if="remainder && backchk">
       <h5>종료까지 {{ remainderTime }}일 남았습니다.</h5>
-      <div>
+      <div  >
         <h5>주소지</h5>
         <div class="box-info">
           <table>
@@ -179,10 +179,11 @@
           </table>
         </div>
       </div>
+      <div>
+        <button  @click="enddell()">배송시작</button>
+      </div>
     </div>
-    <div>
-      <button @click="moveDel()">배송시작</button>
-    </div>
+
   </div>
 </template>
 
@@ -216,11 +217,21 @@ export default {
       useStateString: '',
       del:'',
       order:{},
+      backchk:false,
     }
   },
   methods: {
-    moveDel(){
-      this.box.useStorageState =2
+    enddell(){
+      axios.get('/api/endBoxState/'+this.box.useStorageCode)
+          .then(res=>{
+            this.backchk = false
+            alert('배송합니다')
+            this.getBoxInfo()
+            this.$emit('updata')
+          })
+          .catch(err=>{
+            console.log(err)
+          })
     },
     changeState(state) {
       switch (state) {
@@ -324,6 +335,8 @@ export default {
       if (data.useStorageState == "9" || data.useStorageState == "a"){
         this.del = arry[0][6]?.substring(1, arry[0][6].length)||''
         this.delInfo()
+      }else if(data.useStorageState == "1" && arry[0][6]?.substring(1, arry[0][6].length) == "b"){
+        this.backchk = true
       }else{
         this.box.updateusbCode = arry[0][6]?.substring(1, arry[0][6].length)||''
       }
@@ -332,6 +345,7 @@ export default {
         this.getMoveBox()
       }
       this.ifCheck()
+
     },
     delInfo(){
       axios.get("/api/delInfo/"+this.del)
@@ -343,7 +357,7 @@ export default {
           })
     },
     ifCheck() {
-      if (this.box.updateusbCode != '') {
+      if (this.box.updateusbCode != undefined) {
         this.getMoveBox()
       }
       if (this.box.useStorageState == 1) {
@@ -353,8 +367,10 @@ export default {
     addUseBoxInfo() {
       axios.get('/api/moreUseBox/' + this.box.boxCode)
           .then(res => {
-            this.box = {}
-            this.addUseBoxInfoSetting(res.data)
+            if (res.data.length>0){
+              this.box = {}
+              this.addUseBoxInfoSetting(res.data)
+            }
             this.checkMoreReNewal()
           })
           .catch(err => {
@@ -400,7 +416,7 @@ export default {
       axios.get('/api/remainderTime/' + this.box.useStorageCode)
           .then(res => {
             this.remainderTime = res.data
-            if (this.remainderTime < 4) {
+            if (this.remainderTime < 6) {
               this.remainder = true
             } else {
               this.remainder = false
