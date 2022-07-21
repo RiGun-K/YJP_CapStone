@@ -114,22 +114,22 @@
 
     <div v-show="is_show" style="position: fixed; z-index: 4;">
       <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content rounded-4 shadow" style="width: 800px; height: 1200px">
+        <div class="modal-dialog" role="document" style="">
+          <div class="modal-content rounded-4 shadow" style="width: 600px; height: 1100px; margin-left: 400px">
             <div class="modal-header p-5 pb-4 border-bottom-0">
               <!-- <h5 class="modal-title">Modal title</h5> -->
-              <h2 class="fw-bold mb-0">예약 및 결제</h2>
+              <h4 class="fw-bold mb-0">예약 및 결제</h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="buyDataBtn"></button>
             </div>
 
             <div class="modal-body p-5 pt-0">
               <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">예약자 정보</h4>
+                <strong class="text-success">예약자 정보</strong>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
                     <div class="col-12">
-                      <label for="address" class="form-label">Name</label>
-                      <input type="text" v-model="this.user.mname" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <label for="address" class="form-label" style="">Name </label>
+                      <input type="text" readonly v-model="this.user.mname" class="form-control" id="name" placeholder="1234 Main St">
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -137,7 +137,7 @@
 
                     <div class="col-12">
                       <label for="email" class="form-label">Email <span class="text-muted"></span></label>
-                      <input type="email" v-model="this.user.mmail" class="form-control" id="email" placeholder="you@example.com">
+                      <input type="email" readonly v-model="this.user.mmail" class="form-control" id="email" placeholder="you@example.com">
                       <div class="invalid-feedback">
                         Please enter a valid email address for shipping updates.
                       </div>
@@ -145,7 +145,7 @@
 
                     <div class="col-12">
                       <label for="address" class="form-label">Phone Number</label>
-                      <input type="text" v-model="this.user.mph" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.user.mph" class="form-control" id="address" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -156,12 +156,12 @@
               <br>
 
               <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">예약정보</h4>
+                <strong class="text-success">예약정보</strong>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
                     <div class="col-12">
                       <label for="address" class="form-label">Reservation People</label>
-                      <input type="text" v-model="this.people" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.people" class="form-control" id="name" placeholder="1234 Main St" required style="">
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -177,7 +177,7 @@
 
                     <div class="col-12">
                       <label for="address" class="form-label">Reservation Days</label>
-                      <input type="text" v-model="this.sDays" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.sDays" class="form-control" id="address" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -189,12 +189,12 @@
               <br>
 
               <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">결제정보</h4>
+                <strong class="text-success">결제정보</strong>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
                     <div class="col-12">
                       <label for="address" class="form-label">Room Name</label>
-                      <input type="text" v-model="this.room.detailName" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.room.detailName" class="form-control" id="name" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -202,7 +202,7 @@
 
                     <div class="col-12">
                       <label for="email" class="form-label">Room Price <span class="text-muted"></span></label>
-                      <input type="email" v-model="this.room.detailPrice" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
+                      <input type="email" readonly v-model="this.room.detailPrice" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
                       <div class="invalid-feedback">
                         Please enter a valid email address for shipping updates.
                       </div>
@@ -210,7 +210,7 @@
 
                     <div class="col-12">
                       <label for="address" class="form-label">All Room Price</label>
-                      <input type="text" v-model="this.allPrice" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.allPrice" class="form-control" id="address" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -220,7 +220,7 @@
               </div>
 
               <br>
-              <button class="w-100 btn btn-primary btn-lg" @click="paymentBtn()" type="submit">결제하기</button>
+              <button type="button" class="btn btn-outline-primary" @click="paymentBtn()">결제하기</button>
             </div>
           </div>
         </div>
@@ -286,15 +286,15 @@
       <button type="button" class="btn btn-secondary" @click="detail_3" style="margin-left: 70px;">환불 안내</button>
     </div>
 
-    <div v-if="areaCheck1" style="margin-left: 80px; display: flex; margin-top: 60px;">
+    <div v-if="areaCheck1" style="margin-left: 50px; display: flex; margin-top: 60px;">
       <br>
       <div>
         <img class="ilist" :src=imageC>
         <br>
         <img class="ilist" :src=imageC2>
       </div>
-      <div class="mapDiv" style="margin-left: 40px; margin-top: 50px">
-        <div id="map"></div>
+      <div class="mapDiv" style="margin-left: 40px; margin-top: 50px;">
+        <div id="map" style="height: 500px; width: 500px;"></div>
       </div>
     </div>
 
