@@ -35,8 +35,36 @@
   <div>
     <h1>지역: {{ planDestination }}</h1>
     <h1>검색: {{ searchPlan }}</h1>
+     <div class="paging">
+  <div class="col" style="width: 30%; display:inline-block; margin-left:5%"  @click="intoPlan(value)"
+          v-for="(value, index) in filteredPlanList"
+          :key="index"  >
+          <div class="card shadow-sm">
+             <img :src="'/api/product_detail_image/' + value.filename" class="imgbackground"  />
+            <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
 
-    <div class="paging">
+            <div class="card-body">
+              <p class="card-text">  지역:{{ value.planDestination }}</p> <p class="card-text">조회수:
+          {{ value.planViews }}</p> <p class="card-text"> 카피수:
+          {{ value.planUsedCount }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>  <div class="pages">
+        <p>
+          페이지
+          <button id="p" v-for="i in pageSize" @click="selectedPage(i)">
+            {{ i }}
+          </button>
+        </p>
+      </div>
+        </div>
+    <!-- <div class="paging">
       <div class="box">
         <div
           class="w-btn-outline w-btn-red-outline"
@@ -63,7 +91,7 @@
           </button>
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -318,5 +346,17 @@ export default {
 height: 200px;
 width: 300px;
 
-}
+}     .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
 </style>
