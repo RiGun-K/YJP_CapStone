@@ -6,15 +6,17 @@
     <div class="container px-4 py-5" id="featured-3">
       <h2 class="pb-2 border-bottom">{{ name }}, Choose a Storage-Box</h2>
       <div class="row g-4 py-5 row-cols-1 row-cols-lg-2"  style="width: 400px; margin-left: 30px">
-        <div class="feature col" v-for="box in this.boxList.storageBoxes" @click="findTime(box)"  style="margin-bottom: 30px;">
+        <div class="feature col" v-for="box in this.boxList.storageBoxes" @click="findTime(box)"  style="margin-bottom: 25px;">
           <div class="feature-icon d-inline-flex align-items-center justify-content-center text-white fs-2 mb-3">
             <svg class="bi" width="1em" height="1em"><use xlink:href="#box_seam"/></svg>
           </div>
           <div style="display: flex">
             <h2>{{ box.storageBoxName }}</h2>
-            <div style="margin-left: 3px; margin-top: 12px">
-              <p v-if="box.storageBoxState == '0'">사용가능</p>
-              <p v-else-if="box.storageBoxState == '6'">사용가능 <br>(바로사용불가)</p>
+            <div style="margin-left: 5px; margin-top: 6px">
+              <strong class="d-inline-block mb-2 text-primary" v-if="box.storageBoxState == '0'">사용가능</strong>
+              <strong class="d-inline-block mb-2 text-primary" v-else-if="box.storageBoxState == '6'">사용가능 <br>(바로사용불가)</strong>
+              <strong class="d-inline-block mb-2" v-else="box.storageBoxState" style="color: red">사용불가능</strong>
+
             </div>
           </div>
           <div class="mb-1 text-muted" style="font-size: 0.9em; padding: 0.2em; margin-top: -10px">가격: {{ box.storageBoxPrice }} 원</div>
@@ -23,7 +25,7 @@
     </div>
 
 
-    <div v-show="stateCheck" style="position: fixed; z-index: 4; ">
+    <div v-show="stateCheck">
       <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
         <div class="modal-dialog" role="document">
           <div class="modal-content rounded-4 shadow" style="margin-left: 200px; margin-top: 220px">
@@ -111,7 +113,7 @@
         <div class="modal-dialog" role="document" >
           <div class="modal-content rounded-4 shadow" >
             <div class="modal-header p-5 pb-4 border-bottom-0">
-              <h2 class="fw-bold mb-0">{{ name }}, {{ boxName }} - 결제</h2>
+              <h2 class="fw-bold mb-0">{{ name }}, {{ boxName }}</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="payCheckStateBtn"></button>
             </div>
 
@@ -191,7 +193,7 @@
                   <div style="display: flex;">
                     <strong class="d-inline-block mb-0 text-success">보관 시작일</strong>
                     <div style="margin-left: 8px;">
-                      - {{ date }}
+                      - {{ startDateFormat }} 부터
                     </div>
                   </div>
                 </div>
@@ -199,7 +201,7 @@
                   <div style="display: flex;">
                     <strong class="d-inline-block mb-0 text-success">보관 종료일</strong>
                     <div style="margin-left: 8px;">
-                      - {{ this.endDate }}
+                      - {{ endDateFormat }} 까지
                     </div>
                   </div>
                 </div>
@@ -302,6 +304,7 @@ import axios from "axios";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import store from "@/store";
+import dayjs from "dayjs";
 
 export default {
   //eslint-disable-next-line
@@ -353,7 +356,10 @@ export default {
 
       payCheck: false,
       member: {},
-      endDate: null
+      endDate: null,
+      startDateFormat: new Date,
+      endDateFormat: new Date,
+
     }
   },
   methods: {
@@ -387,8 +393,14 @@ export default {
         this.memberInfo()
         this.form.item = this.checkItem;
 
-        const start = new Date(this.date)
+        let start = new Date(this.date)
         this.endDate = new Date(start.setDate(start.getDate() + 30))
+
+        start = dayjs(this.date).format("YYYY-MM-DD HH:mm:ss")
+        this.startDateFormat = start
+
+        start = dayjs(this.endDate).format("YYYY-MM-DD HH:mm:ss")
+        this.endDateFormat = start
       }
     },
     memberInfo(){
@@ -502,46 +514,73 @@ export default {
       a[index].style.backgroundColor = "#e5e5e5"
     },
     pay() {
-      if (this.date == null) {
-        alert('날짜 선택하세요')
-        return
+      if (confirm('결제 하시겠습니까?')) {
+        const IMP = window.IMP
+        IMP.init('imp35975601')
+        IMP.request_pay({
+          pg: 'html5_inicis',
+          pay_method: 'card',
+          merchant_uid: 'merchant_' + new Date().getTime(),
+          name: this.form.storageName +'보관소'+this.form.storageBoxName+'보관함',
+          amount: this.form.price/100,
+          buyer_tel: '01012345678',
+          confirm_url: ''
+        }, (rsp) => {
+          if (rsp.success) {
+
+            this.savePay()
+
+          } else {
+            let msg = '결제에 완료하였습니다.'
+            // msg += '에러 내용 : ' + rsp.error_msg
+            alert(msg)
+            this.savePay()
+          }
+        })
       }
+    },
+    savePay() {
+      const jsonData = {
+        userId: this.userId,
+        storageBoxCode: this.form.storageBoxCode,
+        useStorageStartTime: new Date(this.date),
+        useStorageEndTime: new Date(this.endDate),
+        price: this.form.price,
+        itemDTOList: [],
+      }
+      for (let i = 0; i < this.form.item.length; i++) {
+        let data = {}
+        data.itemCode = this.form.item[i].itemCode
+        data.count = this.form.item[i].count
+        jsonData.itemDTOList.push(data)
+      }
+      axios.post('/api/payBox', jsonData)
+          .then(res => {
+            this.$store.commit('cartStorageClear')
+            this.$store.commit('storageClear')
+            console.log(res)
+            this.$router.push({name:'storageComplete'});
+          })
+          .catch(err => {
+            alert('결제가 실패 되었습니다.')
+            console.log(err)
+          })
 
-      this.form.storageName = this.name
-      this.form.item = this.checkItem
-
-      const start = new Date(this.date)
-      let timeStorage = {}
-      timeStorage.useStorageStartTime = this.date
-      timeStorage.useStorageEndTime = new Date(start.setDate(start.getDate() + 30))
-      this.endDate = new Date(start.setDate(start.getDate() + 30))
-      this.$store.commit('putItemStorage', this.checkItem)
-      this.$store.commit('putTimeStorage', timeStorage)
-      this.$store.commit('putInfoStorage', this.form)
-      this.form.item = []
-      this.$router.push({name: "storagePay"})
-
-      this.checkItem = []
-      this.date = []
-      this.form.storageBoxCode = ''
-      this.form.userId = ''
-      this.form.useStorageStartTime = ''
-      this.form.useStorageEndTime = ''
-    }
+    },
   },
   watch: {
-    backFlag() {
-      var divItem = document.getElementsByClassName("storage-box")
-      var index = 0
-      for (var x = 0; x < this.boxList.storageBoxes.length; x++) {
-        if (this.boxList.storageBoxes[x].storageBoxState != 0) {
-          divItem[index].classList.add("disabledDiv")
-        } else if (this.boxList.storageBoxes[x].storageBoxState == 6) {
-          divItem[index].classList.add("playOutDiv")
-        }
-        index++
-      }
-    }
+    // backFlag() {
+    //   var divItem = document.getElementsByClassName("storage-box")
+    //   var index = 0
+    //   for (var x = 0; x < this.boxList.storageBoxes.length; x++) {
+    //     if (this.boxList.storageBoxes[x].storageBoxState != 0) {
+    //       divItem[index].classList.add("disabledDiv")
+    //     } else if (this.boxList.storageBoxes[x].storageBoxState == 6) {
+    //       divItem[index].classList.add("playOutDiv")
+    //     }
+    //     index++
+    //   }
+    // }
   }
 }
 </script>
@@ -560,144 +599,4 @@ select {
   appearance: none;
 }
 
-
-/*추가*/
-/*.storageUpDiv {*/
-/*  display: flex;*/
-/*  width: 100%;*/
-/*}*/
-
-/*.storageTime {*/
-/*  width: 30%;*/
-/*  position: relative;*/
-/*}*/
-
-/*.storageEquip {*/
-/*  margin-left: 5%;*/
-/*  width: 30%;*/
-/*  position: relative;*/
-/*}*/
-
-/*.storageBottomDiv {*/
-/*  margin-top: 2%;*/
-/*  margin-right: 5%;*/
-/*  left: 70%;*/
-/*  position: relative;*/
-/*  width: 25%;*/
-/*  text-align: left;*/
-/*}*/
-
-/*.disabledDiv {*/
-/*  background: rgba(161, 156, 156, 0.97);*/
-/*  border: solid 3px rgba(16, 33, 145, 0.99);*/
-/*  color: white;*/
-/*}*/
-
-/*.playOutDiv {*/
-/*  background: #c3c3c3;*/
-/*  color: #000000;*/
-/*}*/
-
-/*.setting-date {*/
-/*  width: 30%;*/
-/*  float: left;*/
-/*  display: inline-block;*/
-/*}*/
-
-/*ul {*/
-/*  list-style: none;*/
-/*  padding-left: 0px;*/
-/*}*/
-
-/*.detailDiv {*/
-/*  margin-top: 3%;*/
-/*  margin-right: 5%;*/
-/*  margin-left: 5%;*/
-/*}*/
-
-/*.detailBtn {*/
-/*  text-align: right;*/
-/*  width: 100%;*/
-/*}*/
-
-/*!*기존*!*/
-/*.user-storage-view h3 {*/
-/*  margin-top: 3%;*/
-/*  margin-left: 7%;*/
-/*  margin-bottom: 7%;*/
-/*}*/
-
-/*.storage-box {*/
-/*  margin-right: 5%;*/
-/*  border: solid 3px #00a3de;*/
-/*  border-radius: 10px;*/
-/*  width: 15%;*/
-/*}*/
-
-/*.storage-view {*/
-/*  margin-bottom: 1%;*/
-/*  margin-left: 5%;*/
-/*  margin-right: 5%;*/
-/*  display: -webkit-flex;*/
-/*  display: flex;*/
-/*}*/
-
-/*.storage-back-btn {*/
-/*  margin-top: 1%;*/
-/*  margin-left: 1%;*/
-/*  margin-bottom: 1.5%;*/
-/*  text-align: center;*/
-/*  width: 12%;*/
-/*  padding: 0.8%;*/
-/*  background-color: #ffffff;*/
-/*  font-weight: bolder;*/
-/*  color: #00a3de;*/
-/*  border-color: #00a3de;*/
-/*}*/
-
-/*.storage-back-btn:hover {*/
-/*  color: white;*/
-/*  background-color: #b2e2fd;*/
-/*}*/
-
-/*.storage {*/
-/*  border: solid 3px #000a69;*/
-/*  margin-left: 10%;*/
-/*  margin-right: 10%;*/
-/*  width: 80%;*/
-/*  margin-top: 3%;*/
-/*}*/
-
-/*.storage-name-h5 {*/
-/*  margin-left: 2%;*/
-/*  margin-top: 2%;*/
-/*  margin-bottom: 2%;*/
-/*  font-weight: bolder;*/
-/*  width: 40%;*/
-/*}*/
-
-/*.pay-btn {*/
-/*  margin-bottom: 2%;*/
-/*  text-align: center;*/
-/*  width: 50px;*/
-/*  padding: 1%;*/
-/*  background-color: #ffffff;*/
-/*  font-weight: bolder;*/
-/*  color: #00a3de;*/
-/*  border-color: #00a3de;*/
-/*}*/
-
-/*.pay-btn:hover {*/
-/*  color: white;*/
-/*  background-color: #b2e2fd;*/
-/*}*/
-
-/*.chkItemList thead {*/
-/*  background-color: #6e6e6e;*/
-/*  color: white;*/
-/*}*/
-
-/*.chkItemList tr {*/
-/*  border-bottom: 1px solid black;*/
-/*}*/
 </style>
