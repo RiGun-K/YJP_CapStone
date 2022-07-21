@@ -1,131 +1,90 @@
 <template>
   <br>
-  <ul class="slides">
-    <input type="radio" name="radio-btn" id="img-1" checked />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.filename"/>
-      </div>
-      <div class="nav">
-        <label for="img-6" class="prev">&#x2039;</label>
-        <label for="img-2" class="next">&#x203a;</label>
-      </div>
-    </li>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/blog/">
 
-    <input type="radio" name="radio-btn" id="img-2" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.images[0].filename" />
-      </div>
-      <div class="nav">
-        <label for="img-1" class="prev">&#x2039;</label>
-        <label for="img-3" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-3" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.images[1].filename" />
-      </div>
-      <div class="nav">
-        <label for="img-2" class="prev">&#x2039;</label>
-        <label for="img-4" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-4" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.images[2].filename" />
-      </div>
-      <div class="nav">
-        <label for="img-3" class="prev">&#x2039;</label>
-        <label for="img-5" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-5" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.images[3].filename" />
-      </div>
-      <div class="nav">
-        <label for="img-4" class="prev">&#x2039;</label>
-        <label for="img-6" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-6" />
-    <li class="slide-container">
-      <div class="slide">
-        <img :src="'/api/product_detail_images/' + content.images[4].filename" />
-      </div>
-      <div class="nav">
-        <label for="img-5" class="prev">&#x2039;</label>
-        <label for="img-1" class="next">&#x203a;</label>
-      </div>
-    </li>
-
-    <li class="nav-dots">
-      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
-      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
-      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
-      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
-      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
-      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
-    </li>
-  </ul>
-
-  <br>
-  <br>
-  <button class="w-btn-neon2" @click="putResCart()">찜</button>
-  <br>
-  <br>
-  <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
-  <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
-  <!--  </div>-->
-  <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
-  <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
-
-
-  <div class="mt-4">
-
-    <h1>{{ this.content.campingName }}</h1>
-    <p class="card-text">010-9699-4238</p>
-    <p class="card-text">{{ this.content.campingInfo }}</p>
-    <p class="card-text">{{ this.content.address }}</p>
-    <p class="card-text">등록 객실 수: {{ this.content.campingDetailState }}</p>
-    <p class="card-text">조회 수: {{ this.content.campingViews }}</p>
-    <p class="card-text">예약 수: {{ this.content.orderMenus.length }}</p>
-
-    <br>
-
-
-    <div class="listBody">
-      <h1> 객실 선택 및 예약 </h1>
-      <div v-for="(room,index) in roomContent" :key="index"
-           @click="" class="listObj">
-        <div class="card">
-          <div class="card-body">
-            <img :src="'/api/product_detail_images/' + room.filename" alt="...">
+  <main class="container d-flex flex-wrap">
+    <div style="display: flex">
+      <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" style="width: 600px; height: 450px">
+        <div class="carousel-indicators" >
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" ></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="5" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner" >
+          <div class="carousel-item active" data-bs-interval="4000">
+            <img :src="'/api/product_detail_images/' + content.filename" alt="" class="d-block"/>
           </div>
-          <div class="card-body">
-            객실명 - {{ room.detailName }}
+          <div class="carousel-item" data-bs-interval="4000" v-for="(image, index) in campingImages" :key="index" >
+            <img :src="'/api/product_detail_images/' + image.filename" alt="" class="d-block "/>
           </div>
-          <div class="card-body">
-            설명 - {{ room.detailFunction }}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <div style="margin-left: 100px; margin-top: 30px; width: 500px">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" style="font-size: 32px">{{ this.content.campingName }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row">문의처</th>
+            <td>010-9699-4238</td>
+          </tr>
+          <tr>
+            <th scope="row">캠핑장 소개</th>
+            <td>{{ this.content.campingInfo }}</td>
+          </tr>
+          <tr>
+            <th scope="row">주소</th>
+            <td colspan="2">{{ this.content.address }}</td>
+          </tr>
+          <tr>
+            <th scope="row">등록 객실 수</th>
+            <td colspan="2">{{ this.content.campingDetailState }}</td>
+          </tr>
+          <tr>
+            <th scope="row">조회 수</th>
+            <td colspan="2">{{ this.content.campingViews }}</td>
+          </tr>
+          <tr>
+            <th scope="row">예약 수</th>
+            <td colspan="2">{{ this.content.orderMenus.length }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-outline-secondary"  @click="putResCart()" style="margin-top: 8px; margin-left: 450px">찜</button>
+      </div>
+    </div>
+
+
+
+    <div class="row mb-2" style="margin-top: 100px; width: 100%;">
+      <div class="col-md-6" v-for="(room,index) in roomContent" :key="index">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">객실 선택 및 예약</strong>
+            <h3 class="mb-0">객실명 - {{ room.detailName }}</h3>
+            <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">설명 - {{ room.detailFunction }}</div>
+            <p class="card-text mb-auto">기준인원 - {{room.baseNumber}} | 최대인원 - {{ room.maximumNumber }}</p>
+            <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>
+            <input class="form-control" type="text" placeholder="인원을 입력하세요" aria-label="default input example" v-model="room.detailEx" style="width: 285px; height: 35px; margin-top: 5px">
           </div>
-          <div class="card-body">
-            최대인원 - {{ room.maximumNumber }}
-          </div>
-          <div class="card-body">
-            객실 가격 - {{ room.detailPrice }}
-          </div>
-          <br>
-          <p>예약기간 설정</p>
-          <div class="reservation">
-            <Datepicker style="margin-left: 3%; margin-bottom: 3%; width: 20%"
+
+          <div class="reservation" style="display: flex; margin-top: -15px">
+            <Datepicker style="width: 430px; margin-left: 20px; margin-bottom: 20px"
                         locale="ko-KR"
                         :min-date="today"
                         :max-date="end"
@@ -141,128 +100,273 @@
                         v-model="reservationDate"
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
+
+            <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 150px;margin-left: 5px; height: 35px">예약 및 결제</button>
           </div>
-          <button @click="buyData(room.detailId)" class="w-btn-outline w-btn-red-outline" style="margin-left: 20%; margin-right: 20%">예약 및 결제</button>
+
+
+          <div class="col-auto d-none d-lg-block" style="margin-left: 20px; margin-bottom: 20px" v-on:click="toDetail(room)">
+            <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 580px; height:300px">
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <br>
+    <div v-show="is_show" style="position: fixed; z-index: 4;">
+      <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow" style="width: 800px; height: 1200px">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+              <!-- <h5 class="modal-title">Modal title</h5> -->
+              <h2 class="fw-bold mb-0">예약 및 결제</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="buyDataBtn"></button>
+            </div>
 
+            <div class="modal-body p-5 pt-0">
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">예약자 정보</h4>
+                <form class="needs-validation" novalidate>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="address" class="form-label">Name</label>
+                      <input type="text" v-model="this.user.mname" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
 
-  <br>
-  <div class="btn_area">
-    <button type="button" @click="detail_1" class="btn_Bottom">
-      <span>캠핑장 소개</span>
-    </button>
-    <button type="button" @click="detail_2" class="btn_Bottom_3">
-      <span>이용 안내</span>
-    </button>
-    <button type="button" @click="detail_3" class="btn_Bottom_3">
-      <span>위치/주변정보</span>
-    </button>
-    <button type="button" @click="detail_4" class="btn_Bottom_3">
-      <span>캠핑/여행후기</span>
-    </button>
-  </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Email <span class="text-muted"></span></label>
+                      <input type="email" v-model="this.user.mmail" class="form-control" id="email" placeholder="you@example.com">
+                      <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                      </div>
+                    </div>
 
+                    <div class="col-12">
+                      <label for="address" class="form-label">Phone Number</label>
+                      <input type="text" v-model="this.user.mph" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <br>
 
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">예약정보</h4>
+                <form class="needs-validation" novalidate>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="address" class="form-label">Reservation People</label>
+                      <input type="text" v-model="this.people" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
 
-  <div v-if="areaCheck3">
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="mapDiv">
-      <div id="map"></div>
-    </div>
-  </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Reservation Requests <span class="text-muted"></span></label>
+                      <input type="email" v-model="reservationRequest" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
+                      <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                      </div>
+                    </div>
 
+                    <div class="col-12">
+                      <label for="address" class="form-label">Reservation Days</label>
+                      <input type="text" v-model="this.sDays" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
 
+              <br>
 
-  <div v-if="areaCheck1">
-    <br>
-    <img class="ilist" :src=imageC>
-    <br>
-    <img class="ilist" :src=imageC2>
-  </div>
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">결제정보</h4>
+                <form class="needs-validation" novalidate>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="address" class="form-label">Room Name</label>
+                      <input type="text" v-model="this.room.detailName" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
 
-  <div v-if="areaCheck2">
-    <br>
-    <img class="ilist" :src=imageCC>
-    <br>
-    <img class="ilist" :src=imageCC2>
-  </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Room Price <span class="text-muted"></span></label>
+                      <input type="email" v-model="this.room.detailPrice" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
+                      <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                      </div>
+                    </div>
 
-  <div v-if="areaCheck4">
-    <br>
-    <div class="review-t">
-      <h2>리뷰</h2>
-    </div>
-    <div class="content-detail-list-1">
-      <br>
-      <div class="my-box" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
-        <div class="Recommend">
-          <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
+                    <div class="col-12">
+                      <label for="address" class="form-label">All Room Price</label>
+                      <input type="text" v-model="this.allPrice" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <div class="invalid-feedback">
+                        Please enter your shipping address.
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <br>
+              <button class="w-100 btn btn-primary btn-lg" @click="paymentBtn()" type="submit">결제하기</button>
+            </div>
+          </div>
         </div>
-
-        <div class="review">
-          <div class="review-title">{{reviews.mcode.mname}} | {{reviews.savedTime}}</div>
-          <div class="review-text">{{ reviews.campingTitle }}</div>
-          <div class="review-text">{{ reviews.campingContent }}</div>
-
-          <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
-
-          <div class="my-box-3">
-          </div>
-          <div class="image_1">
-            <p class="review-image">이미지</p>
-            <img :src="'/api/product_detail_images/' + reviews.filename" />
-          </div>
-          <div class="btn_area_2">
-            <button type="button" @click="delete_1(reviews)" class="btn_Bottom_2">
-              <span>삭제</span>
-            </button>
-          </div>
-
-          <div class="btn_area_2">
-            <button type="button" @click="update_1(reviews)" class="btn_Bottom_2">
-              <span>수정</span>
-            </button>
-          </div>
-
-        </div>
-
-
-
       </div>
+    </div>
 
+
+    <br>
+    <br>
+    <!--  <div v-for="(image,index) in content" :key="index" class="listObj">-->
+    <!--    <img :src="'/api/product_detail_images/' + image.filename"/>-->
+    <!--  </div>-->
+    <!--  // 현재 이미지 여러개 불러오는 과정에서 [0] 로 처리하는 중...-->
+    <!--  // v-for를 사용하여 캠핑장테이블 이미지 1개 랑 캠핑장 내부 이미지 테이블 여러개를 불러오도록하자..-->
+
+    <div v-show="is_show2" style="position: fixed; z-index: 4;" >
+      <div class="col-md-6">
+        <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" style="background-color: rgba(49,49,49,0.5); ">
+          <div class="modal-dialog" role="document" style="margin-left: 550px; margin-top: 105px;">
+            <div class="modal-content rounded-4 shadow" style="width: 800px; height: 638px; background-color: rgba(0,0,0,0.1)">
+
+              <div style="display: flex;">
+                <div id="carouselExample" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+                  <div class="carousel-indicators" >
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" ></button>
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="3" aria-label="Slide 3"></button>
+                  </div>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="detailBtn()" style=" margin-left: 750px; margin-top: 1%;"></button>
+                  <div class="carousel-inner" style="margin-top: 10px">
+                    <div class="carousel-item active" data-bs-interval="4000">
+                      <img :src="'/api/product_detail_images/' + this.detail_room.filename" alt="" class="d-block" style="width: 798px; height: 600px;"/>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000" v-for="(image, index) in this.detail_room.images" :key="index" >
+                      <img :src="'/api/product_detail_images/' + image.filename" alt="" class="d-block" style="width: 798px; height: 600px"/>
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="height: 600px; margin-top: 35px">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="height: 600px;  margin-top: 35px">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <br>
+    <br>
+    <div style="display: flex" >
+      <button type="button" class="btn btn-secondary" @click="detail_1" style="margin-left: 70px;">캠핑장 소개 / 위치</button>
+      <button type="button" class="btn btn-secondary" @click="detail_2" style="margin-left: 70px;">이용 안내</button>
+      <button type="button" class="btn btn-secondary" @click="detail_4" style="margin-left: 70px;">캠핑 / 여행후기</button>
+      <button type="button" class="btn btn-secondary" @click="detail_3" style="margin-left: 70px;">환불 안내</button>
+    </div>
+
+    <div v-if="areaCheck1" style="margin-left: 80px; display: flex; margin-top: 60px;">
       <br>
-      <div class="btn_area_1">
-        <button type="button" @click="detail_5" class="btn_Bottom_1">
-          <span>리뷰 작성</span>
-        </button>
+      <div>
+        <img class="ilist" :src=imageC>
+        <br>
+        <img class="ilist" :src=imageC2>
+      </div>
+      <div class="mapDiv" style="margin-left: 40px; margin-top: 50px">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <div v-if="areaCheck2" style="margin-left: 250px; margin-top: 60px;">
+      <br>
+      <img class="ilist" :src=imageCC>
+      <br>
+      <img class="ilist" :src=imageCC2>
+    </div>
+
+    <div v-if="areaCheck3">
+      <br>
+      <div>
+        <img class="ilist" :src=imageCCC style="height: 900px; width: 800px; margin-top: 60px; margin-left: 230px;">
       </div>
       <br>
     </div>
-  </div>
+
+    <div v-if="areaCheck4">
+
+      <button type="button" class="btn btn-outline-secondary"  @click="detail_5" style="margin-top: 60px; margin-left: 1100px; width: 110px;">리뷰 작성</button>
+      <div class="row mb-2">
+        <div class="col-md-6" style="margin-top: 80px">
+          <div class="">
+            <div class="" v-for="(reviews, index) in list" :key="index.id" :item="reviews">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="width: 1000px; margin-left:  120px; margin-top: -20px">
+                <div class="col p-4 d-flex flex-column position-static">
+                  <button @click="delete_1(reviews)" class="delete_btn" style="width: 60px; height: 20px; margin-left: 20px; font-size: 10px; font-weight: bold; border: 0; outline: 0; text-decoration: underline; margin-top: 2px ">삭제</button>
+                  <button @click="update_1(reviews)" class="update_btn" style="width: 60px; height: 20px; margin-left: 5px; font-size: 10px; font-weight: bold; border: 0; outline: 0; text-decoration: underline; ">수정</button>
+
+                  <strong class="d-inline-block mb-2 text-primary" style="margin-bottom: 40px;">{{ this.content.campingName }}</strong>
+                  <h3 class="mb-0">{{reviews.mcode.mname}} | {{reviews.savedTime}}</h3>
+                  <div class="mb-1 text-muted">{{ reviews.campingTitle }}</div>
+                  <p class="card-text mb-auto">{{ reviews.campingContent }}</p>
+                  <div class="Recommend">
+                    <button class="button" @click="addPush(reviews)">추천수 : {{ reviews.recommend }}</button>
+                  </div>
+
+                  <router-link to="{name: 'BuyDetailList', params: { BoardCampingCode:reviews.BoardCampingCode }}"></router-link>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                  <img :src="'/api/product_detail_images/' + reviews.filename"  style=" width: 200px; height: 250px"/>
+                  <!--            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
 </template>
 
 <script>
+
 import axios from "axios";
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import dayjs from "dayjs"
-
+import store from "@/store";
 export default {
   name: "BuyDetailList",
+  components: { Datepicker },
   created() {
     this.member = this.$store.state.loginState
     this.DataList();
     this.fetchData();
   },
-  mounted() {
+  mounted () {
+    const IMP = window.IMP
+    IMP.init('imp35975601')
   },
   data() {
     return {
@@ -283,20 +387,33 @@ export default {
       reservationDate: [],
       // date: [],
       member: [],
-
+      insertNumber: '',
+      is_show: false,
+      show: false,
+      reservationB: '',
+      reservationRequest: '',
       // end: new Data(this.today.setDate(this.today.getDate() + 7))
       startDate: new Date(),
       endDate: new Date(),
-
       areaCheck1: false,
       areaCheck2: false,
       areaCheck3: false,
       areaCheck4: false,
-
       imageC: require('@/assets/캠핑장 소개.png'),
       imageC2: require('@/assets/캠핑장 소개2.png'),
       imageCC: require('@/assets/이용안내.png'),
       imageCC2: require('@/assets/이용안내 2.png'),
+      imageCCC: require('@/assets/환불.png'),
+      //
+      room: [],
+      user: [],
+      people: '',
+      sDays: '',
+      eDays: '',
+      allPrice: '',
+
+      is_show2: false,
+      detail_room: []
     }
   },
   setup() {
@@ -321,11 +438,9 @@ export default {
             orderMenus[i].orders.endDate[0],
             orderMenus[i].orders.endDate[1] - 1,
             orderMenus[i].orders.endDate[2])
-
         var length = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
         const tomorrow = startDate
         this.disabledDates.push(tomorrow.toString())
-
         for (var j = 0; j < length; j++) {
           tomorrow.setDate(tomorrow.getDate() + 1)
           this.disabledDates.push(tomorrow.toString())
@@ -340,6 +455,7 @@ export default {
             console.log(res.data);
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
+            this.detailT = this.content.campingDetails.detailT;
             this.campingImages = this.content.images;
             console.log(this.roomContent);
             console.log(this.campingImages);
@@ -351,47 +467,82 @@ export default {
     detailData() {
       this.stateCheck = true;
     },
-
-    buyData(detailId) {
+    buyDataBtn(){
+      this.is_show = !this.is_show
+    },
+    buyData(detailId,detailEx,baseNumber,maximumNumber) {
       console.log(this.startDate)
       console.log(this.endDate)
+      console.log(detailId)
+      console.log(detailEx)
       const period = this.endDate - this.startDate
+      const reservationNumber = detailEx
+      // const reservationId = detailId
       if (this.startDate == this.endDate) {
         alert('예약 날짜를 선택해주세요.')
         return
+      } else if (`${detailEx}` == 0) {
+        alert('인원을 입력해주세요.')
+        return
+      } else if (`${detailEx}` < `${baseNumber}` | `${detailEx}` > `${maximumNumber}`) {
+        alert('예약인원을 다시 설정해주세요.')
+        return
       } else {
-        this.$router.push({
-          path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
-          query: {
-            startDate: this.startDate,
-            endDate: this.endDate,
-            period: period
-          }
-        })
-      }},
-
-    detail_3() {
-      this.areaCheck3 = true
-      this.areaCheck1 = false
-      this.areaCheck2 = false
-      this.areaCheck4 = false
-
-      // let check = prompt("1+1 은?");
-      // alert("귀요미 ㅋ");
-      // const point = [this.content.longitude, this.content.latitude]
-      // console.log(point);
-      // this.displayMarker([point])
-      //  카카오맵
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
-        script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
-        document.head.appendChild(script);
+        // this.show = true;
+        this.buyDataBtn();
+        // 예약 및 결제 데이터
+        this.id = detailId
+        this.user = store.getters.getLoginState.mcode;
+        this.people = detailEx + ' 명'
+        this.sDays = this.startDate + ' ~ ' + this.endDate
+        this.eDays = this.endDate
+        axios.get('/api/product_detailR/' + this.id)
+            .then(res => {
+              console.log("해당 객실 정보입니다.")
+              console.log(res.data)
+              this.room = res.data;
+              this.allPrice = this.room.detailPrice * period
+              axios.get('/api/product_detailU/' + this.user)
+                  .then(res => {
+                    console.log("예약인 정보입니다.")
+                    console.log(res.data)
+                    this.user = res.data;
+                  })
+                  .catch(e => {
+                    console.log(e)
+                  })
+            })
+            .catch(e => {
+              console.log(e)
+            })
+        /* 1] store 활용 , 2] DB에 임시저장 , 3] 전역변수 활용 */
+        // this.$router.push({
+        //   path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
+        //   query: {
+        //     startDate: this.startDate,
+        //     endDate: this.endDate,
+        //     period: period,
+        //     reservationNumber: reservationNumber,
+        //   }
+        // })
       }
+      // if(this.show) {
+      //   this.is_show = !this.is_show;
+      // }
+      // this.$router.push({
+      //   path: `/infoter/infoterNow/${this.content.campingId}/${detailId}`,
+      //   query: {
+      //     startDate: this.startDate,
+      //     endDate: this.endDate,
+      //     period: period,
+      //     reservationNumber: reservationNumber,
+      //   }
+      // })
+    },
+    reservation() {
+    },
+    detailBtn(){
+      this.is_show2 = !this.is_show2;
     },
     initMap() {
       const container = document.getElementById("map");
@@ -505,14 +656,12 @@ export default {
             console.log(e)
           })
     },
-
     toString() {
       const start = dayjs(this.reservationDate[0]);
       this.startDate = start.format('YYYYMMDD');
       const end = dayjs(this.reservationDate[1]);
       this.endDate = end.format('YYYYMMDD');
     },
-
     detail_4() {
       this.areaCheck4 = true;
       this.areaCheck1 = false;
@@ -527,19 +676,32 @@ export default {
         }
       })
     },
-
     detail_1() {
+
       this.areaCheck4 = false;
       this.areaCheck1 = true;
       this.areaCheck2 = false;
       this.areaCheck3 = false;
-    },
 
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
+        document.head.appendChild(script);
+
+    },
     detail_2() {
       this.areaCheck4 = false;
       this.areaCheck1 = false;
       this.areaCheck2 = true;
       this.areaCheck3 = false;
+    },
+    detail_3(){
+      this.areaCheck4 = false;
+      this.areaCheck1 = false;
+      this.areaCheck2 = false;
+      this.areaCheck3 = true;
     },
 
     putResCart(){
@@ -565,86 +727,106 @@ export default {
         console.log(err)
       })
     },
+    toDetail(room) {
+      // console.log(room.images);
+      // this.$router.push({
+      //   path: `/infoter/infoterList/${this.id}/${room.detailId}`
+      // })
+      this.detailBtn();
+      if(this.is_show2 === true){
+        console.log(room)
 
+        this.detail_room = room;
+      }
+    },
+    paymentBtn () {
+      if (confirm('결제 하시겠습니까?')) {
+        const IMP = window.IMP
+        console.log(this.startDate)
+        console.log(this.endDate)
+        IMP.init('imp35975601')
+        IMP.request_pay({
+          pg: 'html5_inicis',
+          pay_method: 'card',
+          merchant_uid: 'merchant_' + new Date().getTime(),
+          name: this.room.detailName,
+          amount: this.allPrice,
+          buyer_tel: this.user.mph,
+          buyer_name: this.user.mname,
+          buyer_email: this.user.mmail,
+          confirm_url: ''
+        }, (rsp) => {
+          if (true) {
+            let msg = '결제가 완료되었습니다.'
+            msg += '고유ID : ' + rsp.imp_uid
+            msg += '상점 거래 ID : ' + rsp.merchant_uid
+            msg += '결제 금액 : ' + rsp.paid_amount
+            msg += '카드 승인번호 : ' + rsp.apply_num
+            alert(msg)
+            console.log(this.content);
+            this.axios.post('http://localhost:9002/api/CampingRoomData', {
+              MID: this.user.mid,
+              reservationName: this.user.mname,
+              reservationTel: this.user.mph,
+              reservationRequest: this.reservationRequest,
+              // orderPrice: this.price,
+              orderPrice: this.allPrice,
+              orderType: rsp.pay_method,
+              paymentCode: rsp.merchant_uid,
+              orderState: '2',
+              orderMenuCount: 1,
+              startDate: this.startDate,
+              endDate: this.endDate,
+              roomId: this.room.detailId,
+              campingId: this.content.campingId
+            })
+                .then((res)=>{
+                  console.log(res.data);
+                })
+                .catch((err)=>{
+                  console.log(err)
+                });
+            if (confirm('예약을 확인하시겠습니까?')) {
+              this.$router.push({
+                path: `/ordersList/reservationOrders/${this.user.mcode}`,
+              })
+            } else {
+              this.$router.push({
+                name: 'InfoterList',
+              })
+            }
+          } else {
+            let msg = '결제에 실패하였습니다.'
+            msg += '에러 내용 : ' + rsp.error_msg
+            alert(msg)
+          }
+        })
+      }
+    },
+  },
+  watch: {
+    reservationTel(val) {
+      const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+      if(reg.exec(val)!==null) {
+        this.reservationTel = this.reservationTel.slice(0,-1);
+        alert("숫자만 입력해주세요")
+      }
+      return this.reservationTel=this.reservationTel.replace(/[^-\.0-9]/g,'');
+    }
   }
 }
 </script>
 
 <style scoped>
 img {
-  width: 40%;
-  height: 40%;
+  width : 650px;
+  height: 450px;
 }
+
+select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
+
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
-@keyframes ring {
-  0% {
-    width: 30px;
-    height: 30px;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-  }
-}
-
-.w-btn-neon2 {
-  position: relative;
-  margin-left: 45%;
-  border: none;
-  min-width: 200px;
-  min-height: 50px;
-  background: linear-gradient(
-      90deg,
-      rgba(129, 230, 217, 1) 0%,
-      rgba(79, 209, 197, 1) 100%
-  );
-  border-radius: 1000px;
-  color: darkslategray;
-  cursor: pointer;
-  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
-  font-weight: 700;
-  transition: 0.3s;
-}
-
-.w-btn-neon2:hover {
-  transform: scale(1.2);
-}
-
-.w-btn-neon2:hover::after {
-  content: "";
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  border: 6px solid #00ffcb;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: ring 1.5s infinite;
-}
-.mt-4 {
-  text-align: center;
-}
-.content-detail-list {
-  margin-top: 1rem;
-  padding: 1rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-.d-grid gap-2 d-md-flex justify-content-md-end {
-  margin: auto;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-}
-.card {
-  text-align: center;
-}
 .mapDiv{
   margin-top: -17%;
   width: 10%;
@@ -656,158 +838,10 @@ img {
   width: 400px;
   height: 400px;
 }
-.slides {
-  padding: 0;
-  width: 609px;
-  height: 420px;
-  right: 2.5%;
-  display: block;
-  margin: 0 auto;
-  position: relative;
-}
-/*.slides * {*/
-/*  user-select: none;*/
-/*  -ms-user-select: none;*/
-/*  -moz-user-select: none;*/
-/*  -khtml-user-select: none;*/
-/*  -webkit-user-select: none;*/
-/*  -webkit-touch-callout: none;*/
-/*}*/
-.slides input { display: none; }
-.slide-container { display: block; }
-.slide {
-  top: 0;
-  opacity: 0;
-  width: 609px;
-  height: 420px;
-  display: block;
-  position: absolute;
-  transform: scale(0);
-  transition: all .7s ease-in-out;
-}
-.slide img {
-  width: 120%;
-  height: 100%;
-}
-.nav label {
-  width: 150px;
-  height: 100%;
-  display: none;
-  position: absolute;
-  opacity: 0;
-  z-index: 9;
-  cursor: pointer;
-  transition: opacity .2s;
-  color: #FFF;
-  font-size: 156pt;
-  text-align: center;
-  line-height: 380px;
-  font-family: "Varela Round", sans-serif;
-  background-color: rgba(255, 255, 255, .3);
-  text-shadow: 0px 0px 15px rgb(119, 119, 119);
-}
-.slide:hover + .nav label { opacity: 0.5; }
-.nav label:hover { opacity: 1; }
-.nav .next { right: -20%; }
-input:checked + .slide-container  .slide {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 1s ease-in-out;
-}
-input:checked + .slide-container .nav label { display: block; }
-.nav-dots {
-  width: 100%;
-  bottom: 9px;
-  height: 11px;
-  display: block;
-  position: absolute;
-  text-align: center;
-  left: 10%;
-}
-.nav-dots .nav-dot {
-  top: -5px;
-  width: 11px;
-  height: 11px;
-  margin: 0 4px;
-  position: relative;
-  border-radius: 100%;
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-.nav-dots .nav-dot:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-input#img-1:checked ~ .nav-dots label#img-dot-1,
-input#img-2:checked ~ .nav-dots label#img-dot-2,
-input#img-3:checked ~ .nav-dots label#img-dot-3,
-input#img-4:checked ~ .nav-dots label#img-dot-4,
-input#img-5:checked ~ .nav-dots label#img-dot-5,
-input#img-6:checked ~ .nav-dots label#img-dot-6 {
-  background: rgba(0, 0, 0, 0.8);
-}
-.listBody{
-  padding: 0.5%;
-  margin-left: 30%;
-  margin-top: 1%;
-  margin-right: 1%;
-  width: 45%;
-}
-.btn_area {
-  margin: 20px 0 91px;
-}
-.btn_Bottom {
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10%;
-  position: center;
-}
-.btn_Bottom_3{
-  width: 20%;
-  padding: 21px 0 17px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #96adc0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10px;
-  position: center;
-}
-.my-box {               /*리뷰 젤 큰 박스*/
-  border:3px solid;
-  padding:50px 0 5%;
-  box-sizing: border-box;
-  width: 70%;
-  margin:0 auto;
-  margin-bottom: 1%;
-}
-.review{
-  font-size: 20px;
-  margin-right: 70%;
-}
-.btn_Bottom_1{
-  width: 10%;
-  padding: 15px 0 15px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #9dc7ea;
-  font-size: 20px;
-  font-weight: 400;
-  margin-right: 70%;
-  margin-top: 20px;
-}
-.review-image{
-  margin-top: 10%;
-  margin-right: 5%;
 
+.btn-secondary{
+  width: 230px;
+  height: 52px;
 }
 .button{
   margin-left : 40%;
@@ -834,133 +868,22 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .Recommend{
   margin-left: 70%;
 }
-
-.review-title{
-  /*background-color: blue;*/
-  position: relative;
-  margin-top: -22%;
-  left:20%;
-  font-size: 25px;
-}
-.review-mid{
-  position: relative;
-  margin-top: -7%;
-  /*border:1px solid;*/
-  /*box-sizing: border-box;*/
-  width: 57%;
-  margin-left: 40%;
-  font-size: 20px;
-
-}
-
-.btn.btn-primary {
-  width: 50%;
-  margin-left: 25%;
-}
-.review-text{
-  position: relative;
-  left: 50px;
-  font-size: 22px;
-  margin-top: 20%;
-  /*margin-left: 40%;*/
-}
-.btn_Bottom_2{
-  width: 30%;
-  padding: 10px 0 10px;
-  border: 0;
-  cursor: pointer;
-  color: black;
-  background-color: #9dc7ea;
-  font-size: 20px;
-  font-weight: 400;
-  margin-right: 5%;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  float: right;
-  border-radius: 15px;
-}
-
-.image_1{
-  width: 200%;
-  height: 200%;
-  margin-left: 230%;
-  margin-bottom: 10%;
-  margin-top: -50%;
-  /*width: 300px;*/
-  /*height: 180px;*/
-
-}
-.review-t{
-  text-align: center;
-}
-
-.reservation {
-  width: 285%;
-  margin-left: 80px
-}
-
-.card-body img {
-  transition: all 0.2s linear;
-}
-.card-body:hover img {
-  transform: scale(1.5);
-}
-
-.ilist {
-  margin-left: 35%
-}
 .mapDiv {
   margin-left: 35%;
   margin-bottom: 70%;
 }
-.shareBtn{
-  margin-left: 45%;
-  margin-right: 3%;
-  width: 10%;
-  padding: 1%;
-  background-color: #ffffff;
-  color: #00a3de;
-  font-weight: bolder;
-  border-color: #00a3de;
-  border-radius: 1em;
-  font-size: 1.5em;
-}
-..w-btn-red {
-  background-color: #ff5f2e;
-  color: #e1eef6;
-}
-.w-btn:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline {
+.delete_btn{
+  background-color: transparent;
   position: relative;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: 'paybooc-Light', sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
+  bottom: 20px;
+  right: 10px;
+}
+.update_btn{
+  background-color: transparent;
+  position: relative;
+  bottom: 40px;
+  right: 30px;
+}
 
-  margin-top: 5% ;
-  margin-left: 55%;
-}
-.w-btn-red-outline {
-  border: 3px solid #2093e5;
-  color: #6e6e6e;
-}
-.w-btn-red-outline:hover {
-  background-color: #2093e5;
-  color: #e1eef6;
-}
-.w-btn-outline:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline:active {
-  transform: scale(1.5);
-}
+
 </style>

@@ -64,7 +64,7 @@
           </div>
             <div class="tbAdd_2">
             <button @click="commentdelete(item)" class="btn" style="float: left;" v-if="ch">삭제</button>
-            </div>
+            </div>0
             <th></th>
 
             <div class="tbAdd_3">

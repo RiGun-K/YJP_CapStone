@@ -366,6 +366,27 @@ public class StorageController {
         return storageBox.get();
     }
 
+//    매니저가 해지하는 보관소 배송시작 시 보관함 상태코드 0으로 변경
+    @GetMapping("endBoxState/{useCode}")
+    Result endBoxState(@PathVariable(value = "useCode")long useCode){
+        Optional<UseStorageBox> useStorageBox = useStorageBoxRepository.findById(useCode);
+        List<BoxItem> boxItemList = boxItemRepository.findByUseStorageBoxCode(useStorageBox.get());
+        Optional<StorageBox> storageBox = storageBoxRepository.findById(useStorageBox.get().getStorageBoxCode().getStorageBoxCode());
+        StorageBox storageBox1 = storageBox.get();
+        storageBox1.setStorageBoxState("2");
+        storageBoxRepository.save(storageBox1);
+        useStorageBox.get().setUseStorageState("1");
+        useStorageBoxRepository.save(useStorageBox.get());
+
+        for (int i = 0; i < boxItemList.size(); i++) {
+            Optional<MemberEquipment> memberEquipment = memberEquipmentRepository.findById(boxItemList.get(i).getMemEquipmentCode().getMemEquipmentCode());
+            memberEquipment.get().setMemEquipmentState("0");
+            memberEquipmentRepository.save(memberEquipment.get());
+            boxItemRepository.delete(boxItemList.get(i));
+        }
+        return new Result("ok");
+    }
+
 
     //보관소 정보 업데이트
     @PostMapping("updateStorage")
@@ -430,7 +451,7 @@ public class StorageController {
         Optional<StorageBox> storageBox = storageBoxRepository.findById(boxCode);
         List<UseStorageBox> useStorageBoxes = useStorageBoxRepository.findByStorageBoxCode(storageBox.get());
         for (int i = 0; i < useStorageBoxes.size(); i++) {
-            if (useStorageBoxes.get(i).getUseStorageState() != "1"){
+            if (!useStorageBoxes.get(i).getUseStorageState().equals("1")){
                 return new Result("no");
             }
         }
@@ -503,8 +524,23 @@ public class StorageController {
         return new Result("ok");
     }
 
-//    매니저가 장소로 장비 배송
+//   매니저가 관리하는 보관함 종료되면 보관함 상태코드 0으로 변경
+    @GetMapping("updateBoxStateChk/{storageCode}")
+    private Result updateBoxStateChk(@PathVariable(value = "storageCode")long code){
+        List<StorageBox> storageBoxList = storageBoxRepository.findByStorageCodeStorageCode(code);
+        for (int i = 0; i < storageBoxList.size(); i++) {
+            List<UseStorageBox> useStorageBoxList = useStorageBoxRepository.findByStorageBoxCode(storageBoxList.get(i));
+            for (int j = 0; j < useStorageBoxList.size(); j++) {
+                LocalDate a = LocalDate.now();
+                if (!useStorageBoxList.get(j).getUseStorageEndTime().isAfter(a)){
+                    storageBoxList.get(i).setStorageBoxState("0");
+                    storageBoxRepository.save(storageBoxList.get(i));
+                }
+            }
+        }
 
+        return new Result("ok");
+    }
 
 
     ////////////////////////// 지역 조회  //////////////////////////
