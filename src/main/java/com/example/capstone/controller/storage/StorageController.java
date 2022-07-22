@@ -297,10 +297,14 @@ public class StorageController {
 
     //    보관함 사용중인 사용자 조회
     @GetMapping("checkMember/{memberId}")
-    public Object[] checkMember(@PathVariable("memberId") String memberId) throws NoSuchElementException {
+    public List<Map<String, Object>> checkMember(@PathVariable("memberId") String memberId) throws NoSuchElementException {
         try {
-            Object[] useStorageBoxes = storageRepository.findByMember(memberId);
-
+//            Object[] useStorageBoxes = storageRepository.findByMember(memberId);
+            List<Map<String, Object>> useStorageBoxes = storageRepository.findByMember(memberId);
+//            System.out.println(useStorageBoxes.size());
+//            for (int i = 0; i < useStorageBoxes.size(); i++) {
+//                System.out.println(useStorageBoxes.get(i).size());
+//            }
             return useStorageBoxes;
 
         } catch (NoSuchElementException n) {

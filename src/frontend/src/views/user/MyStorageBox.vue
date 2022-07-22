@@ -87,6 +87,7 @@ export default {
       this.useBoxes = []
       axios.get('/api/checkMember/' + this.memberId)
           .then(res => {
+            console.log(res.data)
             if (res.data.length < 1) {
               alert('사용중인 보관함이 없습니다')
             } else {
@@ -94,18 +95,18 @@ export default {
               this.useBoxes = []
               for (let i = 0; i < boxes.length; i++) {
                 const box = {}
-                box.storageCode = boxes[i][0]
-                box.storageName = boxes[i][1]
-                box.boxCode = boxes[i][2]
-                box.boxName = boxes[i][3]
-                box.boxState = boxes[i][4]
-                box.useCode = boxes[i][5]
-                box.useState = boxes[i][6].toString().charAt(0)
+                box.storageCode = boxes[i].STORAGECODE
+                box.storageName = boxes[i].STORAGENAME
+                box.boxCode = boxes[i].BOXCODE
+                box.boxName = boxes[i].BOXNAME
+                box.boxState = boxes[i].BOXSTATE
+                box.useCode = boxes[i].USECODE
+                box.useState = boxes[i].USESTATE.toString().charAt(0)
                 if (box.useState == "9" || box.useState == "a"){
-                  box.del = boxes[i][6].substring(1, boxes[i][6].length)
+                  box.del = boxes[i].USESTATE.substring(1, boxes[i].USESTATE.length)
                 }else {
-                  if (boxes[i][6].length > 1) {
-                    box.moveUseCode = boxes[i][6].substring(1, boxes[i][6].length)
+                  if (boxes[i].USESTATE.length > 1) {
+                    box.moveUseCode = boxes[i].USESTATE.substring(1, boxes[i].USESTATE.length)
                   }
                 }
                 this.useBoxes.push(box)
