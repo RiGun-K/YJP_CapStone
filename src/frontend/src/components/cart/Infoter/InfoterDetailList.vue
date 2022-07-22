@@ -80,10 +80,11 @@
             <div class="mb-1 text-muted" style="font-size: 0.7em; padding: 0.2em">설명 - {{ room.detailFunction }}</div>
             <p class="card-text mb-auto">기준인원 - {{room.baseNumber}} | 최대인원 - {{ room.maximumNumber }}</p>
             <p class="mb-0"> 1 박 가격 - {{ room.detailPrice }}</p>
+            <input class="form-control" type="text" placeholder="인원을 입력하세요" aria-label="default input example" v-model="room.detailEx" style="width: 285px; height: 35px; margin-top: 5px">
           </div>
 
           <div class="reservation" style="display: flex; margin-top: -15px">
-            <Datepicker style="width: 450px; margin-left: 20px; margin-bottom: 20px"
+            <Datepicker style="width: 430px; margin-left: 20px; margin-bottom: 20px"
                         locale="ko-KR"
                         :min-date="today"
                         :max-date="end"
@@ -99,9 +100,10 @@
                         v-model="reservationDate"
                         @click="DayList(room.orderMenus)"
                         :disabledDates="disabledDates"/>
-            <input type="text" v-model="room.detailEx" placeholder="인원을 입력하세요">
-            <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 20%; margin-right: 20%; margin-bottom: 20%">예약 및 결제</button>
+
+            <button @click="buyData(room.detailId,room.detailEx,room.baseNumber,room.maximumNumber)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 150px;margin-left: 5px; height: 35px">예약 및 결제</button>
           </div>
+
 
           <div class="col-auto d-none d-lg-block" style="margin-left: 20px; margin-bottom: 20px" v-on:click="toDetail(room)">
             <img :src="'/api/product_detail_images/' + room.filename" alt="..." style="width: 580px; height:300px">
@@ -112,22 +114,22 @@
 
     <div v-show="is_show" style="position: fixed; z-index: 4;">
       <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content rounded-4 shadow" style="width: 800px; height: 1200px">
+        <div class="modal-dialog" role="document" style="">
+          <div class="modal-content rounded-4 shadow" style="width: 600px; height: 1100px; margin-left: 400px">
             <div class="modal-header p-5 pb-4 border-bottom-0">
               <!-- <h5 class="modal-title">Modal title</h5> -->
-              <h2 class="fw-bold mb-0">예약 및 결제</h2>
+              <h4 class="fw-bold mb-0">예약 및 결제</h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="buyDataBtn"></button>
             </div>
 
             <div class="modal-body p-5 pt-0">
               <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">예약자 정보</h4>
+                <strong class="text-success">예약자 정보</strong>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
                     <div class="col-12">
-                      <label for="address" class="form-label">Name</label>
-                      <input type="text" v-model="this.user.mname" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <label for="address" class="form-label" style="">Name </label>
+                      <input type="text" readonly v-model="this.user.mname" class="form-control" id="name" placeholder="1234 Main St">
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -135,7 +137,7 @@
 
                     <div class="col-12">
                       <label for="email" class="form-label">Email <span class="text-muted"></span></label>
-                      <input type="email" v-model="this.user.mmail" class="form-control" id="email" placeholder="you@example.com">
+                      <input type="email" readonly v-model="this.user.mmail" class="form-control" id="email" placeholder="you@example.com">
                       <div class="invalid-feedback">
                         Please enter a valid email address for shipping updates.
                       </div>
@@ -143,7 +145,7 @@
 
                     <div class="col-12">
                       <label for="address" class="form-label">Phone Number</label>
-                      <input type="text" v-model="this.user.mph" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.user.mph" class="form-control" id="address" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -154,12 +156,12 @@
               <br>
 
               <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">예약정보</h4>
+                <strong class="text-success">예약정보</strong>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
                     <div class="col-12">
                       <label for="address" class="form-label">Reservation People</label>
-                      <input type="text" v-model="this.people" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.people" class="form-control" id="name" placeholder="1234 Main St" required style="">
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -175,7 +177,7 @@
 
                     <div class="col-12">
                       <label for="address" class="form-label">Reservation Days</label>
-                      <input type="text" v-model="this.sDays" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.sDays" class="form-control" id="address" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -187,12 +189,12 @@
               <br>
 
               <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">결제정보</h4>
+                <strong class="text-success">결제정보</strong>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
                     <div class="col-12">
                       <label for="address" class="form-label">Room Name</label>
-                      <input type="text" v-model="this.room.detailName" class="form-control" id="name" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.room.detailName" class="form-control" id="name" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -200,7 +202,7 @@
 
                     <div class="col-12">
                       <label for="email" class="form-label">Room Price <span class="text-muted"></span></label>
-                      <input type="email" v-model="this.room.detailPrice" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
+                      <input type="email" readonly v-model="this.room.detailPrice" class="form-control" id="email" placeholder="요청사항을 입력하세요.">
                       <div class="invalid-feedback">
                         Please enter a valid email address for shipping updates.
                       </div>
@@ -208,7 +210,7 @@
 
                     <div class="col-12">
                       <label for="address" class="form-label">All Room Price</label>
-                      <input type="text" v-model="this.allPrice" class="form-control" id="address" placeholder="1234 Main St" required>
+                      <input type="text" readonly v-model="this.allPrice" class="form-control" id="address" placeholder="1234 Main St" required>
                       <div class="invalid-feedback">
                         Please enter your shipping address.
                       </div>
@@ -218,7 +220,7 @@
               </div>
 
               <br>
-              <button class="w-100 btn btn-primary btn-lg" @click="paymentBtn()" type="submit">결제하기</button>
+              <button type="button" class="btn btn-outline-primary" @click="paymentBtn()">결제하기</button>
             </div>
           </div>
         </div>
@@ -280,18 +282,19 @@
     <div style="display: flex" >
       <button type="button" class="btn btn-secondary" @click="detail_1" style="margin-left: 70px;">캠핑장 소개 / 위치</button>
       <button type="button" class="btn btn-secondary" @click="detail_2" style="margin-left: 70px;">이용 안내</button>
-      <button type="button" class="btn btn-secondary" @click="detail_4" style="margin-left: 70px;">캠핑/여행후기</button>
+      <button type="button" class="btn btn-secondary" @click="detail_4" style="margin-left: 70px;">캠핑 / 여행후기</button>
+      <button type="button" class="btn btn-secondary" @click="detail_3" style="margin-left: 70px;">환불 안내</button>
     </div>
 
-    <div v-if="areaCheck1" style="margin-left: 250px; display: flex; margin-top: 60px;">
+    <div v-if="areaCheck1" style="margin-left: 50px; display: flex; margin-top: 60px;">
       <br>
       <div>
         <img class="ilist" :src=imageC>
         <br>
         <img class="ilist" :src=imageC2>
       </div>
-      <div class="mapDiv" style="margin-left: 40px;">
-        <div id="map"></div>
+      <div class="mapDiv" style="margin-left: 40px; margin-top: 50px;">
+        <div id="map" style="height: 500px; width: 500px;"></div>
       </div>
     </div>
 
@@ -304,12 +307,10 @@
 
     <div v-if="areaCheck3">
       <br>
-      <br>
-      <br>
-      <br>
-      <div class="mapDiv">
-        <div id="map"></div>
+      <div>
+        <img class="ilist" :src=imageCCC style="height: 900px; width: 800px; margin-top: 60px; margin-left: 230px;">
       </div>
+      <br>
     </div>
 
     <div v-if="areaCheck4">
@@ -349,6 +350,7 @@
 </template>
 
 <script>
+
 import axios from "axios";
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -401,6 +403,7 @@ export default {
       imageC2: require('@/assets/캠핑장 소개2.png'),
       imageCC: require('@/assets/이용안내.png'),
       imageCC2: require('@/assets/이용안내 2.png'),
+      imageCCC: require('@/assets/환불.png'),
       //
       room: [],
       user: [],
@@ -452,6 +455,7 @@ export default {
             console.log(res.data);
             this.content = res.data;
             this.roomContent = this.content.campingDetails;
+            this.detailT = this.content.campingDetails.detailT;
             this.campingImages = this.content.images;
             console.log(this.roomContent);
             console.log(this.campingImages);
@@ -539,28 +543,6 @@ export default {
     },
     detailBtn(){
       this.is_show2 = !this.is_show2;
-    },
-    detail_3() {
-      this.areaCheck3 = true
-      this.areaCheck1 = false
-      this.areaCheck2 = false
-      this.areaCheck4 = false
-      // let check = prompt("1+1 은?");
-      // alert("귀요미 ㅋ");
-      // const point = [this.content.longitude, this.content.latitude]
-      // console.log(point);
-      // this.displayMarker([point])
-      //  카카오맵
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
-        script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
-        document.head.appendChild(script);
-      }
     },
     initMap() {
       const container = document.getElementById("map");
@@ -701,16 +683,13 @@ export default {
       this.areaCheck2 = false;
       this.areaCheck3 = false;
 
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
         const script = document.createElement("script");
         /* global kakao */
         script.onload = () => kakao.maps.load(this.initMap);
         script.src =
             "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8a536388b1cc33e00ae2dbf18b8509ba&libraries=services";
         document.head.appendChild(script);
-      }
+
     },
     detail_2() {
       this.areaCheck4 = false;
@@ -718,6 +697,13 @@ export default {
       this.areaCheck2 = true;
       this.areaCheck3 = false;
     },
+    detail_3(){
+      this.areaCheck4 = false;
+      this.areaCheck1 = false;
+      this.areaCheck2 = false;
+      this.areaCheck3 = true;
+    },
+
     putResCart(){
       this.axios.post('http://localhost:9002/api/ResCartPut', {
         campingId: this.$route.params.campingId,
@@ -857,36 +843,6 @@ select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: in
   width: 230px;
   height: 52px;
 }
-
-.my-box {               /*리뷰 젤 큰 박스*/
-  border:3px solid;
-  padding:50px 0 5%;
-  box-sizing: border-box;
-  width: 70%;
-  margin:0 auto;
-  margin-bottom: 1%;
-}
-.review{
-  font-size: 20px;
-  margin-right: 70%;
-}
-.btn_Bottom_1{
-  width: 10%;
-  padding: 15px 0 15px;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  background-color: #9dc7ea;
-  font-size: 20px;
-  font-weight: 400;
-  margin-right: 70%;
-  margin-top: 20px;
-}
-.review-image{
-  margin-top: 10%;
-  margin-right: 5%;
-
-}
 .button{
   margin-left : 40%;
   display: inline-block;
@@ -912,52 +868,6 @@ select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: in
 .Recommend{
   margin-left: 70%;
 }
-
-.review-title{
-  /*background-color: blue;*/
-  position: relative;
-  margin-top: -22%;
-  left:20%;
-  font-size: 25px;
-}
-
-.review-text{
-  position: relative;
-  left: 50px;
-  font-size: 22px;
-  margin-top: 20%;
-  /*margin-left: 40%;*/
-}
-.btn_Bottom_2{
-  width: 30%;
-  padding: 10px 0 10px;
-  border: 0;
-  cursor: pointer;
-  color: black;
-  background-color: #9dc7ea;
-  font-size: 20px;
-  font-weight: 400;
-  margin-right: 5%;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  float: right;
-  border-radius: 15px;
-}
-
-.image_1{
-  width: 200%;
-  height: 200%;
-  margin-left: 230%;
-  margin-bottom: 10%;
-  margin-top: -50%;
-  /*width: 300px;*/
-  /*height: 180px;*/
-
-}
-.review-t{
-  text-align: center;
-}
-
 .mapDiv {
   margin-left: 35%;
   margin-bottom: 70%;

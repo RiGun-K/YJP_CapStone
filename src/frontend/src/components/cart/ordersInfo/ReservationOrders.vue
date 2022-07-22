@@ -1,7 +1,7 @@
 <template>
-  <div class="back">
-    <br>
-    <div class="frame">
+  <br>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/blog/">
+  <main class="container d-flex flex-wrap">
       <div class="reservation-orders">
         <h1 style="font-weight: bold; padding: 2%">Reservation Orders</h1>
         <div class="order-card-list">
@@ -18,6 +18,7 @@
             <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" @click="yearResOrders()">
             <label class="btn btn-outline-primary" for="btnradio4" style="font-size: 1em; padding: 1%">일년</label>
           </span>
+
           <div class="card border-info mb-3" style="margin-top: 5%" v-for="(menu, index) in todayMenu" :key="index">
             <div class="card-header" style="background-color: #b2e2fd">{{ menu.orders.paymentDate.year()}}년 {{ menu.orders.paymentDate.month()}}월 {{ menu.orders.paymentDate.date()}}일</div>
             <div class="card-body">
@@ -76,9 +77,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <br>
-  </div>
+  </main>
 </template>
 
 <script>
