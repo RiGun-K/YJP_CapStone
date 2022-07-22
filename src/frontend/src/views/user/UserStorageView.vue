@@ -6,11 +6,15 @@
   <h3 style="margin-top: 2%; margin-left: 250px; margin-bottom: 2%;">Storage Search</h3>
 
   <main class="container">
-    <div class="searchDiv" style="display: flex;">
+
+
+    <div class="searchDiv">
       <select class="form-select" aria-label="Default select example" v-model="bigPick" @change="bigCheck(bigPick)">
         <option value="0">전국</option>
-        <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+        <option class="as" v-for="big in bigRound" :value="big.areaId" >{{ big.areaName }}</option>
       </select>
+
+
       <select class="form-select" aria-label="Default select example"  v-model="smallPick" style="margin-left: 1%">
         <option value="0">전체</option>
         <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
@@ -37,17 +41,20 @@
             <span class="fs-5 fw-semibold">Storage</span>
           </a>
           <div class="list-group list-group-flush border-bottom scrollarea"  style="overflow: scroll; width: 380px; height: 600px">
-            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true"
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true" style="padding: 10px"
                v-for="(storage,index) in storageList" :key="index"
                @click="GetStorageDetail(storage.storageCode)">
+              <img :src="'/api/product_detail_images/' + storage.filename" alt="..." style="width: 50px; height:50px; margin-bottom: 5px" >
               <div class="d-flex w-100 align-items-center justify-content-between">
-                <strong class="mb-1">{{ storage.storageName }}</strong>
-                <img :src="'/api/product_detail_images/' + storage.filename" alt="..." style="width: 50px; height:50px; margin-top: 10px" >
+                <div class="mb-1 text-muted" style="width: 200px; font-size: 0.8em">보관소 이름 - </div>
+                <strong class="mb-1" style="margin-right: 60px; width: 500px">{{ storage.storageName }}</strong>
               </div>
-              <div style="display: flex">
-                <div class="col-10 mb-1 small">{{ storage.storageAddress }}</div>
-                <button @click="askBox(storage)" class="storage-submit-btn">자세히</button>
+              <div class="d-flex w-100 align-items-center justify-content-between">
+                <div class="mb-1 text-muted" style="width: 220px; font-size: 0.8em">보관소 주소 - </div>
+                <div class="mb-1" style="margin-right:10px; width: 500px;">{{ storage.storageAddress }}</div>
+                <button @click="askBox(storage)" type="button" class="btn btn-outline-secondary" style="padding: 1px; width: 150px; height: 40px; margin-top: -70px; ">자세히</button>
               </div>
+
             </a>
           </div>
         </div>
@@ -139,6 +146,9 @@ export default {
       stSearch: '',
       searchStorageList: [],
       searchList: [],
+
+      selectedId : null,
+      displayCategory: false,
     }
   },
   methods: {
@@ -333,14 +343,22 @@ export default {
       }
       this.allMarker()
     },
+    handleSelect(item){
+      this.selectedId = item
+      this.displayCategory = !this.displayCategory
+    }
   }
 }
 </script>
 
 <style scoped>
 .searchDiv {
-  margin-top: 100px;
+  display: flex;
+  grid-gap: 30px;
 }
+
+
+
 
 select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: inherit;  no-repeat: 95% 50%; border-radius: 0px; -webkit-appearance: none; -moz-appearance: none;appearance: none;}
 
@@ -373,7 +391,7 @@ select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: in
 /*기존*/
 #map {
   width: 100%;
-  height: 600px;
+  height: 598px;
 }
 
 .user-storage-view {
@@ -390,5 +408,11 @@ select {width: 200px; padding: .8em .5em; border: 1px solid #999;font-family: in
 td {
   width: 20%;
 }
+
+.as:nth-child(1):hover{
+  background-color: #3e8e41;
+}
+
+
 
 </style>

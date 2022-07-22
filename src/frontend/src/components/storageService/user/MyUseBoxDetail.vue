@@ -1,194 +1,251 @@
 <template>
   <div class="container">
-    <div class="btn">
-      <button class="close-box" @click="close()">X</button>
-    </div>
-    <div class="container-box">
-      <div class="service-btn">
-        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"
-                @click="moveBox(pickUseBox)">장비 이동
-        </button>
-        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"
-                @click="repairBox(pickUseBox)">장비 수리
-        </button>
-        <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3 && detailUseState != 1" @click="renewalPay(pickUseBox)">연장</button>
-        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>
-        <button class="mystoragebox-re" v-if="detailUseState == 1 && backChk" @click="backItem()">장비회수</button>
-      </div>
-      <br>
-      <br>
-      <div class="range-info-box">
-        <h4>사용기간</h4>
-        <div class="box-info-a">
-          <table>
-            <thead>
-            <tr>
-              <th>시작일</th>
-              <th>종료예정일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>{{ useTime[0] }}</td>
-              <td>{{ useTime[1] }}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <br>
-      <div v-if="moveInfo">
-        <div class="move-info-box">
-          <h6>이동정보</h6>
-          <hr>
-          <div class="box-info-b">
-            <table v-if="!kkk">
-              <thead>
-              <tr>
-                <th>이동 보관함</th>
-                <th>상태</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-if="moveBoxInfo.moveState == 3">
-                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
-                <td>접수</td>
-              </tr>
-              <tr v-if="moveBoxInfo.moveState == 4">
-                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>
-                <td>접수</td>
-              </tr>
-              <tr v-if="moveBoxInfo.moveState == 5">
-                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>
-                <td>이동중</td>
-              </tr>
-              </tbody>
-            </table>
-            <table v-else>
-              <tbody>
-              <tr>
-                <td>받는 사람</td>
-                <td>{{ order.deliveryGetter }}</td>
-              </tr>
-              <tr>
-                <td>우편번호</td>
-                <td>{{ order.deliveryZipcode }}</td>
-              </tr>
-              <tr>
-                <td>주소</td>
-                <td>{{ order.deliveryAddress }}</td>
-              </tr>
-              <tr>
-                <td>연락처</td>
-                <td>{{ order.deliveryGetterTel }}</td>
-              </tr>
-              </tbody>
-            </table>
+    <div class="modal modal-signin d-block py-5" role="dialog">
+      <div class="modal-dialog" role="document" >
+        <div class="modal-content rounded-4 shadow" style="margin-left: 200px; margin-top: 220px">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+            <h2 class="fw-bold mb-0">{{ name }}, {{ boxName }}</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="close"></button>
           </div>
-        </div>
-      </div>
-      <br>
-      <div>
-        <h2>보관 중 캠핑장비</h2>
-        <div class="item-info-box">
-          <div @click="addShow()">
-            <h9>보관 장비 추가</h9>
-            <h9 v-if="!addItemCheck">▼</h9>
-            <h9 v-else>▲
-              <button class="item-btn" @click="addItem()">추가하기</button>
-            </h9>
-          </div>
-          <div v-if="addItemCheck" class="box-info-c">
-            <div>
-              <table>
-                <thead>
-                <tr>
-                  <th colspan="2">장비</th>
-                  <th>수량</th>
-                  <th>선택</th>
-                </tr>
-                </thead>
-                <tbody class="body-sc">
-                <tr v-for="(item,index) in notInItem" :key="index" class="item">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.memEquipmentName }}</td>
-                  <td>
-                    <select v-model="item.count">
-                      <option v-for="inx in item.memEquipmentCount" :value="inx">{{ inx }}</option>
-                    </select>
-                    개
-                  </td>
-                  <td><input type="checkbox" :value="item" v-model="addBoxInItem"></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div v-if="myItem.length > 0">
-            <h3>보관장비
-              <button class="out-btn" @click="outItem()">빼내기</button>
-            </h3>
-            <div class="box-info">
-              <table>
-                <thead>
-                  <tr>
-                    <th colspan="2">장비</th>
-                    <th>수량</th>
-                    <th></th>
-                    <th>선택</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(item,index) in myItem" :key="index">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
-                    <td>
-                      <select v-model="item.count">
-                        <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>
-                      </select>
-                      개
-                    </td>
-                    <td>{{ stateCheck(item.memEquipmentCode.memEquipmentState) }}</td>
-                    <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div v-else>
-            <div>
-              <h5>보관장비</h5>
-              <hr>
-              <div>
-                <h5>보관중인 장비가 없습니다.</h5>
+
+          <div class="modal-body p-5 pt-0">
+            <form class="">
+              <div class="form-floating mb-3">
+                <div style="display: flex">
+                  <strong class="d-inline-block mb-0 text-success">사용 시작일</strong>
+                  <div style="margin-left: 5px">
+                     - {{ useTime[0] }}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div v-if="repairList.length>0">
-            <h3>수리장비</h3>
-            <div class="box-info">
-              <table>
-                <thead>
-                <tr>
-                  <th colspan="2">장비</th>
-                  <th>수리 수량</th>
-                  <th>수리 항목</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item,index) in repairList" :key="index">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.boxItemCode.memEquipmentCode.memEquipmentName }}</td>
-                  <td>{{item.repairItemCount}} 개</td>
-                  <td>{{ item.buyId.buyName }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+              <div class="form-floating mb-3">
+                <div style="display: flex">
+                  <strong class="d-inline-block mb-0 text-success">사용 종료일</strong>
+                  <div style="margin-left: 5px">
+                    - {{ useTime[1] }}
+                  </div>
+                </div>
+              </div>
+              <div v-if="moveInfo">
+                <div class="form-floating mb-3">
+                  <strong class="d-inline-block mb-0 text-success">이동정보</strong>
+                  <div style="margin-left: 20px" v-if="moveBoxInfo.moveState == 3">
+                    {{ moveBoxInfo.storageName }} 보관소,{{ moveBoxInfo.boxName }}보관함으로 이동
+                  </div>
+                  <div style="margin-left: 20px" v-if="moveBoxInfo.moveState == 4">
+                    {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }} 보관함으로 이동
+                  </div>
+                  <div style="margin-left: 20px" v-if="moveBoxInfo.moveState == 5">
+                    {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <div style="display: flex;">
+                  <strong class="d-inline-block mb-0 text-success">결제금액</strong>
+                </div>
+              </div>
+
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="button-addon2" type="button"  v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="moveBox(pickUseBox)" style="margin-top: 10px">Move Item</button>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="button-addon2" type="button"  v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6" @click="repairBox(pickUseBox)" style="margin-top: 10px">Repair Item</button>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="button-addon2" type="button" v-if="moveBoxInfo.moveState != 3 && detailUseState != 1" @click="renewalPay(pickUseBox)" style="margin-top: 10px">Renewal Box</button>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="button-addon2" type="button" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)" style="margin-top: 10px">Clear Box</button>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="button-addon2" type="button" v-if="detailUseState == 1 && backChk" @click="backItem()">Back Item</button>
+              <small class="text-muted">By clicking Button, you agree to the terms of use.</small>
+            </form>
           </div>
         </div>
       </div>
     </div>
+<!--    <div class="btn">-->
+<!--      <button class="close-box" @click="close()">X</button>-->
+<!--    </div>-->
+<!--    <div class="container-box">-->
+<!--      <div class="service-btn">-->
+<!--        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"-->
+<!--                @click="moveBox(pickUseBox)">장비 이동-->
+<!--        </button>-->
+<!--        <button class="mystoragebox-re" v-if="(detailUseState==2 && myItem.length > 0) || detailUseState==6"-->
+<!--                @click="repairBox(pickUseBox)">장비 수리-->
+<!--        </button>-->
+<!--        <button class="mystoragebox-re" v-if="moveBoxInfo.moveState != 3 && detailUseState != 1" @click="renewalPay(pickUseBox)">연장</button>-->
+<!--        <button class="mystoragebox-re" v-if="detailUseState==2 || detailUseState==6" @click="closeBox(pickUseBox)">해지</button>-->
+<!--        <button class="mystoragebox-re" v-if="detailUseState == 1 && backChk" @click="backItem()">장비회수</button>-->
+<!--      </div>-->
+<!--      <br>-->
+<!--      <br>-->
+<!--      <div class="range-info-box">-->
+<!--        <h4>사용기간</h4>-->
+<!--        <div class="box-info-a">-->
+<!--          <table>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th>시작일</th>-->
+<!--              <th>종료예정일</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--              <td>{{ useTime[0] }}</td>-->
+<!--              <td>{{ useTime[1] }}</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <br>-->
+<!--      <div v-if="moveInfo">-->
+<!--        <div class="move-info-box">-->
+<!--          <h6>이동정보</h6>-->
+<!--          <hr>-->
+<!--          <div class="box-info-b">-->
+<!--            <table v-if="!kkk">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th>이동 보관함</th>-->
+<!--                <th>상태</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr v-if="moveBoxInfo.moveState == 3">-->
+<!--                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>-->
+<!--                <td>접수</td>-->
+<!--              </tr>-->
+<!--              <tr v-if="moveBoxInfo.moveState == 4">-->
+<!--                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함으로 이동</td>-->
+<!--                <td>접수</td>-->
+<!--              </tr>-->
+<!--              <tr v-if="moveBoxInfo.moveState == 5">-->
+<!--                <td>{{ moveBoxInfo.storageName }}보관소{{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동</td>-->
+<!--                <td>이동중</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--            <table v-else>-->
+<!--              <tbody>-->
+<!--              <tr>-->
+<!--                <td>받는 사람</td>-->
+<!--                <td>{{ order.deliveryGetter }}</td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>우편번호</td>-->
+<!--                <td>{{ order.deliveryZipcode }}</td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>주소</td>-->
+<!--                <td>{{ order.deliveryAddress }}</td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>연락처</td>-->
+<!--                <td>{{ order.deliveryGetterTel }}</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <br>-->
+<!--      <div>-->
+<!--        <h2>보관 중 캠핑장비</h2>-->
+<!--        <div class="item-info-box">-->
+<!--          <div @click="addShow()">-->
+<!--            <h9>보관 장비 추가</h9>-->
+<!--            <h9 v-if="!addItemCheck">▼</h9>-->
+<!--            <h9 v-else>▲-->
+<!--              <button class="item-btn" @click="addItem()">추가하기</button>-->
+<!--            </h9>-->
+<!--          </div>-->
+<!--          <div v-if="addItemCheck" class="box-info-c">-->
+<!--            <div>-->
+<!--              <table>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                  <th colspan="2">장비</th>-->
+<!--                  <th>수량</th>-->
+<!--                  <th>선택</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody class="body-sc">-->
+<!--                <tr v-for="(item,index) in notInItem" :key="index" class="item">-->
+<!--                  <td>{{ index + 1 }}</td>-->
+<!--                  <td>{{ item.memEquipmentName }}</td>-->
+<!--                  <td>-->
+<!--                    <select v-model="item.count">-->
+<!--                      <option v-for="inx in item.memEquipmentCount" :value="inx">{{ inx }}</option>-->
+<!--                    </select>-->
+<!--                    개-->
+<!--                  </td>-->
+<!--                  <td><input type="checkbox" :value="item" v-model="addBoxInItem"></td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--              </table>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div v-if="myItem.length > 0">-->
+<!--            <h3>보관장비-->
+<!--              <button class="out-btn" @click="outItem()">빼내기</button>-->
+<!--            </h3>-->
+<!--            <div class="box-info">-->
+<!--              <table>-->
+<!--                <thead>-->
+<!--                  <tr>-->
+<!--                    <th colspan="2">장비</th>-->
+<!--                    <th>수량</th>-->
+<!--                    <th></th>-->
+<!--                    <th>선택</th>-->
+<!--                  </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                  <tr v-for="(item,index) in myItem" :key="index">-->
+<!--                    <td>{{ index + 1 }}</td>-->
+<!--                    <td>{{ item.memEquipmentCode.memEquipmentName }}</td>-->
+<!--                    <td>-->
+<!--                      <select v-model="item.count">-->
+<!--                        <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>-->
+<!--                      </select>-->
+<!--                      개-->
+<!--                    </td>-->
+<!--                    <td>{{ stateCheck(item.memEquipmentCode.memEquipmentState) }}</td>-->
+<!--                    <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>-->
+<!--                  </tr>-->
+<!--                </tbody>-->
+<!--              </table>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div v-else>-->
+<!--            <div>-->
+<!--              <h5>보관장비</h5>-->
+<!--              <hr>-->
+<!--              <div>-->
+<!--                <h5>보관중인 장비가 없습니다.</h5>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div v-if="repairList.length>0">-->
+<!--            <h3>수리장비</h3>-->
+<!--            <div class="box-info">-->
+<!--              <table>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                  <th colspan="2">장비</th>-->
+<!--                  <th>수리 수량</th>-->
+<!--                  <th>수리 항목</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr v-for="(item,index) in repairList" :key="index">-->
+<!--                  <td>{{ index + 1 }}</td>-->
+<!--                  <td>{{ item.boxItemCode.memEquipmentCode.memEquipmentName }}</td>-->
+<!--                  <td>{{item.repairItemCount}} 개</td>-->
+<!--                  <td>{{ item.buyId.buyName }}</td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--              </table>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
