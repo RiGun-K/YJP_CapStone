@@ -1,8 +1,9 @@
 <template>
+  <div class="container">
   <div class="search">
     <div class="infoter">
 
-      <div class="searchDiv" style="display: flex; width: 800px; margin-left: 500px;">
+      <div class="searchDiv" style="display: flex; width: 800px; margin-left: 250px;">
         <select class="form-select" aria-label="Default select example" v-model="planDestination" @click="placeFilter()">
           <option>전체</option>
           <option>강원도</option>
@@ -52,7 +53,7 @@
           {{ value.planUsedCount }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 460px;">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 300px;">View</button>
                 </div>
               </div>
             </div>
@@ -96,6 +97,7 @@
       </div>
     </div> -->
   </div>
+  </div>
 </template>
 
 <script>
@@ -119,7 +121,7 @@ export default {
   methods: {
     selectedPage(i) {
       this.pageNumber = i - 1;
-   
+
       this.loadAllPlans();
     },
     intoPlan: function (value) {
@@ -309,7 +311,6 @@ export default {
 
 .search {
   height: 100px;
-  background-color: #e1eef6;
   text-align: center;
 }
 
