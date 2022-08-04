@@ -2,7 +2,7 @@
   <div class="search">
     <div class="infoter">
 
-      <div class="searchDiv" style="display: flex; width: 800px; margin-left: 380px;">
+      <div class="searchDiv" style="display: flex; width: 800px; margin-left: 500px;">
         <select class="form-select" aria-label="Default select example" v-model="planDestination" @click="placeFilter()">
           <option>전체</option>
           <option>강원도</option>
@@ -19,11 +19,10 @@
           <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
         </select>
 
-        <input type="text" class="form-control" v-model="searchPlan" placeholder="키워드를 입력하세요" style="margin-left: 30px;" />
+        <input type="text" class="form-control" v-model="searchPlan" placeholder="키워드를 입력하세요" style="margin-left: 30px; width: 800px;" />
           <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
-        <button class="btn btn-outline-secondary" @click="tagFilter(this.searchPlan)" style="width: 90px; margin-left: 20px">
-          검색
-        </button>
+
+        <button class="btn btn-outline-secondary" @click="tagFilter(this.searchPlan)" style="width: 110px; margin-left: 20px">검색</button>
       </div>
     </div>
   </div>
@@ -53,7 +52,7 @@
           {{ value.planUsedCount }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 340px;">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 460px;">View</button>
                 </div>
               </div>
             </div>
