@@ -37,6 +37,7 @@
       카피순
     </button>
   </div>
+
   <div>
     <div class="serch" style="display: flex; margin-left: 50px; margin-top: 50px; font-size: 20px;"><p>지역: {{ planDestination }}</p> <p style="margin-left: 50px;">검색: {{ searchPlan }}</p></div>
      <div class="paging" >
