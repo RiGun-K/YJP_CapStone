@@ -29,8 +29,8 @@ public interface StorageRepository extends JpaRepository<Storage, Long> {
 //            "order by s.STORAGE_NAME, b.STORAGE_BOX_CODE ", nativeQuery = true)
 //    public Object[] findByMember(@Param("memberId") String memberId );
 //
-@Query(value = "select s.STORAGE_CODE as storageCode, s.STORAGE_NAME as storageName, b.STORAGE_BOX_CODE as storageBoxCode, \n" +
-        "b.STORAGE_BOX_NAME as storageBoxName, b.STORAGE_BOX_STATE as storageBoxState, u.USE_STORAGE_BOX_CODE as useStorageBoxCode, u.USE_STORAGE_STATE as useStorageState \n" +
+@Query(value = "select s.STORAGE_CODE as storageCode, s.STORAGE_NAME as storageName, b.STORAGE_BOX_CODE as boxCode, \n" +
+        "b.STORAGE_BOX_NAME as boxName, b.STORAGE_BOX_STATE as boxState, u.USE_STORAGE_BOX_CODE as useCode, u.USE_STORAGE_STATE as useState \n" +
         "from STORAGE s \n" +
         "join STORAGEBOX b on  s.STORAGE_CODE = b.STORAGE_CODE \n" +
         "left outer join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +

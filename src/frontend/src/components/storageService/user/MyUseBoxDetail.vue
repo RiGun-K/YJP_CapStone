@@ -258,6 +258,8 @@ export default {
   props: {
     modal: '',
     useData: {},
+    name:'',
+    boxName:'',
   },
   data() {
     return {

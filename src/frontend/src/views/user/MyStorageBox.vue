@@ -42,7 +42,7 @@
     </div>
   </div>
   <div v-if="modal" class="right-box" >
-    <MyUseBoxDetail :modal="modal" :useData="useData" @close="close()" />
+    <MyUseBoxDetail :name="name" :boxName="boxName" :modal="modal" :useData="useData" @close="close()" />
   </div>
 </template>
 
@@ -62,6 +62,8 @@ export default {
       memberId: '',
       useBoxes: [],
       useData:{},
+      name:'',
+      boxName:'',
     }
   },
   mounted() {
@@ -145,6 +147,8 @@ export default {
       //   a[i].style.backgroundColor = "white"
       // }
       // a[index].style.backgroundColor = "#cde1e8"
+      this.name = us.storageName
+      this.boxName = us.boxName
       this.useData = {}
       if (!this.modal) {
         this.modal = !this.modal
