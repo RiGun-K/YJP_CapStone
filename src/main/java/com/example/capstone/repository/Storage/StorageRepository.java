@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface StorageRepository extends JpaRepository<Storage, Long> {
@@ -20,22 +19,15 @@ public interface StorageRepository extends JpaRepository<Storage, Long> {
     @Query(value = "select * from STORAGE where STORAGE_STATE = 0 order by STORAGE_NAME",nativeQuery = true)
     List<Storage> findByNotState();
 
-//    @Query(value = "select s.STORAGE_CODE, s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_BOX_CODE, u.USE_STORAGE_STATE \n" +
-//                    "from STORAGE s\n" +
-//                    "join STORAGEBOX b on  s.STORAGE_CODE = b.STORAGE_CODE \n" +
-//                    "left outer join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +
-//                    "left outer join MEMBER m on m.MCODE = u.MCODE \n" +
-//                    "WHERE m.MID = :memberId and sysdate between u.USE_STORAGE_START_TIME and u.USE_STORAGE_END_TIME \n" +
-//                    "order by s.STORAGE_NAME, b.STORAGE_BOX_CODE ", nativeQuery = true)
-//    public Object[] findByMember(@Param("memberId") String memberId );
-@Query(value = "select s.STORAGE_CODE as storageCode, s.STORAGE_NAME as storageName, b.STORAGE_BOX_CODE as boxCode, b.STORAGE_BOX_NAME as boxName, b.STORAGE_BOX_STATE as boxState, u.USE_STORAGE_BOX_CODE as useCode, u.USE_STORAGE_STATE as useState\n" +
-        "from STORAGE s\n" +
-        "join STORAGEBOX b on  s.STORAGE_CODE = b.STORAGE_CODE \n" +
-        "left outer join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +
-        "left outer join MEMBER m on m.MCODE = u.MCODE \n" +
-        "WHERE m.MID = :memberId and sysdate between u.USE_STORAGE_START_TIME and u.USE_STORAGE_END_TIME \n" +
-        "order by s.STORAGE_NAME, b.STORAGE_BOX_CODE ", nativeQuery = true)
-public List<Map<String, Object>> findByMember(@Param("memberId") String memberId );
+    @Query(value = "select s.STORAGE_CODE, s.STORAGE_NAME, b.STORAGE_BOX_CODE, b.STORAGE_BOX_NAME, b.STORAGE_BOX_STATE, u.USE_STORAGE_BOX_CODE, u.USE_STORAGE_STATE \n" +
+            "from STORAGE s\n" +
+            "join STORAGEBOX b on  s.STORAGE_CODE = b.STORAGE_CODE \n" +
+            "left outer join USESTORAGEBOX u on u.STORAGE_BOX_CODE = b.STORAGE_BOX_CODE \n" +
+            "left outer join MEMBER m on m.MCODE = u.MCODE \n" +
+            "WHERE m.MID = :memberId and u.USE_STORAGE_STATE = '2' or sysdate between u.USE_STORAGE_START_TIME and u.USE_STORAGE_END_TIME \n" +
+            "order by s.STORAGE_NAME, b.STORAGE_BOX_CODE ", nativeQuery = true)
+    public Object[] findByMember(@Param("memberId") String memberId );
+
 
     @Query( value = "select * from STORAGE where STORAGE_ADDRESS like :areaName%", nativeQuery = true)
     public List<Storage> findByStorageAddress(@Param("areaName")String areaName);
