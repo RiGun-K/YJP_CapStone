@@ -119,9 +119,7 @@ export default {
   methods: {
     selectedPage(i) {
       this.pageNumber = i - 1;
-      //   const id = document.getElementById("p");
-      //   id.style.color = "blue";
-
+   
       this.loadAllPlans();
     },
     intoPlan: function (value) {
