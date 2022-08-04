@@ -1,12 +1,5 @@
 <template>
 
- <body class="d-flex h-100 text-center  bg-dark">
-					<main class="px-3" style="position: relative;">
-							 <main class="px-3" style="color: white; 	">
-    <h1 >Cover your page.</h1>
-    <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-
-  </main>
    	<div class="background">
 		<!-- <img class="imgbackground1" src="@/assets/campwall2.webp" /> -->
 		<div class="MenuPosition">
@@ -29,8 +22,6 @@
 		</div>
 	</div>
 
-  </main>
-  </body>
 
 </template>
 
@@ -70,17 +61,19 @@ export default {
 	top: calc(50% + 150px);
 	transform: translate(-50%, -50%);
 	text-align: center;
+  margin-top: -220px;
+
 }
 
 .SelectMenu {
 	position: relative;
 	display: inline-block;
-	width: 180px;
-	margin: 30px;
+	width: 220px;
+	margin: 60px;
 	background: white;
 	padding: 15px;
 	border-radius: 20px;
-	box-shadow: 2px 2px 15px rgb(58, 58, 58);
+	box-shadow: 2px 2px 10px rgb(58, 58, 58);
 }
 
 .SelectBtn {
@@ -113,7 +106,7 @@ export default {
 	transform: translate(-50%, -50%);
 	white-space: nowrap;
 	font-weight: 700;
-	font-size: 5px;
+	font-size: 13px;
 }
     .bd-placeholder-img {
         font-size: 1.125rem;

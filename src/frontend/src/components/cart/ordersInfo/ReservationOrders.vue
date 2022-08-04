@@ -38,6 +38,19 @@
                         <div style="width: 800px; margin-left: 4%; margin-top: 1%; display: flex; padding-right: 250px">
                           <p style="font-weight: bold; font-size: 0.8em; margin-right: 2%; margin-top: 1%">대여기간: </p><p style="font-size: 1em">{{ this.startDate[index] }} ~ {{ this.endDate[index] }}</p>
                         </div>
+
+                        <div style="display: flex">
+                          <div style="width: 40%; padding-left: 3%; margin-left: 1%; display: flex">
+                            <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 5%">상품가격: </p><p style="font-size: 1em; margin-top: 4%">{{ this.todayDetail[index].detailPrice }}</p>
+                          </div>
+                          <div style="width: 30%; padding-left: 2%; margin-left: 1%; display: flex">
+                            <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 5%">대여일 수: </p><p style="font-size: 1em; margin-top: 3%">{{ this.period[index] }}</p>
+                          </div>
+                        </div>
+
+                        <div style="width: 35%; padding: 1%; margin-left: 3%; margin-top: 1%; display: flex">
+                          <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1em">{{menu.orders.orderPrice }}</p>
+                        </div>
                     </div>
                     <div>
                       <div class="col-auto d-none d-lg-block" style="width: 300px; margin-left: -200px">
@@ -46,19 +59,7 @@
                     </div>
                   </div>
                   <br>
-                  <div style="display: flex">
-                    <div style="width: 40%; padding-left: 3%; margin-left: 1%; display: flex">
-                      <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1em">{{ this.todayDetail[index].detailPrice }}</p>
-                    </div>
-                    <div style="width: 30%; padding-left: 2%; margin-left: 1%; display: flex">
-                      <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">대여일 수: </p><p style="font-size: 1em">{{ this.period[index] }}</p>
-                    </div>
-                  </div>
-                    <div style="width: 35%; padding: 1%; margin-left: 3%; margin-top: 1%; display: flex">
-                      <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1em">{{menu.orders.orderPrice }}</p>
-                    </div>
-
-                <div style="width: 15%; margin-top: -7%">
+                <div style="width: 15%; margin-top: -7%; margin-left: 820px">
                   <button class="order-info-btn">예약취소</button>
                 </div>
             </div>
