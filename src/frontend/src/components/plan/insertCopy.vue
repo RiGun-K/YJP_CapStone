@@ -1,7 +1,158 @@
 <template>
-	<div class="back">
-		<div class="frame">
-			<div class="contents">
+	<div class="container">
+    <form class="was-validated">
+      <div class="mb-3">
+        <label for="validationTextarea" class="form-label">날짜선택</label>
+        <Datepicker
+            v-model="shareDate"
+            :enable-time-picker="false"
+            :min-date="today"
+            range
+            placeholder="Select camping  date range"
+            v-on="toString()"
+            format="yyyy/MM/dd"
+            autoApply
+            :closeOnAutoApply="false"
+        ></Datepicker>
+<!--        <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>-->
+        <div class="invalid-feedback">
+          Please enter a message in the textarea.
+        </div>
+      </div>
+
+
+      <div class="mb-3">
+        <div style="display: flex">
+          <input
+              type="text"
+              v-model="postalAddress"
+              class="form-control"
+              placeholder="우편주소 입력"
+              aria-label="Recipient's username"
+              aria-describedby="button-addon2"
+              readonly
+              required
+              id="validationFormText1"
+          />
+          <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              @click="zcGet"
+          >
+            우편주소검색
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <input
+            type="text"
+            v-model="address"
+            id="email"
+            class="form-control"
+            maxlength="100"
+            placeholder="도로명입력"
+            readonly
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+            type="text"
+            v-model="detailAddress"
+            id="email"
+            class="form-control"
+            maxlength="100"
+            placeholder="상세주소"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">캠핑장</label>
+        <input type="text" v-model="campingName" placeholder="캠핑장 이름" class="form-control"/>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">플랜 이름</label>
+        <div style="display: flex">
+          <input
+              type="text"
+              placeholder="플랜 이름"
+              v-model="planName"
+              class="form-control"
+              required
+          />
+          <button @click="checkPlanName">
+            중복확인
+          </button>
+        </div>
+        <div class="invalid-feedback">
+          플랜 이름을 입력해주세요.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">공개 여부</label>
+        <select class="form-select" required aria-label="select example" v-model="planOpen">
+          <option disabled value="">공개설정</option>
+          <option>전체공개</option>
+          <option disabled>비공개</option>
+        </select>
+        <div style="color: red">카피된 플랜은 비공개로 설정할 수 없습니다.</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">지역</label>
+        <select class="form-select" required aria-label="select example" v-model="planDestination">
+          <option disabled value="">지역선택</option>
+          <option>강원도</option>
+          <option>경기도</option>
+          <option>경상도</option>
+          <option>대구시</option>
+          <option>부산시</option>
+          <option>서울시</option>
+          <option>인천시</option>
+          <option>전라도</option>
+          <option>제주도</option>
+          <option>충청도</option>
+          <option>울산시</option>
+        </select>
+        <div class="invalid-feedback">
+
+        </div>
+      </div>
+
+
+<!--      <div class="form-check">-->
+<!--        <input type="radio" class="form-check-input" id="validationFormCheck2" name="radio-stacked" required>-->
+<!--        <label class="form-check-label" for="validationFormCheck2">Toggle this radio</label>-->
+<!--      </div>-->
+<!--      <div class="form-check mb-3">-->
+<!--        <input type="radio" class="form-check-input" id="validationFormCheck3" name="radio-stacked" required>-->
+<!--        <label class="form-check-label" for="validationFormCheck3">Or toggle this other radio</label>-->
+<!--        <div class="invalid-feedback">More example invalid feedback text</div>-->
+<!--      </div>-->
+
+<!--      <div class="mb-3">-->
+<!--        <select class="form-select" required aria-label="select example">-->
+<!--          <option value="">Open this select menu</option>-->
+<!--          <option value="1">One</option>-->
+<!--          <option value="2">Two</option>-->
+<!--          <option value="3">Three</option>-->
+<!--        </select>-->
+<!--        <div class="invalid-feedback">Example invalid select feedback</div>-->
+<!--      </div>-->
+
+<!--      <div class="mb-3">-->
+<!--        <input type="file" class="form-control" aria-label="file example" required>-->
+<!--        <div class="invalid-feedback">Example invalid form file feedback</div>-->
+<!--      </div>-->
+
+<!--      <div class="mb-3">-->
+<!--        <button class="btn btn-primary" type="submit" disabled>Submit form</button>-->
+<!--      </div>-->
+    </form>
 				<div class="date">
 					<p>* 날짜선택: &nbsp;</p>
 					<Datepicker
@@ -176,8 +327,6 @@
 						다음
 					</button>
 				</div>
-			</div>
-		</div>
 	</div>
 </template>
 
@@ -310,6 +459,9 @@ export default {
 };
 </script>
 <style>
+
+
+
 .back {
 	text-align: center;
 	background-image: url(@/assets/campwall2.webp);

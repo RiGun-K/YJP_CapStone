@@ -11,11 +11,26 @@
     <symbol id="call" viewBox="0 0 16 16">
       <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
     </symbol>
+    <symbol id="calender" viewBox="0 0 16 16">
+      <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+    </symbol>
   </svg>
 
   <div class="container">
     <div style="width: 600px; margin-top: 30px; margin-left: 40px">
-      <h3 class="teamNameH3">{{this.$store.state.teamCode.teamCode.teamName}}</h3>
+      <div style="border-radius: 15px 15px 15px 0;border: 3px solid #154416; padding: 0.5em 0.5em; display: flex">
+        <h3 class="teamNameH3">{{this.$store.state.teamCode.teamCode.teamName}}</h3>
+        <div style="margin-left: 180px; margin-top: 7px">
+          <button @click="deleteTeam()" type="button" class="btn btn-secondary">
+            팀 삭제하기
+          </button>
+          <button @click="refuse()" type="button" class="btn btn-warning" style="margin-left: 20px">
+            탈퇴하기
+          </button>
+        </div>
+      </div>
+
+
     </div>
     <div style="display: flex; margin-top: 40px">
       <div style="width: 600px;">
@@ -215,61 +230,72 @@
 
       <div style="width: 1205px; margin-left: 40px; background-color: white; margin-top: 50px; border-radius: 0.6em; border: 1px solid #3e8e41">
         <div>
-          <div v-if="showingDeleteTeamButton" class="planAdd" >
+          <div class="planAdd" >
             <h3 style="color:white; text-align: center; margin-top: 5px; margin-right: 20px">PlanList</h3>
-            <div class="button" @click="openWindow('/selectCopy')">
+            <div class="button" @click="openWindow('/selectCopy')" v-if="showingDeleteTeamButton">
               <p class="btnText">NEW</p>
               <div class="btnTwo">
                 <p class="btnText2">+</p>
               </div>
             </div>
-<!--            <button-->
-<!--              type="button"-->
-<!--              @click="openWindow('/selectCopy')"-->
-<!--              title="새 플랜 만들기"-->
-<!--            >-->
-<!--              +-->
-<!--            </button>-->
           </div>
-          <div v-for="(value, index) in planList" :key="index" class="planInfo">
-            <div class="planImg" style="position:relative">
 
-                <button
-                  class="w-btn w-btn-red"
-                  style="position:absolute;"
-                  @click="deletePlan(value)"
-                >X
-                </button>
-
-              <div>
-                <img :src="'/api/product_detail_image/' + value.filename"
-                      class="imgbackground"
-
-                />
+          <div class="row row-cols-1 row-cols-lg-3 align-items-stretch" style="width: 1190px; margin-left: 12px; margin-top: 30px">
+            <div class="card" v-for="(value, index) in planList" :key="index" style="margin-right: 11px; width: 385px; border:1px solid #3e8e41; margin-bottom: 30px">
+              <div class="p-2" @Click="updatePlanCode(value)">
+                <img :src="'/api/product_detail_image/' + value.filename" class="card-img" style="width: 343px; height: 200px; border: 3px solid #2e802e"/>
               </div>
-              <div>
-                <button
-                @Click="updatePlanCode(value)"
-                class="w-btn-outline w-btn-red-outline"
-              >
-                <p>{{ value.planName }}</p>
-                <p>{{ value.planStart }}~{{ value.planEnd }}</p>
-              </button >
-            </div>
+              <div class="card-body">
+                <div @Click="updatePlanCode(value)">
+                  <h3 class="h4" style="font-family: '휴먼둥근헤드라인', cursive;">{{ value.planName }}</h3>
+                  <div style="display: flex; height: 30px; width: 500px; margin-left: 5px; margin-bottom: 5px">
+                    <svg class="bi pe-none me-2" width="18" height="18" style="margin-top: 3px"><use xlink:href="#calender"/></svg>
+                    <p style="margin-left: 5px">
+                      {{ value.planStart }}~{{ value.planEnd }}
+                    </p>
+                  </div>
+                </div>
+                <div style="margin-left: 270px">
+                  <a class="btn btn-sm btn-outline-success" @click="deletePlan(value)" >
+                    Delete
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div>
-          <button class="w-btn1 w-btn-indigo" @click="deleteTeam()">
-            팀 삭제하기
-          </button>
-          <button class="w-btn1 w-btn-indigo" @click="refuse()">
-            탈퇴하기
-          </button>
-        </div>
+<!--          <div v-for="(value, index) in planList" :key="index" class="planInfo">-->
+<!--            <div class="planImg" style="position:relative">-->
+
+<!--                <button-->
+<!--                  class="w-btn w-btn-red"-->
+<!--                  style="position:absolute;"-->
+<!--                  @click="deletePlan(value)"-->
+<!--                >X-->
+<!--                </button>-->
+
+<!--              <div>-->
+<!--                <img :src="'/api/product_detail_image/' + value.filename"-->
+<!--                      class="imgbackground"-->
+
+<!--                />-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <button-->
+<!--                @Click="updatePlanCode(value)"-->
+<!--                class="w-btn-outline w-btn-red-outline"-->
+<!--              >-->
+<!--                <p>{{ value.planName }}</p>-->
+<!--                <p>{{ value.planStart }}~{{ value.planEnd }}</p>-->
+<!--              </button >-->
+<!--            </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+
       </div>
-
+    </div>
   </div>
 </template>
 
@@ -660,10 +686,9 @@ a {
 
 .teamNameH3 {
   font-family: '휴먼둥근헤드라인', cursive;
-  border-radius: 15px 15px 15px 0;
-  border: 3px solid #154416;
-  padding: 0.5em 0.6em;
   color: #218633;
+  margin-top: 5px;
+  margin-left: 10px;
 }
 
 .planAdd{
@@ -720,202 +745,5 @@ a {
 }
 
 
-
-
-
-
-
-.planListDiv {
-  margin-top: 50px;
-  display: inline-block;
-}
-.planListDiv div.planInfo {
-  float: left;
-  margin: 40px;
-  height: 100px;
-  margin-bottom: 150px;
-}
-
-.w-btn {
-  position: relative;
-  border: none;
-  /* padding: 15px 30px; */
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-}
-
-.w-btn-red {
-  background-color: #f30e0e;
-  color: #e1eef6;
-  width: 30px;
-  height: 30px;
-  font-size: 0.5px;
-  border-radius: 0px;
-  margin-left: 70px;
-}
-.w-btn:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline {
-  position: relative;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-}
-.w-btn-red-outline {
-  border: none;
-  color: #e1eef6;
-  background-color: #6e6e6e;
-  width: 200px;
-  height: 60px;
-  border-radius: 0%;
-}
-.w-btn-red-outline p{
-  line-height: 1px;
-
-}
-.w-btn-red-outline:hover {
-  background-color: #ff5f2e;
-  color: #e1eef6;
-}
-.w-btn-outline:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.w-btn-outline:active {
-  transform: scale(1.5);
-}
-
-.createNewPlan {
-  background-color: rgb(199, 201, 200);
-}
-
-.createNewPlan p {
-  font-size: 30px;
-  display: inline;
-}
-
-.memberListP {
-  font-size: 25px;
-  background-color: rgb(199, 201, 200);
-}
-
-.w-btn-outline:active {
-  transform: scale(1.5);
-}
-.w-btn-blue-outline2:hover {
-  background-color: #6aafe6;
-  color: #d4dfe6;
-}
-.w-btn-blue-outline2 {
-  border: 3px solid #6aafe6;
-  color: #6e6e6e;
-}
-.w-btn-outline2 {
-  position: relative;
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-  width: 40px;
-  margin-left: 20px;
-  font-size: 20px;
-}
-
-.addMember button {
-  position: relative;
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-  width: 80px;
-  margin-left: 20px;
-  font-size: 12px;
-}
-.addMember input {
-  border-radius: 5px;
-}
-.w-btn-outline2:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.tdContent {
-  max-width: 800px;
-  word-break: break-all;
-}
-
-.w-btn1 {
-  position: relative;
-  border: none;
-  display: inline-block;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.25s;
-  margin-right: 50px;
-}
-
-.w-btn-indigo {
-  background-color: aliceblue;
-  color: #1e6b7b;
-  margin-bottom: 30px;
-}
-.w-btn1:active {
-  transform: scale(1.5);
-}
-
-.w-btn1:hover {
-  letter-spacing: 2px;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-.boardDiv {
-  border: none;
-  border-radius: 50px;
-  background-color: rgb(247, 246, 230);
-  width: 70%;
-  height: auto;
-  display: inline-block;
-  margin: 50px;
-}
-.boardDiv2 {
-  border: none;
-  border-radius: 50px;
-  background-color: rgb(247, 246, 230);
-  width: 70%;
-  height: auto;
-  display: inline-block;
-  margin: 50px;
-  
-}
-.imgbackground{
-height: 100px;
-width: 200px;
-
-}.col-md-6{
-	display: inline-block;
-	width: 45%;
-	margin-left: 1.65%;
-	margin-right: 1.65%;
-}
 
 </style>

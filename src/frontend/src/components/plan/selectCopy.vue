@@ -50,7 +50,7 @@ export default {
 	object-fit: cover;
 }
 .background{
-	width: 500px;
+	width: 800px;
 	height: 500px;
 }
 
@@ -68,8 +68,8 @@ export default {
 .SelectMenu {
 	position: relative;
 	display: inline-block;
-	width: 220px;
-	margin: 60px;
+	width: 320px;
+  margin: 80px;
 	background: white;
 	padding: 15px;
 	border-radius: 20px;
@@ -106,7 +106,7 @@ export default {
 	transform: translate(-50%, -50%);
 	white-space: nowrap;
 	font-weight: 700;
-	font-size: 13px;
+	font-size: 18px;
 }
     .bd-placeholder-img {
         font-size: 1.125rem;
