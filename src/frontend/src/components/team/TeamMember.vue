@@ -107,14 +107,15 @@
             </button>
             <a href="#" class="stretched-link">Continue reading</a>
 
-          </div>
+        </div>
           <div class="col-auto d-none d-lg-block">
-
+            
             <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Go to detail</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
+ 
           </div>
         </div>
-   </div>
+				</div>
+     
 
       </div>
       <div class="boardDiv">
@@ -141,8 +142,9 @@
                 </button>
 
               <div>
-                <img :src="'/api/product_detail_image/' + value.filename"
-                      class="imgbackground"
+                <img :src="'/api/product_detail_image/' + value.filename" 
+                      class="imgbackground"  
+                      
 
                 />
               </div>
@@ -154,11 +156,6 @@
                 <p>{{ value.planName }}</p>
                 <p>{{ value.planStart }}~{{ value.planEnd }}</p>
               </button >
-            </div>
-
-            </div>
-
-
 
           </div>
         </div>
@@ -676,6 +673,16 @@ export default {
   height: auto;
   display: inline-block;
   margin: 50px;
+}
+.boardDiv2 {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 70%;
+  height: auto;
+  display: inline-block;
+  margin: 50px;
+  
 }
 .boardDiv2 {
   border: none;
