@@ -1,5 +1,4 @@
 <template>
-  <div class="background">
     <div class="outer">
       <div class="boardDiv">
         <p class="boardP">팀게시판</p>
@@ -61,7 +60,7 @@
         </div>
       </div>
 
-      <div class="boardDiv">
+      <div class="boardDiv2"  >
         <p class="memberListP">MemberList</p>
         <div class="addMember">
           회원추가하기
@@ -73,20 +72,17 @@
             추가하기
           </button>
         </div>
-
-        <div class="memberListDiv">
-          <div
-            v-for="(value, index) in $store.state.teamMemberList"
-            :key="index"
-            class="teamListDiv"
-          >
-            <p>
-              name:
-              {{ value.mcode.mname }}
-            </p>
-            <p>phone: {{ value.mcode.mph }}</p>
-            <p>email: {{ value.mcode.mmail }}</p>
-            <form>
+	 <div class="col-md-6" v-for="(value, index) in $store.state
+								.teamMemberList"
+							:key="index"
+              style="float: left;"
+							>
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-success">{{ value.mcode.mname }}</strong>
+            <h3 class="mb-0" style="display:inline-block; max-width:280px; overflow:hidden">{{ value.mcode.mmail }}</h3>
+            <div class="mb-1 text-muted">{{ value.mcode.mph }}</div>
+        <form>
               <input
                 v-model="value.teamMemberAuthority"
                 type="radio"
@@ -109,8 +105,18 @@
             >
               추방하기
             </button>
+            <a href="#" class="stretched-link">Continue reading</a>
+
+        </div>
+          <div class="col-auto d-none d-lg-block">
+            
+            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Go to detail</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+ 
           </div>
         </div>
+				</div>
+     
+
       </div>
       <div class="boardDiv">
         <div class="planListDiv">
@@ -126,24 +132,31 @@
             </button>
           </div>
           <div v-for="(value, index) in planList" :key="index" class="planInfo">
-          <div class="planImg">
-         <img :src="'/api/product_detail_image/' + value.filename" class="imgbackground"  />
-          </div>
-            <div>
-              <button
+            <div class="planImg" style="position:relative">
+
+                <button
+                  class="w-btn w-btn-red"
+                  style="position:absolute;"
+                  @click="deletePlan(value)"
+                >X
+                </button>
+
+              <div>
+                <img :src="'/api/product_detail_image/' + value.filename" 
+                      class="imgbackground"  
+                      
+
+                />
+              </div>
+              <div>
+                <button
                 @Click="updatePlanCode(value)"
                 class="w-btn-outline w-btn-red-outline"
               >
                 <p>{{ value.planName }}</p>
                 <p>{{ value.planStart }}~{{ value.planEnd }}</p>
-              </button>
-              <button
-                class="w-btn w-btn-red deleteButton"
-                @click="deletePlan(value)"
-              >
-                플랜삭제
-              </button>
-            </div>
+              </button >
+
           </div>
         </div>
 
@@ -156,7 +169,6 @@
           </button>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -447,7 +459,7 @@ export default {
   color: rgba(136, 136, 136, 0.534);
 }
 .textArea {
-  width: 1000px;
+  width: 70%;
   height: 100px;
   margin-top: 40px;
   margin-left: 100px;
@@ -483,18 +495,21 @@ export default {
 .planListDiv div.planInfo {
   float: left;
   margin: 40px;
-  height: 200px;
+  height: 100px;
+  margin-bottom: 150px;
 }
 .planListButton {
   border-radius: 5px;
   background-color: rgba(255, 0, 0, 0.205);
   border: none;
 }
+.background{
+  width: 100px;
+}
 .w-btn {
   position: relative;
   border: none;
-  display: inline-block;
-  padding: 15px 30px;
+  /* padding: 15px 30px; */
   border-radius: 15px;
   font-family: "paybooc-Light", sans-serif;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -504,8 +519,13 @@ export default {
 }
 
 .w-btn-red {
-  background-color: #ff5f2e;
+  background-color: #f30e0e;
   color: #e1eef6;
+  width: 30px;
+  height: 30px;
+  font-size: 0.5px;
+  border-radius: 0px;
+  margin-left: 70px;
 }
 .w-btn:hover {
   letter-spacing: 2px;
@@ -526,9 +546,8 @@ export default {
   border: none;
   color: #e1eef6;
   background-color: #6e6e6e;
-  width: 300px;
+  width: 200px;
   height: 60px;
-  margin-left:125px ;
   border-radius: 0%;
 }
 .w-btn-red-outline p{
@@ -630,7 +649,6 @@ export default {
   font-weight: 600;
   transition: 0.25s;
   margin-right: 50px;
-  float: right;
 }
 
 .w-btn-indigo {
@@ -651,15 +669,34 @@ export default {
   border: none;
   border-radius: 50px;
   background-color: rgb(247, 246, 230);
-  width: 90%;
+  width: 70%;
   height: auto;
   display: inline-block;
   margin: 50px;
 }
+.boardDiv2 {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 70%;
+  height: auto;
+  display: inline-block;
+  margin: 50px;
+  
+}
+.boardDiv2 {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 70%;
+  height: auto;
+  display: inline-block;
+  margin: 50px;
+
+}
 .outer {
   text-align: center;
-  position: absolute;
-  background-image: url(@/assets/campwall2.webp);
+  /* position: absolute; */
   background-size: 100%;
   background-repeat: repeat-y;
 }
@@ -670,9 +707,14 @@ export default {
 }
 .imgbackground{
 
-height: 200px;
-width: 300px;
+height: 100px;
+width: 200px;
 
+}.col-md-6{
+	display: inline-block;
+	width: 45%;
+	margin-left: 1.65%;
+	margin-right: 1.65%;
 }
 
 </style>

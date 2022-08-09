@@ -1,42 +1,77 @@
 <template>
   <div class="search">
-    <select class="optionTag" v-model="planDestination" @click="placeFilter()">
-      <option>전체</option>
-      <option>강원도</option>
-      <option>경기도</option>
-      <option>경상도</option>
-      <option>대구시</option>
-      <option>부산시</option>
-      <option>서울시</option>
-      <option>인천시</option>
-      <option>전라도</option>
-      <option>제주도</option>
-      <option>충청도</option>
-      <option>울산시</option></select
-    ><input
-      type="text"
-      v-model="searchPlan"
-      placeholder="키워드를 입력하세요"
-    />
-    <button class="w-btn1 w-btn-indigo" @click="tagFilter(this.searchPlan)">
-      검색
-    </button>
+    <div class="infoter">
+
+      <div class="searchDiv" style="display: flex; width: 800px; margin-left: 500px;">
+        <select class="form-select" aria-label="Default select example" v-model="planDestination" @click="placeFilter()">
+          <option>전체</option>
+          <option>강원도</option>
+          <option>경기도</option>
+          <option>경상도</option>
+          <option>대구시</option>
+          <option>부산시</option>
+          <option>서울시</option>
+          <option>인천시</option>
+          <option>전라도</option>
+          <option>제주도</option>
+          <option>충청도</option>
+          <option>울산시</option>
+          <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+        </select>
+
+        <input type="text" class="form-control" v-model="searchPlan" placeholder="키워드를 입력하세요" style="margin-left: 30px; width: 800px;" />
+          <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+
+        <button class="btn btn-outline-secondary" @click="tagFilter(this.searchPlan)" style="width: 110px; margin-left: 20px">검색</button>
+      </div>
+    </div>
   </div>
   <hr />
 
   <div class="sort">
-    <button class="w-btn1 w-btn-indigo" @click="orderBy('planViews')">
+    <button class="btn btn-outline-success" @click="orderBy('planViews')">
       조회순
     </button>
-    <button class="w-btn1 w-btn-indigo" @click="orderBy('planUsedCount')">
+    <button class="btn btn-outline-success" @click="orderBy('planUsedCount')" style="margin-left: 10px; margin-right: 60px;">
       카피순
     </button>
   </div>
   <div>
     <h1>지역: {{ planDestination }}</h1>
     <h1>검색: {{ searchPlan }}</h1>
+     <div class="paging">
+  <div class="col" style="width: 30%; display:inline-block; margin-left:5%"  @click="intoPlan(value)"
 
-    <div class="paging">
+          v-for="(value, index) in filteredPlanList"
+          :key="index"  >
+          <div class="card shadow-sm">
+             <img :src="'/api/product_detail_image/' + value.filename" class="imgbackground"  />
+            <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+
+            <div class="card-body">
+              <p class="card-text">  지역:{{ value.planDestination }}</p> <p class="card-text">조회수:
+          {{ value.planViews }}</p> <p class="card-text"> 카피수:
+          {{ value.planUsedCount }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>  <div class="pages">
+
+        <p>
+          페이지
+          <button id="p" v-for="i in pageSize" @click="selectedPage(i)">
+            {{ i }}
+          </button>
+        </p>
+      </div>
+        </div>
+    <!-- <div class="paging">
       <div class="box">
         <div
           class="w-btn-outline w-btn-red-outline"
@@ -63,7 +98,7 @@
           </button>
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -88,9 +123,7 @@ export default {
   methods: {
     selectedPage(i) {
       this.pageNumber = i - 1;
-      //   const id = document.getElementById("p");
-      //   id.style.color = "blue";
-
+   
       this.loadAllPlans();
     },
     intoPlan: function (value) {
@@ -318,5 +351,17 @@ export default {
 height: 200px;
 width: 300px;
 
-}
+}     .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
 </style>

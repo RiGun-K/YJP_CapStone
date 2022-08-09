@@ -20,4 +20,5 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     List<Plan> findAllByTeamCodeTeamCode(Long team);
     List<Plan> findByTeamCode(Team teamCode);
     Page<Plan> findAll(Pageable pageable);
+    List<Plan> findTop5ByOrderByPlanUsedCountDesc();
 }

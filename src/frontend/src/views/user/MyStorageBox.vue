@@ -2,29 +2,43 @@
   <div class="container">
     <div class="container-top">
       <br><br><br>
-      <h3>사용 중인 보관함 조회</h3>
+      <h3>My Storage Box</h3>
     </div>
-    <div class="left-box">
-      <div class="card-body">
-        <div>
-          <table class='scrolltbody'>
-            <thead>
-              <tr>
-                <th>보관소</th>
-                <th>보관함</th>
-                <th>상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox,index)" class="item">
-                <td>{{ useBox.storageName }}</td>
-                <td>{{ useBox.boxName }}</td>
-                <td>{{updateState(useBox.useState)}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="left-box" style="padding: 0">
+      <div class="list-group w-auto">
+        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true" v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox,index)">
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <div>
+              <h6 class="mb-0">{{ useBox.storageName }}, {{ useBox.boxName }}</h6>
+              <p class="mb-0 opacity-95">{{updateState(useBox.useState)}}</p>
+            </div>
+          </div>
+        </a>
       </div>
+<!--      <div class="list-group" v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox,index)">-->
+<!--        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">A simple secondary list group item</a>-->
+<!--      </div>-->
+
+<!--      <div class="card-body">-->
+<!--        <div>-->
+<!--          <table class='scrolltbody'>-->
+<!--            <thead>-->
+<!--              <tr>-->
+<!--                <th>보관소</th>-->
+<!--                <th>보관함</th>-->
+<!--                <th>상태</th>-->
+<!--              </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--              <tr v-for="(useBox,index) in useBoxes" :key="index" @click="detailBox(useBox,index)" class="item">-->
+<!--                <td>{{ useBox.storageName }}</td>-->
+<!--                <td>{{ useBox.boxName }}</td>-->
+<!--                <td>{{updateState(useBox.useState)}}</td>-->
+<!--              </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
   <div v-if="modal" class="right-box" >
@@ -59,6 +73,7 @@ export default {
         case "0":
           return "결제완료"
         break
+        case "1":
         case "2":
           return "사용중"
           break
@@ -124,11 +139,11 @@ export default {
       }
     },
     detailBox(us,index) {
-      let a = document.getElementsByClassName("item")
-      for (let i = 0; i < a.length; i++) {
-        a[i].style.backgroundColor = "white"
-      }
-      a[index].style.backgroundColor = "#cde1e8"
+      // let a = document.getElementsByClassName("item")
+      // for (let i = 0; i < a.length; i++) {
+      //   a[i].style.backgroundColor = "white"
+      // }
+      // a[index].style.backgroundColor = "#cde1e8"
       this.useData = {}
       if (!this.modal) {
         this.modal = !this.modal
@@ -142,71 +157,82 @@ export default {
 
 <style scoped>
 .container{
-  padding: initial;
-  position: center;
-  width: 95%;
+  width: 1400px;
 }
 .left-box{
-  border: 1px solid black;
-  float: left;
-  width: 40%;
+  width: 500px;
+  margin-top: -40px;
 }
-.right-box{
-  border: 1px solid black;
-  float: right;
-  margin-right: 10%;
-  height: 50%;
-  width: 40%;
-}
-td{
-  border-bottom: 1px solid black;
-  padding-top:17px;
-  padding-bottom:12px;
-  word-spacing:9px;
-  text-align:center;
+/*.right-box{*/
+/*  border: 1px solid black;*/
+/*  float: right;*/
+/*  margin-right: 10%;*/
+/*  height: 50%;*/
+/*  width: 40%;*/
+/*}*/
+
+
+
+.list-group {
+  max-width: 460px;
+  margin: 4rem auto;
 }
 
-.scrolltbody {
-  display: block;
-  border-collapse: collapse;
+.form-check-input:checked + .form-checked-content {
+  opacity: .5;
 }
 
-.scrolltbody tbody tr td {
-  border-top: 0;
+.form-check-input-placeholder {
+  border-style: dashed;
+}
+[contenteditable]:focus {
+  outline: 0;
 }
 
-.scrolltbody tbody {
-  display: block;
-  height: 100%;
-  overflow: auto;
+.list-group-checkable .list-group-item {
+  cursor: pointer;
+}
+.list-group-item-check {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+.list-group-item-check:hover + .list-group-item {
+  background-color: var(--bs-light);
+}
+.list-group-item-check:checked + .list-group-item {
+  color: #fff;
+  background-color: var(--bs-blue);
+}
+.list-group-item-check[disabled] + .list-group-item,
+.list-group-item-check:disabled + .list-group-item {
+  pointer-events: none;
+  filter: none;
+  opacity: .5;
 }
 
-.renewal-box h3 {
-  margin-top: 3%;
-  margin-left: 7%;
-  margin-bottom: 3%;
+.list-group-radio .list-group-item {
+  cursor: pointer;
+  border-radius: .5rem;
+}
+.list-group-radio .form-check-input {
+  z-index: 2;
+  margin-top: -.5em;
+}
+.list-group-radio .list-group-item:hover,
+.list-group-radio .list-group-item:focus {
+  background-color: var(--bs-light);
 }
 
-.mystoragebox-re {
-  margin-left: 4%;
-  margin-bottom: 1%;
-  text-align: center;
-  width: 90%;
-  padding: 0.5%;
-  background-color: #ffffff;
-  font-weight: bolder;
-  color: #00a3de;
-  border-color: #00a3de;
+.list-group-radio .form-check-input:checked + .list-group-item {
+  background-color: var(--bs-body);
+  border-color: var(--bs-blue);
+  box-shadow: 0 0 0 2px var(--bs-blue);
 }
-
-.mystoragebox-re:hover {
-  color: white;
-  background-color: #b2e2fd;
-}
-
-.scrolltbody td {
-  padding: 1%;
-  width: 3%;
+.list-group-radio .form-check-input[disabled] + .list-group-item,
+.list-group-radio .form-check-input:disabled + .list-group-item {
+  pointer-events: none;
+  filter: none;
+  opacity: .5;
 }
 
 </style>
