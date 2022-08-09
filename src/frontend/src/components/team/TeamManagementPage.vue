@@ -36,6 +36,7 @@
 					:key="index"
 					class="teamList"
 				>
+
 					<button
 						class="w-btn-gray"
 						type="button"
@@ -74,6 +75,7 @@
 								요청이 왔습니다
 							</h1>
 							<div class="requestButton">
+
 								<button
 									@click="accept(requestTeamCode.teamCode)"
 								>
@@ -154,9 +156,12 @@
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
+		</div>
+					
 	</div>
 	<div class="aTag">
 		<a :href="$store.state.teamURL"
@@ -166,6 +171,7 @@
 			TEAM</a
 		>
 	</div>
+
 </template>
 
 <script>
@@ -345,6 +351,7 @@ export default {
 	background-color: #f5d682;
 	display: inline-block;
 	border: none;
+
 }
 
 .teamList {
@@ -460,6 +467,7 @@ export default {
 }
 .teamMemberList {
 	width: 90%;
+
 }
 
 hr {
@@ -482,6 +490,7 @@ hr {
 
 .request {
 	margin: auto;
+
 }
 .request p {
 	font-size: 50px;
@@ -494,6 +503,7 @@ hr {
 
 .requestButton {
 	margin: auto;
+
 }
 @keyframes gradient1 {
 	0% {
@@ -528,6 +538,7 @@ hr {
 	color: #1e6b7b;
 }
 .col-md-6 {
+
 	display: inline-block;
 	width: 30%;
 	margin-left: 1.65%;
@@ -555,6 +566,7 @@ hr {
 	height: 50px;
 }
 .aTag {
+
 	font-size: large;
 	float: right;
 	margin-right: 50px;

@@ -116,6 +116,7 @@
         </div>
 				</div>
      
+
       </div>
       <div class="boardDiv">
         <div class="planListDiv">
@@ -132,7 +133,7 @@
           </div>
           <div v-for="(value, index) in planList" :key="index" class="planInfo">
             <div class="planImg" style="position:relative">
-            
+
                 <button
                   class="w-btn w-btn-red"
                   style="position:absolute;"
@@ -144,6 +145,7 @@
                 <img :src="'/api/product_detail_image/' + value.filename" 
                       class="imgbackground"  
                       
+
                 />
               </div>
               <div>
@@ -154,12 +156,7 @@
                 <p>{{ value.planName }}</p>
                 <p>{{ value.planStart }}~{{ value.planEnd }}</p>
               </button >
-            </div>
-              
-            </div>
-            
-            
-            
+
           </div>
         </div>
 
@@ -686,6 +683,16 @@ export default {
   display: inline-block;
   margin: 50px;
   
+}
+.boardDiv2 {
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(247, 246, 230);
+  width: 70%;
+  height: auto;
+  display: inline-block;
+  margin: 50px;
+
 }
 .outer {
   text-align: center;

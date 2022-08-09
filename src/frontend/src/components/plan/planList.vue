@@ -1,34 +1,38 @@
 <template>
   <div class="search">
-    <select class="optionTag" v-model="planDestination" @click="placeFilter()">
-      <option>전체</option>
-      <option>강원도</option>
-      <option>경기도</option>
-      <option>경상도</option>
-      <option>대구시</option>
-      <option>부산시</option>
-      <option>서울시</option>
-      <option>인천시</option>
-      <option>전라도</option>
-      <option>제주도</option>
-      <option>충청도</option>
-      <option>울산시</option></select
-    ><input
-      type="text"
-      v-model="searchPlan"
-      placeholder="키워드를 입력하세요"
-    />
-    <button class="w-btn1 w-btn-indigo" @click="tagFilter(this.searchPlan)">
-      검색
-    </button>
+    <div class="infoter">
+
+      <div class="searchDiv" style="display: flex; width: 800px; margin-left: 500px;">
+        <select class="form-select" aria-label="Default select example" v-model="planDestination" @click="placeFilter()">
+          <option>전체</option>
+          <option>강원도</option>
+          <option>경기도</option>
+          <option>경상도</option>
+          <option>대구시</option>
+          <option>부산시</option>
+          <option>서울시</option>
+          <option>인천시</option>
+          <option>전라도</option>
+          <option>제주도</option>
+          <option>충청도</option>
+          <option>울산시</option>
+          <option v-for="big in bigRound" :value="big.areaId">{{ big.areaName }}</option>
+        </select>
+
+        <input type="text" class="form-control" v-model="searchPlan" placeholder="키워드를 입력하세요" style="margin-left: 30px; width: 800px;" />
+          <option v-for="small in smallRound" :value="small.areaId">{{ small.areaName }}</option>
+
+        <button class="btn btn-outline-secondary" @click="tagFilter(this.searchPlan)" style="width: 110px; margin-left: 20px">검색</button>
+      </div>
+    </div>
   </div>
   <hr />
 
   <div class="sort">
-    <button class="w-btn1 w-btn-indigo" @click="orderBy('planViews')">
+    <button class="btn btn-outline-success" @click="orderBy('planViews')">
       조회순
     </button>
-    <button class="w-btn1 w-btn-indigo" @click="orderBy('planUsedCount')">
+    <button class="btn btn-outline-success" @click="orderBy('planUsedCount')" style="margin-left: 10px; margin-right: 60px;">
       카피순
     </button>
   </div>
@@ -37,6 +41,7 @@
     <h1>검색: {{ searchPlan }}</h1>
      <div class="paging">
   <div class="col" style="width: 30%; display:inline-block; margin-left:5%"  @click="intoPlan(value)"
+
           v-for="(value, index) in filteredPlanList"
           :key="index"  >
           <div class="card shadow-sm">
@@ -50,12 +55,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+
                 </div>
               </div>
             </div>
             
           </div>
         </div>  <div class="pages">
+
         <p>
           페이지
           <button id="p" v-for="i in pageSize" @click="selectedPage(i)">
@@ -116,9 +123,7 @@ export default {
   methods: {
     selectedPage(i) {
       this.pageNumber = i - 1;
-      //   const id = document.getElementById("p");
-      //   id.style.color = "blue";
-
+   
       this.loadAllPlans();
     },
     intoPlan: function (value) {

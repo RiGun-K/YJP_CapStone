@@ -70,6 +70,8 @@ export default {
 	top: calc(50% + 150px);
 	transform: translate(-50%, -50%);
 	text-align: center;
+  margin-top: -220px;
+
 }
 
 .SelectMenu {
@@ -77,10 +79,11 @@ export default {
 	display: inline-block;
 	width: 180px;
 	margin: 30px;
+
 	background: white;
 	padding: 15px;
 	border-radius: 20px;
-	box-shadow: 2px 2px 15px rgb(58, 58, 58);
+	box-shadow: 2px 2px 10px rgb(58, 58, 58);
 }
 
 .SelectBtn {
@@ -114,6 +117,7 @@ export default {
 	white-space: nowrap;
 	font-weight: 700;
 	font-size: 5px;
+
 }
     .bd-placeholder-img {
         font-size: 1.125rem;
