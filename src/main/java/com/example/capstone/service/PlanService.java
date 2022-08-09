@@ -21,6 +21,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -57,6 +58,12 @@ public class PlanService {
 
         planRepository.save(newPlan);
         return newPlan;
+    }
+
+    public List<PlanDto> planRanking(){
+        List<Plan> planRanking = planRepository.findTop5ByOrderByPlanUsedCountDesc();
+    List<PlanDto> planDtos = planRanking.stream().map(PlanDto::new).collect(Collectors.toList());
+        return planDtos;
     }
 
     public PlanDto editPlan(PlanDto plan) {
