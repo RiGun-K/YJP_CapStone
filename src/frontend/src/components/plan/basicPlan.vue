@@ -336,9 +336,12 @@ export default {
 			// 	'campingName':this.campingName,
 			// };
 
-		//	formData.append('plan', data);
+			//	formData.append('plan', data);
 			formData.append('planName', this.planName);
-			formData.append('teamCode', this.$store.state.teamCode.teamCode.teamCode);
+			formData.append(
+				'teamCode',
+				this.$store.state.teamCode.teamCode.teamCode,
+			);
 			formData.append('planStart', this.planStart);
 			formData.append('planEnd', this.planEnd);
 			formData.append('planDestination', this.planDestination);
@@ -502,7 +505,7 @@ export default {
 	margin-right: 5px;
 }
 .w-btn-blue {
-	background-color: #6aafe6;
+	background-color: #d3dfe9;
 	color: #d4dfe6;
 }
 .w-btn:hover {
