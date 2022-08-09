@@ -118,6 +118,7 @@
      
 
       </div>
+    </div>
       <div class="boardDiv">
         <div class="planListDiv">
           <div v-if="showingDeleteTeamButton" class="createNewPlan">
@@ -170,6 +171,7 @@
         </div>
       </div>
   </div>
+      </div>
 </template>
 
 <script>
