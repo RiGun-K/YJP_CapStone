@@ -161,8 +161,7 @@
 			</div>
 		</div>
 		</div>
-					
-	</div>
+
 	<div class="aTag">
 		<a :href="$store.state.teamURL"
 			>More about &nbsp;{{
