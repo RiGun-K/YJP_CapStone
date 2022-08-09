@@ -123,7 +123,9 @@
             </div>
 
             <div class="modal-body p-5 pt-0">
-              <div class="col-md-7 col-lg-8">
+              <div class="col-md-7 col-lg-8"
+
+              >
                 <h4 class="mb-3">예약자 정보</h4>
                 <form class="needs-validation" novalidate>
                   <div class="row g-3">
