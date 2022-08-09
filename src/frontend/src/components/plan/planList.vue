@@ -37,9 +37,11 @@
     </button>
   </div>
   <div>
-    <div class="serch" style="display: flex; margin-left: 50px; margin-top: 50px; font-size: 20px;"><p>지역: {{ planDestination }}</p> <p style="margin-left: 50px;">검색: {{ searchPlan }}</p></div>
-     <div class="paging" >
-  <div class="col" style="width: 30%; display:inline-block; margin-left:5%; margin-top: 40px;"  @click="intoPlan(value)"
+    <h1>지역: {{ planDestination }}</h1>
+    <h1>검색: {{ searchPlan }}</h1>
+     <div class="paging">
+  <div class="col" style="width: 30%; display:inline-block; margin-left:5%"  @click="intoPlan(value)"
+
           v-for="(value, index) in filteredPlanList"
           :key="index"  >
           <div class="card shadow-sm">
@@ -52,13 +54,15 @@
           {{ value.planUsedCount }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 460px;">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+
                 </div>
               </div>
             </div>
             
           </div>
-        </div>  <div class="pages" style="margin-top: 60px;">
+        </div>  <div class="pages">
+
         <p>
           페이지
           <button id="p" v-for="i in pageSize" @click="selectedPage(i)">

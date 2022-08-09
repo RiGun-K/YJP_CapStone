@@ -19,7 +19,10 @@ public class PlanListApiController {
     private final PlanService planService;
     private final PlanTagService planTagService;
 
-
+    @GetMapping("api/planRanking")
+    public List<PlanDto> planRanking(){
+        return planService.planRanking();
+    }
     @GetMapping("api/loadAllPlans")
     public Page<PlanDto> loadAllPlans(Pageable pageable) {
         return planService.loadAllPlans(pageable);

@@ -8,8 +8,10 @@ import com.example.capstone.domain.Product.MenuRental;
 import com.example.capstone.domain.order.Cart;
 import com.example.capstone.domain.order.OrderMenu;
 import com.example.capstone.domain.order.Orders;
+import com.example.capstone.dto.plan.CampingDto;
 import com.example.capstone.repository.Member.MemberRepository;
 import com.example.capstone.repository.Product.CampingDetailRepository;
+import com.example.capstone.repository.Product.CampingRepository;
 import com.example.capstone.repository.Product.MenuBuyRepository;
 import com.example.capstone.repository.Product.MenuRentalRepository;
 import com.example.capstone.repository.orders.CartRepository;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -56,6 +58,8 @@ public class OrderController {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private CampingRepository campingRepository;
 
     @GetMapping("/buyMember/{MCode}")
     public Member getBuyMember(@PathVariable("MCode") Long MCode){
@@ -431,5 +435,20 @@ public class OrderController {
             return orderMenuList;
         }
         return null;
+    }
+
+    @GetMapping("campingRanking")
+    public List<CampingDto> campingRanking(){
+
+        List<Integer> orderMenus = orderMenuRepository.findRanking();
+        List<Camping> campings = new ArrayList<>();
+        for(Integer orderMenu : orderMenus){
+            Optional<Camping> camping = campingRepository.findById(orderMenu);
+            campings.add(camping.get());
+        }
+        System.out.println(campings.get(0));
+        System.out.println(campings.get(1));
+        List<CampingDto> campingDtos = campings.stream().map(CampingDto::new).collect(Collectors.toList());
+        return campingDtos;
     }
 }
