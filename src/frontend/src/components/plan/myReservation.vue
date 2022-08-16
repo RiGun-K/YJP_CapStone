@@ -1,241 +1,377 @@
 <template>
-  <div class="back">
-    <br />
-    <div class="frame">
-      <div class="reservation-orders">
-        <h1 style="font-weight: bold; padding: 2%">Reservation Orders</h1>
-        <div class="order-card-list">
-          <span
-            class="btn-group"
-            role="group"
-            aria-label="Basic radio toggle button group"
-          >
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio1"
-              autocomplete="off"
-              @click="todayResOrders()"
-              checked
-            />
-            <label
-              class="btn btn-outline-primary"
-              for="btnradio1"
-              style="font-size: 1em; padding: 1%"
-              >오늘</label
-            >
+  <main class="container d-flex flex-wrap">
+    <div class="reservation-orders">
+      <h1 style="font-weight: bold; padding: 2%">Reservation Orders</h1>
+      <div class="order-card-list">
+          <span class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" @click="todayResOrders()" checked>
+            <label class="btn btn-outline-primary" for="btnradio1" style="font-size: 1em; padding: 1%">오늘</label>
 
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio2"
-              autocomplete="off"
-              @click="weekResOrders()"
-            />
-            <label
-              class="btn btn-outline-primary"
-              for="btnradio2"
-              style="font-size: 1em; padding: 1%"
-              >일주일</label
-            >
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" @click="weekResOrders()">
+            <label class="btn btn-outline-primary" for="btnradio2" style="font-size: 1em; padding: 1%">일주일</label>
 
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio3"
-              autocomplete="off"
-              @click="monthResOrders()"
-            />
-            <label
-              class="btn btn-outline-primary"
-              for="btnradio3"
-              style="font-size: 1em; padding: 1%"
-              >한 달</label
-            >
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" @click="monthResOrders()">
+            <label class="btn btn-outline-primary" for="btnradio3" style="font-size: 1em; padding: 1%">한 달</label>
 
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio4"
-              autocomplete="off"
-              @click="yearResOrders()"
-            />
-            <label
-              class="btn btn-outline-primary"
-              for="btnradio4"
-              style="font-size: 1em; padding: 1%"
-              >일년</label
-            >
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" @click="yearResOrders()">
+            <label class="btn btn-outline-primary" for="btnradio4" style="font-size: 1em; padding: 1%">일년</label>
           </span>
-          <div
-            class="card border-info mb-3"
-            style="margin-top: 5%"
-            v-for="(menu, index) in todayMenu"
-            :key="index"
-          >
-            <div class="card-header" style="background-color: #b2e2fd">
 
-              {{ menu.orders.paymentDate.year() }}년
-              {{ menu.orders.paymentDate.month() }}월
-              {{ menu.orders.paymentDate.date() }}일
-            </div>
-            <div class="card-body">
-              <div class="res-orders-item-image">
-                <img
-                  :src="
-                    '/api/product_detail_images/' +
-                    this.todayCamping[index].filename
-                  "
-                  class="img-fluid rounded-start"
-                  alt="..."
-                />
-              </div>
-              <div style="justify-content: left; width: 80%; height: 100%">
-                <div style="width: 80%; padding-top: 2%; margin-left: 4%">
-                  <p style="font-weight: bold; font-size: 1.2em">
-                    {{ this.todayCamping[index].campingName }}
-                  </p>
-                </div>
-                <div
-                  style="
-                    width: 68%;
-                    padding-top: 0%;
-                    margin-left: 4%;
-                    display: flex;
-                  "
-                >
-                  <p
-                    style="
-                      font-weight: bold;
-                      font-size: 0.8em;
-                      margin-right: 2%;
-                      margin-top: 0.5%;
-                    "
+        <div style="margin-bottom: 20px">
+          <button @click="skip" class="btn btn-primary">건너뛰기</button>
+        </div>
 
-                  >
-                    객실이름:
-                  </p>
-                  <p style="font-size: 1em">
-                    {{ this.todayDetail[index].detailName }}
-                  </p>
-                </div>
-                <div
-                  style="
-                    width: 80%;
-                    margin-left: 4%;
-                    margin-top: 1%;
-                    display: flex;
-                  "
-                >
-                  <p
-                    style="
-                      font-weight: bold;
-                      font-size: 0.8em;
-                      margin-right: 2%;
-                      margin-top: 1%;
-                    "
+        <div class="col-md-6" style="width: 1000px;" v-for="(menu, index) in todayMenu" :key="index">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static" >
+              <div class="resrvation">
+                <div class="d-inline-block mb-2 text-primary" style="width: 100%; padding-top: 2%; margin-left: 4%">{{ menu.orders.paymentDate.year()}}년 {{ menu.orders.paymentDate.month()}}월 {{ menu.orders.paymentDate.date()}}일</div>
+                <div style="display: flex; width: 100%">
+                  <div>
+                    <div style="width: 100%; padding-top: 2%; margin-left: 4%">
+                      <p style="font-weight: bold; font-size: 1.2em">{{ this.todayCamping[index].campingName}}</p>
+                    </div>
 
-                  >
-                    대여기간:
-                  </p>
-                  <p style="font-size: 1em">
-                    {{ this.startDate[index] }} ~
-                    {{ this.endDate[index] }}
-                  </p>
-                </div>
-                <div style="display: flex">
-                  <div
-                    style="
-                      width: 40%;
-                      padding-left: 3%;
-                      margin-left: 1%;
-                      display: flex;
-                    "
-                  >
-                    <p
-                      style="
-                        font-weight: bold;
-                        font-size: 0.8em;
-                        margin-right: 8%;
-                        margin-top: 1.5%;
-                      "
+                    <div style="width: 100%; padding-top: 0%; margin-left: 4%; display: flex">
+                      <p style="font-weight: bold; font-size: 0.8em; margin-right: 2%; margin-top: 0.5%">객실이름: </p><p style=" font-size: 1em">{{ this.todayDetail[index].detailName}}</p>
+                    </div>
 
-                    >
-                      상품가격:
-                    </p>
-                    <p style="font-size: 1em">
-                      {{ this.todayDetail[index].detailPrice }}
-                    </p>
+                    <div style="width: 800px; margin-left: 4%; margin-top: 1%; display: flex; padding-right: 250px">
+<!--                      <p style="font-weight: bold; font-size: 0.8em; margin-right: 2%; margin-top: 1%">대여기간: </p><p style="font-size: 1em">{{ this.startDate[index] }} ~ {{ this.endDate[index] }}</p>-->
+                    </div>
+
+                    <div style="display: flex">
+                      <div style="width: 40%; padding-left: 3%; margin-left: 1%; display: flex">
+                        <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 5%">상품가격: </p><p style="font-size: 1em; margin-top: 4%">{{ this.todayDetail[index].detailPrice }}</p>
+                      </div>
+                      <div style="width: 30%; padding-left: 2%; margin-left: 1%; display: flex">
+                        <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 5%">대여일 수: </p><p style="font-size: 1em; margin-top: 3%">{{ this.period[index] }}</p>
+                      </div>
+                    </div>
+
+                    <div style="width: 35%; padding: 1%; margin-left: 3%; margin-top: 1%; display: flex">
+                      <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1em">{{menu.orders.orderPrice }}</p>
+                    </div>
                   </div>
-                  <div
-                    style="
-                      width: 30%;
-                      padding-left: 2%;
-                      margin-left: 1%;
-                      display: flex;
-                    "
-                  >
-                    <p
-                      style="
-                        font-weight: bold;
-                        font-size: 0.8em;
-                        margin-right: 8%;
-                        margin-top: 1.5%;
-                      "
-
-                    >
-                      대여일 수:
-                    </p>
-                    <p style="font-size: 1em">
-                      {{ this.period[index] }}
-                    </p>
-                  </div>
-                  <div
-                    style="
-                      width: 35%;
-                      padding: 1%;
-                      margin-left: 10%;
-                      margin-top: 1%;
-                      display: flex;
-                    "
-                  >
-                    <p
-                      style="
-                        font-weight: bold;
-                        font-size: 0.8em;
-                        margin-right: 8%;
-                        margin-top: 1.5%;
-                      "
-
-                    >
-                      주문금액:
-                    </p>
-                    <p style="font-size: 1em">
-                      {{ menu.orders.orderPrice }}
-                    </p>
+                  <div>
+                    <div class="col-auto d-none d-lg-block" style="width: 300px; margin-left: -200px">
+                      <img :src="'/api/product_detail_images/' + this.todayCamping[index].filename" class="img-fluid rounded-start" alt="...">
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div style="width: 15%">
-                <button @click="selectMyOrder(this.todayCamping[index], index)">
-
-                  선택
-                </button>
+                <br>
+                <div style="width: 15%; margin-top: -7%; margin-left: 820px">
+<!--                  <button class="order-info-btn">예약취소</button>-->
+                  <button @click="selectMyOrder(this.todayCamping[index], index)"
+                    class="order-info-btn">
+                    선택
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <button @click="skip">건너뛰기</button>
+
+
+
+        <!--          <div class="card border-info mb-3" style="margin-top: 5%" v-for="(menu, index) in todayMenu" :key="index">-->
+        <!--            <div class="card-header" style="background-color: #b2e2fd">{{ menu.orders.paymentDate.year()}}년 {{ menu.orders.paymentDate.month()}}월 {{ menu.orders.paymentDate.date()}}일</div>-->
+        <!--            <div class="card-body">-->
+        <!--              <div class="res-orders-item-image">-->
+        <!--                <img :src="'/api/product_detail_images/' + this.todayCamping[index].filename" class="img-fluid rounded-start" alt="...">-->
+        <!--              </div>-->
+        <!--              <div style="justify-content: left; width:80%; height: 100%">-->
+        <!--                <div style="width: 80%; padding-top: 2%; margin-left: 4%">-->
+        <!--                  <p style="font-weight: bold; font-size: 1.2em">{{ this.todayCamping[index].campingName}}</p>-->
+        <!--                </div>-->
+        <!--                <div style="width: 68%; padding-top: 0%; margin-left: 4%; display: flex">-->
+        <!--                  <p style="font-weight: bold; font-size: 0.8em; margin-right: 2%; margin-top: 0.5%">객실이름: </p><p style=" font-size: 1em">{{ this.todayDetail[index].detailName}}</p>-->
+        <!--                </div>-->
+        <!--                <div style="width: 80%; margin-left: 4%; margin-top: 1%; display: flex">-->
+        <!--                  <p style="font-weight: bold; font-size: 0.8em; margin-right: 2%; margin-top: 1%">대여기간: </p><p style="font-size: 1em">{{ this.startDate[index] }} ~ {{ this.endDate[index] }}</p>-->
+        <!--                </div>-->
+        <!--                <div style="display: flex">-->
+        <!--                  <div style="width: 40%; padding-left: 3%; margin-left: 1%; display: flex">-->
+        <!--                    <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">상품가격: </p><p style="font-size: 1em">{{ this.todayDetail[index].detailPrice }}</p>-->
+        <!--                  </div>-->
+        <!--                  <div style="width: 30%; padding-left: 2%; margin-left: 1%; display: flex">-->
+        <!--                    <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">대여일 수: </p><p style="font-size: 1em">{{ this.period[index] }}</p>-->
+        <!--                  </div>-->
+        <!--                  <div style="width: 35%; padding: 1%; margin-left: 10%; margin-top: 1%; display: flex">-->
+        <!--                    <p style="font-weight: bold; font-size: 0.8em; margin-right: 8%; margin-top: 1.5%">주문금액: </p><p style="font-size: 1em">{{menu.orders.orderPrice }}</p>-->
+        <!--                  </div>-->
+        <!--                </div>-->
+        <!--              </div>-->
+        <!--              <div style="width: 15%">-->
+        <!--                <button class="order-info-btn">예약취소</button>-->
+        <!--              </div>-->
+
+
+        <!--          <table class="table table-striped">-->
+        <!--            <thead>-->
+        <!--            <tr>-->
+        <!--              <th>주문코드</th>-->
+        <!--              <th>캠핑장</th>-->
+        <!--              <th>객실명</th>-->
+        <!--              <th>예약날짜</th>-->
+        <!--              <th>주문금액</th>-->
+        <!--            </tr>-->
+        <!--            </thead>-->
+        <!--            <tbody>-->
+        <!--            <tr>-->
+        <!--              <td>{{ menu.orders.orderCode }}</td>-->
+        <!--              <td>{{ this.todayCamping[index].campingName}}</td>-->
+        <!--              <td>{{ this.todayDetail[index].detailName }}</td>-->
+        <!--              <td>{{ menu.orders.startDate[0] }}년 {{ menus[index].orders.startDate[1] }}월 {{ menus[index].orders.startDate[2] }}일 ~-->
+        <!--                {{ menu.orders.endDate[0] }}년 {{ menu.orders.endDate[1] }}월 {{ menu.orders.endDate[2] }}일</td>-->
+        <!--              <td>{{ menu.orders.orderPrice }}</td>-->
+        <!--            </tr>-->
+        <!--            &lt;!&ndash; PathVariable 을 위해서는 router-link 작성 &ndash;&gt;-->
+        <!--            &lt;!&ndash;      <router-link :to="{name: 'productDetail', params: { menuid:product.menuid }}"></router-link>&ndash;&gt;-->
+        <!--            </tbody>-->
+        <!--          </table>-->
+        <!--            </div>-->
+        <!--          </div>-->
       </div>
     </div>
-    <br />
-  </div>
+  </main>
+<!--  <div class="back">-->
+<!--    <br />-->
+<!--    <div class="frame">-->
+<!--      <div class="reservation-orders">-->
+<!--        <h1 style="font-weight: bold; padding: 2%">Reservation Orders</h1>-->
+<!--        <div class="order-card-list">-->
+<!--          <span-->
+<!--            class="btn-group"-->
+<!--            role="group"-->
+<!--            aria-label="Basic radio toggle button group"-->
+<!--          >-->
+<!--            <input-->
+<!--              type="radio"-->
+<!--              class="btn-check"-->
+<!--              name="btnradio"-->
+<!--              id="btnradio1"-->
+<!--              autocomplete="off"-->
+<!--              @click="todayResOrders()"-->
+<!--              checked-->
+<!--            />-->
+<!--            <label-->
+<!--              class="btn btn-outline-primary"-->
+<!--              for="btnradio1"-->
+<!--              style="font-size: 1em; padding: 1%"-->
+<!--              >오늘</label-->
+<!--            >-->
+
+<!--            <input-->
+<!--              type="radio"-->
+<!--              class="btn-check"-->
+<!--              name="btnradio"-->
+<!--              id="btnradio2"-->
+<!--              autocomplete="off"-->
+<!--              @click="weekResOrders()"-->
+<!--            />-->
+<!--            <label-->
+<!--              class="btn btn-outline-primary"-->
+<!--              for="btnradio2"-->
+<!--              style="font-size: 1em; padding: 1%"-->
+<!--              >일주일</label-->
+<!--            >-->
+
+<!--            <input-->
+<!--              type="radio"-->
+<!--              class="btn-check"-->
+<!--              name="btnradio"-->
+<!--              id="btnradio3"-->
+<!--              autocomplete="off"-->
+<!--              @click="monthResOrders()"-->
+<!--            />-->
+<!--            <label-->
+<!--              class="btn btn-outline-primary"-->
+<!--              for="btnradio3"-->
+<!--              style="font-size: 1em; padding: 1%"-->
+<!--              >한 달</label-->
+<!--            >-->
+
+<!--            <input-->
+<!--              type="radio"-->
+<!--              class="btn-check"-->
+<!--              name="btnradio"-->
+<!--              id="btnradio4"-->
+<!--              autocomplete="off"-->
+<!--              @click="yearResOrders()"-->
+<!--            />-->
+<!--            <label-->
+<!--              class="btn btn-outline-primary"-->
+<!--              for="btnradio4"-->
+<!--              style="font-size: 1em; padding: 1%"-->
+<!--              >일년</label-->
+<!--            >-->
+<!--          </span>-->
+<!--          <div-->
+<!--            class="card border-info mb-3"-->
+<!--            style="margin-top: 5%"-->
+<!--            v-for="(menu, index) in todayMenu"-->
+<!--            :key="index"-->
+<!--          >-->
+<!--            <div class="card-header" style="background-color: #b2e2fd">-->
+
+<!--              {{ menu.orders.paymentDate.year() }}년-->
+<!--              {{ menu.orders.paymentDate.month() }}월-->
+<!--              {{ menu.orders.paymentDate.date() }}일-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--              <div class="res-orders-item-image">-->
+<!--                <img-->
+<!--                  :src="-->
+<!--                    '/api/product_detail_images/' +-->
+<!--                    this.todayCamping[index].filename-->
+<!--                  "-->
+<!--                  class="img-fluid rounded-start"-->
+<!--                  alt="..."-->
+<!--                />-->
+<!--              </div>-->
+<!--              <div style="justify-content: left; width: 80%; height: 100%">-->
+<!--                <div style="width: 80%; padding-top: 2%; margin-left: 4%">-->
+<!--                  <p style="font-weight: bold; font-size: 1.2em">-->
+<!--                    {{ this.todayCamping[index].campingName }}-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--                <div-->
+<!--                  style="-->
+<!--                    width: 68%;-->
+<!--                    padding-top: 0%;-->
+<!--                    margin-left: 4%;-->
+<!--                    display: flex;-->
+<!--                  "-->
+<!--                >-->
+<!--                  <p-->
+<!--                    style="-->
+<!--                      font-weight: bold;-->
+<!--                      font-size: 0.8em;-->
+<!--                      margin-right: 2%;-->
+<!--                      margin-top: 0.5%;-->
+<!--                    "-->
+
+<!--                  >-->
+<!--                    객실이름:-->
+<!--                  </p>-->
+<!--                  <p style="font-size: 1em">-->
+<!--                    {{ this.todayDetail[index].detailName }}-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--                <div-->
+<!--                  style="-->
+<!--                    width: 80%;-->
+<!--                    margin-left: 4%;-->
+<!--                    margin-top: 1%;-->
+<!--                    display: flex;-->
+<!--                  "-->
+<!--                >-->
+<!--                  <p-->
+<!--                    style="-->
+<!--                      font-weight: bold;-->
+<!--                      font-size: 0.8em;-->
+<!--                      margin-right: 2%;-->
+<!--                      margin-top: 1%;-->
+<!--                    "-->
+
+<!--                  >-->
+<!--                    대여기간:-->
+<!--                  </p>-->
+<!--                  <p style="font-size: 1em">-->
+<!--                    {{ this.startDate[index] }} ~-->
+<!--                    {{ this.endDate[index] }}-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--                <div style="display: flex">-->
+<!--                  <div-->
+<!--                    style="-->
+<!--                      width: 40%;-->
+<!--                      padding-left: 3%;-->
+<!--                      margin-left: 1%;-->
+<!--                      display: flex;-->
+<!--                    "-->
+<!--                  >-->
+<!--                    <p-->
+<!--                      style="-->
+<!--                        font-weight: bold;-->
+<!--                        font-size: 0.8em;-->
+<!--                        margin-right: 8%;-->
+<!--                        margin-top: 1.5%;-->
+<!--                      "-->
+
+<!--                    >-->
+<!--                      상품가격:-->
+<!--                    </p>-->
+<!--                    <p style="font-size: 1em">-->
+<!--                      {{ this.todayDetail[index].detailPrice }}-->
+<!--                    </p>-->
+<!--                  </div>-->
+<!--                  <div-->
+<!--                    style="-->
+<!--                      width: 30%;-->
+<!--                      padding-left: 2%;-->
+<!--                      margin-left: 1%;-->
+<!--                      display: flex;-->
+<!--                    "-->
+<!--                  >-->
+<!--                    <p-->
+<!--                      style="-->
+<!--                        font-weight: bold;-->
+<!--                        font-size: 0.8em;-->
+<!--                        margin-right: 8%;-->
+<!--                        margin-top: 1.5%;-->
+<!--                      "-->
+
+<!--                    >-->
+<!--                      대여일 수:-->
+<!--                    </p>-->
+<!--                    <p style="font-size: 1em">-->
+<!--                      {{ this.period[index] }}-->
+<!--                    </p>-->
+<!--                  </div>-->
+<!--                  <div-->
+<!--                    style="-->
+<!--                      width: 35%;-->
+<!--                      padding: 1%;-->
+<!--                      margin-left: 10%;-->
+<!--                      margin-top: 1%;-->
+<!--                      display: flex;-->
+<!--                    "-->
+<!--                  >-->
+<!--                    <p-->
+<!--                      style="-->
+<!--                        font-weight: bold;-->
+<!--                        font-size: 0.8em;-->
+<!--                        margin-right: 8%;-->
+<!--                        margin-top: 1.5%;-->
+<!--                      "-->
+
+<!--                    >-->
+<!--                      주문금액:-->
+<!--                    </p>-->
+<!--                    <p style="font-size: 1em">-->
+<!--                      {{ menu.orders.orderPrice }}-->
+<!--                    </p>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div style="width: 15%">-->
+<!--                <button @click="selectMyOrder(this.todayCamping[index], index)">-->
+
+<!--                  선택-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button @click="skip">건너뛰기</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <br />-->
+<!--  </div>-->
 </template>
 
 <script>

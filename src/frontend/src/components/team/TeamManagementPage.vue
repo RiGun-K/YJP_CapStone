@@ -1,176 +1,106 @@
 <template>
-	<div class="frame">
-		<div class="content">
-			<div class="myTeam">
-				<p>MY TEAM</p>
-				<button
-					@Click="showingAddTeamForm"
-					class="w-btn-outline w-btn-blue-outline"
-					type="button"
-				>
-					+
-				</button>
-			</div>
-			<div v-if="addTeamForm" class="newTeam">
-				<select v-model="open">
-					<option>전체공개</option>
-					<option>비공개</option>
-				</select>
-				<input
-					v-model="$store.state.insertName"
-					placeholder="insert team name"
-				/>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="enter" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+      <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+    </symbol>
+  </svg>
 
-				<button
-					@click="teamSave"
-					class="w-btn w-btn-indigo"
-					type="button"
-				>
-					생성
-				</button>
-			</div>
-			<div v-if="showingTeamList">
-				<p v-html="noTeam"></p>
-				<div
-					v-for="(value, index) in teamList"
-					:key="index"
-					class="teamList"
-				>
-
-					<button
-						class="w-btn-gray"
-						type="button"
-						@click="loadTeamMemberList(value.teamCode)"
-						:title="value.teamCode.teamName"
-					>
-						{{ value.teamCode.teamName }}
-					</button>
-				</div>
-
-				<div
-					v-for="(value, index) in unacceptedTeamCode"
-					:key="index"
-					style="display: inline-block"
-				>
-					<button
-						class="w-btn-gra2 w-btn-gra-anim"
-						type="button"
-						@click="selectUnacceptedTeam(value.teamCode)"
-						:title="value.teamCode.teamName"
-					>
-						{{ value.teamCode.teamName }}
-					</button>
-				</div>
-			</div>
-			<div>
-				<hr />
-				<br />
-			</div>
-			<div class="requestOuter">
-				<div v-if="showingRequest" class="request">
-					<body class="d-flex h-100 text-center text-white bg-dark">
-						<main class="px-3">
-							<h1>
-								팀{{ this.requestTeamCode.teamName }} 에서
-								요청이 왔습니다
-							</h1>
-							<div class="requestButton">
-
-								<button
-									@click="accept(requestTeamCode.teamCode)"
-								>
-									수락하기
-								</button>
-								<button
-									@click="refuse(requestTeamCode.teamCode)"
-								>
-									거절하기
-								</button>
-							</div>
-						</main>
-					</body>
-				</div>
-				<div v-if="showingTeamMember" class="teamMemberList">
-					<p>
-						{{ $store.state.teamCode.teamCode.teamName }}
-						MEMBERS
-					</p>
-					<div
-						class="col-md-6"
-						v-for="(value, index) in $store.state.teamMemberList"
-						:key="index"
-					>
-						<div
-							class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
-						>
-							<div
-								class="col p-4 d-flex flex-column position-static"
-							>
-								<strong
-									class="d-inline-block mb-2 text-success"
-									>{{ value.mcode.mname }}</strong
-								>
-								<h3
-									class="mb-0"
-									style="
-										display: inline-block;
-										max-width: 280px;
-										overflow: hidden;
-									"
-								>
-									{{ value.mcode.mmail }}
-								</h3>
-								<div class="mb-1 text-muted">
-									{{ value.mcode.mph }}
-								</div>
-								<a href="#" class="stretched-link"
-									>Continue reading</a
-								>
-							</div>
-							<div class="col-auto d-none d-lg-block">
-								<svg
-									class="bd-placeholder-img"
-									width="200"
-									height="250"
-									xmlns="http://www.w3.org/2000/svg"
-									role="img"
-									aria-label="Placeholder: Thumbnail"
-									preserveAspectRatio="xMidYMid slice"
-									focusable="false"
-								>
-									<title>Go to detail</title>
-									<rect
-										width="100%"
-										height="100%"
-										fill="#55595c"
-									/>
-									<text
-										x="50%"
-										y="50%"
-										fill="#eceeef"
-										dy=".3em"
-									>
-										Thumbnail
-									</text>
-								</svg>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		</div>
-
-	<div class="aTag">
-		<a :href="$store.state.teamURL"
-			>More about &nbsp;{{
-				$store.state.teamCode.teamCode.teamName
-			}}
-			TEAM</a
-		>
-	</div>
-
+  <div class="container">
+    <div class="myTeam" style="display: flex; width:200px; justify-content: center; align-items: center">
+      <h3 style="margin-top: 4%;">MY TEAM</h3>
+      <a title="Button push blue/green" class="buttons btnPush btnBlueGreen" @Click="showingAddTeamForm">+</a>
+    </div>
+    <div v-if="addTeamForm" class="newTeam" style="display:flex; width: 500px; margin-left: 50px; margin-top: 30px; margin-bottom: 50px">
+      <select class="form-select" aria-label="Default select example" v-model="open" style="width: 120px; margin-right: 10px">
+        <option selected>전체공개</option>
+        <option value="2">비공개</option>
+      </select>
+      <input class="form-control" v-model="$store.state.insertName" type="text" placeholder="Insert Team Name" aria-label="default input example"
+      style="width: 300px; height: 45px">
+      <a title="Button push blue/green" class="buttons2 btnPush btnBlueGreen" @click="teamSave">생성</a>
+    </div>
+    <div v-if="showingTeamList">
+      <p v-html="noTeam" style="margin-top: 10px; margin-left: 35px; font-style: italic;"></p>
+      <div style="display: flex">
+        <div
+            v-for="(value, index) in teamList"
+            :key="index"
+            class="teamList"
+        >
+          <button
+              class="w-btn-gray"
+              type="button"
+              @click="loadTeamMemberList(value.teamCode)"
+              :title="value.teamCode.teamName"
+          >
+            {{ value.teamCode.teamName }}
+          </button>
+        </div>
+      </div>
+      <div style="display: flex">
+        <div
+            v-for="(value, index) in unacceptedTeamCode"
+            :key="index"
+            style="display: inline-block"
+        >
+          <button
+              class="w-btn-gra2 w-btn-gra-anim"
+              type="button"
+              @click="selectUnacceptedTeam(value.teamCode)"
+              :title="value.teamCode.teamName"
+          >
+            {{ value.teamCode.teamName }}
+          </button>
+        </div>
+        <div v-if="showingRequest" class="request">
+          <div class="card" style="width: 600px; margin-left: 30px; border-radius: 1em; margin-top: 10px">
+            <div class="card-body" style=" height: 100px; margin-top: 15px">
+              <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px">
+                <h5 class="teamNameH5" style="margin-right: 10px">{{ this.requestTeamCode.teamName }}</h5>
+                <h5 class="card-title">팀에서 요청이 왔습니다</h5>
+              </div>
+              <div style="margin-left: 460px">
+                <a href="#" class="card-link" @click="accept(requestTeamCode.teamCode)" >수락</a>
+                <a href="#" class="card-link" @click="refuse(requestTeamCode.teamCode)" style="color: #c02727">거절</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="showingTeamMember" class="teamMemberList" style="margin-top: 20px; margin-left: 15px">
+        <div style="display: flex" class="teamNameStyle">
+          <h3 class="teamNameH3">
+            {{ $store.state.teamCode.teamCode.teamName }}
+          </h3>
+          <div class="aTag">
+            <a :href="$store.state.teamURL" style="text-decoration: none; color: #989898">
+              <svg class="bi d-block mx-auto mb-1" width="30" height="30"><use xlink:href="#enter"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="container px-4 py-5" id="featured-5" style="margin-top: -80px">
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-5">
+              <div class="feature col" style="border: 1px solid #e3e3e3; border-radius: 2em; padding: 20px; margin-right: 10px; height: 180px"
+                   v-for="(value, index) in $store.state
+								.teamMemberList"
+                   :key="index">
+                <div style="display: flex;">
+                  <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-gradient text-white fs-2 mb-3" style="background-color: #456b49">
+                    <svg class="bi" width="1em" height="1em"><use xlink:href="#people-circle"/></svg>
+                  </div>
+                  <h3 style="margin-top: 15px; margin-left: 10px">{{ value.mcode.mname }}</h3>
+                </div>
+                <div style="margin-left: 10px">
+                  <p>{{ value.mcode.mmail }}</p>
+                  <p>{{ value.mcode.mph }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -266,7 +196,7 @@ export default {
 					});
 				})
 				.catch((error) => {
-					this.noTeam = '<h1>소속 팀이 없습니다</h1>';
+					this.noTeam = '<h2>소속 팀이 없습니다</h2>';
 					console.log(error);
 				});
 		},
@@ -282,6 +212,7 @@ export default {
 				.then((response) => {
 					alert('수락완료!');
 					this.TeamManage(this.$store.state.member.mcode);
+          this.$router.go();
 				})
 				.catch((error) => {
 					console.log(error);
@@ -344,24 +275,85 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
-#teamMembers {
-	width: 200px;
-	height: 100px;
-	background-color: #f5d682;
-	display: inline-block;
-	border: none;
+.teamNameH5 {
+  font-family: '휴먼둥근헤드라인', cursive;
+  font-size: 1.5em;
+  color: #4f9f34;
+}
 
+a,
+a:visited {
+  text-decoration: none;
+}
+
+a.buttons {
+  width: 30px;
+  height: 25px;
+  padding: 2px;
+  margin-left: 12px;
+  text-align: center;
+  color: #FFF;
+  border-radius: 5px;
+  transition: all 0.2s ;
+}
+
+a.buttons2{
+  width: 70px;
+  height: 30px;
+  padding: 2px;
+  margin-top: 5px;
+  margin-left: 12px;
+  text-align: center;
+  color: #FFF;
+  border-radius: 5px;
+  transition: all 0.2s ;
+  margin-bottom: 0;
+}
+
+.btnBlueGreen {
+  background: #00AE68;
+}
+
+.btnBlueGreen.btnPush {
+  box-shadow: 0px 5px 0px 0px #007144;
+}
+
+.btnPush:hover {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.btnBlueGreen.btnPush:hover {
+  box-shadow: 0px 0px 0px 0px #007144;
+}
+
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.feature-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: .75rem;
+}
+
+.icon-link > .bi {
+  margin-top: .125rem;
+  margin-left: .125rem;
+  fill: currentcolor;
+  transition: transform .25s ease-in-out;
+}
+.icon-link:hover > .bi {
+  transform: translate(.25rem);
 }
 
 .teamList {
 	float: left;
-	/* width: 200px; */
-	/* height: 120px; */
-	/* border: 1px solid red; */
 }
 .w-btn-gray {
-	background-color: #a3a1a1;
-	color: #e3dede;
+	background-color: #31722b;
+	color: #ffffff;
 }
 .teamList button {
 	position: relative;
@@ -371,26 +363,12 @@ export default {
 	border-radius: 10px;
 	border: none;
 	margin: 12px;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 .teamList button:hover {
 	position: relative;
 	overflow: visible;
 	width: 100%;
 	min-width: 40px;
-}
-
-.w-btn:hover {
-	letter-spacing: 2px;
-	transform: scale(1.5);
-	cursor: pointer;
-	position: relative;
-	overflow: visible;
-	min-width: 40px;
-}
-
-.w-btn-outline:active {
-	transform: scale(1.5);
 }
 
 .w-btn-gra2 {
@@ -409,101 +387,13 @@ export default {
 	background-size: 400% 400%;
 	animation: gradient1 0.5s ease infinite;
 	border-radius: 10px;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+	/*box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);*/
 }
 .w-btn-gra2:hover {
 	width: 100%;
 	transform: scale(1.1);
 }
-.w-btn-blue-outline {
-	border: 3px solid #6aafe6;
-	color: #6e6e6e;
-	border-radius: 10px;
-	width: 35px;
-	height: 35px;
-	border: none;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-}
-.w-btn-blue-outline:hover {
-	background-color: #6aafe6;
-	color: #d4dfe6;
-}
-.w-btn {
-	position: relative;
-	border: none;
-	display: inline-block;
-	padding: 15px 30px;
-	border-radius: 15px;
-	font-family: 'paybooc-Light', sans-serif;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-	text-decoration: none;
-	font-weight: 600;
-	transition: 0.25s;
-}
-.w-btn-blue-outline {
-	border: 3px solid #6aafe6;
-	color: #6e6e6e;
-}
 
-.myTeam {
-	width: 100%;
-	margin: 20px;
-	float: left;
-}
-.myTeam p {
-	font-size: 30px;
-	margin: 10px;
-	float: left;
-}
-.myTeam button {
-	margin-top: 15px;
-}
-.content {
-	float: left;
-}
-.teamMemberList p {
-	font-size: 20px;
-}
-.teamMemberList {
-	width: 90%;
-
-}
-
-hr {
-	width: 2001px;
-}
-.teamMemberList button {
-	border-radius: 20px;
-	margin: 20px;
-	border: none;
-}
-.request button {
-	margin: 40px;
-	width: 100px;
-	height: 60px;
-	background-color: #23a6d5;
-	border: none;
-	border-radius: 10px;
-	color: white;
-}
-
-.request {
-	margin: auto;
-
-}
-.request p {
-	font-size: 50px;
-	display: flex;
-}
-.requestOuter {
-	/* display: flex; */
-	width: 100%;
-}
-
-.requestButton {
-	margin: auto;
-
-}
 @keyframes gradient1 {
 	0% {
 		background-position: 0% 50%;
@@ -516,58 +406,60 @@ hr {
 	}
 }
 
-.newTeam {
-	padding: 40px;
+.aTag{
+  margin-top: 10px;
+  margin-left: 14px;
 }
 
-.newTeam select {
-	height: 40px;
-	margin-right: 10px;
-	border-radius: 10px;
+.teamNameStyle{
+  margin-bottom: 15px;
 }
 
-.newTeam input {
-	height: 40px;
-	width: 300px;
-	margin-right: 10px;
-	border-radius: 10px;
-}
-.w-btn-indigo {
-	background-color: aliceblue;
-	color: #1e6b7b;
-}
-.col-md-6 {
-
-	display: inline-block;
-	width: 30%;
-	margin-left: 1.65%;
-	margin-right: 1.65%;
-}
-.rounded {
-	margin-top: 100px;
+.teamNameH3{
+  color: #333;
+  border-bottom: 4px solid #3c5d3f;
+  padding-bottom: 5px;
+  position: relative;
 }
 
-.bd-placeholder-img {
-	font-size: 1.125rem;
-	text-anchor: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
+
+.teamNameH3:before{
+  /*     content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-left: 4px solid #a79600;
+     */
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 30px;
+  bottom: -30px;
+  border: 15px solid;
+  border-color: #3c5d3f transparent transparent #3c5d3f;
 }
 
-@media (min-width: 768px) {
-	.bd-placeholder-img-lg {
-		font-size: 3.5rem;
-	}
-}
-.requestButton button {
-	width: 100px;
-	height: 50px;
-}
-.aTag {
+.teamNameH3:after{
+  /*     content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 49%;
+      width: 15px;
+      height: 31px;
+      transform: rotate(51deg);
+      border-right: 4px solid #a79600; */
 
-	font-size: large;
-	float: right;
-	margin-right: 50px;
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 34px;
+  bottom: -20px;
+  border: 15px solid;
+  border-color: #fff transparent transparent #fff;
 }
 </style>
