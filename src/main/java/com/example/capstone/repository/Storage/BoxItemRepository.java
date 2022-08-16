@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +21,7 @@ public interface BoxItemRepository extends JpaRepository<BoxItem,Long> {
     List<BoxItem> findByUseStorageBoxCode(UseStorageBox useStorageBox);
 
     List<BoxItem> findByMemEquipmentCode(MemberEquipment memberEquipment);
+
+    @Query(value = "select SUM(BOX_ITEM_COUNT) as CON from BoxItem where MEM_EQUIPMENT_CODE = :memCode group by MEM_EQUIPMENT_CODE",nativeQuery = true)
+    Optional<HashMap<String, Object>> findBoxItemCount(@Param("memCode")long memCode);
 }

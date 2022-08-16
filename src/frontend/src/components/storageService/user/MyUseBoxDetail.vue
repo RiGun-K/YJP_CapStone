@@ -78,13 +78,14 @@
                 </div>
                 <div @click="addShow()" style="margin-bottom: 3px">
                   <h9>보관 장비 추가</h9>
+                  {{addItemCheck}}
                   <h9 v-if="!addItemCheck">▼</h9>
                   <h9 v-else>▲
                     <button class="item-btn" @click="addItem()">추가하기</button>
                   </h9>
                 </div>
                 <div v-if="addItemCheck">
-                  <div>
+                  <div v-if="notInItem.length>0">
                     <table class="table">
                       <thead>
                       <tr>
@@ -585,12 +586,14 @@ export default {
           .catch(err => {
             console.log(err)
           })
+      console.log(this.notInItem)
     },
     addShow() {
       if (this.addItemCheck) {
-        this.addItemCheck = false
+        this.addItemCheck = !this.addItemCheck
       } else {
-        this.addItemCheck = true
+        this.addItemCheck = !this.addItemCheck
+        console.log(this.addItemCheck)
       }
     },
     addItem() {

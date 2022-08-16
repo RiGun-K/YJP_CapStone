@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -461,12 +462,14 @@ public class UseStorageController {
         long mCode = member.get().getMCode();
         List<MemberEquipment> memberEquipmentList = memberEquipmentRepository.findByMemEquipment(mCode);
         for (int i = 0; i < memberEquipmentList.size(); i++) {
-            List<BoxItem> boxItemList = boxItemRepository.findByMemEquipmentCode(memberEquipmentList.get(i));
+//            List<BoxItem> boxItemList = boxItemRepository.findByMemEquipmentCode(memberEquipmentList.get(i));
+            Optional<HashMap<String, Object>> boxItemList = boxItemRepository.findBoxItemCount(memberEquipmentList.get(i).getMemEquipmentCode());
             if (!boxItemList.isEmpty()) {
-                for (int j = 0; j < boxItemList.size(); j++) {
-                    memberEquipmentList.get(i).setMemEquipmentCount(memberEquipmentList.get(i).getMemEquipmentCount() - boxItemList.get(j).getBoxItemCount());
+                String b = String.valueOf(boxItemList.get().get("CON"));
+                int a = Integer.parseInt(b);
+                System.out.println(a);
+                    memberEquipmentList.get(i).setMemEquipmentCount(memberEquipmentList.get(i).getMemEquipmentCount() - a);
                     System.out.println(memberEquipmentList.get(i).getMemEquipmentCount());
-                }
             }
         }
         return memberEquipmentList;
