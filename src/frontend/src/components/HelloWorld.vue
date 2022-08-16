@@ -239,16 +239,16 @@
 			</div>
 		</div>
 	</main>
-	<div>
-		<p v-for="(value, index) in planRankingList" :key="index">
-			{{ value.planName }}
-		</p>
-	</div>
-	<div>
-		<p v-for="(value, index) in campingRankingList" :key="index">
-			{{ value.campingName }}
-		</p>
-	</div>
+<!--	<div>-->
+<!--		<p v-for="(value, index) in planRankingList" :key="index">-->
+<!--			{{ value.planName }}-->
+<!--		</p>-->
+<!--	</div>-->
+<!--	<div>-->
+<!--		<p v-for="(value, index) in campingRankingList" :key="index">-->
+<!--			{{ value.campingName }}-->
+<!--		</p>-->
+<!--	</div>-->
 </template>
 
 <script>
