@@ -30,4 +30,7 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Integer> {
 
     @Query(value = "select * from Order_Menu where Camping_Id is not null", nativeQuery = true)
     public List<OrderMenu> findByCamping();
+
+    @Query(value = " select camping_id from (select count(camping_id),camping_id from order_menu  group by camping_id order by camping_id) where rownum<=5",nativeQuery = true)
+    public List<Integer> findRanking();
 }

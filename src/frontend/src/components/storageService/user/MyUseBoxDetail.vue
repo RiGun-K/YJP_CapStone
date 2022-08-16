@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="modal modal-signin d-block py-5" role="dialog">
+    <div class="modal modal-signin d-block py-5" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document" >
-        <div class="modal-content rounded-4 shadow" style="margin-left: 200px; margin-top: 220px">
+        <div class="modal-content rounded-4 shadow" style="margin-left: 300px; margin-top: 130px">
           <div class="modal-header p-5 pb-4 border-bottom-0">
-            <h2 class="fw-bold mb-0">{{ name }}, {{ boxName }}</h2>
+            <h2 class="fw-bold mb-0">{{useData.storageName}}, {{useData.boxName}}</h2>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="close"></button>
           </div>
 
@@ -28,21 +28,122 @@
               </div>
               <div v-if="moveInfo">
                 <div class="form-floating mb-3">
-                  <strong class="d-inline-block mb-0 text-success">이동정보</strong>
-                  <div style="margin-left: 20px" v-if="moveBoxInfo.moveState == 3">
-                    {{ moveBoxInfo.storageName }} 보관소,{{ moveBoxInfo.boxName }}보관함으로 이동
+                  <strong class="d-inline-block text-success" style="margin-bottom: 3px">이동정보</strong>
+                  <div  v-if="!kkk">
+                    <div style="margin-left: 21px; display: flex">
+                      <img :src="require('@/assets/free-icon-location-pin-1201684.png')" alt="..." style="width: 4.6%; height: 5%; margin-top: 2px;margin-right: 1px">
+                      {{useData.storageName}} 보관소, {{useData.boxName}} 보관함에서
+                    </div>
+                    <div style="margin-left: 20px; display: flex" v-if="moveBoxInfo.moveState == 3">
+                      <img :src="require('@/assets/premium-icon-location-pin-2776067.png')" alt="..." style="width: 5%; height: 5%; margin-top: 2px">
+                      {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }}보관함으로 이동
+                    </div>
+                    <div style="margin-left: 20px; display: flex" v-if="moveBoxInfo.moveState == 4">
+                      <img :src="require('@/assets/premium-icon-location-pin-2776067.png')" alt="..." style="width: 5.2%; height: 5%; margin-top: 2px">
+                      {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }} 보관함으로 이동
+                    </div>
+                    <div style="margin-left: 20px; display: flex" v-if="moveBoxInfo.moveState == 5">
+                      <img :src="require('@/assets/premium-icon-location-pin-2776067.png')" alt="..." style="width: 5%; height: 5%; margin-top: 2px">
+                      {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }} 보관함으로 배송 중
+                    </div>
                   </div>
-                  <div style="margin-left: 20px" v-if="moveBoxInfo.moveState == 4">
-                    {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }} 보관함으로 이동
-                  </div>
-                  <div style="margin-left: 20px" v-if="moveBoxInfo.moveState == 5">
-                    {{ moveBoxInfo.storageName }} 보관소, {{ moveBoxInfo.boxName }}보관함에서 이 곳으로 이동
+                  <div v-else>
+                    <table>
+                      <tbody>
+                      <tr>
+                        <td>받는 사람</td>
+                        <td>{{ order.deliveryGetter }}</td>
+                      </tr>
+                      <tr>
+                        <td>우편번호</td>
+                        <td>{{ order.deliveryZipcode }}</td>
+                      </tr>
+                      <tr>
+                        <td>주소</td>
+                        <td>{{ order.deliveryAddress }}</td>
+                      </tr>
+                      <tr>
+                        <td>연락처</td>
+                        <td>{{ order.deliveryGetterTel }}</td>
+                      </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-              <div class="form-floating mb-3">
-                <div style="display: flex;">
-                  <strong class="d-inline-block mb-0 text-success">결제금액</strong>
+              <div class="form-floating mb-3" >
+                <div style="display: flex; margin-bottom: 3px">
+                  <strong class="d-inline-block mb-0 text-success">보관 중인 장비</strong>
+                  <button class="btn btn-outline-secondary" v-if="myItem.length > 0" style="width: 60px; padding: 2px; margin-left: 242px" @click="outItem()">빼내기</button>
+                </div>
+                <div @click="addShow()" style="margin-bottom: 3px">
+                  <h9>보관 장비 추가</h9>
+                  <h9 v-if="!addItemCheck">▼</h9>
+                  <h9 v-else>▲
+                    <button class="item-btn" @click="addItem()">추가하기</button>
+                  </h9>
+                </div>
+                <div v-if="addItemCheck">
+                  <div>
+                    <table class="table">
+                      <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">장비</th>
+                        <th scope="col">수량</th>
+                        <th scope="col">선택</th>
+                      </tr>
+                      </thead>
+                      <tbody class="table-group-divider">
+                      <tr v-for="(item,index) in notInItem" :key="index" class="item">
+                        <th scope="row">{{index+1}}</th>
+                        <td>{{ item.memEquipmentName }}</td>
+                        <td>
+                          <div style="display: flex">
+                            <select class="form-select" aria-label="Default select example" v-model="item.count">
+                              <option v-for="inx in item.memEquipmentCount" :value="inx">{{ inx }}</option>
+                            </select>
+                            <div style="margin-left: 5px; margin-top: 2px"> 개</div>
+                          </div>
+                        </td>
+                        <td>{{ stateCheck(item.memEquipmentCode.memEquipmentState) }}</td>
+                        <td><input type="checkbox" :value="item" v-model="addBoxInItem"></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div v-if="myItem.length > 0">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">장비</th>
+                      <th scope="col">수량</th>
+                      <th scope="col">상태</th>
+                      <th scope="col">선택</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <tr v-for="(item,index) in myItem" :key="index">
+                      <th scope="row">{{index+1}}</th>
+                      <td>{{ item.memEquipmentCode.memEquipmentName }}</td>
+                      <td>
+                        <div style="display: flex">
+                          <select class="form-select" aria-label="Default select example" v-model="item.count">
+                            <option v-for="inx in item.boxItemCount" :value="inx">{{ inx }}</option>
+                          </select>
+                          <div style="margin-left: 5px; margin-top: 2px"> 개</div>
+                        </div>
+                      </td>
+                      <td>{{ stateCheck(item.memEquipmentCode.memEquipmentState) }}</td>
+                      <td><input type="checkbox" :value="item" v-model="outBoxItem"></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div v-else>
+                  <div style="margin-left: 20px;">보관중인 장비가 없습니다.</div>
                 </div>
               </div>
 

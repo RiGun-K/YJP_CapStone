@@ -189,7 +189,7 @@
           </form>
 
           <div class="text-end">
-            <button type="button"  class="btn btn-light text-dark me-2" v-if="!uiLogin">Sign-up</button>
+            <a href="/agreement" style="text-decoration: none; color: black"><button type="button"  class="btn btn-light text-dark me-2" v-if="!uiLogin">Sign-up</button></a>
             <button type="button" class="btn btn-primary" @click="loginBtn" v-if="!uiLogin">Login</button>
 
             <div style="display: flex">
